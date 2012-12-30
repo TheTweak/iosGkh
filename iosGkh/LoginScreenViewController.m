@@ -26,7 +26,7 @@
     NSString *password = self.passwordField.text;
     NSString *url = self.urlField.text;
     [self registerForNotifications];
-    [[BasicAuthModule class] authenticateWithLogin:userName andPassword:password byURL:url];
+    [[BasicAuthModule class] authenticateWithLogin:userName andPassword:password];
 }
 
 - (void) registerForNotifications {
