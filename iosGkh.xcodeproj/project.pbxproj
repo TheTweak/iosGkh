@@ -37,6 +37,11 @@
 		61A3AC40169047E2005D3311 /* shape_enter.png in Resources */ = {isa = PBXBuildFile; fileRef = 61A3AC32169047E2005D3311 /* shape_enter.png */; };
 		61A3AC41169047E2005D3311 /* backgr_01.png in Resources */ = {isa = PBXBuildFile; fileRef = 61A3AC33169047E2005D3311 /* backgr_01.png */; };
 		61A3AC42169047E2005D3311 /* applications-system_3480.png in Resources */ = {isa = PBXBuildFile; fileRef = 61A3AC34169047E2005D3311 /* applications-system_3480.png */; };
+		61A3AC4F16904863005D3311 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 61A3AC4416904862005D3311 /* HomeViewController.m */; };
+		61A3AC5016904863005D3311 /* MetricSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 61A3AC4716904862005D3311 /* MetricSelectionViewController.m */; };
+		61A3AC5116904863005D3311 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 61A3AC4A16904862005D3311 /* SettingsViewController.m */; };
+		61A3AC5216904863005D3311 /* OperationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 61A3AC4B16904862005D3311 /* OperationsViewController.m */; };
+		61A3AC5316904863005D3311 /* LoginScreenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 61A3AC4E16904863005D3311 /* LoginScreenViewController.m */; };
 		D83773B297B749B6AFE8FF1C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7716AF1534D04DE2AFEC9746 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -87,6 +92,17 @@
 		61A3AC32169047E2005D3311 /* shape_enter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shape_enter.png; sourceTree = "<group>"; };
 		61A3AC33169047E2005D3311 /* backgr_01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = backgr_01.png; sourceTree = "<group>"; };
 		61A3AC34169047E2005D3311 /* applications-system_3480.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "applications-system_3480.png"; sourceTree = "<group>"; };
+		61A3AC4416904862005D3311 /* HomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
+		61A3AC4516904862005D3311 /* HomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
+		61A3AC4616904862005D3311 /* MetricSelectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MetricSelectionViewController.h; sourceTree = "<group>"; };
+		61A3AC4716904862005D3311 /* MetricSelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MetricSelectionViewController.m; sourceTree = "<group>"; };
+		61A3AC4816904862005D3311 /* MetricConsumerProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MetricConsumerProtocol.h; sourceTree = "<group>"; };
+		61A3AC4916904862005D3311 /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
+		61A3AC4A16904862005D3311 /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
+		61A3AC4B16904862005D3311 /* OperationsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OperationsViewController.m; sourceTree = "<group>"; };
+		61A3AC4C16904862005D3311 /* OperationsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OperationsViewController.h; sourceTree = "<group>"; };
+		61A3AC4D16904863005D3311 /* LoginScreenViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginScreenViewController.h; sourceTree = "<group>"; };
+		61A3AC4E16904863005D3311 /* LoginScreenViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginScreenViewController.m; sourceTree = "<group>"; };
 		7716AF1534D04DE2AFEC9746 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -150,6 +166,7 @@
 		61A3ABE3169038A5005D3311 /* iosGkh */ = {
 			isa = PBXGroup;
 			children = (
+				61A3AC541690486E005D3311 /* Controllers */,
 				61A3AC2316904778005D3311 /* MainStoryboard_iPhone.storyboard */,
 				61A3AC2416904778005D3311 /* MainStoryboard_iPad.storyboard */,
 				61A3ABEC169038A5005D3311 /* iGkhAppDelegate.h */,
@@ -212,6 +229,24 @@
 				61A3AC34169047E2005D3311 /* applications-system_3480.png */,
 			);
 			name = PNGS;
+			sourceTree = "<group>";
+		};
+		61A3AC541690486E005D3311 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				61A3AC4416904862005D3311 /* HomeViewController.m */,
+				61A3AC4516904862005D3311 /* HomeViewController.h */,
+				61A3AC4616904862005D3311 /* MetricSelectionViewController.h */,
+				61A3AC4716904862005D3311 /* MetricSelectionViewController.m */,
+				61A3AC4816904862005D3311 /* MetricConsumerProtocol.h */,
+				61A3AC4916904862005D3311 /* SettingsViewController.h */,
+				61A3AC4A16904862005D3311 /* SettingsViewController.m */,
+				61A3AC4B16904862005D3311 /* OperationsViewController.m */,
+				61A3AC4C16904862005D3311 /* OperationsViewController.h */,
+				61A3AC4D16904863005D3311 /* LoginScreenViewController.h */,
+				61A3AC4E16904863005D3311 /* LoginScreenViewController.m */,
+			);
+			name = Controllers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -357,6 +392,11 @@
 			files = (
 				61A3ABEA169038A5005D3311 /* main.m in Sources */,
 				61A3ABEE169038A5005D3311 /* iGkhAppDelegate.m in Sources */,
+				61A3AC4F16904863005D3311 /* HomeViewController.m in Sources */,
+				61A3AC5016904863005D3311 /* MetricSelectionViewController.m in Sources */,
+				61A3AC5116904863005D3311 /* SettingsViewController.m in Sources */,
+				61A3AC5216904863005D3311 /* OperationsViewController.m in Sources */,
+				61A3AC5316904863005D3311 /* LoginScreenViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
