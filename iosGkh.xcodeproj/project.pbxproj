@@ -44,6 +44,8 @@
 		61A3AC5316904863005D3311 /* LoginScreenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 61A3AC4E16904863005D3311 /* LoginScreenViewController.m */; };
 		61A3AC5916904909005D3311 /* BasicAuthModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 61A3AC5516904909005D3311 /* BasicAuthModule.m */; };
 		61A3AC5A16904909005D3311 /* FormAuthModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 61A3AC5616904909005D3311 /* FormAuthModule.m */; };
+		61A3AC6016904DB5005D3311 /* PieChart.m in Sources */ = {isa = PBXBuildFile; fileRef = 61A3AC5D16904DB4005D3311 /* PieChart.m */; };
+		61A3AC6116904DB5005D3311 /* Nach.m in Sources */ = {isa = PBXBuildFile; fileRef = 61A3AC5E16904DB4005D3311 /* Nach.m */; };
 		D83773B297B749B6AFE8FF1C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7716AF1534D04DE2AFEC9746 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -109,6 +111,10 @@
 		61A3AC5616904909005D3311 /* FormAuthModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FormAuthModule.m; sourceTree = "<group>"; };
 		61A3AC5716904909005D3311 /* BasicAuthModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BasicAuthModule.h; sourceTree = "<group>"; };
 		61A3AC5816904909005D3311 /* FormAuthModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FormAuthModule.h; sourceTree = "<group>"; };
+		61A3AC5C16904DB4005D3311 /* PieChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PieChart.h; sourceTree = "<group>"; };
+		61A3AC5D16904DB4005D3311 /* PieChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PieChart.m; sourceTree = "<group>"; };
+		61A3AC5E16904DB4005D3311 /* Nach.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Nach.m; sourceTree = "<group>"; };
+		61A3AC5F16904DB5005D3311 /* Nach.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Nach.h; sourceTree = "<group>"; };
 		7716AF1534D04DE2AFEC9746 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -172,6 +178,7 @@
 		61A3ABE3169038A5005D3311 /* iosGkh */ = {
 			isa = PBXGroup;
 			children = (
+				61A3AC6216904DB9005D3311 /* Core Plot DS */,
 				61A3AC5B1690490E005D3311 /* Auth */,
 				61A3AC4816904862005D3311 /* MetricConsumerProtocol.h */,
 				61A3AC541690486E005D3311 /* Controllers */,
@@ -265,6 +272,17 @@
 				61A3AC5816904909005D3311 /* FormAuthModule.h */,
 			);
 			name = Auth;
+			sourceTree = "<group>";
+		};
+		61A3AC6216904DB9005D3311 /* Core Plot DS */ = {
+			isa = PBXGroup;
+			children = (
+				61A3AC5C16904DB4005D3311 /* PieChart.h */,
+				61A3AC5D16904DB4005D3311 /* PieChart.m */,
+				61A3AC5E16904DB4005D3311 /* Nach.m */,
+				61A3AC5F16904DB5005D3311 /* Nach.h */,
+			);
+			name = "Core Plot DS";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -417,6 +435,8 @@
 				61A3AC5316904863005D3311 /* LoginScreenViewController.m in Sources */,
 				61A3AC5916904909005D3311 /* BasicAuthModule.m in Sources */,
 				61A3AC5A16904909005D3311 /* FormAuthModule.m in Sources */,
+				61A3AC6016904DB5005D3311 /* PieChart.m in Sources */,
+				61A3AC6116904DB5005D3311 /* Nach.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
