@@ -24,11 +24,15 @@
 
 -(CPTFill *)barFillForBarPlot:(CPTBarPlot *)barPlot recordIndex:(NSUInteger)idx
 {
-    if (idx % 2 == 0) {
-        return [CPTFill fillWithColor:[CPTColor colorWithComponentRed:1.0f green:0.6167f blue:0.0f alpha:0.5f]];
-    } else {
-        return [CPTFill fillWithColor:[CPTColor colorWithComponentRed:1.0f green:0.6167f blue:0.0f alpha:1.0f]];
-    }
+//    if (idx % 2 == 0) {
+        CPTColor *begin = [CPTColor colorWithComponentRed:0.74f green:0.259f blue:0.0f alpha:1.0f];
+        CPTColor *end = [CPTColor colorWithComponentRed:1.0f green:0.5833f blue:0.0f alpha:1.0f];
+    CPTGradient *gradient = [CPTGradient gradientWithBeginningColor:begin endingColor:end];
+    gradient.angle = 90.0f;
+        return [CPTFill fillWithGradient:gradient];
+//    } else {
+//        return [CPTFill fillWithColor:[CPTColor colorWithComponentRed:0.0f green:0.5667f blue:1.0f alpha:1.0f]];
+//    }
 }
 
 -(NSNumber *)numberForPlot:(CPTPlot *)plot field:(NSUInteger)fieldEnum recordIndex:(NSUInteger)idx
@@ -38,40 +42,40 @@
         float distance = 0.2f;
         switch (idx) {
             case 0:
-                result = [NSNumber numberWithFloat:0.4f + distance];
+                result = [NSNumber numberWithFloat:0.0f + distance];
                 break;
             case 1:
-                result = [NSNumber numberWithFloat:0.7f + distance];
+                result = [NSNumber numberWithFloat:0.3f + distance];
                 break;
             case 2:
-                result = [NSNumber numberWithFloat:1.0f + distance];
+                result = [NSNumber numberWithFloat:0.6f + distance];
                 break;
             case 3:
-                result = [NSNumber numberWithFloat:1.3f + distance];
+                result = [NSNumber numberWithFloat:0.9f + distance];
                 break;
             case 4:
-                result = [NSNumber numberWithFloat:1.6f + distance];
+                result = [NSNumber numberWithFloat:1.2f + distance];
                 break;
             case 5:
-                result = [NSNumber numberWithFloat:1.9f + distance];
+                result = [NSNumber numberWithFloat:1.5f + distance];
                 break;
             case 6:
-                result = [NSNumber numberWithFloat:2.2f + distance];
+                result = [NSNumber numberWithFloat:1.8f + distance];
                 break;
             case 7:
-                result = [NSNumber numberWithFloat:2.5f + distance];
+                result = [NSNumber numberWithFloat:2.1f + distance];
                 break;
             case 8:
-                result = [NSNumber numberWithFloat:2.8f + distance];
+                result = [NSNumber numberWithFloat:2.4f + distance];
                 break;
             case 9:
-                result = [NSNumber numberWithFloat:3.1f + distance];
+                result = [NSNumber numberWithFloat:2.7f + distance];
                 break;
             case 10:
-                result = [NSNumber numberWithFloat:3.4f + distance];
+                result = [NSNumber numberWithFloat:3.0f + distance];
                 break;
             case 11:
-                result = [NSNumber numberWithFloat:3.7f + distance];
+                result = [NSNumber numberWithFloat:3.3f + distance];
                 break;
             default:
                 break;

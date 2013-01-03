@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="2844" systemVersion="12C60" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="2">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="2844" systemVersion="12C60" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="OYY-Lq-5nu">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="1930"/>
     </dependencies>
@@ -96,12 +96,12 @@
             </objects>
             <point key="canvasLocation" x="-449" y="-433"/>
         </scene>
-        <!--Home View Controller-->
+        <!--Home View Controller - Домой-->
         <scene sceneID="5FA-Jf-NG7">
             <objects>
                 <viewController id="wkR-mT-qIK" customClass="HomeViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="4wk-Tn-ogs">
-                        <rect key="frame" x="0.0" y="64" width="320" height="455"/>
+                        <rect key="frame" x="0.0" y="20" width="320" height="499"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ad4-Zf-OZ7">
@@ -116,71 +116,14 @@
                             <constraint firstItem="ad4-Zf-OZ7" firstAttribute="bottom" secondItem="4wk-Tn-ogs" secondAttribute="bottom" type="default" id="xDK-xr-26a"/>
                         </constraints>
                     </view>
+                    <tabBarItem key="tabBarItem" title="Домой" image="home_01_30x30.png" id="Nro-mE-hdY"/>
                     <navigationItem key="navigationItem" id="rrB-fD-9T6">
-                        <barButtonItem key="rightBarButtonItem" title="Добавить" id="fIB-eZ-IQB">
-                            <connections>
-                                <segue destination="r9X-Pz-R9C" kind="push" identifier="SelectMetrics" id="ncH-JW-LhE"/>
-                            </connections>
-                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Добавить" id="fIB-eZ-IQB"/>
                     </navigationItem>
-                    <connections>
-                        <outlet property="desktopView" destination="ad4-Zf-OZ7" id="mTS-EQ-U7X"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CZr-Ej-pk0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1189" y="-824"/>
-        </scene>
-        <!--Metric Selection View Controller - Параметры-->
-        <scene sceneID="3qo-GB-AqB">
-            <objects>
-                <viewController title="Параметры" id="r9X-Pz-R9C" customClass="MetricSelectionViewController" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="CnM-wt-OW7">
-                        <rect key="frame" x="0.0" y="64" width="320" height="455"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Vx-3i-IRM">
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                <state key="normal" title="Начисления и оплаты">
-                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <state key="highlighted">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="addMetric:" destination="r9X-Pz-R9C" eventType="touchUpInside" id="ho0-5P-xDl"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9pL-zX-M49">
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                <state key="normal" title="Средняя стоимость ЖКУ">
-                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <state key="highlighted">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="addMetric:" destination="r9X-Pz-R9C" eventType="touchUpInside" id="nvo-Ff-YFc"/>
-                                </connections>
-                            </button>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstAttribute="trailing" secondItem="1Vx-3i-IRM" secondAttribute="trailing" constant="20" symbolic="YES" type="default" id="Dd6-wW-FnO"/>
-                            <constraint firstItem="9pL-zX-M49" firstAttribute="leading" secondItem="CnM-wt-OW7" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="OVy-G1-eqw"/>
-                            <constraint firstItem="1Vx-3i-IRM" firstAttribute="top" secondItem="CnM-wt-OW7" secondAttribute="top" constant="20" symbolic="YES" type="default" id="b0g-LV-6kJ"/>
-                            <constraint firstItem="1Vx-3i-IRM" firstAttribute="leading" secondItem="CnM-wt-OW7" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="dw3-Bv-wIZ"/>
-                            <constraint firstItem="9pL-zX-M49" firstAttribute="top" secondItem="CnM-wt-OW7" secondAttribute="top" constant="77" id="fGp-id-bf9"/>
-                            <constraint firstAttribute="trailing" secondItem="9pL-zX-M49" secondAttribute="trailing" constant="20" symbolic="YES" type="default" id="jeT-AM-TMQ"/>
-                        </constraints>
-                    </view>
-                    <navigationItem key="navigationItem" title="Параметры" id="oBK-ZS-B0v"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="y26-8v-RFx" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1646" y="-824"/>
+            <point key="canvasLocation" x="985" y="-924"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="mal-tp-Sou">
@@ -194,9 +137,9 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </tabBar>
                     <connections>
-                        <segue destination="Huh-Rn-XuK" kind="relationship" relationship="viewControllers" id="n0M-x1-1DW"/>
-                        <segue destination="qnR-9t-v1R" kind="relationship" relationship="viewControllers" id="FSz-eQ-tCM"/>
-                        <segue destination="RBY-WC-3rn" kind="relationship" relationship="viewControllers" id="VT6-ON-ZDv"/>
+                        <segue destination="wkR-mT-qIK" kind="relationship" relationship="viewControllers" id="Ku3-oz-vr2"/>
+                        <segue destination="qnR-9t-v1R" kind="relationship" relationship="viewControllers" id="TZI-dR-So5"/>
+                        <segue destination="RBY-WC-3rn" kind="relationship" relationship="viewControllers" id="FTS-PH-94h"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ena-wL-aaM" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -438,25 +381,6 @@
             </objects>
             <point key="canvasLocation" x="2136" y="189"/>
         </scene>
-        <!--Navigation Controller - Домой-->
-        <scene sceneID="Qu2-NA-92H">
-            <objects>
-                <navigationController id="Huh-Rn-XuK" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Домой" image="home_01_30x30.png" id="sNy-qG-24F"/>
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="92x-Js-iiA">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="wkR-mT-qIK" kind="relationship" relationship="rootViewController" id="CNu-r0-sMm"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="VCk-3k-LTk" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="755" y="-827"/>
-        </scene>
         <!--Navigation Controller - Функции-->
         <scene sceneID="H0v-EC-W19">
             <objects>
@@ -483,42 +407,6 @@
         <image name="home_01_30x30.png" width="30" height="30"/>
         <image name="setings.png" width="30" height="30"/>
     </resources>
-    <classes>
-        <class className="HomeViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/HomeViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="testPlot:" candidateClass="UIBarButtonItem"/>
-                <relationship kind="outlet" name="desktopView" candidateClass="UIView"/>
-                <relationship kind="outlet" name="navigationBar" candidateClass="UINavigationBar"/>
-                <relationship kind="outlet" name="toolbar" candidateClass="UIToolbar"/>
-            </relationships>
-        </class>
-        <class className="LoginScreenViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/LoginScreenViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="authenticatePressed"/>
-                <relationship kind="outlet" name="errorLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="passwordField" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="urlField" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="userNameField" candidateClass="UITextField"/>
-            </relationships>
-        </class>
-        <class className="MetricSelectionViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/MetricSelectionViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="addMetric:" candidateClass="UIButton"/>
-            </relationships>
-        </class>
-        <class className="NSLayoutConstraint" superclassName="NSObject">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/NSLayoutConstraint.h"/>
-        </class>
-        <class className="OperationsViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/OperationsViewController.h"/>
-        </class>
-        <class className="SettingsViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/SettingsViewController.h"/>
-        </class>
-    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

@@ -27,7 +27,6 @@ CGFloat const CPDBarInitialX = 0.25f;
 
 @synthesize navigationBar = _navigationBar;
 @synthesize toolbar = _toolbar;
-@synthesize desktopView = _desktopView;
 @synthesize nachDS = _nachDS;
 
 -(Nach *)nachDS
@@ -99,20 +98,36 @@ CGFloat const CPDBarInitialX = 0.25f;
     [self configureAxes];
 }
 
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+	[self addPlot:@"Начисления"];
+}
+
 - (void) configureGraph:(NSString *)title {
-    CGRect hostViewRect = CGRectMake(self.desktopView.frame.origin.x, self.desktopView.frame.origin.y, self.desktopView.bounds.size.width, self.desktopView.bounds.size.height/2);
+    CGRect hostViewRect = CGRectMake(self.view.frame.origin.x,
+                                     0.0f + self.view.bounds.size.height / 2 - self.tabBarController.tabBar.bounds.size.height,
+                                     self.view.bounds.size.width,
+                                     self.view.bounds.size.height / 2);
     
     CPTGraphHostingView *hostView = [[CPTGraphHostingView alloc] initWithFrame:hostViewRect];
     
+    /*
     UIPanGestureRecognizer *pangr =
     [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(pan:)];
     [hostView addGestureRecognizer:pangr];
+    */
     
     CPTGraph *graph = [[CPTXYGraph alloc] initWithFrame:hostViewRect];
     hostView.hostedGraph = graph;
 //    graph.title = title;
-
-    CGFloat xMin = 0.4f;
+    [graph applyTheme:[CPTTheme themeNamed:kCPTDarkGradientTheme]];
+    [graph.plotAreaFrame setPaddingLeft:25.0f];
+    [graph.plotAreaFrame setPaddingTop:10.0f];
+    [graph.plotAreaFrame setPaddingBottom:20.0f];
+    graph.plotAreaFrame.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:1.0].CGColor;
+    
+    CGFloat xMin = 0.0f;
     CGFloat xMax = 4.0f;
     CGFloat yMin = 0.0f;
     CGFloat yMax = 20.0f;
@@ -126,14 +141,71 @@ CGFloat const CPDBarInitialX = 0.25f;
     CPTXYAxisSet *xyAxisSet = (CPTXYAxisSet *) graph.axisSet;
     xyAxisSet.xAxis.delegate = self.nachDS;
     
+    CPTMutableTextStyle *axisTitleStyle = [CPTMutableTextStyle textStyle];
+    axisTitleStyle.color = [CPTColor whiteColor];
+    axisTitleStyle.fontName = @"Helvetica-Bold";
+    axisTitleStyle.fontSize = 12.0f;
+    
+    CPTMutableTextStyle *axisLabelStyle = [CPTMutableTextStyle textStyle];
+    axisLabelStyle.color = [[CPTColor grayColor] colorWithAlphaComponent:0.8f];
+    axisLabelStyle.fontSize = 9.0f;
+    
+    CPTMutableLineStyle *axisLineStyle = [CPTMutableLineStyle lineStyle];
+    axisLineStyle.lineWidth = 1.0f;
+    axisLineStyle.lineColor = [[CPTColor grayColor] colorWithAlphaComponent:0.3f];
+    
+    xyAxisSet.yAxis.labelTextStyle = axisLabelStyle;
+
+    //----------- major ticks
+    
+    xyAxisSet.yAxis.minorTickLength = 4.0f;
+    xyAxisSet.yAxis.tickDirection = CPTSignPositive;
+    xyAxisSet.yAxis.labelOffset = 15.0f;
+    
+    NSInteger minorIncrement = 5;
+    
+    NSMutableSet *yLabels = [NSMutableSet set];
+    NSMutableSet *yMajorLocations = [NSMutableSet set];
+
+    for (NSInteger j = minorIncrement; j <= yMax; j += minorIncrement) {        
+        CPTAxisLabel *label = [[CPTAxisLabel alloc] initWithText:[NSString stringWithFormat:@"%i", j*100] textStyle:xyAxisSet.yAxis.labelTextStyle];
+        NSDecimal location = CPTDecimalFromInteger(j);
+        label.tickLocation = location;
+        label.offset = -xyAxisSet.yAxis.majorTickLength - xyAxisSet.yAxis.labelOffset;
+        if (label) {
+            [yLabels addObject:label];
+        }
+        [yMajorLocations addObject:[NSDecimalNumber decimalNumberWithDecimal:location]];
+    }
+    
+    xyAxisSet.yAxis.axisLabels = yLabels;
+    xyAxisSet.yAxis.majorTickLocations = yMajorLocations;
+    //-----------------------
+    
+    
+    xyAxisSet.yAxis.titleTextStyle = axisTitleStyle;
+    xyAxisSet.yAxis.axisLineStyle = nil;
+    xyAxisSet.xAxis.axisLineStyle = nil;
+//    xyAxisSet.yAxis.majorGridLineStyle = axisLineStyle;
+    xyAxisSet.yAxis.majorGridLineStyle = axisLineStyle;
+    xyAxisSet.yAxis.majorTickLineStyle = nil;
+
+    xyAxisSet.yAxis.labelingPolicy = CPTAxisLabelingPolicyNone;
+    xyAxisSet.xAxis.labelingPolicy = CPTAxisLabelingPolicyNone;
+    
     [self configureAxes];
+    
+    graph.paddingLeft = graph.paddingRight = graph.paddingBottom = graph.paddingTop = 5.0f;
+    
+    CPTPlotArea *plotArea = graph.plotAreaFrame.plotArea;
+    
+    plotArea.fill = [CPTFill fillWithColor:[CPTColor blackColor]];
     [self configurePlot:graph];
 }
 
 - (void) configurePlot:(CPTGraph *)graph {
     CPTBarPlot *test = [[CPTBarPlot alloc] initWithFrame:graph.frame];
     test.lineStyle = nil;
-    test.fill = [CPTFill fillWithColor:[CPTColor colorWithComponentRed:0.5f green:0.8f blue:0.1f alpha:0.85f]];
     test.dataSource = self.nachDS;
     test.delegate = self;
     test.barWidth = CPTDecimalFromDouble(CPDBarWidth);
