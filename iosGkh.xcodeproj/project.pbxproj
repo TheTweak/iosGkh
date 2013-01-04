@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6140D1A5169721960066F51C /* BarPlotSelectingArrow.m in Sources */ = {isa = PBXBuildFile; fileRef = 6140D1A4169721960066F51C /* BarPlotSelectingArrow.m */; };
+		6140D1A916972AE20066F51C /* triangle.png in Resources */ = {isa = PBXBuildFile; fileRef = 6140D1A816972AE20066F51C /* triangle.png */; };
+		6140D1AB16972D6B0066F51C /* triangle32.png in Resources */ = {isa = PBXBuildFile; fileRef = 6140D1AA16972D6B0066F51C /* triangle32.png */; };
 		61A3ABDE169038A5005D3311 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 61A3ABDD169038A5005D3311 /* UIKit.framework */; };
 		61A3ABE0169038A5005D3311 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 61A3ABDF169038A5005D3311 /* Foundation.framework */; };
 		61A3ABE2169038A5005D3311 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 61A3ABE1169038A5005D3311 /* CoreGraphics.framework */; };
@@ -60,6 +63,10 @@
 
 /* Begin PBXFileReference section */
 		45E580AE28FA4DB6A717BBF3 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
+		6140D1A3169721960066F51C /* BarPlotSelectingArrow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BarPlotSelectingArrow.h; path = ../BarPlotSelectingArrow.h; sourceTree = "<group>"; };
+		6140D1A4169721960066F51C /* BarPlotSelectingArrow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BarPlotSelectingArrow.m; path = ../BarPlotSelectingArrow.m; sourceTree = "<group>"; };
+		6140D1A816972AE20066F51C /* triangle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = triangle.png; sourceTree = "<group>"; };
+		6140D1AA16972D6B0066F51C /* triangle32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = triangle32.png; sourceTree = "<group>"; };
 		61A3ABD9169038A5005D3311 /* iosGkh.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iosGkh.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		61A3ABDD169038A5005D3311 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		61A3ABDF169038A5005D3311 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -140,6 +147,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6140D1A7169721B20066F51C /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				6140D1A3169721960066F51C /* BarPlotSelectingArrow.h */,
+				6140D1A4169721960066F51C /* BarPlotSelectingArrow.m */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
 		61A3ABCE169038A5005D3311 = {
 			isa = PBXGroup;
 			children = (
@@ -175,6 +191,7 @@
 		61A3ABE3169038A5005D3311 /* iosGkh */ = {
 			isa = PBXGroup;
 			children = (
+				6140D1A7169721B20066F51C /* Models */,
 				61A3AC6216904DB9005D3311 /* Core Plot DS */,
 				61A3AC5B1690490E005D3311 /* Auth */,
 				61A3AC4816904862005D3311 /* MetricConsumerProtocol.h */,
@@ -225,6 +242,8 @@
 		61A3AC43169047E9005D3311 /* PNGS */ = {
 			isa = PBXGroup;
 			children = (
+				6140D1AA16972D6B0066F51C /* triangle32.png */,
+				6140D1A816972AE20066F51C /* triangle.png */,
 				61A3AC27169047E2005D3311 /* Control-Panel.png */,
 				61A3AC28169047E2005D3311 /* Search.png */,
 				61A3AC29169047E2005D3311 /* Machine.png */,
@@ -373,6 +392,8 @@
 				61A3AC40169047E2005D3311 /* shape_enter.png in Resources */,
 				61A3AC41169047E2005D3311 /* backgr_01.png in Resources */,
 				61A3AC42169047E2005D3311 /* applications-system_3480.png in Resources */,
+				6140D1A916972AE20066F51C /* triangle.png in Resources */,
+				6140D1AB16972D6B0066F51C /* triangle32.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -431,6 +452,7 @@
 				61A3AC5916904909005D3311 /* BasicAuthModule.m in Sources */,
 				61A3AC6016904DB5005D3311 /* PieChart.m in Sources */,
 				61A3AC6116904DB5005D3311 /* Nach.m in Sources */,
+				6140D1A5169721960066F51C /* BarPlotSelectingArrow.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

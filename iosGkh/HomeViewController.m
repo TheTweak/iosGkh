@@ -9,6 +9,7 @@
 #import "HomeViewController.h"
 #import "MetricSelectionViewController.h"
 #import "Nach.h"
+#import "BarPlotSelectingArrow.h"
 
 @interface HomeViewController ()
 - (void)addPlot:(NSString *)title;
@@ -30,6 +31,7 @@ CGFloat const CPDBarInitialX = 0.25f;
 @synthesize toolbar = _toolbar;
 @synthesize nachDS = _nachDS;
 @synthesize strelka = _strelka;
+@synthesize hostingView = _hostingView;
 
 -(Nach *)nachDS
 {
@@ -136,17 +138,17 @@ CGFloat const CPDBarInitialX = 0.25f;
     [layer setBorderWidth:3.0];
     [layer setBorderColor:[[UIColor darkGrayColor] CGColor]];
     [layer setBackgroundColor:[[UIColor blackColor] CGColor]];
-//    [layer setOpacity:0.75];
+    [layer setOpacity:0.75];
 //    [layer setAnchorPoint:CGPointMake(1.0, 1.0)];
-//    [layer setShadowColor:[[UIColor blackColor] CGColor]];
-//    [layer setShadowOffset:CGSizeMake(5.0, 5.0)];
-//    [layer setShadowOpacity:.8];
+    [layer setShadowColor:[[UIColor blackColor] CGColor]];
+    [layer setShadowOffset:CGSizeMake(5.0, 5.0)];
+    [layer setShadowOpacity:.8];
     [[self.view layer] addSublayer:layer];
-    
-    CABasicAnimation *animation = [CABasicAnimation animation];
+
+    /*CABasicAnimation *animation = [CABasicAnimation animation];
     [animation setFromValue:[NSValue valueWithCGPoint:CGPointMake(100.0, 100.0)]];
     animation.toValue = [NSValue valueWithCGPoint:CGPointMake(100.0, 250.0)];
-    [layer addAnimation:animation forKey:@"position"];
+    [layer addAnimation:animation forKey:@"position"];*/
 }
 
 - (void) configureGraph:(NSString *)title {
@@ -181,10 +183,14 @@ CGFloat const CPDBarInitialX = 0.25f;
                                plotAreaFrame.bounds.origin.y + 5.0f,
                                16.0f,
                                16.0f)];
-    [layer setBorderWidth:1.0];
-    [layer setBorderColor:[[UIColor darkGrayColor] CGColor]];
-    [layer setBackgroundColor:[[UIColor orangeColor] CGColor]];
-    
+//    [layer setBorderWidth:1.0];
+//    [layer setBorderColor:[[UIColor darkGrayColor] CGColor]];
+//    [layer setBackgroundColor:[[UIColor orangeColor] CGColor]];
+    NSString *path = [[NSBundle mainBundle] pathForResource:@"triangle" ofType:@"png"];
+    UIImage *image = [UIImage imageWithContentsOfFile:path];
+    layer.contents = (id)(image.CGImage);
+    layer.contentsGravity = kCAGravityCenter;
+    layer.transform = CATransform3DMakeRotation(M_PI, 1.0, 0.0, 0.0);
     [plotAreaFrame addSublayer:layer];
     self.strelka = layer;
     //----
