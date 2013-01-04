@@ -18,6 +18,7 @@
 @property (nonatomic, strong) CPTGraphHostingView *hostingView;
 @property (nonatomic, strong) Nach *nachDS;
 @property (nonatomic, strong) CPTPlotSpaceAnnotation *nachAnnotation;
+@property (nonatomic, strong) CALayer *strelka;
 @end
 
 @implementation HomeViewController
@@ -28,6 +29,7 @@ CGFloat const CPDBarInitialX = 0.25f;
 @synthesize navigationBar = _navigationBar;
 @synthesize toolbar = _toolbar;
 @synthesize nachDS = _nachDS;
+@synthesize strelka = _strelka;
 
 -(Nach *)nachDS
 {
@@ -75,8 +77,29 @@ CGFloat const CPDBarInitialX = 0.25f;
     CGFloat y = [price floatValue] - 0.8f;
     NSNumber *anchorY = [NSNumber numberWithFloat:y];
     self.nachAnnotation.anchorPlotPoint = [NSArray arrayWithObjects:anchorX, anchorY, nil];
+    
+    NSDecimal plotPoint[2];
+    plotPoint[CPTCoordinateX] = month.decimalValue;
+    plotPoint[CPTCoordinateY] = price.decimalValue;
+    CGPoint cgPlotPoint = [plot.plotSpace plotAreaViewPointForPlotPoint:plotPoint];
+//    NSLog(@"plot point=%@", NSStringFromCGPoint(cgPlotPoint));
+    CGPoint dataPoint = [plot.graph convertPoint:cgPlotPoint fromLayer:plot.graph.plotAreaFrame.plotArea];
+//    NSLog(@"converted plot point=%@", NSStringFromCGPoint(dataPoint));
     // 8 - Add the annotation
     [plot.graph.plotAreaFrame.plotArea addAnnotation:self.nachAnnotation];
+    
+    //animation for strelka
+    CABasicAnimation *animation = [CABasicAnimation animation];
+//    [animation setFromValue:[NSValue valueWithCGPoint:CGPointMake(100.0, 100.0)]];
+    CGPoint newStrelkaPosition = CGPointMake(dataPoint.x, self.strelka.position.y);
+    animation.toValue = [NSValue valueWithCGPoint:newStrelkaPosition];
+    [animation setFillMode:kCAFillModeForwards];
+    [animation setRemovedOnCompletion:NO];
+    [self.strelka addAnimation:animation forKey:@"position"];
+    [self.strelka setPosition:newStrelkaPosition];
+//    CGPoint convertedPoint = [self.strelka convertPoint:newStrelkaPosition ];
+//    NSLog(@"converted=%@", NSStringFromCGPoint(convertedPoint));
+//    NSLog(@"position=%@", NSStringFromCGPoint(self.strelka.position));
 }
 
 - (void)pan:(UIPanGestureRecognizer *)recognizer {
@@ -102,6 +125,28 @@ CGFloat const CPDBarInitialX = 0.25f;
 {
     [super viewDidLoad];
 	[self addPlot:@"Начисления"];
+    
+    // --------- Layer playing
+    CALayer *layer = [CALayer layer];
+    [layer setFrame:CGRectMake(0.0f,
+                               0.0f,
+                               self.view.bounds.size.width,
+                               self.view.bounds.size.height / 2 - self.tabBarController.tabBar.bounds.size.height)];
+    [layer setCornerRadius:15.0];
+    [layer setBorderWidth:3.0];
+    [layer setBorderColor:[[UIColor darkGrayColor] CGColor]];
+    [layer setBackgroundColor:[[UIColor blackColor] CGColor]];
+//    [layer setOpacity:0.75];
+//    [layer setAnchorPoint:CGPointMake(1.0, 1.0)];
+//    [layer setShadowColor:[[UIColor blackColor] CGColor]];
+//    [layer setShadowOffset:CGSizeMake(5.0, 5.0)];
+//    [layer setShadowOpacity:.8];
+    [[self.view layer] addSublayer:layer];
+    
+    CABasicAnimation *animation = [CABasicAnimation animation];
+    [animation setFromValue:[NSValue valueWithCGPoint:CGPointMake(100.0, 100.0)]];
+    animation.toValue = [NSValue valueWithCGPoint:CGPointMake(100.0, 250.0)];
+    [layer addAnimation:animation forKey:@"position"];
 }
 
 - (void) configureGraph:(NSString *)title {
@@ -126,6 +171,23 @@ CGFloat const CPDBarInitialX = 0.25f;
     [graph.plotAreaFrame setPaddingTop:10.0f];
     [graph.plotAreaFrame setPaddingBottom:20.0f];
     graph.plotAreaFrame.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:1.0].CGColor;
+    
+    //---- strelka
+    
+    CPTPlotAreaFrame *plotAreaFrame = graph.plotAreaFrame;
+    
+    CALayer *layer = [CALayer layer];
+    [layer setFrame:CGRectMake(plotAreaFrame.bounds.origin.x + 16.0f,
+                               plotAreaFrame.bounds.origin.y + 5.0f,
+                               16.0f,
+                               16.0f)];
+    [layer setBorderWidth:1.0];
+    [layer setBorderColor:[[UIColor darkGrayColor] CGColor]];
+    [layer setBackgroundColor:[[UIColor orangeColor] CGColor]];
+    
+    [plotAreaFrame addSublayer:layer];
+    self.strelka = layer;
+    //----
     
     CGFloat xMin = 0.0f;
     CGFloat xMax = 4.0f;
