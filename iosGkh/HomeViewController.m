@@ -78,19 +78,19 @@ CGFloat const CPDBarInitialX = 0.25f;
     NSNumber *anchorY = [NSNumber numberWithFloat:y];
     self.nachAnnotation.anchorPlotPoint = [NSArray arrayWithObjects:anchorX, anchorY, nil];
     
-    NSDecimal plotPoint[2];
+    NSDecimal plotPoint[2]; // "plot" point coords
     plotPoint[CPTCoordinateX] = month.decimalValue;
     plotPoint[CPTCoordinateY] = price.decimalValue;
-    CGPoint cgPlotPoint = [plot.plotSpace plotAreaViewPointForPlotPoint:plotPoint];
+    CGPoint cgPlotPoint = [plot.plotSpace plotAreaViewPointForPlotPoint:plotPoint]; // plot view area coords
 //    NSLog(@"plot point=%@", NSStringFromCGPoint(cgPlotPoint));
-    CGPoint dataPoint = [plot.graph convertPoint:cgPlotPoint fromLayer:plot.graph.plotAreaFrame.plotArea];
+    
+    CGPoint dataPoint = [plot.graph.plotAreaFrame convertPoint:cgPlotPoint fromLayer:plot.graph.plotAreaFrame.plotArea];
 //    NSLog(@"converted plot point=%@", NSStringFromCGPoint(dataPoint));
     // 8 - Add the annotation
     [plot.graph.plotAreaFrame.plotArea addAnnotation:self.nachAnnotation];
     
     //animation for strelka
     CABasicAnimation *animation = [CABasicAnimation animation];
-//    [animation setFromValue:[NSValue valueWithCGPoint:CGPointMake(100.0, 100.0)]];
     CGPoint newStrelkaPosition = CGPointMake(dataPoint.x, self.strelka.position.y);
     animation.toValue = [NSValue valueWithCGPoint:newStrelkaPosition];
     [animation setFillMode:kCAFillModeForwards];
