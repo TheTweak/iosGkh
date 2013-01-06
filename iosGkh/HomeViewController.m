@@ -188,7 +188,7 @@ CGFloat const CPDBarInitialX = 0.25f;
     hostView.hostedGraph = graph;
 //    graph.title = title;
     [graph applyTheme:[CPTTheme themeNamed:kCPTDarkGradientTheme]];
-    [graph.plotAreaFrame setPaddingLeft:25.0f];
+    [graph.plotAreaFrame setPaddingLeft:35.0f];
     [graph.plotAreaFrame setPaddingRight:20.0f];
     [graph.plotAreaFrame setPaddingTop:27.0f];
     [graph.plotAreaFrame setPaddingBottom:35.0f];
@@ -245,7 +245,7 @@ CGFloat const CPDBarInitialX = 0.25f;
     
     xyAxisSet.yAxis.titleTextStyle = axisTitleStyle;
     xyAxisSet.yAxis.title = @"Начислено";
-    xyAxisSet.yAxis.titleOffset = 260.0f;
+    xyAxisSet.yAxis.titleOffset = 250.0f;
     
     CPTMutableLineStyle *axisLineStyle = [CPTMutableLineStyle lineStyle];
     axisLineStyle.lineWidth = 1.0f;
