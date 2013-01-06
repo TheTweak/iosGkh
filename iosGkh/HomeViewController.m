@@ -18,7 +18,8 @@
 - (void)configureAxes;
 @property (nonatomic, strong) CPTGraphHostingView *hostingView;
 @property (nonatomic, strong) Nach *nachDS;
-@property (nonatomic, strong) CPTPlotSpaceAnnotation *nachAnnotation;
+@property (nonatomic, strong) CPTPlotSpaceAnnotation *leftSideAnnotation;
+@property (nonatomic, strong) CPTPlotSpaceAnnotation *rightSideAnnotation;
 @property (nonatomic, strong) CALayer *strelka;
 @end
 
@@ -32,6 +33,8 @@ CGFloat const CPDBarInitialX = 0.25f;
 @synthesize nachDS = _nachDS;
 @synthesize strelka = _strelka;
 @synthesize hostingView = _hostingView;
+@synthesize leftSideAnnotation = _leftSideAnnotation;
+@synthesize rightSideAnnotation = _rightSideAnnotation;
 
 -(Nach *)nachDS
 {
@@ -48,11 +51,19 @@ CGFloat const CPDBarInitialX = 0.25f;
     NSNumber *price = [self.nachDS numberForPlot:plot field:CPTBarPlotFieldBarTip recordIndex:idx];
     NSNumber *month = [self.nachDS numberForPlot:plot field:CPTBarPlotFieldBarLocation recordIndex:idx];
     
+    price = [NSNumber numberWithInt:([price intValue] * 100)];
+    
+    NSArray *monthsArray = [NSArray arrayWithObjects:@"Январь", @"Февраль",
+                            @"Март", @"Апрель", @"Май",
+                            @"Июнь", @"Июль", @"Август",
+                            @"Сентябрь", @"Октябрь", @"Ноябрь",
+                            @"Декабрь", nil];
+    
     static CPTMutableTextStyle *style = nil;
     if (!style) {
         style = [CPTMutableTextStyle textStyle];
-        style.color= [CPTColor whiteColor];
-        style.fontSize = 12.0f;
+        style.color= [CPTColor orangeColor];
+        style.fontSize = 13.0f;
         style.fontName = @"Helvetica-Bold";
     }
     
@@ -60,25 +71,32 @@ CGFloat const CPDBarInitialX = 0.25f;
     if (!formatter) {
         formatter = [[NSNumberFormatter alloc] init];
         [formatter setMaximumFractionDigits:2];
+        [formatter setUsesGroupingSeparator:YES];
+        [formatter setGroupingSize:3];
+        [formatter setGroupingSeparator:@" "];
     }
     
-    if (!self.nachAnnotation) {
-        NSNumber *x = [NSNumber numberWithInt:0];
-        NSNumber *y = [NSNumber numberWithInt:0];
+    if (!self.leftSideAnnotation) {
+        NSNumber *x = [NSNumber numberWithFloat:0.25f];
+        NSNumber *y = [NSNumber numberWithFloat:21.5f];
         NSArray *anchorPoint = [NSArray arrayWithObjects:x, y, nil];
-        self.nachAnnotation = [[CPTPlotSpaceAnnotation alloc] initWithPlotSpace:plot.plotSpace anchorPlotPoint:anchorPoint];
+        self.leftSideAnnotation = [[CPTPlotSpaceAnnotation alloc] initWithPlotSpace:plot.plotSpace anchorPlotPoint:anchorPoint];
+    }
+
+    if (!self.rightSideAnnotation) { 
+        NSNumber *x = [NSNumber numberWithFloat:3.5f];
+        NSNumber *y = [NSNumber numberWithFloat:21.5f];
+        NSArray *anchorPoint = [NSArray arrayWithObjects:x, y, nil];
+        self.rightSideAnnotation = [[CPTPlotSpaceAnnotation alloc] initWithPlotSpace:plot.plotSpace anchorPlotPoint:anchorPoint];
     }
     
-    NSString *priceValue = [formatter stringFromNumber:price];
+    NSString *priceValue = [[formatter stringFromNumber:price] stringByAppendingString:@"р."];
     CPTTextLayer *textLayer = [[CPTTextLayer alloc] initWithText:priceValue style:style];
-    self.nachAnnotation.contentLayer = textLayer;
+    self.rightSideAnnotation.contentLayer = textLayer;
     
-    // 7 - Get the anchor point for annotation
-    CGFloat x = [month floatValue];
-    NSNumber *anchorX = [NSNumber numberWithFloat:x];
-    CGFloat y = [price floatValue] - 0.8f;
-    NSNumber *anchorY = [NSNumber numberWithFloat:y];
-    self.nachAnnotation.anchorPlotPoint = [NSArray arrayWithObjects:anchorX, anchorY, nil];
+    NSString *monthValue = [monthsArray objectAtIndex:idx];
+    textLayer = [[CPTTextLayer alloc] initWithText:monthValue style:style];
+    self.leftSideAnnotation.contentLayer = textLayer;
     
     NSDecimal plotPoint[2]; // "plot" point coords
     plotPoint[CPTCoordinateX] = month.decimalValue;
@@ -89,7 +107,8 @@ CGFloat const CPDBarInitialX = 0.25f;
     CGPoint dataPoint = [plot.graph.plotAreaFrame convertPoint:cgPlotPoint fromLayer:plot.graph.plotAreaFrame.plotArea];
 //    NSLog(@"converted plot point=%@", NSStringFromCGPoint(dataPoint));
     // 8 - Add the annotation
-    [plot.graph.plotAreaFrame.plotArea addAnnotation:self.nachAnnotation];
+    [plot.graph.plotAreaFrame.plotArea addAnnotation:self.leftSideAnnotation];
+    [plot.graph.plotAreaFrame.plotArea addAnnotation:self.rightSideAnnotation];
     
     //animation for strelka
     CABasicAnimation *animation = [CABasicAnimation animation];
@@ -170,8 +189,9 @@ CGFloat const CPDBarInitialX = 0.25f;
 //    graph.title = title;
     [graph applyTheme:[CPTTheme themeNamed:kCPTDarkGradientTheme]];
     [graph.plotAreaFrame setPaddingLeft:25.0f];
-    [graph.plotAreaFrame setPaddingTop:10.0f];
-    [graph.plotAreaFrame setPaddingBottom:20.0f];
+    [graph.plotAreaFrame setPaddingRight:20.0f];
+    [graph.plotAreaFrame setPaddingTop:27.0f];
+    [graph.plotAreaFrame setPaddingBottom:35.0f];
     graph.plotAreaFrame.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:1.0].CGColor;
     
     //---- strelka
@@ -180,20 +200,21 @@ CGFloat const CPDBarInitialX = 0.25f;
     
     CALayer *layer = [CALayer layer];
     [layer setFrame:CGRectMake(plotAreaFrame.bounds.origin.x + 16.0f,
-                               plotAreaFrame.bounds.origin.y + 5.0f,
+                               plotAreaFrame.bounds.origin.y + 18.0f,
                                16.0f,
                                16.0f)];
 //    [layer setBorderWidth:1.0];
 //    [layer setBorderColor:[[UIColor darkGrayColor] CGColor]];
 //    [layer setBackgroundColor:[[UIColor orangeColor] CGColor]];
+    
     NSString *path = [[NSBundle mainBundle] pathForResource:@"triangle" ofType:@"png"];
     UIImage *image = [UIImage imageWithContentsOfFile:path];
     layer.contents = (id)(image.CGImage);
     layer.contentsGravity = kCAGravityCenter;
     layer.transform = CATransform3DMakeRotation(M_PI, 1.0, 0.0, 0.0);
     [plotAreaFrame addSublayer:layer];
+    
     self.strelka = layer;
-    //----
     
     CGFloat xMin = 0.0f;
     CGFloat xMax = 4.0f;
@@ -204,19 +225,27 @@ CGFloat const CPDBarInitialX = 0.25f;
     plotSpace.xRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(xMin) length:CPTDecimalFromFloat(xMax)];
     plotSpace.yRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(yMin) length:CPTDecimalFromFloat(yMax)];
     
-    [self.view addSubview:hostView];
-    
-    CPTXYAxisSet *xyAxisSet = (CPTXYAxisSet *) graph.axisSet;
-    xyAxisSet.xAxis.delegate = self.nachDS;
-    
-    CPTMutableTextStyle *axisTitleStyle = [CPTMutableTextStyle textStyle];
-    axisTitleStyle.color = [CPTColor whiteColor];
-    axisTitleStyle.fontName = @"Helvetica-Bold";
-    axisTitleStyle.fontSize = 12.0f;
     
     CPTMutableTextStyle *axisLabelStyle = [CPTMutableTextStyle textStyle];
     axisLabelStyle.color = [[CPTColor grayColor] colorWithAlphaComponent:0.8f];
     axisLabelStyle.fontSize = 9.0f;
+     
+    [self.view addSubview:hostView];
+    
+    CPTXYAxisSet *xyAxisSet = (CPTXYAxisSet *) graph.axisSet;
+    
+    CPTMutableTextStyle *axisTitleStyle = [CPTMutableTextStyle textStyle];
+    axisTitleStyle.color = [[CPTColor grayColor] colorWithAlphaComponent:0.8f];
+    axisTitleStyle.fontName = @"Helvetica-Bold";
+    axisTitleStyle.fontSize = 13.0f;
+    
+    xyAxisSet.xAxis.titleTextStyle = axisTitleStyle;
+    xyAxisSet.xAxis.title = @"Период";
+    xyAxisSet.xAxis.titleOffset = 15.0f;
+    
+    xyAxisSet.yAxis.titleTextStyle = axisTitleStyle;
+    xyAxisSet.yAxis.title = @"Начислено";
+    xyAxisSet.yAxis.titleOffset = 260.0f;
     
     CPTMutableLineStyle *axisLineStyle = [CPTMutableLineStyle lineStyle];
     axisLineStyle.lineWidth = 1.0f;
