@@ -147,23 +147,36 @@ CGFloat const CPDBarInitialX = 0.25f;
     [super viewDidLoad];
 	[self addPlot:@"Начисления"];
     
+    CGRect upperHalfRect = CGRectMake(5.0f,
+                                      0.0f,
+                                      self.view.bounds.size.width - 10.0f,
+                                      self.view.bounds.size.height / 2 - self.tabBarController.tabBar.bounds.size.height);
+    
+    CGRect upperHalfRectForTableView = CGRectMake(10.0f,
+                                      0.0f,
+                                      self.view.bounds.size.width - 20.0f,
+                                      self.view.bounds.size.height / 2 - self.tabBarController.tabBar.bounds.size.height);
+    
+    UITableView *tableView = [[UITableView alloc] initWithFrame:upperHalfRectForTableView
+                                                          style:UITableViewStylePlain];
+    
+    tableView.backgroundColor = [UIColor blackColor];
+    tableView.separatorColor = [UIColor darkGrayColor];
+    [self.view addSubview:tableView];
     // --------- Layer playing
     CALayer *layer = [CALayer layer];
-    [layer setFrame:CGRectMake(0.0f,
-                               0.0f,
-                               self.view.bounds.size.width,
-                               self.view.bounds.size.height / 2 - self.tabBarController.tabBar.bounds.size.height)];
-    [layer setCornerRadius:15.0];
-    [layer setBorderWidth:3.0];
+    [layer setFrame:upperHalfRect];
+    [layer setCornerRadius:12.0];
+    [layer setBorderWidth:4.0];
     [layer setBorderColor:[[UIColor darkGrayColor] CGColor]];
-    [layer setBackgroundColor:[[UIColor blackColor] CGColor]];
+//    [layer setBackgroundColor:[[UIColor blackColor] CGColor]];
     [layer setOpacity:0.75];
 //    [layer setAnchorPoint:CGPointMake(1.0, 1.0)];
-    [layer setShadowColor:[[UIColor blackColor] CGColor]];
-    [layer setShadowOffset:CGSizeMake(5.0, 5.0)];
-    [layer setShadowOpacity:.8];
+//    [layer setShadowColor:[[UIColor blackColor] CGColor]];
+//    [layer setShadowOffset:CGSizeMake(5.0, 5.0)];
+//    [layer setShadowOpacity:.8];
     [[self.view layer] addSublayer:layer];
-
+    
     /*CABasicAnimation *animation = [CABasicAnimation animation];
     [animation setFromValue:[NSValue valueWithCGPoint:CGPointMake(100.0, 100.0)]];
     animation.toValue = [NSValue valueWithCGPoint:CGPointMake(100.0, 250.0)];
