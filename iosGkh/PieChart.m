@@ -7,8 +7,40 @@
 //
 
 #import "PieChart.h"
+#import "CorePlot-CocoaTouch.h"
 
 @implementation PieChart
+
+-(CPTFill *)sliceFillForPieChart:(CPTPieChart *)pieChart recordIndex:(NSUInteger)idx
+{
+    CPTColor *color;
+    switch (idx) {
+        case 0:
+        {
+            color = [CPTColor colorWithComponentRed:0.0f green:0.6917f blue:0.83f alpha:1.0f]; //sky
+            break;
+        }
+        case 1:
+        {
+            color = [CPTColor colorWithComponentRed:1.0f green:0.0f blue:0.2167f alpha:1.0f]; //red
+            break;
+        }
+        case 2:
+        {
+            color = [CPTColor colorWithComponentRed:0.0f green:0.83f blue:0.2075f alpha:1.0f]; //green
+            break;
+        }
+        case 3:
+        {
+            color = [CPTColor colorWithComponentRed:1.0f green:0.5833f blue:0.0f alpha:1.0f]; //orange
+            break;
+        }
+        default:
+            color = [CPTColor whiteColor];
+            break;
+    }
+    return [CPTFill fillWithColor:color];
+}
 
 -(NSUInteger)numberOfRecordsForPlot:(CPTPlot *)plot
 {

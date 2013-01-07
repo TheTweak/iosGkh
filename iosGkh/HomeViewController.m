@@ -11,6 +11,7 @@
 #import "Nach.h"
 #import "BarPlotSelectingArrow.h"
 #import "HomeTableDataSource.h"
+#import "PieChart.h"
 
 @interface HomeViewController ()
 - (void)addPlot:(NSString *)title
@@ -20,12 +21,13 @@
 - (void)configureAxes;
 @property (nonatomic, strong) CPTGraphHostingView *hostingView;
 @property (nonatomic, strong) Nach *nachDS;
+@property (nonatomic, strong) PieChart *pieChartDS;
 @property (nonatomic, strong) CPTPlotSpaceAnnotation *leftSideAnnotation;
 @property (nonatomic, strong) CPTPlotSpaceAnnotation *rightSideAnnotation;
 @property (nonatomic, strong) CALayer *strelka;
+@property (nonatomic, strong) CALayer *upperHalfBorderLayer;
+@property (nonatomic, strong) CALayer *bottomHalfBorderLayer;
 @property (nonatomic, strong) HomeTableDataSource *tableDataSource;
-@property (nonatomic, strong) CPTGraph *graph;
-@property (nonatomic, strong) CPTGraph *pieGraph;
 @property (nonatomic, strong) NSMutableDictionary *graphDictionary;
 @end
 
@@ -37,14 +39,21 @@ CGFloat const CPDBarInitialX = 0.25f;
 @synthesize navigationBar = _navigationBar;
 @synthesize toolbar = _toolbar;
 @synthesize nachDS = _nachDS;
+@synthesize pieChartDS = _pieChartDS;
 @synthesize strelka = _strelka;
 @synthesize hostingView = _hostingView;
 @synthesize leftSideAnnotation = _leftSideAnnotation;
 @synthesize rightSideAnnotation = _rightSideAnnotation;
 @synthesize tableDataSource = _tableDataSource;
-@synthesize graph = _graph;
-@synthesize pieGraph = _pieGraph;
 @synthesize graphDictionary = _graphDictionary;
+@synthesize upperHalfBorderLayer = _upperHalfBorderLayer;
+@synthesize bottomHalfBorderLayer = _bottomHalfBorderLayer;
+
+-(PieChart *)pieChartDS
+{
+    if (!_pieChartDS) _pieChartDS = [[PieChart alloc] init];
+    return _pieChartDS;
+}
 
 -(Nach *)nachDS
 {
@@ -74,7 +83,6 @@ CGFloat const CPDBarInitialX = 0.25f;
         
         CPTGraphHostingView *hostView = [[CPTGraphHostingView alloc] initWithFrame:hostViewRect];
         _hostingView = hostView;
-        [self.view addSubview:_hostingView];
     }
     return _hostingView;
 }
@@ -182,7 +190,7 @@ CGFloat const CPDBarInitialX = 0.25f;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	[self addPlot:@"Начисления" ofType:@"bar"];
+    [self.view addSubview:self.hostingView];
     
     CGRect upperHalfRect = CGRectMake(0.0f,
                                       0.0f,
@@ -215,6 +223,7 @@ CGFloat const CPDBarInitialX = 0.25f;
     [layer setBorderWidth:4.0];
     [layer setBorderColor:[[UIColor darkGrayColor] CGColor]];
     [layer setOpacity:0.75];
+    self.upperHalfBorderLayer = layer;
     
     [[self.view layer] addSublayer:layer];
     // --------- bottom screen layer
@@ -224,12 +233,13 @@ CGFloat const CPDBarInitialX = 0.25f;
     [bottomLayer setBorderWidth:4.0];
     [bottomLayer setBorderColor:[[UIColor darkGrayColor] CGColor]];
     [bottomLayer setOpacity:0.75];
+    self.bottomHalfBorderLayer = bottomLayer;
     
     [[self.view layer] addSublayer:bottomLayer];
 }
 
 - (void) configureBarGraph:(NSString *)title {
-    CPTGraph *graph = [[CPTXYGraph alloc] initWithFrame:self.hostingView.frame];
+    CPTGraph *graph = [[CPTXYGraph alloc] initWithFrame:self.bottomHalfBorderLayer.frame];
     [self.graphDictionary setObject:graph forKey:@"nach"];
     self.hostingView.hostedGraph = graph;
     [graph.plotAreaFrame setPaddingLeft:30.0f];
@@ -341,13 +351,13 @@ CGFloat const CPDBarInitialX = 0.25f;
     CPTGraph *graph = [[CPTXYGraph alloc] initWithFrame:self.hostingView.frame];
     [self.graphDictionary setObject:graph forKey:@"fls"];
     self.hostingView.hostedGraph = graph;
-    [graph.plotAreaFrame setPaddingLeft:30.0f];
-    [graph.plotAreaFrame setPaddingRight:20.0f];
-    [graph.plotAreaFrame setPaddingTop:27.0f];
-    [graph.plotAreaFrame setPaddingBottom:35.0f];
+    [graph.plotAreaFrame setPaddingLeft:0.0f];
+    [graph.plotAreaFrame setPaddingRight:0.0f];
+    [graph.plotAreaFrame setPaddingTop:0.0f];
+    [graph.plotAreaFrame setPaddingBottom:0.0f];
     graph.plotAreaFrame.backgroundColor = [UIColor blackColor].CGColor;
     
-    
+    [self configurePieChart:graph];
 }
 
 - (void) configureBarPlot:(CPTGraph *)graph {
@@ -357,6 +367,24 @@ CGFloat const CPDBarInitialX = 0.25f;
     test.delegate = self;
     test.barWidth = CPTDecimalFromDouble(CPDBarWidth);
     [graph addPlot:test];
+}
+
+- (void)configurePieChart:(CPTGraph *)graph
+{
+    CPTPieChart *pieChart = [[CPTPieChart alloc] init];
+    pieChart.dataSource = self.pieChartDS;
+    pieChart.delegate = self;
+    pieChart.pieRadius = (self.hostingView.bounds.size.height * 0.7) / 2;
+    pieChart.startAngle = M_PI_4;
+    pieChart.sliceDirection = CPTPieDirectionClockwise;
+    // 3 - Create gradient
+    CPTGradient *overlayGradient = [[CPTGradient alloc] init];
+    overlayGradient.gradientType = CPTGradientTypeRadial;
+    overlayGradient = [overlayGradient addColorStop:[[CPTColor blackColor] colorWithAlphaComponent:0.0] atPosition:0.9];
+    overlayGradient = [overlayGradient addColorStop:[[CPTColor blackColor] colorWithAlphaComponent:0.4] atPosition:1.0];
+    pieChart.overlayFill = [CPTFill fillWithGradient:overlayGradient];
+    // 4 - Add chart to graph
+    [graph addPlot:pieChart];
 }
 
 - (void) configureGraph:(NSString *)title ofType:(NSString *)type
@@ -390,22 +418,24 @@ CGFloat const CPDBarInitialX = 0.25f;
     animation.delegate = self;
     animation.duration = 1.0;
     animation.timingFunction = UIViewAnimationCurveEaseInOut;
-    animation.type = @"oglFlip";
-    animation.subtype = @"fromLeft";
+    animation.type = kCATransitionFade;
+//    animation.subtype = @"fromLeft";
     animation.delegate = self;
     NSString *value;
     CPTPlotAreaFrame *plotAreaFrame;
     switch (indexPath.row) {
         case 0:
         {
-            CPTGraph *graph = (CPTGraph *)[self.graphDictionary valueForKey:@"nach"];
+            /*CPTGraph *graph = (CPTGraph *)[self.graphDictionary valueForKey:@"nach"];
             plotAreaFrame = graph.plotAreaFrame;
-            value = @"nach";
+            value = @"nach";*/
+            [self addPlot:@"Начисления" ofType:@"bar"];
             break;
         }
         case 1:
         {
-            value = @"fls";
+//            value = @"fls";
+            [self addPlot:@"ФЛС" ofType:@"pie"];
             break;
         }
         case 2:
@@ -417,8 +447,11 @@ CGFloat const CPDBarInitialX = 0.25f;
             break;
     }
     [animation setValue:value forKey:@"animType"];
-    [plotAreaFrame addAnimation:animation forKey:nil];
-    
+    if (!plotAreaFrame) {
+        [self.hostingView.layer addAnimation:animation forKey:nil];
+    } else {
+        //    [plotAreaFrame addAnimation:animation forKey:nil];
+    }
 }
 
 - (void) animationDidStart:(CAAnimation *)anim
