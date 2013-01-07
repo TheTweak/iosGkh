@@ -23,6 +23,7 @@
 @property (nonatomic, strong) CPTPlotSpaceAnnotation *rightSideAnnotation;
 @property (nonatomic, strong) CALayer *strelka;
 @property (nonatomic, strong) HomeTableDataSource *tableDataSource;
+@property (nonatomic, strong) CPTGraph *graph;
 @end
 
 @implementation HomeViewController
@@ -38,6 +39,7 @@ CGFloat const CPDBarInitialX = 0.25f;
 @synthesize leftSideAnnotation = _leftSideAnnotation;
 @synthesize rightSideAnnotation = _rightSideAnnotation;
 @synthesize tableDataSource = _tableDataSource;
+@synthesize graph = _graph;
 
 -(Nach *)nachDS
 {
@@ -171,7 +173,8 @@ CGFloat const CPDBarInitialX = 0.25f;
     
     tableView.backgroundColor = [UIColor blackColor];
     tableView.separatorColor = [UIColor darkGrayColor];
-    tableView.dataSource = self.tableDataSource;    
+    tableView.dataSource = self.tableDataSource;
+    tableView.delegate = self;
     [self.view addSubview:tableView];
     // --------- Layer playing
     CALayer *layer = [CALayer layer];
@@ -208,6 +211,7 @@ CGFloat const CPDBarInitialX = 0.25f;
     */
     
     CPTGraph *graph = [[CPTXYGraph alloc] initWithFrame:hostViewRect];
+    self.graph = graph;
     hostView.hostedGraph = graph;
 //    graph.title = title;
     [graph applyTheme:[CPTTheme themeNamed:kCPTDarkGradientTheme]];
@@ -236,7 +240,6 @@ CGFloat const CPDBarInitialX = 0.25f;
     layer.contentsGravity = kCAGravityCenter;
     layer.transform = CATransform3DMakeRotation(M_PI, 1.0, 0.0, 0.0);
     [plotAreaFrame addSublayer:layer];
-    
     self.strelka = layer;
     
     CGFloat xMin = 0.0f;
@@ -346,6 +349,52 @@ CGFloat const CPDBarInitialX = 0.25f;
 - (void) addNewMetricByString:(NSString *)identifier
 {
     [self addPlot:identifier];
+}
+
+- (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    CATransition *animation = [CATransition animation];
+    animation.delegate = self;
+    animation.duration = 1.0;
+    animation.timingFunction = UIViewAnimationCurveEaseInOut;
+    animation.type = @"oglFlip";
+    animation.subtype = @"fromLeft";
+    animation.delegate = self;
+    NSString *value;
+    switch (indexPath.row) {
+        case 0:
+        {
+            value = @"nach";
+            break;
+        }
+        case 1:
+        {
+            value = @"fls";
+            break;
+        }
+        case 2:
+        {
+            value = @"dpu";
+            break;
+        }
+        default:
+            break;
+    }
+    [animation setValue:value forKey:@"animType"];
+    [self.graph.plotAreaFrame addAnimation:animation forKey:nil];
+}
+
+- (void) animationDidStart:(CAAnimation *)anim
+{
+    NSString *value = [anim valueForKey:@"animType"];
+    if ([@"nach" isEqualToString:value]) {
+        NSLog(@"nachAnim");
+    }
+}
+
+- (void) animationDidStop:(CAAnimation *)anim finished:(BOOL)flag
+{
+    
 }
 
 @end
