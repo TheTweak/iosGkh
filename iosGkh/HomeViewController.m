@@ -158,14 +158,19 @@ CGFloat const CPDBarInitialX = 0.25f;
     [super viewDidLoad];
 	[self addPlot:@"Начисления"];
     
-    CGRect upperHalfRect = CGRectMake(5.0f,
+    CGRect upperHalfRect = CGRectMake(0.0f,
                                       0.0f,
-                                      self.view.bounds.size.width - 10.0f,
+                                      self.view.bounds.size.width,
                                       self.view.bounds.size.height / 2 - self.tabBarController.tabBar.bounds.size.height);
     
-    CGRect upperHalfRectForTableView = CGRectMake(10.0f,
+    CGRect bottomHalfRect = CGRectMake(0.0f,
+                                       self.view.bounds.size.height / 2 - self.tabBarController.tabBar.bounds.size.height + 2.0f,
+                                       self.view.bounds.size.width,
+                                       self.view.bounds.size.height / 2 - 2.0f);
+    
+    CGRect upperHalfRectForTableView = CGRectMake(5.0f,
                                       5.0f,
-                                      self.view.bounds.size.width - 20.0f,
+                                      self.view.bounds.size.width - 10.0f,
                                       self.view.bounds.size.height / 2 - self.tabBarController.tabBar.bounds.size.height - 7.0f);
     
     UITableView *tableView = [[UITableView alloc] initWithFrame:upperHalfRectForTableView
@@ -176,24 +181,25 @@ CGFloat const CPDBarInitialX = 0.25f;
     tableView.dataSource = self.tableDataSource;
     tableView.delegate = self;
     [self.view addSubview:tableView];
-    // --------- Layer playing
+    // --------- top screen layer
     CALayer *layer = [CALayer layer];
     [layer setFrame:upperHalfRect];
     [layer setCornerRadius:12.0];
     [layer setBorderWidth:4.0];
-    [layer setBorderColor:[[UIColor colorWithRed:0.27f green:0.27f blue:0.27f alpha:1.0f] CGColor]];
-//    [layer setBackgroundColor:[[UIColor blackColor] CGColor]];
+    [layer setBorderColor:[[UIColor darkGrayColor] CGColor]];
     [layer setOpacity:0.75];
-//    [layer setAnchorPoint:CGPointMake(1.0, 1.0)];
-//    [layer setShadowColor:[[UIColor blackColor] CGColor]];
-//    [layer setShadowOffset:CGSizeMake(5.0, 5.0)];
-//    [layer setShadowOpacity:.8];
-    [[self.view layer] addSublayer:layer];
     
-    /*CABasicAnimation *animation = [CABasicAnimation animation];
-    [animation setFromValue:[NSValue valueWithCGPoint:CGPointMake(100.0, 100.0)]];
-    animation.toValue = [NSValue valueWithCGPoint:CGPointMake(100.0, 250.0)];
-    [layer addAnimation:animation forKey:@"position"];*/
+    [[self.view layer] addSublayer:layer];
+    // --------- bottom screen layer
+    CALayer *bottomLayer = [CALayer layer];
+    [bottomLayer setFrame:bottomHalfRect];
+    [bottomLayer setCornerRadius:12.0];
+    [bottomLayer setBorderWidth:4.0];
+    [bottomLayer setBorderColor:[[UIColor darkGrayColor] CGColor]];
+    [bottomLayer setOpacity:0.75];
+    
+    [[self.view layer] addSublayer:bottomLayer];
+
 }
 
 - (void) configureGraph:(NSString *)title {
@@ -214,8 +220,8 @@ CGFloat const CPDBarInitialX = 0.25f;
     self.graph = graph;
     hostView.hostedGraph = graph;
 //    graph.title = title;
-    [graph applyTheme:[CPTTheme themeNamed:kCPTDarkGradientTheme]];
-    [graph.plotAreaFrame setPaddingLeft:35.0f];
+//    [graph applyTheme:[CPTTheme themeNamed:kCPTDarkGradientTheme]];
+    [graph.plotAreaFrame setPaddingLeft:30.0f];
     [graph.plotAreaFrame setPaddingRight:20.0f];
     [graph.plotAreaFrame setPaddingTop:27.0f];
     [graph.plotAreaFrame setPaddingBottom:35.0f];
@@ -271,7 +277,7 @@ CGFloat const CPDBarInitialX = 0.25f;
     
     xyAxisSet.yAxis.titleTextStyle = axisTitleStyle;
     xyAxisSet.yAxis.title = @"Начислено";
-    xyAxisSet.yAxis.titleOffset = 250.0f;
+    xyAxisSet.yAxis.titleOffset = 260.0f;
     
     CPTMutableLineStyle *axisLineStyle = [CPTMutableLineStyle lineStyle];
     axisLineStyle.lineWidth = 1.0f;
@@ -382,6 +388,7 @@ CGFloat const CPDBarInitialX = 0.25f;
     }
     [animation setValue:value forKey:@"animType"];
     [self.graph.plotAreaFrame addAnimation:animation forKey:nil];
+    
 }
 
 - (void) animationDidStart:(CAAnimation *)anim
