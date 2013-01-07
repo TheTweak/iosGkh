@@ -10,6 +10,7 @@
 #import "MetricSelectionViewController.h"
 #import "Nach.h"
 #import "BarPlotSelectingArrow.h"
+#import "HomeTableDataSource.h"
 
 @interface HomeViewController ()
 - (void)addPlot:(NSString *)title;
@@ -21,6 +22,7 @@
 @property (nonatomic, strong) CPTPlotSpaceAnnotation *leftSideAnnotation;
 @property (nonatomic, strong) CPTPlotSpaceAnnotation *rightSideAnnotation;
 @property (nonatomic, strong) CALayer *strelka;
+@property (nonatomic, strong) HomeTableDataSource *tableDataSource;
 @end
 
 @implementation HomeViewController
@@ -35,11 +37,18 @@ CGFloat const CPDBarInitialX = 0.25f;
 @synthesize hostingView = _hostingView;
 @synthesize leftSideAnnotation = _leftSideAnnotation;
 @synthesize rightSideAnnotation = _rightSideAnnotation;
+@synthesize tableDataSource = _tableDataSource;
 
 -(Nach *)nachDS
 {
     if(!_nachDS) _nachDS = [[Nach alloc] init];
     return _nachDS;
+}
+
+-(HomeTableDataSource *)tableDataSource
+{
+    if(!_tableDataSource) _tableDataSource = [[HomeTableDataSource alloc] init];
+    return _tableDataSource;
 }
 
 /*
@@ -153,22 +162,23 @@ CGFloat const CPDBarInitialX = 0.25f;
                                       self.view.bounds.size.height / 2 - self.tabBarController.tabBar.bounds.size.height);
     
     CGRect upperHalfRectForTableView = CGRectMake(10.0f,
-                                      0.0f,
+                                      5.0f,
                                       self.view.bounds.size.width - 20.0f,
-                                      self.view.bounds.size.height / 2 - self.tabBarController.tabBar.bounds.size.height);
+                                      self.view.bounds.size.height / 2 - self.tabBarController.tabBar.bounds.size.height - 7.0f);
     
     UITableView *tableView = [[UITableView alloc] initWithFrame:upperHalfRectForTableView
                                                           style:UITableViewStylePlain];
     
     tableView.backgroundColor = [UIColor blackColor];
     tableView.separatorColor = [UIColor darkGrayColor];
+    tableView.dataSource = self.tableDataSource;    
     [self.view addSubview:tableView];
     // --------- Layer playing
     CALayer *layer = [CALayer layer];
     [layer setFrame:upperHalfRect];
     [layer setCornerRadius:12.0];
     [layer setBorderWidth:4.0];
-    [layer setBorderColor:[[UIColor darkGrayColor] CGColor]];
+    [layer setBorderColor:[[UIColor colorWithRed:0.27f green:0.27f blue:0.27f alpha:1.0f] CGColor]];
 //    [layer setBackgroundColor:[[UIColor blackColor] CGColor]];
     [layer setOpacity:0.75];
 //    [layer setAnchorPoint:CGPointMake(1.0, 1.0)];
