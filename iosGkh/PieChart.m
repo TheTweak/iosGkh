@@ -11,6 +11,26 @@
 
 @implementation PieChart
 
+-(CPTLayer *)dataLabelForPlot:(CPTPlot *)plot recordIndex:(NSUInteger)idx
+{
+    CPTLayer *result;
+    int sum = 15;
+    int price = 0;
+    static CPTMutableTextStyle *labelText = nil;
+    if (!labelText) {
+        labelText= [[CPTMutableTextStyle alloc] init];
+        labelText.color = [CPTColor whiteColor];
+        labelText.fontSize = 13.0f;
+    }
+    price = [[self numberForPlot:plot field:CPTPieChartFieldSliceWidth recordIndex:idx] intValue];
+    float percent = ((float)price / (float)sum);
+    // 4 - Set up display label
+    NSString *labelValue = [NSString stringWithFormat:@"%0.0f %%", percent * 100.0f];
+    // 5 - Create and return layer with label text
+    result = [[CPTTextLayer alloc] initWithText:labelValue style:labelText];
+    return result;
+}
+
 -(CPTFill *)sliceFillForPieChart:(CPTPieChart *)pieChart recordIndex:(NSUInteger)idx
 {
     CPTColor *color;

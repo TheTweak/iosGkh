@@ -374,15 +374,16 @@ CGFloat const CPDBarInitialX = 0.25f;
     CPTPieChart *pieChart = [[CPTPieChart alloc] init];
     pieChart.dataSource = self.pieChartDS;
     pieChart.delegate = self;
-    pieChart.pieRadius = (self.hostingView.bounds.size.height * 0.7) / 2;
+    CGFloat pieRadius = (self.hostingView.bounds.size.height * 0.7) / 2;
+    pieChart.pieRadius = pieRadius;
     pieChart.startAngle = M_PI_4;
     pieChart.sliceDirection = CPTPieDirectionClockwise;
-    // 3 - Create gradient
-    CPTGradient *overlayGradient = [[CPTGradient alloc] init];
-    overlayGradient.gradientType = CPTGradientTypeRadial;
-    overlayGradient = [overlayGradient addColorStop:[[CPTColor blackColor] colorWithAlphaComponent:0.0] atPosition:0.9];
-    overlayGradient = [overlayGradient addColorStop:[[CPTColor blackColor] colorWithAlphaComponent:0.4] atPosition:1.0];
-    pieChart.overlayFill = [CPTFill fillWithGradient:overlayGradient];
+    pieChart.labelOffset = -pieRadius + pieRadius * 3/7;
+    CPTMutableShadow *shadow = [CPTMutableShadow shadow];
+    shadow.shadowColor = [CPTColor blackColor];
+    shadow.shadowOffset = CGSizeMake(1.0f, -1.0f);
+    shadow.shadowBlurRadius = 0.0f;
+    pieChart.labelShadow = shadow;
     // 4 - Add chart to graph
     [graph addPlot:pieChart];
 }
@@ -416,10 +417,10 @@ CGFloat const CPDBarInitialX = 0.25f;
 {
     CATransition *animation = [CATransition animation];
     animation.delegate = self;
-    animation.duration = 1.0;
+    animation.duration = 0.5;
     animation.timingFunction = UIViewAnimationCurveEaseInOut;
-    animation.type = kCATransitionFade;
-//    animation.subtype = @"fromLeft";
+    animation.type = @"oglFlip";
+    animation.subtype = @"fromLeft";
     animation.delegate = self;
     NSString *value;
     CPTPlotAreaFrame *plotAreaFrame;
