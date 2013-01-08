@@ -25,10 +25,12 @@
 @property (nonatomic, strong) CPTPlotSpaceAnnotation *leftSideAnnotation;
 @property (nonatomic, strong) CPTPlotSpaceAnnotation *rightSideAnnotation;
 @property (nonatomic, strong) CALayer *strelka;
+@property (nonatomic, strong) CALayer *strelkaPie;
 @property (nonatomic, strong) CALayer *upperHalfBorderLayer;
 @property (nonatomic, strong) CALayer *bottomHalfBorderLayer;
 @property (nonatomic, strong) HomeTableDataSource *tableDataSource;
 @property (nonatomic, strong) NSMutableDictionary *graphDictionary;
+@property (nonatomic) NSUInteger lastSelectedPieChartSliceIdx;
 @end
 
 @implementation HomeViewController
@@ -41,6 +43,7 @@ CGFloat const CPDBarInitialX = 0.25f;
 @synthesize nachDS = _nachDS;
 @synthesize pieChartDS = _pieChartDS;
 @synthesize strelka = _strelka;
+@synthesize strelkaPie = _strelkaPie;
 @synthesize hostingView = _hostingView;
 @synthesize leftSideAnnotation = _leftSideAnnotation;
 @synthesize rightSideAnnotation = _rightSideAnnotation;
@@ -48,6 +51,7 @@ CGFloat const CPDBarInitialX = 0.25f;
 @synthesize graphDictionary = _graphDictionary;
 @synthesize upperHalfBorderLayer = _upperHalfBorderLayer;
 @synthesize bottomHalfBorderLayer = _bottomHalfBorderLayer;
+@synthesize lastSelectedPieChartSliceIdx = _lastSelectedPieChartSliceIdx;
 
 -(PieChart *)pieChartDS
 {
@@ -166,6 +170,53 @@ CGFloat const CPDBarInitialX = 0.25f;
 //    CGPoint convertedPoint = [self.strelka convertPoint:newStrelkaPosition ];
 //    NSLog(@"converted=%@", NSStringFromCGPoint(convertedPoint));
 //    NSLog(@"position=%@", NSStringFromCGPoint(self.strelka.position));
+}
+
+/*
+ Pie chart click handler
+ */
+- (void)pieChart:(CPTPieChart *)plot sliceWasSelectedAtRecordIndex:(NSUInteger)idx
+{
+    
+    /*
+    CGFloat startAngle = 1.5 * M_PI;
+    if (self.lastSelectedPieChartSliceIdx != -1) {
+        startAngle = [plot medianAngleForPieSliceIndex:self.lastSelectedPieChartSliceIdx];
+    }
+    CGFloat medianAngle = [plot medianAngleForPieSliceIndex:idx];
+        
+//    self.strelkaPie.anchorPoint = CGPointMake(5.0, 5.0);
+    
+//    self.strelkaPie.transform = CATransform3DMakeRotation(medianAngle, 0.0, 0.0, 1.0);
+    
+    // Set rotation animation
+    CATransform3D rotationTransform = CATransform3DMakeRotation(medianAngle, 0.0, 0.0, 1.0);
+    CABasicAnimation *rotationAnimation = [CABasicAnimation animationWithKeyPath:@"transform"];
+    rotationAnimation.toValue = [NSValue valueWithCATransform3D:rotationTransform];
+    rotationAnimation.duration = 1.0f;
+    rotationAnimation.cumulative = YES;
+    
+    [self.strelkaPie addAnimation:rotationAnimation forKey:@"transform"];
+    
+    
+    UIBezierPath *solidPath = [UIBezierPath bezierPathWithArcCenter:plot.position
+                                                              radius:plot.pieRadius
+                                                          startAngle:startAngle
+                                                            endAngle:medianAngle
+                                                           clockwise:YES];
+    
+    CAKeyframeAnimation *anim = [CAKeyframeAnimation animationWithKeyPath:@"position"];
+
+//    anim.rotationMode = kCAAnimationRotateAuto;
+    anim.duration = 1.0;
+    anim.path = solidPath.CGPath;
+    anim.delegate = self;
+    anim.fillMode = kCAFillModeBoth;
+    [anim setValue:@"pieChart" forKey:@"animType"];
+//    [anim setValue:solidPath forKey:@"path"];
+    [self.strelkaPie addAnimation:anim forKey:nil];
+    */
+//    self.lastSelectedPieChartSliceIdx = idx;
 }
 
 - (void)pan:(UIPanGestureRecognizer *)recognizer {
@@ -358,6 +409,26 @@ CGFloat const CPDBarInitialX = 0.25f;
     graph.plotAreaFrame.backgroundColor = [UIColor blackColor].CGColor;
     
     [self configurePieChart:graph];
+    
+    //----strelka 2
+    /*CPTPlotAreaFrame *plotAreaFrame = graph.plotAreaFrame;
+    
+    CALayer *layer = [CALayer layer];
+    [layer setFrame:CGRectMake(plotAreaFrame.bounds.size.width/2 - 30.0f,
+                               20.0f,
+                               16.0f,
+                               16.0f)];
+    
+    layer.position = CGPointZero;
+    
+    NSString *path = [[NSBundle mainBundle] pathForResource:@"triangle" ofType:@"png"];
+    UIImage *image = [UIImage imageWithContentsOfFile:path];
+    layer.contents = (id)(image.CGImage);
+    layer.contentsGravity = kCAGravityCenter;
+    //    layer.transform = CATransform3DMakeRotation(M_PI, 1.0, 0.0, 0.0);
+    [plotAreaFrame addSublayer:layer];
+    
+    self.strelkaPie = layer;*/
 }
 
 - (void) configureBarPlot:(CPTGraph *)graph {
@@ -386,6 +457,9 @@ CGFloat const CPDBarInitialX = 0.25f;
     pieChart.labelShadow = shadow;
     // 4 - Add chart to graph
     [graph addPlot:pieChart];
+        
+    //set to -1 last selected idx
+    self.lastSelectedPieChartSliceIdx = -1;
 }
 
 - (void) configureGraph:(NSString *)title ofType:(NSString *)type
@@ -457,6 +531,7 @@ CGFloat const CPDBarInitialX = 0.25f;
 
 - (void) animationDidStart:(CAAnimation *)anim
 {
+    NSLog(@"strelka start pos=%@", NSStringFromCGPoint(self.strelkaPie.position));
     NSString *value = [anim valueForKey:@"animType"];
     if ([@"nach" isEqualToString:value]) {
         NSLog(@"nachAnim");
@@ -472,7 +547,59 @@ CGFloat const CPDBarInitialX = 0.25f;
         
     } else if([@"fls" isEqualToString:value]) {
         NSLog(@"flsAnim");
+    } else if([@"pieChart" isEqualToString:value]) {
+        NSLog(@"strelka end pos=%@", NSStringFromCGPoint(self.strelkaPie.position));
+        /*CAKeyframeAnimation *keyFrameAnim = (CAKeyframeAnimation *) anim;
+        CGPathRef pathRef = keyFrameAnim.path;
+        NSMutableArray* a = [NSMutableArray arrayWithObject:[NSNumber numberWithBool:YES]];
+        CGPathApply(pathRef, (__bridge void *)(a), MyCGPathApplierFunc);
+        CGPoint endPoint;
+        for (NSInteger i = 1, l = [a count]; i < l; i++)
+        {
+            NSDictionary* d = [a objectAtIndex:i];
+            int type = [[d objectForKey:@"type"] intValue];
+            
+            CGPoint* points = (CGPoint*) [[d objectForKey:@"points"] bytes];
+
+            if (type == kCGPathElementAddCurveToPoint) {
+                NSLog(@"point=%@", NSStringFromCGPoint(*points));
+                endPoint = *points;
+            }
+        }
+        self.strelkaPie.position = endPoint;*/
     }
+}
+
+// Callback function for CGPathRef
+// used to get path endpoint
+static void MyCGPathApplierFunc (void *info, const CGPathElement *element)
+{
+    NSMutableArray* a = (__bridge NSMutableArray*) info;
+	int nPoints;
+	switch (element->type)
+	{
+		case kCGPathElementMoveToPoint:
+			nPoints = 1;
+			break;
+		case kCGPathElementAddLineToPoint:
+			nPoints = 1;
+			break;
+		case kCGPathElementAddQuadCurveToPoint:
+			nPoints = 2;
+			break;
+		case kCGPathElementAddCurveToPoint:
+			nPoints = 3;
+			break;
+		case kCGPathElementCloseSubpath:
+			nPoints = 0;
+			break;
+		default:
+			return;
+	}
+    
+    NSNumber* type = [NSNumber numberWithInt:element->type];
+	NSData* points = [NSData dataWithBytes:element->points length:nPoints*sizeof(CGPoint)];
+	[a addObject:[NSDictionary dictionaryWithObjectsAndKeys:type,@"type",points,@"points",nil]];
 }
 
 @end
