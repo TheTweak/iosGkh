@@ -212,7 +212,6 @@ CGFloat const CPDBarInitialX = 0.25f;
         
         self.rightSideAnnotation = annotation;
     }
-
     
     CPTLayerAnnotation *leftLayerAnnotation = (CPTLayerAnnotation *) self.leftSideAnnotation;
     CPTTextLayer *leftAnnotationTextLayer = (CPTTextLayer *) leftLayerAnnotation.contentLayer;
@@ -564,7 +563,8 @@ CGFloat const CPDBarInitialX = 0.25f;
         }
         case 2:
         {
-            value = @"dpu";
+//            value = @"dpu";
+            [self addPlot:@"ДПУ" ofType:@"xy"];
             break;
         }
         default:
