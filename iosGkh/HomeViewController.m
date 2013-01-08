@@ -22,8 +22,8 @@
 @property (nonatomic, strong) CPTGraphHostingView *hostingView;
 @property (nonatomic, strong) Nach *nachDS;
 @property (nonatomic, strong) PieChart *pieChartDS;
-@property (nonatomic, strong) CPTPlotSpaceAnnotation *leftSideAnnotation;
-@property (nonatomic, strong) CPTPlotSpaceAnnotation *rightSideAnnotation;
+@property (nonatomic, strong) CPTAnnotation *leftSideAnnotation;
+@property (nonatomic, strong) CPTAnnotation *rightSideAnnotation;
 @property (nonatomic, strong) CALayer *strelka;
 @property (nonatomic, strong) CALayer *strelkaPie;
 @property (nonatomic, strong) CALayer *upperHalfBorderLayer;
@@ -177,6 +177,50 @@ CGFloat const CPDBarInitialX = 0.25f;
  */
 - (void)pieChart:(CPTPieChart *)plot sliceWasSelectedAtRecordIndex:(NSUInteger)idx
 {
+    NSNumber *flsCount = [self.pieChartDS numberForPlot:plot field:CPTPieChartFieldSliceWidth recordIndex:idx];
+        
+    if (!self.leftSideAnnotation) {
+        CPTLayerAnnotation *annotation = [[CPTLayerAnnotation alloc] initWithAnchorLayer:plot];
+        CPTTextLayer *textLayer = [CPTTextLayer layer];
+        CPTMutableTextStyle *annotationTextStyle = [CPTMutableTextStyle textStyle];
+        annotationTextStyle.color = [CPTColor orangeColor];
+        annotationTextStyle.fontName = @"Helvetica-Bold";
+        annotationTextStyle.fontSize = 13.0f;
+        
+        textLayer.textStyle = annotationTextStyle;
+        annotation.contentLayer = textLayer;
+        
+        annotation.displacement = CGPointMake(-100.0, -5.0);
+        [plot addAnnotation:annotation];
+        
+        self.leftSideAnnotation = annotation;
+    }
+    
+    if (!self.rightSideAnnotation) {
+        CPTLayerAnnotation *annotation = [[CPTLayerAnnotation alloc] initWithAnchorLayer:plot];
+        CPTTextLayer *textLayer = [CPTTextLayer layer];
+        CPTMutableTextStyle *annotationTextStyle = [CPTMutableTextStyle textStyle];
+        annotationTextStyle.color = [CPTColor orangeColor];
+        annotationTextStyle.fontName = @"Helvetica-Bold";
+        annotationTextStyle.fontSize = 13.0f;
+        
+        textLayer.textStyle = annotationTextStyle;
+        annotation.contentLayer = textLayer;
+        
+        annotation.displacement = CGPointMake(80.0, -5.0);
+        [plot addAnnotation:annotation];
+        
+        self.rightSideAnnotation = annotation;
+    }
+
+    
+    CPTLayerAnnotation *leftLayerAnnotation = (CPTLayerAnnotation *) self.leftSideAnnotation;
+    CPTTextLayer *leftAnnotationTextLayer = (CPTTextLayer *) leftLayerAnnotation.contentLayer;
+    leftAnnotationTextLayer.text = [NSString stringWithFormat:@"Дом №%d", idx + 1];
+    
+    CPTLayerAnnotation *rightLayerAnnotation = (CPTLayerAnnotation *) self.rightSideAnnotation;
+    CPTTextLayer *rightAnnotationTextLayer = (CPTTextLayer *) rightLayerAnnotation.contentLayer;
+    rightAnnotationTextLayer.text = [NSString stringWithFormat:@"Кол-во ФЛС:%d",     [flsCount intValue]];
     
     /*
     CGFloat startAngle = 1.5 * M_PI;
@@ -399,6 +443,11 @@ CGFloat const CPDBarInitialX = 0.25f;
 
 - (void) configurePieGraph:(NSString *)title
 {
+    // set left and right annotations to nil
+    
+    self.rightSideAnnotation = nil;
+    self.leftSideAnnotation = nil;
+    
     CPTGraph *graph = [[CPTXYGraph alloc] initWithFrame:self.hostingView.frame];
     [self.graphDictionary setObject:graph forKey:@"fls"];
     self.hostingView.hostedGraph = graph;
@@ -410,25 +459,24 @@ CGFloat const CPDBarInitialX = 0.25f;
     
     [self configurePieChart:graph];
     
-    //----strelka 2
-    /*CPTPlotAreaFrame *plotAreaFrame = graph.plotAreaFrame;
-    
-    CALayer *layer = [CALayer layer];
-    [layer setFrame:CGRectMake(plotAreaFrame.bounds.size.width/2 - 30.0f,
-                               20.0f,
-                               16.0f,
-                               16.0f)];
-    
-    layer.position = CGPointZero;
-    
-    NSString *path = [[NSBundle mainBundle] pathForResource:@"triangle" ofType:@"png"];
-    UIImage *image = [UIImage imageWithContentsOfFile:path];
-    layer.contents = (id)(image.CGImage);
-    layer.contentsGravity = kCAGravityCenter;
-    //    layer.transform = CATransform3DMakeRotation(M_PI, 1.0, 0.0, 0.0);
-    [plotAreaFrame addSublayer:layer];
-    
-    self.strelkaPie = layer;*/
+    // 2 - Create legend
+    CPTLegend *theLegend = [CPTLegend legendWithGraph:graph];
+    // 3 - Configure legend
+    theLegend.numberOfColumns = 1;
+    theLegend.fill = [CPTFill fillWithColor:[CPTColor blackColor]];
+    CPTMutableLineStyle *legendLineStyle = [CPTMutableLineStyle lineStyle];
+    legendLineStyle.lineColor = [CPTColor darkGrayColor];
+    legendLineStyle.lineWidth = 2.0f;
+    CPTMutableTextStyle *legendTextStyle = [CPTMutableTextStyle textStyle];
+    legendTextStyle.color = [CPTColor whiteColor];
+    theLegend.textStyle = legendTextStyle;
+    theLegend.borderLineStyle = legendLineStyle;
+    theLegend.cornerRadius = 5.0;
+    // 4 - Add legend to graph
+    graph.legend = theLegend;
+    graph.legendAnchor = CPTRectAnchorRight;
+    CGFloat legendPadding = -(self.view.bounds.size.width / 22);
+    graph.legendDisplacement = CGPointMake(legendPadding, 0.0);
 }
 
 - (void) configureBarPlot:(CPTGraph *)graph {
@@ -447,6 +495,7 @@ CGFloat const CPDBarInitialX = 0.25f;
     pieChart.delegate = self;
     CGFloat pieRadius = (self.hostingView.bounds.size.height * 0.7) / 2;
     pieChart.pieRadius = pieRadius;
+    pieChart.pieInnerRadius = pieRadius / 4;
     pieChart.startAngle = M_PI_4;
     pieChart.sliceDirection = CPTPieDirectionClockwise;
     pieChart.labelOffset = -pieRadius + pieRadius * 3/7;

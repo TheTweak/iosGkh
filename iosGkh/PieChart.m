@@ -25,9 +25,32 @@
     price = [[self numberForPlot:plot field:CPTPieChartFieldSliceWidth recordIndex:idx] intValue];
     float percent = ((float)price / (float)sum);
     // 4 - Set up display label
-    NSString *labelValue = [NSString stringWithFormat:@"%0.0f %%", percent * 100.0f];
+//    NSString *labelValue = [NSString stringWithFormat:@"%0.0f %%", percent * 100.0f];
+    NSString *labelValue = [NSString stringWithFormat:@"%d", price];
     // 5 - Create and return layer with label text
     result = [[CPTTextLayer alloc] initWithText:labelValue style:labelText];
+    return result;
+}
+
+-(NSString *)legendTitleForPieChart:(CPTPieChart *)pieChart recordIndex:(NSUInteger)idx
+{
+    NSString *result;
+    switch (idx) {
+        case 0:
+            result = @"д.1";
+            break;
+        case 1:
+            result = @"д.2";
+            break;
+        case 2:
+            result = @"д.3";
+            break;
+        case 3:
+            result = @"д.4";
+            break;
+        default:
+            break;
+    }
     return result;
 }
 
