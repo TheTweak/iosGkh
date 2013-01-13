@@ -7,14 +7,28 @@
 //
 
 #import "HomeTableDataSource.h"
+#import "BasicAuthModule.h"
+#import "SBJsonParser.h"
+
+@interface HomeTableDataSource ()
+@property (nonatomic, strong) NSArray* paramsArray;
+@end
 
 @implementation HomeTableDataSource
+
+@synthesize paramsArray = _paramsArray;
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:nil];
     cell.detailTextLabel.textColor = [UIColor darkGrayColor];
     cell.textLabel.textColor = [UIColor orangeColor];
+    NSDictionary *paramJson = [self.paramsArray objectAtIndex:indexPath.row];
+    
+    cell.textLabel.text = [paramJson objectForKey:@"name"];
+    cell.detailTextLabel.text = [paramJson objectForKey:@"description"];
+    
+    /*
     switch (indexPath.row) {
         case 0:
         {
@@ -43,13 +57,28 @@
             cell.imageView.image = theImage;
             break;
         }
-    }
+    }*/
     return cell;
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 3;
+    if (!self.paramsArray) {
+        AFHTTPClient *client = [BasicAuthModule httpClient];
+        [client getPath:@"param/list" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            SBJsonParser *jsonParser = [[SBJsonParser alloc] init];
+            NSData *responseData = (NSData *)responseObject;
+            NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+            NSArray *params = [jsonParser objectWithString:responseString];
+            self.paramsArray = params;
+            [tableView reloadData];
+            NSLog(@"success");
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            NSLog(@"failure");
+        }];
+    }
+    
+    return [self.paramsArray count];
 }
 
 @end
