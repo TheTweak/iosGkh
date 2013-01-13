@@ -8,6 +8,12 @@
 
 #import "Nach.h"
 #import "CorePlot-CocoaTouch.h"
+#import "BasicAuthModule.h"
+#import "SBJsonParser.h"
+
+@interface Nach ()
+@property (nonatomic, strong) NSArray *graphValues;
+@end
 
 @implementation Nach
 
@@ -19,7 +25,29 @@
 
 -(NSUInteger)numberOfRecordsForPlot:(CPTPlot *)plot
 {
-    return 12;
+    if (!self.graphValues) {
+        AFHTTPClient *client = [BasicAuthModule httpClient];
+        NSDictionary *requestParams = [[NSDictionary alloc] initWithObjectsAndKeys:@"nach", @"type", nil];
+        [client postPath:@"param/value" parameters:requestParams success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSLog(@"post succeeded");
+            SBJsonParser *jsonParser = [[SBJsonParser alloc] init];
+            NSData *responseData = (NSData *)responseObject;
+            NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+            NSDictionary *responseJson = [jsonParser objectWithString:responseString];
+            NSArray *params = [responseJson objectForKey:@"values"];
+            self.graphValues = params;
+            for (int i = 0, l = [params count]; i < l; i++) {
+                NSDictionary *jsonObject = [params objectAtIndex:i];
+                NSLog(@"nach x : %@, y : %@", [jsonObject objectForKey:@"x"], [jsonObject objectForKey:@"y"]);
+            }
+            [plot reloadData];
+            NSLog(@"success");
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            NSLog(@"failure");
+        }];
+    }
+    
+    return [self.graphValues count];
 }
 
 -(CPTFill *)barFillForBarPlot:(CPTBarPlot *)barPlot recordIndex:(NSUInteger)idx
@@ -37,7 +65,15 @@
 
 -(NSNumber *)numberForPlot:(CPTPlot *)plot field:(NSUInteger)fieldEnum recordIndex:(NSUInteger)idx
 {
+    NSDictionary *jsonObject = [self.graphValues objectAtIndex:idx];
     NSNumber *result;
+    
+    if (CPTBarPlotFieldBarLocation == fieldEnum) {
+        result = [jsonObject objectForKey:@"x"];
+    } else if (CPTBarPlotFieldBarTip == fieldEnum) {
+        result = [jsonObject objectForKey:@"y"];
+    }
+    /*
     if (CPTBarPlotFieldBarLocation == fieldEnum) {
         float distance = 0.2f;
         switch (idx) {
@@ -122,7 +158,7 @@
                 break;
         }
         result = [NSNumber numberWithInt:val];
-    }
+    }*/
     return result;
 }
 

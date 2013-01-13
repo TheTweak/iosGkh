@@ -25,9 +25,19 @@
     cell.textLabel.textColor = [UIColor orangeColor];
     NSDictionary *paramJson = [self.paramsArray objectAtIndex:indexPath.row];
     
+    NSString *graphType = [paramJson objectForKey:@"graph"];
+    NSString *pngFileName;
+    if ([@"BAR_PLOT" isEqualToString:graphType]) {
+        pngFileName = @"coins48";
+    } else if ([@"PIE_CHART" isEqualToString:graphType]) {
+        pngFileName = @"fls48";
+    } else if ([@"SCATTERED" isEqualToString:graphType]) {
+        pngFileName = @"stocks48";
+    }
+    NSString *path = [[NSBundle mainBundle] pathForResource:pngFileName ofType:@"png"];
     cell.textLabel.text = [paramJson objectForKey:@"name"];
     cell.detailTextLabel.text = [paramJson objectForKey:@"description"];
-    
+    cell.imageView.image = [UIImage imageWithContentsOfFile:path];
     /*
     switch (indexPath.row) {
         case 0:
