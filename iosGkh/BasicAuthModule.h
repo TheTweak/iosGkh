@@ -7,8 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <AFNetworking.h>
 
 @interface BasicAuthModule : NSObject
+
++ (AFHTTPClient *) httpClient;
 
 + (void) authenticateWithLogin: (NSString *) login
                    andPassword: (NSString *) password;
