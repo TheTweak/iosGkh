@@ -20,14 +20,14 @@
                 ofType:(NSString *)type;
 - (void)configureAxes;
 @property (nonatomic, strong) CPTGraphHostingView *hostingView;
-@property (nonatomic, strong) Nach *nachDS;
-@property (nonatomic, strong) PieChart *pieChartDS;
-@property (nonatomic, strong) CPTAnnotation *leftSideAnnotation;
-@property (nonatomic, strong) CPTAnnotation *rightSideAnnotation;
-@property (nonatomic, strong) CALayer *strelka;
-@property (nonatomic, strong) CALayer *strelkaPie;
-@property (nonatomic, strong) CALayer *upperHalfBorderLayer;
-@property (nonatomic, strong) CALayer *bottomHalfBorderLayer;
+@property (nonatomic, strong) Nach                *nachDS;
+@property (nonatomic, strong) PieChart            *pieChartDS;
+@property (nonatomic, strong) CPTAnnotation       *leftSideAnnotation;
+@property (nonatomic, strong) CPTAnnotation       *rightSideAnnotation;
+@property (nonatomic, strong) CALayer             *strelka;
+@property (nonatomic, strong) CALayer             *strelkaPie;
+@property (nonatomic, strong) CALayer             *upperHalfBorderLayer;
+@property (nonatomic, strong) CALayer             *bottomHalfBorderLayer;
 @property (nonatomic, strong) HomeTableDataSource *tableDataSource;
 @property (nonatomic, strong) NSMutableDictionary *graphDictionary;
 @property (nonatomic) NSUInteger lastSelectedPieChartSliceIdx;
@@ -35,23 +35,53 @@
 
 @implementation HomeViewController
 
-CGFloat const CPDBarWidth = 0.2f;
+CGFloat const CPDBarWidth    = 0.2f;
 CGFloat const CPDBarInitialX = 0.25f;
 
-@synthesize navigationBar = _navigationBar;
-@synthesize toolbar = _toolbar;
-@synthesize nachDS = _nachDS;
-@synthesize pieChartDS = _pieChartDS;
-@synthesize strelka = _strelka;
-@synthesize strelkaPie = _strelkaPie;
-@synthesize hostingView = _hostingView;
-@synthesize leftSideAnnotation = _leftSideAnnotation;
-@synthesize rightSideAnnotation = _rightSideAnnotation;
-@synthesize tableDataSource = _tableDataSource;
-@synthesize graphDictionary = _graphDictionary;
-@synthesize upperHalfBorderLayer = _upperHalfBorderLayer;
-@synthesize bottomHalfBorderLayer = _bottomHalfBorderLayer;
+@synthesize navigationBar =                _navigationBar;
+@synthesize toolbar =                      _toolbar;
+@synthesize nachDS =                       _nachDS;
+@synthesize pieChartDS =                   _pieChartDS;
+@synthesize strelka =                      _strelka;
+@synthesize strelkaPie =                   _strelkaPie;
+@synthesize hostingView =                  _hostingView;
+@synthesize leftSideAnnotation =           _leftSideAnnotation;
+@synthesize rightSideAnnotation =          _rightSideAnnotation;
+@synthesize tableDataSource =              _tableDataSource;
+@synthesize graphDictionary =              _graphDictionary;
+@synthesize upperHalfBorderLayer =         _upperHalfBorderLayer;
+@synthesize bottomHalfBorderLayer =        _bottomHalfBorderLayer;
 @synthesize lastSelectedPieChartSliceIdx = _lastSelectedPieChartSliceIdx;
+
+// enabling shake event!
+
+-(BOOL)canBecomeFirstResponder {
+    return YES;
+}
+
+-(void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    [self becomeFirstResponder];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [self resignFirstResponder];
+    [super viewWillDisappear:animated];
+}
+
+// shake motion handler
+
+- (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event
+{
+    if (motion == UIEventSubtypeMotionShake)
+    {
+        CPTPlot *plot = [self.hostingView.hostedGraph.allPlots objectAtIndex:0];
+        [plot reloadData];
+        NSLog(@"SHAKEEE");
+    }
+}
+
+//
 
 -(PieChart *)pieChartDS
 {
@@ -308,13 +338,12 @@ CGFloat const CPDBarInitialX = 0.25f;
     tableView.separatorColor = [UIColor darkGrayColor];
     tableView.dataSource = self.tableDataSource;
     tableView.delegate = self;
-    
     [self.view addSubview:tableView];
     // --------- top screen layer
     CALayer *layer = [CALayer layer];
     [layer setFrame:upperHalfRect];
     [layer setCornerRadius:12.0];
-    [layer setBorderWidth:4.0];
+    [layer setBorderWidth:3.0];
     [layer setBorderColor:[[UIColor darkGrayColor] CGColor]];
     [layer setOpacity:0.75];
     self.upperHalfBorderLayer = layer;
@@ -325,6 +354,7 @@ CGFloat const CPDBarInitialX = 0.25f;
     [bottomLayer setFrame:bottomHalfRect];
     [bottomLayer setCornerRadius:12.0];
     [bottomLayer setBorderWidth:4.0];
+    
     [bottomLayer setBorderColor:[[UIColor darkGrayColor] CGColor]];
     [bottomLayer setOpacity:0.75];
     self.bottomHalfBorderLayer = bottomLayer;
@@ -368,7 +398,6 @@ CGFloat const CPDBarInitialX = 0.25f;
     CPTXYPlotSpace *plotSpace = (CPTXYPlotSpace *) graph.defaultPlotSpace;
     plotSpace.xRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(xMin) length:CPTDecimalFromFloat(xMax)];
     plotSpace.yRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(yMin) length:CPTDecimalFromFloat(yMax)];
-    
     
     CPTMutableTextStyle *axisLabelStyle = [CPTMutableTextStyle textStyle];
     axisLabelStyle.color = [[CPTColor grayColor] colorWithAlphaComponent:0.8f];
@@ -549,10 +578,12 @@ CGFloat const CPDBarInitialX = 0.25f;
     switch (indexPath.row) {
         case 0:
         {
-            /*CPTGraph *graph = (CPTGraph *)[self.graphDictionary valueForKey:@"nach"];
-            plotAreaFrame = graph.plotAreaFrame;
-            value = @"nach";*/
-            [self addPlot:@"Начисления" ofType:@"bar"];
+            CPTGraph *graph = (CPTGraph *) [self.graphDictionary valueForKey:@"nach"];
+            if (graph) {
+                self.hostingView.hostedGraph = graph;
+            } else {
+                [self addPlot:@"Начисления" ofType:@"bar"];
+            }
             break;
         }
         case 1:

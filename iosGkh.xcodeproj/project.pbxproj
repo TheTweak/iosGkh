@@ -10,6 +10,7 @@
 		6140D1A5169721960066F51C /* BarPlotSelectingArrow.m in Sources */ = {isa = PBXBuildFile; fileRef = 6140D1A4169721960066F51C /* BarPlotSelectingArrow.m */; };
 		6140D1A916972AE20066F51C /* triangle.png in Resources */ = {isa = PBXBuildFile; fileRef = 6140D1A816972AE20066F51C /* triangle.png */; };
 		6140D1AB16972D6B0066F51C /* triangle32.png in Resources */ = {isa = PBXBuildFile; fileRef = 6140D1AA16972D6B0066F51C /* triangle32.png */; };
+		61514BDC16A48A56003F4BED /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 61514BDB16A48A56003F4BED /* CoreImage.framework */; };
 		6191BC5C169AD63500CE85BA /* HomeTableDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 6191BC5B169AD63500CE85BA /* HomeTableDataSource.m */; };
 		6191BC5F169AE0F000CE85BA /* money48.png in Resources */ = {isa = PBXBuildFile; fileRef = 6191BC5E169AE0F000CE85BA /* money48.png */; };
 		6191BC61169AE1E100CE85BA /* coins48.png in Resources */ = {isa = PBXBuildFile; fileRef = 6191BC60169AE1E100CE85BA /* coins48.png */; };
@@ -73,6 +74,7 @@
 		6140D1A4169721960066F51C /* BarPlotSelectingArrow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BarPlotSelectingArrow.m; path = ../BarPlotSelectingArrow.m; sourceTree = "<group>"; };
 		6140D1A816972AE20066F51C /* triangle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = triangle.png; sourceTree = "<group>"; };
 		6140D1AA16972D6B0066F51C /* triangle32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = triangle32.png; sourceTree = "<group>"; };
+		61514BDB16A48A56003F4BED /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
 		6191BC5A169AD63500CE85BA /* HomeTableDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeTableDataSource.h; sourceTree = "<group>"; };
 		6191BC5B169AD63500CE85BA /* HomeTableDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeTableDataSource.m; sourceTree = "<group>"; };
 		6191BC5E169AE0F000CE85BA /* money48.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = money48.png; sourceTree = "<group>"; };
@@ -140,6 +142,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				61514BDC16A48A56003F4BED /* CoreImage.framework in Frameworks */,
 				61A3ABDE169038A5005D3311 /* UIKit.framework in Frameworks */,
 				61A3ABE0169038A5005D3311 /* Foundation.framework in Frameworks */,
 				61A3ABE2169038A5005D3311 /* CoreGraphics.framework in Frameworks */,
@@ -194,6 +197,7 @@
 		61A3ABDC169038A5005D3311 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				61514BDB16A48A56003F4BED /* CoreImage.framework */,
 				61A3ABDD169038A5005D3311 /* UIKit.framework */,
 				61A3ABDF169038A5005D3311 /* Foundation.framework */,
 				61A3ABE1169038A5005D3311 /* CoreGraphics.framework */,

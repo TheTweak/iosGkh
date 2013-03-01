@@ -13,9 +13,13 @@
 
 @interface Nach ()
 @property (nonatomic, strong) NSArray *graphValues;
+@property (atomic) BOOL isLoading;
 @end
 
 @implementation Nach
+
+@synthesize graphValues = _graphValues;
+@synthesize isLoading =   _isLoading;
 
 -(BOOL)axis:(CPTAxis *)axis shouldUpdateAxisLabelsAtLocations:(NSSet *)locations
 {
@@ -25,7 +29,10 @@
 
 -(NSUInteger)numberOfRecordsForPlot:(CPTPlot *)plot
 {
-    if (!self.graphValues) {
+    // Todo : invoked 4 times for some reason
+    NSUInteger numberOfRecords = 0;
+    if (!self.isLoading) {
+        self.isLoading = YES; // very bad
         AFHTTPClient *client = [BasicAuthModule httpClient];
         NSDictionary *requestParams = [[NSDictionary alloc] initWithObjectsAndKeys:@"nach", @"type", nil];
         [client postPath:@"param/value" parameters:requestParams success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -41,13 +48,18 @@
                 NSLog(@"nach x : %@, y : %@", [jsonObject objectForKey:@"x"], [jsonObject objectForKey:@"y"]);
             }
             [plot reloadData];
+            self.isLoading = NO;
             NSLog(@"success");
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            self.isLoading = NO;
+            self.graphValues = [NSArray array];
             NSLog(@"failure");
         }];
+    } else {
+        numberOfRecords = [self.graphValues count];
     }
-    
-    return [self.graphValues count];
+    NSLog(@"number of records=%d", numberOfRecords);
+    return numberOfRecords;
 }
 
 -(CPTFill *)barFillForBarPlot:(CPTBarPlot *)barPlot recordIndex:(NSUInteger)idx
