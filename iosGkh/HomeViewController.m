@@ -115,7 +115,7 @@ CGFloat const CPDBarInitialX = 0.25f;
 /*
  Plot click handler
  */
--(void)barPlot:(CPTBarPlot *)plot barWasSelectedAtRecordIndex:(NSUInteger)idx
+-(void) barPlot:(CPTBarPlot *)plot barWasSelectedAtRecordIndex:(NSUInteger)idx
 {
     if (plot.isHidden) return;
     NSNumber *price = [self.nachDS numberForPlot:plot field:CPTBarPlotFieldBarTip recordIndex:idx];
@@ -196,7 +196,7 @@ CGFloat const CPDBarInitialX = 0.25f;
 /*
  Pie chart click handler
  */
-- (void)pieChart:(CPTPieChart *)plot sliceWasSelectedAtRecordIndex:(NSUInteger)idx
+- (void) pieChart:(CPTPieChart *)plot sliceWasSelectedAtRecordIndex:(NSUInteger)idx
 {
     NSNumber *flsCount = [self.nachDS numberForPlot:plot field:CPTPieChartFieldSliceWidth recordIndex:idx];
         
@@ -283,7 +283,7 @@ CGFloat const CPDBarInitialX = 0.25f;
 //    self.lastSelectedPieChartSliceIdx = idx;
 }
 
-- (void)pan:(UIPanGestureRecognizer *)recognizer {
+- (void) pan:(UIPanGestureRecognizer *)recognizer {
     if ((recognizer.state == UIGestureRecognizerStateChanged) ||
         (recognizer.state == UIGestureRecognizerStateEnded)) {
         CGPoint translation = [recognizer translationInView:recognizer.view];
@@ -298,7 +298,7 @@ CGFloat const CPDBarInitialX = 0.25f;
     [self configureGraph:title ofType:type];
 }
 
-- (void)viewDidLoad
+- (void) viewDidLoad
 {
     [super viewDidLoad];
     [self.view addSubview:self.hostingView];
@@ -315,10 +315,14 @@ CGFloat const CPDBarInitialX = 0.25f;
     UITableView *tableView = [[UITableView alloc] initWithFrame:upperHalfRectForTableView
                                                           style:UITableViewStylePlain];
     
+    UITableViewController *tableViewController = [[TableViewController alloc] initWithStyle:UITableViewStylePlain];
+    [tableViewController setView:tableView];
+    [self addChildViewController:tableViewController];
+    
     tableView.backgroundColor = [UIColor blackColor];
     tableView.separatorColor = [UIColor darkGrayColor];
     tableView.dataSource = self.tableDataSource;
-    tableView.delegate = self;
+    tableView.delegate = tableViewController;    
     // --------- Table header
     CGRect tableLabelRect = CGRectMake(0.0f, 0.0f, width, 44.0f);
     UILabel *tableLabel = [[UILabel alloc] initWithFrame:tableLabelRect];
@@ -519,7 +523,7 @@ CGFloat const CPDBarInitialX = 0.25f;
     [graph addPlot:plot];
 }
 
-- (void)configurePieChart:(CPTGraph *)graph withTitle: (NSString *) title
+- (void) configurePieChart:(CPTGraph *)graph withTitle: (NSString *) title
 {
     CPTPieChart *pieChart = [[CPTPieChart alloc] init];
     pieChart.dataSource = self.nachDS;
@@ -556,7 +560,7 @@ CGFloat const CPDBarInitialX = 0.25f;
     
 }
 
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([segue.identifier isEqualToString:@"SelectMetrics"]) {
         MetricSelectionViewController *metricsVC = (MetricSelectionViewController *) segue.destinationViewController;
         metricsVC.metricConsumer = self;
@@ -566,51 +570,6 @@ CGFloat const CPDBarInitialX = 0.25f;
 - (void) addNewMetricByString:(NSString *)identifier
 {
 
-}
-
-- (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    CATransition *animation = [CATransition animation];
-    animation.delegate = self;
-    animation.duration = 0.5;
-    animation.timingFunction = UIViewAnimationCurveEaseInOut;
-    animation.type = @"oglFlip";
-    animation.subtype = @"fromLeft";
-    animation.delegate = self;
-    NSString *value;
-    CPTPlotAreaFrame *plotAreaFrame;
-    switch (indexPath.row) {
-        case 0:
-        {
-            CPTGraph *graph = (CPTGraph *) [self.graphDictionary valueForKey:@"nach"];
-            if (graph) {
-                self.hostingView.hostedGraph = graph;
-            } else {
-                [self addPlot:@"nach" ofType:@"bar"];
-            }
-            break;
-        }
-        case 1:
-        {
-//            value = @"fls";
-            [self addPlot:@"fls" ofType:@"pie"];
-            break;
-        }
-        case 2:
-        {
-//            value = @"dpu";
-            [self addPlot:@"ДПУ" ofType:@"xy"];
-            break;
-        }
-        default:
-            break;
-    }
-    [animation setValue:value forKey:@"animType"];
-    if (!plotAreaFrame) {
-        [self.hostingView.layer addAnimation:animation forKey:nil];
-    } else {
-        //    [plotAreaFrame addAnimation:animation forKey:nil];
-    }
 }
 
 - (void) animationDidStart:(CAAnimation *)anim
@@ -652,38 +611,6 @@ CGFloat const CPDBarInitialX = 0.25f;
         }
         self.strelkaPie.position = endPoint;*/
     }
-}
-
-// Callback function for CGPathRef
-// used to get path endpoint
-static void MyCGPathApplierFunc (void *info, const CGPathElement *element)
-{
-    NSMutableArray* a = (__bridge NSMutableArray*) info;
-	int nPoints;
-	switch (element->type)
-	{
-		case kCGPathElementMoveToPoint:
-			nPoints = 1;
-			break;
-		case kCGPathElementAddLineToPoint:
-			nPoints = 1;
-			break;
-		case kCGPathElementAddQuadCurveToPoint:
-			nPoints = 2;
-			break;
-		case kCGPathElementAddCurveToPoint:
-			nPoints = 3;
-			break;
-		case kCGPathElementCloseSubpath:
-			nPoints = 0;
-			break;
-		default:
-			return;
-	}
-    
-    NSNumber* type = [NSNumber numberWithInt:element->type];
-	NSData* points = [NSData dataWithBytes:element->points length:nPoints*sizeof(CGPoint)];
-	[a addObject:[NSDictionary dictionaryWithObjectsAndKeys:type,@"type",points,@"points",nil]];
 }
 
 @end

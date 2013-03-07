@@ -9,8 +9,11 @@
 #import <UIKit/UIKit.h>
 #import "CorePlot-CocoaTouch.h"
 #import "MetricConsumerProtocol.h"
+#import "CPTGraphHolderProtocol.h"
+#import "TableViewController.h"
 
-@interface HomeViewController : UIViewController <MetricConsumerProtocol, CPTBarPlotDelegate, UITableViewDelegate, CPTPieChartDelegate>
+@interface HomeViewController : UIViewController <MetricConsumerProtocol, CPTBarPlotDelegate, UITableViewDelegate,
+                                                  CPTPieChartDelegate, CPTGraphHolderProtocol>
 
 @property (weak, nonatomic) IBOutlet UINavigationBar *navigationBar;
 @property (weak, nonatomic) IBOutlet UIToolbar *toolbar;

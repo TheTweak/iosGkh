@@ -22,7 +22,8 @@
 {
     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:nil];
     cell.detailTextLabel.textColor = [UIColor darkGrayColor];
-    cell.textLabel.textColor = [UIColor orangeColor];            
+    cell.textLabel.textColor = [UIColor orangeColor];
+    cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
     NSDictionary *paramJson = [self.paramsArray objectAtIndex:indexPath.row];
     
     NSString *graphType = [paramJson objectForKey:@"graph"];
