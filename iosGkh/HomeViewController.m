@@ -11,7 +11,6 @@
 #import "Nach.h"
 #import "BarPlotSelectingArrow.h"
 #import "HomeTableDataSource.h"
-#import "PieChart.h"
 
 @interface HomeViewController ()
 - (void)addPlot:(NSString *)title
@@ -21,7 +20,6 @@
 - (void)configureAxes;
 @property (nonatomic, strong) CPTGraphHostingView *hostingView;
 @property (nonatomic, strong) Nach                *nachDS;
-@property (nonatomic, strong) PieChart            *pieChartDS;
 @property (nonatomic, strong) CPTAnnotation       *leftSideAnnotation;
 @property (nonatomic, strong) CPTAnnotation       *rightSideAnnotation;
 @property (nonatomic, strong) CALayer             *strelka;
@@ -41,7 +39,6 @@ CGFloat const CPDBarInitialX = 0.25f;
 @synthesize navigationBar =                _navigationBar;
 @synthesize toolbar =                      _toolbar;
 @synthesize nachDS =                       _nachDS;
-@synthesize pieChartDS =                   _pieChartDS;
 @synthesize strelka =                      _strelka;
 @synthesize strelkaPie =                   _strelkaPie;
 @synthesize hostingView =                  _hostingView;
@@ -82,12 +79,6 @@ CGFloat const CPDBarInitialX = 0.25f;
 }
 
 //
-
--(PieChart *)pieChartDS
-{
-    if (!_pieChartDS) _pieChartDS = [[PieChart alloc] init];
-    return _pieChartDS;
-}
 
 -(Nach *)nachDS
 {
@@ -207,7 +198,7 @@ CGFloat const CPDBarInitialX = 0.25f;
  */
 - (void)pieChart:(CPTPieChart *)plot sliceWasSelectedAtRecordIndex:(NSUInteger)idx
 {
-    NSNumber *flsCount = [self.pieChartDS numberForPlot:plot field:CPTPieChartFieldSliceWidth recordIndex:idx];
+    NSNumber *flsCount = [self.nachDS numberForPlot:plot field:CPTPieChartFieldSliceWidth recordIndex:idx];
         
     if (!self.leftSideAnnotation) {
         CPTLayerAnnotation *annotation = [[CPTLayerAnnotation alloc] initWithAnchorLayer:plot];
