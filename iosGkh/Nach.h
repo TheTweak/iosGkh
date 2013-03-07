@@ -9,6 +9,6 @@
 #import <Foundation/Foundation.h>
 #import "CorePlot-CocoaTouch.h"
 
-@interface Nach : NSObject <CPTBarPlotDataSource, CPTAxisDelegate>
+@interface Nach : NSObject <CPTBarPlotDataSource, CPTAxisDelegate, CPTPieChartDataSource>
 
 @end

@@ -29,12 +29,13 @@
 
 -(NSUInteger)numberOfRecordsForPlot:(CPTPlot *)plot
 {
+    if ([@"fls" isEqualToString:plot.title]) return 4; // todo remove this stub
     // Todo : invoked 4 times for some reason
     NSUInteger numberOfRecords = 0;
     if (!self.isLoading) {
         self.isLoading = YES; // very bad
         AFHTTPClient *client = [BasicAuthModule httpClient];
-        NSDictionary *requestParams = [[NSDictionary alloc] initWithObjectsAndKeys:@"nach", @"type", nil];
+        NSDictionary *requestParams = [[NSDictionary alloc] initWithObjectsAndKeys:plot.title, @"type", nil];
         [client postPath:@"param/value" parameters:requestParams success:^(AFHTTPRequestOperation *operation, id responseObject) {
             NSLog(@"post succeeded");
             SBJsonParser *jsonParser = [[SBJsonParser alloc] init];
@@ -77,6 +78,29 @@
 
 -(NSNumber *)numberForPlot:(CPTPlot *)plot field:(NSUInteger)fieldEnum recordIndex:(NSUInteger)idx
 {
+    // todo remove this stub (Pie Chart)
+    if ([@"fls" isEqualToString:plot.title]) {
+        int result = 0;
+        if (CPTPieChartFieldSliceWidth == fieldEnum) {
+            switch (idx) {
+                case 0:
+                    result = 2;
+                    break;
+                case 1:
+                    result = 4;
+                    break;
+                case 2:
+                    result = 3;
+                    break;
+                case 3:
+                    result = 6;
+                default:
+                    break;
+            }
+        }
+        return [NSNumber numberWithInt:result];
+    }
+    
     NSDictionary *jsonObject = [self.graphValues objectAtIndex:idx];
     NSNumber *result;
     
@@ -85,92 +109,83 @@
     } else if (CPTBarPlotFieldBarTip == fieldEnum) {
         result = [jsonObject objectForKey:@"y"];
     }
-    /*
-    if (CPTBarPlotFieldBarLocation == fieldEnum) {
-        float distance = 0.2f;
-        switch (idx) {
-            case 0:
-                result = [NSNumber numberWithFloat:0.0f + distance];
-                break;
-            case 1:
-                result = [NSNumber numberWithFloat:0.3f + distance];
-                break;
-            case 2:
-                result = [NSNumber numberWithFloat:0.6f + distance];
-                break;
-            case 3:
-                result = [NSNumber numberWithFloat:0.9f + distance];
-                break;
-            case 4:
-                result = [NSNumber numberWithFloat:1.2f + distance];
-                break;
-            case 5:
-                result = [NSNumber numberWithFloat:1.5f + distance];
-                break;
-            case 6:
-                result = [NSNumber numberWithFloat:1.8f + distance];
-                break;
-            case 7:
-                result = [NSNumber numberWithFloat:2.1f + distance];
-                break;
-            case 8:
-                result = [NSNumber numberWithFloat:2.4f + distance];
-                break;
-            case 9:
-                result = [NSNumber numberWithFloat:2.7f + distance];
-                break;
-            case 10:
-                result = [NSNumber numberWithFloat:3.0f + distance];
-                break;
-            case 11:
-                result = [NSNumber numberWithFloat:3.3f + distance];
-                break;
-            default:
-                break;
+    return result;
+}
+
+// --------------------------------- Pie Chart 
+
+-(CPTFill *)sliceFillForPieChart:(CPTPieChart *)pieChart recordIndex:(NSUInteger)idx
+{
+    CPTColor *color;
+    switch (idx) {
+        case 0:
+        {
+            color = [CPTColor colorWithComponentRed:0.0f green:0.6917f blue:0.83f alpha:1.0f]; //sky
+            break;
         }
-    } else if (CPTBarPlotFieldBarTip == fieldEnum) {
-        int val;
-        switch (idx) {
-            case 0:
-                val = 9;
-                break;
-            case 1:
-                val = 15;
-                break;
-            case 2:
-                val = 17;
-                break;
-            case 3:
-                val = 8;
-                break;
-            case 4:
-                val = 10;
-                break;
-            case 5:
-                val = 16;
-                break;
-            case 6:
-                val = 6;
-                break;
-            case 7:
-                val = 1;
-                break;
-            case 8:
-                val = 3;
-                break;
-            case 9:
-                val = 19;
-                break;
-            case 10:
-                val = 11;
-                break;
-            case 11:
-                val = 14;
-            default:
-                break;
+        case 1:
+        {
+            color = [CPTColor colorWithComponentRed:1.0f green:0.0f blue:0.2167f alpha:1.0f]; //red
+            break;
         }
-        result = [NSNumber numberWithInt:val];
-    }*/
+        case 2:
+        {
+            color = [CPTColor colorWithComponentRed:0.0f green:0.83f blue:0.2075f alpha:1.0f]; //green
+            break;
+        }
+        case 3:
+        {
+            color = [CPTColor colorWithComponentRed:1.0f green:0.5833f blue:0.0f alpha:1.0f]; //orange
+            break;
+        }
+        default:
+            color = [CPTColor whiteColor];
+            break;
+    }
+    return [CPTFill fillWithColor:color];
+}
+
+-(NSString *)legendTitleForPieChart:(CPTPieChart *)pieChart recordIndex:(NSUInteger)idx
+{
+    NSString *result;
+    switch (idx) {
+        case 0:
+            result = @"д.1";
+            break;
+        case 1:
+            result = @"д.2";
+            break;
+        case 2:
+            result = @"д.3";
+            break;
+        case 3:
+            result = @"д.4";
+            break;
+        default:
+            break;
+    }
+    return result;
+}
+
+-(CPTLayer *)dataLabelForPlot:(CPTPlot *)plot recordIndex:(NSUInteger)idx
+{
+    if ([@"nach" isEqualToString:plot.title]) return nil;
+    CPTLayer *result;
+    //int sum = 15;
+    int price = 0;
+    static CPTMutableTextStyle *labelText = nil;
+    if (!labelText) {
+        labelText= [[CPTMutableTextStyle alloc] init];
+        labelText.color = [CPTColor whiteColor];
+        labelText.fontSize = 13.0f;
+    }
+    price = [[self numberForPlot:plot field:CPTPieChartFieldSliceWidth recordIndex:idx] intValue];
+    //float percent = ((float)price / (float)sum);
+    // 4 - Set up display label
+    //    NSString *labelValue = [NSString stringWithFormat:@"%0.0f %%", percent * 100.0f];
+    NSString *labelValue = [NSString stringWithFormat:@"%d", price];
+    // 5 - Create and return layer with label text
+    result = [[CPTTextLayer alloc] initWithText:labelValue style:labelText];
     return result;
 }
 

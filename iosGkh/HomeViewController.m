@@ -302,10 +302,6 @@ CGFloat const CPDBarInitialX = 0.25f;
     }
 }
 
-- (IBAction)testPlot:(UIBarButtonItem *)sender {
-    [self addPlot:@"" ofType:@"bar"];
-}
-
 - (void) addPlot:(NSString *)title ofType:(NSString *)type
 {
     [self configureGraph:title ofType:type];
@@ -364,7 +360,7 @@ CGFloat const CPDBarInitialX = 0.25f;
 
 - (void) configureBarGraph:(NSString *)title {
     CPTGraph *graph = [[CPTXYGraph alloc] initWithFrame:self.bottomHalfBorderLayer.frame];
-    [self.graphDictionary setObject:graph forKey:@"nach"];
+    [self.graphDictionary setObject:graph forKey:title];
     self.hostingView.hostedGraph = graph;
     [graph.plotAreaFrame setPaddingLeft:30.0f];
     [graph.plotAreaFrame setPaddingRight:20.0f];
@@ -466,7 +462,7 @@ CGFloat const CPDBarInitialX = 0.25f;
     CPTPlotArea *plotArea = graph.plotAreaFrame.plotArea;
     
     plotArea.fill = [CPTFill fillWithColor:[CPTColor blackColor]];
-    [self configureBarPlot:graph];
+    [self configureBarPlot:graph withTitle:title];
 }
 
 - (void) configurePieGraph:(NSString *)title
@@ -477,7 +473,7 @@ CGFloat const CPDBarInitialX = 0.25f;
     self.leftSideAnnotation = nil;
     
     CPTGraph *graph = [[CPTXYGraph alloc] initWithFrame:self.hostingView.frame];
-    [self.graphDictionary setObject:graph forKey:@"fls"];
+    [self.graphDictionary setObject:graph forKey:title];
     self.hostingView.hostedGraph = graph;
     [graph.plotAreaFrame setPaddingLeft:0.0f];
     [graph.plotAreaFrame setPaddingRight:0.0f];
@@ -485,7 +481,7 @@ CGFloat const CPDBarInitialX = 0.25f;
     [graph.plotAreaFrame setPaddingBottom:0.0f];
     graph.plotAreaFrame.backgroundColor = [UIColor blackColor].CGColor;
     
-    [self configurePieChart:graph];
+    [self configurePieChart:graph withTitle:title];
     
     // 2 - Create legend
     CPTLegend *theLegend = [CPTLegend legendWithGraph:graph];
@@ -507,20 +503,22 @@ CGFloat const CPDBarInitialX = 0.25f;
     graph.legendDisplacement = CGPointMake(legendPadding, 0.0);
 }
 
-- (void) configureBarPlot:(CPTGraph *)graph {
-    CPTBarPlot *test = [[CPTBarPlot alloc] initWithFrame:graph.frame];
-    test.lineStyle = nil;
-    test.dataSource = self.nachDS;
-    test.delegate = self;
-    test.barWidth = CPTDecimalFromDouble(CPDBarWidth);
-    [graph addPlot:test];
+- (void) configureBarPlot:(CPTGraph *)graph withTitle: (NSString *) title {
+    CPTBarPlot *plot = [[CPTBarPlot alloc] initWithFrame:graph.frame];
+    plot.lineStyle = nil;
+    plot.dataSource = self.nachDS;
+    plot.delegate = self;
+    plot.title = title;
+    plot.barWidth = CPTDecimalFromDouble(CPDBarWidth);
+    [graph addPlot:plot];
 }
 
-- (void)configurePieChart:(CPTGraph *)graph
+- (void)configurePieChart:(CPTGraph *)graph withTitle: (NSString *) title
 {
     CPTPieChart *pieChart = [[CPTPieChart alloc] init];
-    pieChart.dataSource = self.pieChartDS;
+    pieChart.dataSource = self.nachDS;
     pieChart.delegate = self;
+    pieChart.title = title;
     CGFloat pieRadius = (self.hostingView.bounds.size.height * 0.7) / 2;
     pieChart.pieRadius = pieRadius;
     pieChart.pieInnerRadius = pieRadius / 4;
@@ -582,14 +580,14 @@ CGFloat const CPDBarInitialX = 0.25f;
             if (graph) {
                 self.hostingView.hostedGraph = graph;
             } else {
-                [self addPlot:@"Начисления" ofType:@"bar"];
+                [self addPlot:@"nach" ofType:@"bar"];
             }
             break;
         }
         case 1:
         {
 //            value = @"fls";
-            [self addPlot:@"ФЛС" ofType:@"pie"];
+            [self addPlot:@"fls" ofType:@"pie"];
             break;
         }
         case 2:

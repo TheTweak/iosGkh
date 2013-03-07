@@ -14,6 +14,5 @@
 
 @property (weak, nonatomic) IBOutlet UINavigationBar *navigationBar;
 @property (weak, nonatomic) IBOutlet UIToolbar *toolbar;
-- (IBAction)testPlot:(UIBarButtonItem *)sender;
 
 @end
