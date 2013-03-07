@@ -316,8 +316,10 @@ CGFloat const CPDBarInitialX = 0.25f;
                                                           style:UITableViewStylePlain];
     
     UITableViewController *tableViewController = [[TableViewController alloc] initWithStyle:UITableViewStylePlain];
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:tableViewController];
+    
     [tableViewController setView:tableView];
-    [self addChildViewController:tableViewController];
+    [self addChildViewController:navigationController];
     
     tableView.backgroundColor = [UIColor blackColor];
     tableView.separatorColor = [UIColor darkGrayColor];

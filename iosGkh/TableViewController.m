@@ -69,6 +69,11 @@
 - (void)tableView:(UITableView *)tableView
         accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
 {
+    UIViewController *viewController = [[UIViewController alloc] init];
+    UIView *view = [[UIView alloc] initWithFrame:tableView.bounds];
+    view.backgroundColor = [UIColor orangeColor];
+    viewController.view = view;
+    UINavigationController *navigationController = self.navigationController;
     NSLog(@"tapped");
 }
 
@@ -84,30 +89,31 @@
     animation.subtype = @"fromLeft";
     animation.delegate = self;
     NSString *value;
-    NSDictionary *graphDict = [self.parentViewController valueForKey:@"graphDictionary"];
+    UIViewController *parentViewController = self.navigationController.parentViewController;
+    NSDictionary *graphDict = [parentViewController valueForKey:@"graphDictionary"];
     CPTPlotAreaFrame *plotAreaFrame;
     switch (indexPath.row) {
         case 0:
         {
             CPTGraph *graph = (CPTGraph *) [graphDict valueForKey:@"nach"];
             if (graph) {
-                [self.parentViewController setValue:graph forKeyPath:@"hostingView.hostedGraph"];
+                [parentViewController setValue:graph forKeyPath:@"hostingView.hostedGraph"];
             } else {
-                [(id<CPTGraphHolderProtocol>) self.parentViewController addPlot:@"nach"
-                                                                         ofType:@"bar"];
+                [(id<CPTGraphHolderProtocol>) parentViewController addPlot:@"nach"
+                                                                    ofType:@"bar"];
             }
             break;
         }
         case 1:
         {
-            [(id<CPTGraphHolderProtocol>) self.parentViewController addPlot:@"fls"
-                                                                     ofType:@"pie"];
+            [(id<CPTGraphHolderProtocol>) parentViewController addPlot:@"fls"
+                                                                ofType:@"pie"];
             break;
         }
         case 2:
         {
-            [(id<CPTGraphHolderProtocol>) self.parentViewController addPlot:@"ДПУ"
-                                                                     ofType:@"xy"];
+            [(id<CPTGraphHolderProtocol>) parentViewController addPlot:@"ДПУ"
+                                                                ofType:@"xy"];
             break;
         }
         default:
@@ -115,7 +121,7 @@
     }
     [animation setValue:value forKey:@"animType"];
     if (!plotAreaFrame) {
-        CALayer *layer = (CALayer *) [self.parentViewController valueForKeyPath:@"hostingView.layer"];
+        CALayer *layer = (CALayer *) [parentViewController valueForKeyPath:@"hostingView.layer"];
         [layer addAnimation:animation forKey:nil];
     } else {
         //    [plotAreaFrame addAnimation:animation forKey:nil];
