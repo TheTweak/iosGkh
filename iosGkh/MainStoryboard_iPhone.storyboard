@@ -93,9 +93,9 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-449" y="-433"/>
+            <point key="canvasLocation" x="-689" y="-503"/>
         </scene>
-        <!--Home View Controller - Домой-->
+        <!--Home View Controller-->
         <scene sceneID="5FA-Jf-NG7">
             <objects>
                 <viewController id="wkR-mT-qIK" customClass="HomeViewController" sceneMemberID="viewController">
@@ -104,7 +104,20 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ad4-Zf-OZ7">
+                                <subviews>
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="JIW-yt-sTY">
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="230" id="FcF-7Y-fvc"/>
+                                        </constraints>
+                                    </tableView>
+                                </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="JIW-yt-sTY" firstAttribute="top" secondItem="ad4-Zf-OZ7" secondAttribute="top" type="default" id="8Ra-Sj-eHE"/>
+                                    <constraint firstItem="JIW-yt-sTY" firstAttribute="trailing" secondItem="ad4-Zf-OZ7" secondAttribute="trailing" type="default" id="9Ni-Vf-w8N"/>
+                                    <constraint firstItem="JIW-yt-sTY" firstAttribute="leading" secondItem="ad4-Zf-OZ7" secondAttribute="leading" type="default" id="c3P-Ka-Ri1"/>
+                                </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -115,41 +128,15 @@
                             <constraint firstItem="ad4-Zf-OZ7" firstAttribute="bottom" secondItem="4wk-Tn-ogs" secondAttribute="bottom" type="default" id="xDK-xr-26a"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Домой" image="home_01_30x30.png" id="Nro-mE-hdY"/>
-                    <navigationItem key="navigationItem" id="rrB-fD-9T6">
-                        <barButtonItem key="rightBarButtonItem" title="Добавить" id="fIB-eZ-IQB"/>
-                    </navigationItem>
+                    <connections>
+                        <outlet property="tableView" destination="JIW-yt-sTY" id="8vi-4h-ecD"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CZr-Ej-pk0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="13" y="-433"/>
+            <point key="canvasLocation" x="-189" y="-503"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="home_01_30x30.png" width="30" height="30"/>
-    </resources>
-    <classes>
-        <class className="HomeViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/HomeViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="navigationBar" candidateClass="UINavigationBar"/>
-                <relationship kind="outlet" name="toolbar" candidateClass="UIToolbar"/>
-            </relationships>
-        </class>
-        <class className="LoginScreenViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/LoginScreenViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="authenticatePressed"/>
-                <relationship kind="outlet" name="errorLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="passwordField" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="urlField" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="userNameField" candidateClass="UITextField"/>
-            </relationships>
-        </class>
-        <class className="NSLayoutConstraint" superclassName="NSObject">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/NSLayoutConstraint.h"/>
-        </class>
-    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

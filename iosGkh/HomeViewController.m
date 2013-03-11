@@ -51,6 +51,7 @@ CGFloat const CPDBarInitialX = 0.25f;
 @synthesize bottomHalfBorderLayer =        _bottomHalfBorderLayer;
 @synthesize lastSelectedPieChartSliceIdx = _lastSelectedPieChartSliceIdx;
 @synthesize loadingMask =                  _loadingMask;
+@synthesize tableView =                    _tableView;
 
 #pragma mark Init
 
@@ -68,8 +69,9 @@ CGFloat const CPDBarInitialX = 0.25f;
     
     CGRect upperHalfRectForTableView = CGRectMake(5.0f, 45.0f, width - 10.0f, height / 2 - 47.0f);
     
-    UITableView *tableView = [[UITableView alloc] initWithFrame:upperHalfRectForTableView
-                                                          style:UITableViewStylePlain];
+    /*UITableView *tableView = [[UITableView alloc] initWithFrame:upperHalfRectForTableView
+                                                          style:UITableViewStylePlain];*/
+    UITableView *tableView = self.tableView;
     
     UITableViewController *tableViewController = [[TableViewController alloc] initWithStyle:UITableViewStylePlain];
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:tableViewController];
@@ -82,7 +84,7 @@ CGFloat const CPDBarInitialX = 0.25f;
     tableView.dataSource = self.tableDataSource;
     tableView.delegate = tableViewController;
     // --------- Table header
-    CGRect tableLabelRect = CGRectMake(0.0f, 0.0f, width, 44.0f);
+    /*CGRect tableLabelRect = CGRectMake(0.0f, 0.0f, width, 44.0f);
     UILabel *tableLabel = [[UILabel alloc] initWithFrame:tableLabelRect];
     tableLabel.text = @"МосЭнерго";
     tableLabel.textAlignment = NSTextAlignmentCenter;
@@ -102,8 +104,8 @@ CGFloat const CPDBarInitialX = 0.25f;
     tableLabel.layer.mask = maskLayer;
     
     [self.view addSubview:tableLabel];
-    
-    [self.view addSubview:tableView];
+    */
+//    [self.view addSubview:tableView];
     // --------- top screen layer
     CALayer *layer = [CALayer layer];
     [layer setFrame:upperHalfRect];

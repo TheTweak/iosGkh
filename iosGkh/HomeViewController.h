@@ -15,6 +15,7 @@
 @interface HomeViewController : UIViewController <MetricConsumerProtocol, CPTBarPlotDelegate, UITableViewDelegate,
                                                   CPTPieChartDelegate, CPTGraphHolderProtocol>
 
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UINavigationBar *navigationBar;
 @property (weak, nonatomic) IBOutlet UIToolbar *toolbar;
 -(void)hideLoadingMask;
