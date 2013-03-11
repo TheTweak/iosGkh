@@ -18,7 +18,6 @@
 - (void)configureGraph:(NSString *)title
                 ofType:(NSString *)type;
 - (void)configureAxes;
-@property (nonatomic, strong) CPTGraphHostingView *hostingView;
 @property (nonatomic, strong) Nach                *nachDS;
 @property (nonatomic, strong) CPTAnnotation       *leftSideAnnotation;
 @property (nonatomic, strong) CPTAnnotation       *rightSideAnnotation;
@@ -42,7 +41,6 @@ CGFloat const CPDBarInitialX = 0.25f;
 @synthesize nachDS =                       _nachDS;
 @synthesize strelka =                      _strelka;
 @synthesize strelkaPie =                   _strelkaPie;
-@synthesize hostingView =                  _hostingView;
 @synthesize leftSideAnnotation =           _leftSideAnnotation;
 @synthesize rightSideAnnotation =          _rightSideAnnotation;
 @synthesize tableDataSource =              _tableDataSource;
@@ -52,6 +50,7 @@ CGFloat const CPDBarInitialX = 0.25f;
 @synthesize lastSelectedPieChartSliceIdx = _lastSelectedPieChartSliceIdx;
 @synthesize loadingMask =                  _loadingMask;
 @synthesize tableView =                    _tableView;
+@synthesize graphView =                    _graphView;
 
 #pragma mark Init
 
@@ -60,18 +59,13 @@ CGFloat const CPDBarInitialX = 0.25f;
     [self registerForNotifications];
     
     UITableView *tableView = self.tableView;
-    
     UITableViewController *tableViewController = [[TableViewController alloc] initWithStyle:UITableViewStylePlain];
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:tableViewController];
-    
+    [self addChildViewController:tableViewController];
     [tableViewController setView:tableView];
-    [self addChildViewController:navigationController];
-    
     tableView.backgroundColor = [UIColor blackColor];
     tableView.separatorColor = [UIColor darkGrayColor];
     tableView.dataSource = self.tableDataSource;
     tableView.delegate = tableViewController;
-    [self.view addSubview:self.hostingView];
 }
 // enabling shake event!
 - (BOOL) canBecomeFirstResponder {
@@ -105,7 +99,7 @@ CGFloat const CPDBarInitialX = 0.25f;
 - (void) motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event {
     if (motion == UIEventSubtypeMotionShake)
     {
-        CPTPlot *plot = [self.hostingView.hostedGraph.allPlots objectAtIndex:0];
+        CPTPlot *plot = [self.graphView.hostedGraph.allPlots objectAtIndex:0];
         [plot reloadData];
         NSLog(@"SHAKEEE");
     }
@@ -127,19 +121,6 @@ CGFloat const CPDBarInitialX = 0.25f;
     return _tableDataSource;
 }
 
-- (CPTGraphHostingView *) hostingView {
-    if (!_hostingView) {
-        CGRect hostViewRect = CGRectMake(0.0,
-                                         160.0,
-                                         self.view.bounds.size.width,
-                                         260.0);
-        
-        CPTGraphHostingView *hostView = [[CPTGraphHostingView alloc] initWithFrame:hostViewRect];
-        _hostingView = hostView;
-    }
-    return _hostingView;
-}
-
 #pragma mark Core plot stuff
 
 #pragma mark Configuring plots and graphs and axes
@@ -147,7 +128,7 @@ CGFloat const CPDBarInitialX = 0.25f;
 - (void) configureBarGraph:(NSString *)title {
     CPTGraph *graph = [[CPTXYGraph alloc] initWithFrame:self.bottomHalfBorderLayer.frame];
     [self.graphDictionary setObject:graph forKey:title];
-    self.hostingView.hostedGraph = graph;
+    self.graphView.hostedGraph = graph;
     [graph.plotAreaFrame setPaddingLeft:30.0f];
     [graph.plotAreaFrame setPaddingRight:20.0f];
     [graph.plotAreaFrame setPaddingTop:27.0f];
@@ -257,9 +238,9 @@ CGFloat const CPDBarInitialX = 0.25f;
     self.rightSideAnnotation = nil;
     self.leftSideAnnotation = nil;
     
-    CPTGraph *graph = [[CPTXYGraph alloc] initWithFrame:self.hostingView.frame];
+    CPTGraph *graph = [[CPTXYGraph alloc] initWithFrame:self.graphView.frame];
     [self.graphDictionary setObject:graph forKey:title];
-    self.hostingView.hostedGraph = graph;
+    self.graphView.hostedGraph = graph;
     [graph.plotAreaFrame setPaddingLeft:0.0f];
     [graph.plotAreaFrame setPaddingRight:0.0f];
     [graph.plotAreaFrame setPaddingTop:0.0f];
@@ -303,7 +284,7 @@ CGFloat const CPDBarInitialX = 0.25f;
     pieChart.dataSource = self.nachDS;
     pieChart.delegate = self;
     pieChart.title = title;
-    CGFloat pieRadius = (self.hostingView.bounds.size.height * 0.7) / 2;
+    CGFloat pieRadius = (self.graphView.bounds.size.height * 0.7) / 2;
     pieChart.pieRadius = pieRadius;
     pieChart.pieInnerRadius = pieRadius / 4;
     pieChart.startAngle = M_PI_4;
@@ -511,7 +492,7 @@ CGFloat const CPDBarInitialX = 0.25f;
 - (void) showLoadingMask {
     NSLog(@"showing load mask");
     if (!self.loadingMask) {
-        self.loadingMask = [[UIActivityIndicatorView alloc] initWithFrame:self.hostingView.bounds];
+        self.loadingMask = [[UIActivityIndicatorView alloc] initWithFrame:self.graphView.bounds];
         [self.loadingMask hidesWhenStopped];
         [self.loadingMask startAnimating];
     }

@@ -77,8 +77,7 @@
 
 #pragma mark - Table view delegate
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     CATransition *animation = [CATransition animation];
     animation.delegate = self;
     animation.duration = 0.5;
@@ -87,7 +86,7 @@
     animation.subtype = @"fromLeft";
     animation.delegate = self;
     NSString *value;
-    UIViewController *parentViewController = self.navigationController.parentViewController;
+    UIViewController *parentViewController = self.parentViewController;
     NSDictionary *graphDict = [parentViewController valueForKey:@"graphDictionary"];
     CPTPlotAreaFrame *plotAreaFrame;
     switch (indexPath.row) {
@@ -95,7 +94,7 @@
         {
             CPTGraph *graph = (CPTGraph *) [graphDict valueForKey:@"nach"];
             if (graph) {
-                [parentViewController setValue:graph forKeyPath:@"hostingView.hostedGraph"];
+                [parentViewController setValue:graph forKeyPath:@"graphView.hostedGraph"];
             } else {
             [(id<CPTGraphHolderProtocol>) parentViewController addPlot:@"nach"
                                                                     ofType:@"bar"];
@@ -119,7 +118,7 @@
     }
     [animation setValue:value forKey:@"animType"];
     if (!plotAreaFrame) {
-        CALayer *layer = (CALayer *) [parentViewController valueForKeyPath:@"hostingView.layer"];
+        CALayer *layer = (CALayer *) [parentViewController valueForKeyPath:@"graphView.layer"];
         [layer addAnimation:animation forKey:nil];
     } else {
         //    [plotAreaFrame addAnimation:animation forKey:nil];
