@@ -54,6 +54,7 @@
 		61A3AC5316904863005D3311 /* LoginScreenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 61A3AC4E16904863005D3311 /* LoginScreenViewController.m */; };
 		61A3AC5916904909005D3311 /* BasicAuthModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 61A3AC5516904909005D3311 /* BasicAuthModule.m */; };
 		61A3AC6116904DB5005D3311 /* Nach.m in Sources */ = {isa = PBXBuildFile; fileRef = 61A3AC5E16904DB4005D3311 /* Nach.m */; };
+		61E81AF916EE054B00819BDD /* CustomView.m in Sources */ = {isa = PBXBuildFile; fileRef = 61E81AF816EE054B00819BDD /* CustomView.m */; };
 		D83773B297B749B6AFE8FF1C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7716AF1534D04DE2AFEC9746 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -132,6 +133,8 @@
 		61A3AC5716904909005D3311 /* BasicAuthModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BasicAuthModule.h; sourceTree = "<group>"; };
 		61A3AC5E16904DB4005D3311 /* Nach.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Nach.m; sourceTree = "<group>"; };
 		61A3AC5F16904DB5005D3311 /* Nach.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Nach.h; sourceTree = "<group>"; };
+		61E81AF716EE054B00819BDD /* CustomView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomView.h; sourceTree = "<group>"; };
+		61E81AF816EE054B00819BDD /* CustomView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomView.m; sourceTree = "<group>"; };
 		7716AF1534D04DE2AFEC9746 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -216,6 +219,7 @@
 		61A3ABE3169038A5005D3311 /* iosGkh */ = {
 			isa = PBXGroup;
 			children = (
+				61E81AF616EE052600819BDD /* Views */,
 				619A514F16E8B68C0017E2C5 /* Protocols */,
 				6140D1A7169721B20066F51C /* Models */,
 				61A3AC6216904DB9005D3311 /* Core Plot DS */,
@@ -326,6 +330,15 @@
 				61A3AC5F16904DB5005D3311 /* Nach.h */,
 			);
 			name = "Core Plot DS";
+			sourceTree = "<group>";
+		};
+		61E81AF616EE052600819BDD /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				61E81AF716EE054B00819BDD /* CustomView.h */,
+				61E81AF816EE054B00819BDD /* CustomView.m */,
+			);
+			name = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -487,6 +500,7 @@
 				61A3AC6116904DB5005D3311 /* Nach.m in Sources */,
 				6140D1A5169721960066F51C /* BarPlotSelectingArrow.m in Sources */,
 				6191BC5C169AD63500CE85BA /* HomeTableDataSource.m in Sources */,
+				61E81AF916EE054B00819BDD /* CustomView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

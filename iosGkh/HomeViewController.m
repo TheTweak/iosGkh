@@ -11,6 +11,7 @@
 #import "Nach.h"
 #import "BarPlotSelectingArrow.h"
 #import "HomeTableDataSource.h"
+#import "CustomView.h"
 
 @interface HomeViewController ()
 - (void)addPlot:(NSString *)title
@@ -181,6 +182,8 @@ CGFloat const CPDBarInitialX = 0.25f;
     UIView *view = [[UIView alloc] initWithFrame:tableView.bounds];
     view.backgroundColor = [UIColor orangeColor];
     viewController.view = view;
+    CustomView *custom = [[CustomView alloc] initWithFrame:CGRectMake(0, 0, 128, 44)];
+    [view addSubview:custom];
     UINavigationController *navigationController = (UINavigationController *) self.parentViewController;
     [navigationController pushViewController:viewController animated:YES];
     NSLog(@"tapped");
