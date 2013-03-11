@@ -95,10 +95,10 @@
             </objects>
             <point key="canvasLocation" x="-689" y="-503"/>
         </scene>
-        <!--Home View Controller-->
+        <!--Home View Controller - FFF-->
         <scene sceneID="5FA-Jf-NG7">
             <objects>
-                <viewController id="wkR-mT-qIK" customClass="HomeViewController" sceneMemberID="viewController">
+                <viewController title="FFF" id="wkR-mT-qIK" customClass="HomeViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="4wk-Tn-ogs">
                         <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -124,7 +124,7 @@
                             <constraint firstItem="NW5-Oa-o6v" firstAttribute="bottom" secondItem="4wk-Tn-ogs" secondAttribute="bottom" type="default" id="w5o-Wh-xEK"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="SJe-TZ-FNa"/>
+                    <navigationItem key="navigationItem" title="Test" id="SJe-TZ-FNa"/>
                     <connections>
                         <outlet property="graphView" destination="NW5-Oa-o6v" id="Rz1-MJ-Axa"/>
                         <outlet property="tableView" destination="JIW-yt-sTY" id="8vi-4h-ecD"/>
@@ -153,6 +153,33 @@
             <point key="canvasLocation" x="-189" y="-503"/>
         </scene>
     </scenes>
+    <classes>
+        <class className="CPTGraphHostingView" superclassName="UIView">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/CPTGraphHostingView.h"/>
+        </class>
+        <class className="HomeViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/HomeViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="graphView" candidateClass="CPTGraphHostingView"/>
+                <relationship kind="outlet" name="navigationBar" candidateClass="UINavigationBar"/>
+                <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
+                <relationship kind="outlet" name="toolbar" candidateClass="UIToolbar"/>
+            </relationships>
+        </class>
+        <class className="LoginScreenViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/LoginScreenViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="authenticatePressed"/>
+                <relationship kind="outlet" name="errorLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="passwordField" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="urlField" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="userNameField" candidateClass="UITextField"/>
+            </relationships>
+        </class>
+        <class className="NSLayoutConstraint" superclassName="NSObject">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/NSLayoutConstraint.h"/>
+        </class>
+    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

@@ -56,16 +56,12 @@ CGFloat const CPDBarInitialX = 0.25f;
 
 - (void) viewDidLoad {
     [super viewDidLoad];
-    [self registerForNotifications];
-    
+    [self registerForNotifications];    
     UITableView *tableView = self.tableView;
-    UITableViewController *tableViewController = [[TableViewController alloc] initWithStyle:UITableViewStylePlain];
-    [self addChildViewController:tableViewController];
-    [tableViewController setView:tableView];
     tableView.backgroundColor = [UIColor blackColor];
     tableView.separatorColor = [UIColor darkGrayColor];
     tableView.dataSource = self.tableDataSource;
-    tableView.delegate = tableViewController;
+    tableView.delegate = self;
 }
 // enabling shake event!
 - (BOOL) canBecomeFirstResponder {
@@ -119,6 +115,75 @@ CGFloat const CPDBarInitialX = 0.25f;
 - (HomeTableDataSource *) tableDataSource {
     if(!_tableDataSource) _tableDataSource = [[HomeTableDataSource alloc] init];
     return _tableDataSource;
+}
+
+
+#pragma mark - Table view delegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    CATransition *animation = [CATransition animation];
+    animation.delegate = self;
+    animation.duration = 0.5;
+    animation.timingFunction = UIViewAnimationCurveEaseInOut;
+    animation.type = @"oglFlip";
+    animation.subtype = @"fromLeft";
+    animation.delegate = self;
+    NSString *value;
+    UIViewController *parentViewController = self;
+    NSDictionary *graphDict = [parentViewController valueForKey:@"graphDictionary"];
+    CPTPlotAreaFrame *plotAreaFrame;
+    switch (indexPath.row) {
+        case 0:
+        {
+            CPTGraph *graph = (CPTGraph *) [graphDict valueForKey:@"nach"];
+            if (graph) {
+                [parentViewController setValue:graph forKeyPath:@"graphView.hostedGraph"];
+            } else {
+                [(id<CPTGraphHolderProtocol>) parentViewController addPlot:@"nach"
+                                                                    ofType:@"bar"];
+            }
+            break;
+        }
+        case 1:
+        {
+            [(id<CPTGraphHolderProtocol>) parentViewController addPlot:@"fls"
+                                                                ofType:@"pie"];
+            break;
+        }
+        case 2:
+        {
+            [(id<CPTGraphHolderProtocol>) parentViewController addPlot:@"ДПУ"
+                                                                ofType:@"xy"];
+            break;
+        }
+        default:
+            break;
+    }
+    [animation setValue:value forKey:@"animType"];
+    if (!plotAreaFrame) {
+        CALayer *layer = (CALayer *) [parentViewController valueForKeyPath:@"graphView.layer"];
+        [layer addAnimation:animation forKey:nil];
+    } else {
+        //    [plotAreaFrame addAnimation:animation forKey:nil];
+    }
+    
+    // Navigation logic may go here. Create and push another view controller.
+    /*
+     <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
+     // ...
+     // Pass the selected object to the new view controller.
+     [self.navigationController pushViewController:detailViewController animated:YES];
+     */
+}
+- (void)tableView:(UITableView *)tableView
+        accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
+    UIViewController *viewController = [[UIViewController alloc] init];
+    UIView *view = [[UIView alloc] initWithFrame:tableView.bounds];
+    view.backgroundColor = [UIColor orangeColor];
+    viewController.view = view;
+    UINavigationController *navigationController = (UINavigationController *) self.parentViewController;
+    [navigationController pushViewController:viewController animated:YES];
+    NSLog(@"tapped");
 }
 
 #pragma mark Core plot stuff

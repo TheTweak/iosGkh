@@ -10,7 +10,6 @@
 #import "CorePlot-CocoaTouch.h"
 #import "MetricConsumerProtocol.h"
 #import "CPTGraphHolderProtocol.h"
-#import "TableViewController.h"
 
 @interface HomeViewController : UIViewController <MetricConsumerProtocol, CPTBarPlotDelegate, UITableViewDelegate,
                                                   CPTPieChartDelegate, CPTGraphHolderProtocol>
