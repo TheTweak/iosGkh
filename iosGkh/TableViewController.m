@@ -9,13 +9,11 @@
 #import "TableViewController.h"
 
 @interface TableViewController ()
-
 @end
 
 @implementation TableViewController
 
-- (id)initWithStyle:(UITableViewStyle)style
-{
+- (id)initWithStyle:(UITableViewStyle)style {
     self = [super initWithStyle:style];
     if (self) {
         // Custom initialization
@@ -99,7 +97,7 @@
             if (graph) {
                 [parentViewController setValue:graph forKeyPath:@"hostingView.hostedGraph"];
             } else {
-                [(id<CPTGraphHolderProtocol>) parentViewController addPlot:@"nach"
+            [(id<CPTGraphHolderProtocol>) parentViewController addPlot:@"nach"
                                                                     ofType:@"bar"];
             }
             break;

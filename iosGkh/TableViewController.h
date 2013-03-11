@@ -12,5 +12,4 @@
 #import "CPTGraphHolderProtocol.h"
 
 @interface TableViewController : UITableViewController
-
 @end

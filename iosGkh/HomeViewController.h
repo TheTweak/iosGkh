@@ -17,5 +17,6 @@
 
 @property (weak, nonatomic) IBOutlet UINavigationBar *navigationBar;
 @property (weak, nonatomic) IBOutlet UIToolbar *toolbar;
-
+-(void)hideLoadingMask;
+-(void)showLoadingMask;
 @end

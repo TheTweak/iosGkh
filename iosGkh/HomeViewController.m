@@ -29,6 +29,7 @@
 @property (nonatomic, strong) HomeTableDataSource *tableDataSource;
 @property (nonatomic, strong) NSMutableDictionary *graphDictionary;
 @property (nonatomic) NSUInteger lastSelectedPieChartSliceIdx;
+@property (nonatomic, strong) UIActivityIndicatorView *loadingMask;
 @end
 
 @implementation HomeViewController
@@ -49,27 +50,111 @@ CGFloat const CPDBarInitialX = 0.25f;
 @synthesize upperHalfBorderLayer =         _upperHalfBorderLayer;
 @synthesize bottomHalfBorderLayer =        _bottomHalfBorderLayer;
 @synthesize lastSelectedPieChartSliceIdx = _lastSelectedPieChartSliceIdx;
+@synthesize loadingMask =                  _loadingMask;
 
+#pragma mark Init
+
+- (void) viewDidLoad {
+    [super viewDidLoad];
+    [self registerForNotifications];
+    [self.view addSubview:self.hostingView];
+    float width = self.view.bounds.size.width,
+    height = self.view.bounds.size.height,
+    borderWidth = 3.0f;
+    
+    CGRect upperHalfRect = CGRectMake(0.0f, 0.0f, width, height / 2 - 5.0f);
+    
+    CGRect bottomHalfRect = CGRectMake(0.0f, height / 2 - 3.0f, width, height / 2 - 2.0f);
+    
+    CGRect upperHalfRectForTableView = CGRectMake(5.0f, 45.0f, width - 10.0f, height / 2 - 47.0f);
+    
+    UITableView *tableView = [[UITableView alloc] initWithFrame:upperHalfRectForTableView
+                                                          style:UITableViewStylePlain];
+    
+    UITableViewController *tableViewController = [[TableViewController alloc] initWithStyle:UITableViewStylePlain];
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:tableViewController];
+    
+    [tableViewController setView:tableView];
+    [self addChildViewController:navigationController];
+    
+    tableView.backgroundColor = [UIColor blackColor];
+    tableView.separatorColor = [UIColor darkGrayColor];
+    tableView.dataSource = self.tableDataSource;
+    tableView.delegate = tableViewController;
+    // --------- Table header
+    CGRect tableLabelRect = CGRectMake(0.0f, 0.0f, width, 44.0f);
+    UILabel *tableLabel = [[UILabel alloc] initWithFrame:tableLabelRect];
+    tableLabel.text = @"МосЭнерго";
+    tableLabel.textAlignment = NSTextAlignmentCenter;
+    tableLabel.textColor = [UIColor orangeColor];
+    tableLabel.backgroundColor = [UIColor darkGrayColor];
+    // Create the path (with only the top-left, and top-right corner rounded)
+    UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:tableLabel.bounds
+                                                   byRoundingCorners:UIRectCornerTopLeft | UIRectCornerTopRight
+                                                         cornerRadii:CGSizeMake(10.0, 10.0)];
+    
+    // Create the shape layer and set its path
+    CAShapeLayer *maskLayer = [CAShapeLayer layer];
+    maskLayer.frame = tableLabel.bounds;
+    maskLayer.path = maskPath.CGPath;
+    
+    // Set the newly created shape layer as the mask for the label view's layer
+    tableLabel.layer.mask = maskLayer;
+    
+    [self.view addSubview:tableLabel];
+    
+    [self.view addSubview:tableView];
+    // --------- top screen layer
+    CALayer *layer = [CALayer layer];
+    [layer setFrame:upperHalfRect];
+    [layer setCornerRadius:12.0];
+    [layer setBorderWidth:borderWidth];
+    [layer setBorderColor:[[UIColor darkGrayColor] CGColor]];
+    [layer setOpacity:0.75];
+    self.upperHalfBorderLayer = layer;
+    
+    [[self.view layer] addSublayer:layer];
+    // --------- bottom screen layer
+    CALayer *bottomLayer = [CALayer layer];
+    [bottomLayer setFrame:bottomHalfRect];
+    [bottomLayer setCornerRadius:12.0];
+    [bottomLayer setBorderWidth:borderWidth];
+    [bottomLayer setBorderColor:[[UIColor darkGrayColor] CGColor]];
+    [bottomLayer setOpacity:0.75];
+    self.bottomHalfBorderLayer = bottomLayer;
+    
+    [[self.view layer] addSublayer:bottomLayer];
+}
 // enabling shake event!
-
--(BOOL)canBecomeFirstResponder {
+- (BOOL) canBecomeFirstResponder {
     return YES;
 }
 
--(void)viewDidAppear:(BOOL)animated {
+- (void) viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     [self becomeFirstResponder];
 }
 
-- (void)viewWillDisappear:(BOOL)animated {
+- (void) viewWillDisappear:(BOOL)animated {
     [self resignFirstResponder];
     [super viewWillDisappear:animated];
 }
 
+- (void) registerForNotifications {
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(showLoadingMask)
+                                                 name:@"ShowLoadingMask"
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(hideLoadingMask)
+                                                 name:@"HideLoadingMask"
+                                               object:nil];
+}
+
 // shake motion handler
 
-- (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event
-{
+- (void) motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event {
     if (motion == UIEventSubtypeMotionShake)
     {
         CPTPlot *plot = [self.hostingView.hostedGraph.allPlots objectAtIndex:0];
@@ -77,29 +162,24 @@ CGFloat const CPDBarInitialX = 0.25f;
         NSLog(@"SHAKEEE");
     }
 }
+#pragma mark Accessors
 
-//
-
--(Nach *)nachDS
-{
+- (Nach *) nachDS {
     if(!_nachDS) _nachDS = [[Nach alloc] init];
     return _nachDS;
 }
 
--(NSDictionary *)graphDictionary
-{
+- (NSDictionary *) graphDictionary {
     if (!_graphDictionary) _graphDictionary = [NSMutableDictionary dictionary];
     return _graphDictionary;
 }
 
--(HomeTableDataSource *)tableDataSource
-{
+- (HomeTableDataSource *) tableDataSource {
     if(!_tableDataSource) _tableDataSource = [[HomeTableDataSource alloc] init];
     return _tableDataSource;
 }
 
-- (CPTGraphHostingView *)hostingView
-{
+- (CPTGraphHostingView *) hostingView {
     if (!_hostingView) {
         CGRect hostViewRect = CGRectMake(self.view.frame.origin.x,
                                          0.0f + self.view.bounds.size.height / 2,
@@ -112,11 +192,208 @@ CGFloat const CPDBarInitialX = 0.25f;
     return _hostingView;
 }
 
-/*
- Plot click handler
- */
--(void) barPlot:(CPTBarPlot *)plot barWasSelectedAtRecordIndex:(NSUInteger)idx
-{
+#pragma mark Core plot stuff
+
+#pragma mark Configuring plots and graphs and axes
+
+- (void) configureBarGraph:(NSString *)title {
+    CPTGraph *graph = [[CPTXYGraph alloc] initWithFrame:self.bottomHalfBorderLayer.frame];
+    [self.graphDictionary setObject:graph forKey:title];
+    self.hostingView.hostedGraph = graph;
+    [graph.plotAreaFrame setPaddingLeft:30.0f];
+    [graph.plotAreaFrame setPaddingRight:20.0f];
+    [graph.plotAreaFrame setPaddingTop:27.0f];
+    [graph.plotAreaFrame setPaddingBottom:35.0f];
+    graph.plotAreaFrame.backgroundColor = [UIColor blackColor].CGColor;
+    
+    //---- strelka
+    
+    CPTPlotAreaFrame *plotAreaFrame = graph.plotAreaFrame;
+    
+    CALayer *layer = [CALayer layer];
+    [layer setFrame:CGRectMake(plotAreaFrame.bounds.origin.x + 16.0f,
+                               plotAreaFrame.bounds.origin.y + 18.0f,
+                               16.0f,
+                               16.0f)];
+    
+    NSString *path = [[NSBundle mainBundle] pathForResource:@"triangle" ofType:@"png"];
+    UIImage *image = [UIImage imageWithContentsOfFile:path];
+    layer.contents = (id)(image.CGImage);
+    layer.contentsGravity = kCAGravityCenter;
+    layer.transform = CATransform3DMakeRotation(M_PI, 1.0, 0.0, 0.0);
+    [plotAreaFrame addSublayer:layer];
+    self.strelka = layer;
+    
+    CGFloat xMin = 0.0f;
+    CGFloat xMax = 4.0f;
+    CGFloat yMin = 0.0f;
+    CGFloat yMax = 20.0f;
+    
+    CPTXYPlotSpace *plotSpace = (CPTXYPlotSpace *) graph.defaultPlotSpace;
+    plotSpace.xRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(xMin) length:CPTDecimalFromFloat(xMax)];
+    plotSpace.yRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(yMin) length:CPTDecimalFromFloat(yMax)];
+    
+    CPTMutableTextStyle *axisLabelStyle = [CPTMutableTextStyle textStyle];
+    axisLabelStyle.color = [[CPTColor grayColor] colorWithAlphaComponent:0.8f];
+    axisLabelStyle.fontSize = 9.0f;
+    
+    CPTXYAxisSet *xyAxisSet = (CPTXYAxisSet *) graph.axisSet;
+    
+    CPTMutableTextStyle *axisTitleStyle = [CPTMutableTextStyle textStyle];
+    axisTitleStyle.color = [[CPTColor grayColor] colorWithAlphaComponent:0.8f];
+    axisTitleStyle.fontName = @"Helvetica-Bold";
+    axisTitleStyle.fontSize = 13.0f;
+    
+    xyAxisSet.xAxis.titleTextStyle = axisTitleStyle;
+    xyAxisSet.xAxis.title = @"Период";
+    xyAxisSet.xAxis.titleOffset = 15.0f;
+    
+    xyAxisSet.yAxis.titleTextStyle = axisTitleStyle;
+    xyAxisSet.yAxis.title = @"Начислено";
+    xyAxisSet.yAxis.titleOffset = 260.0f;
+    
+    CPTMutableLineStyle *axisLineStyle = [CPTMutableLineStyle lineStyle];
+    axisLineStyle.lineWidth = 1.0f;
+    axisLineStyle.lineColor = [[CPTColor grayColor] colorWithAlphaComponent:0.3f];
+    
+    xyAxisSet.yAxis.labelTextStyle = axisLabelStyle;
+    
+    //----------- major ticks
+    
+    xyAxisSet.yAxis.minorTickLength = 4.0f;
+    xyAxisSet.yAxis.tickDirection = CPTSignPositive;
+    xyAxisSet.yAxis.labelOffset = 15.0f;
+    
+    NSInteger minorIncrement = 5;
+    
+    NSMutableSet *yLabels = [NSMutableSet set];
+    NSMutableSet *yMajorLocations = [NSMutableSet set];
+    
+    for (NSInteger j = minorIncrement; j <= yMax; j += minorIncrement) {
+        CPTAxisLabel *label = [[CPTAxisLabel alloc] initWithText:[NSString stringWithFormat:@"%i", j*100] textStyle:xyAxisSet.yAxis.labelTextStyle];
+        NSDecimal location = CPTDecimalFromInteger(j);
+        label.tickLocation = location;
+        label.offset = -xyAxisSet.yAxis.majorTickLength - xyAxisSet.yAxis.labelOffset;
+        if (label) {
+            [yLabels addObject:label];
+        }
+        [yMajorLocations addObject:[NSDecimalNumber decimalNumberWithDecimal:location]];
+    }
+    
+    xyAxisSet.yAxis.axisLabels = yLabels;
+    xyAxisSet.yAxis.majorTickLocations = yMajorLocations;
+    //-----------------------
+    xyAxisSet.yAxis.titleTextStyle = axisTitleStyle;
+    xyAxisSet.yAxis.axisLineStyle = nil;
+    xyAxisSet.xAxis.axisLineStyle = nil;
+    //    xyAxisSet.yAxis.majorGridLineStyle = axisLineStyle;
+    xyAxisSet.yAxis.majorGridLineStyle = axisLineStyle;
+    xyAxisSet.yAxis.majorTickLineStyle = nil;
+    
+    xyAxisSet.yAxis.labelingPolicy = CPTAxisLabelingPolicyNone;
+    xyAxisSet.xAxis.labelingPolicy = CPTAxisLabelingPolicyNone;
+    
+    [self configureAxes];
+    
+    graph.paddingLeft = graph.paddingRight = graph.paddingBottom = graph.paddingTop = 5.0f;
+    
+    CPTPlotArea *plotArea = graph.plotAreaFrame.plotArea;
+    
+    plotArea.fill = [CPTFill fillWithColor:[CPTColor blackColor]];
+    [self configureBarPlot:graph withTitle:title];
+}
+
+- (void) configurePieGraph:(NSString *)title {
+    // set left and right annotations to nil
+    
+    self.rightSideAnnotation = nil;
+    self.leftSideAnnotation = nil;
+    
+    CPTGraph *graph = [[CPTXYGraph alloc] initWithFrame:self.hostingView.frame];
+    [self.graphDictionary setObject:graph forKey:title];
+    self.hostingView.hostedGraph = graph;
+    [graph.plotAreaFrame setPaddingLeft:0.0f];
+    [graph.plotAreaFrame setPaddingRight:0.0f];
+    [graph.plotAreaFrame setPaddingTop:0.0f];
+    [graph.plotAreaFrame setPaddingBottom:0.0f];
+    graph.plotAreaFrame.backgroundColor = [UIColor blackColor].CGColor;
+    
+    [self configurePieChart:graph withTitle:title];
+    
+    // 2 - Create legend
+    CPTLegend *theLegend = [CPTLegend legendWithGraph:graph];
+    // 3 - Configure legend
+    theLegend.numberOfColumns = 1;
+    theLegend.fill = [CPTFill fillWithColor:[CPTColor blackColor]];
+    CPTMutableLineStyle *legendLineStyle = [CPTMutableLineStyle lineStyle];
+    legendLineStyle.lineColor = [CPTColor darkGrayColor];
+    legendLineStyle.lineWidth = 2.0f;
+    CPTMutableTextStyle *legendTextStyle = [CPTMutableTextStyle textStyle];
+    legendTextStyle.color = [CPTColor whiteColor];
+    theLegend.textStyle = legendTextStyle;
+    theLegend.borderLineStyle = legendLineStyle;
+    theLegend.cornerRadius = 5.0;
+    // 4 - Add legend to graph
+    graph.legend = theLegend;
+    graph.legendAnchor = CPTRectAnchorRight;
+    CGFloat legendPadding = -(self.view.bounds.size.width / 22);
+    graph.legendDisplacement = CGPointMake(legendPadding, 0.0);
+}
+
+- (void) configureBarPlot:(CPTGraph *)graph withTitle: (NSString *) title {
+    CPTBarPlot *plot = [[CPTBarPlot alloc] initWithFrame:graph.frame];
+    plot.lineStyle = nil;
+    plot.dataSource = self.nachDS;
+    plot.delegate = self;
+    plot.title = title;
+    plot.barWidth = CPTDecimalFromDouble(CPDBarWidth);
+    [graph addPlot:plot];
+}
+
+- (void) configurePieChart:(CPTGraph *)graph withTitle: (NSString *) title {
+    CPTPieChart *pieChart = [[CPTPieChart alloc] init];
+    pieChart.dataSource = self.nachDS;
+    pieChart.delegate = self;
+    pieChart.title = title;
+    CGFloat pieRadius = (self.hostingView.bounds.size.height * 0.7) / 2;
+    pieChart.pieRadius = pieRadius;
+    pieChart.pieInnerRadius = pieRadius / 4;
+    pieChart.startAngle = M_PI_4;
+    pieChart.sliceDirection = CPTPieDirectionClockwise;
+    pieChart.labelOffset = -pieRadius + pieRadius * 3/7;
+    CPTMutableShadow *shadow = [CPTMutableShadow shadow];
+    shadow.shadowColor = [CPTColor blackColor];
+    shadow.shadowOffset = CGSizeMake(1.0f, -1.0f);
+    shadow.shadowBlurRadius = 0.0f;
+    pieChart.labelShadow = shadow;
+    // 4 - Add chart to graph
+    [graph addPlot:pieChart];
+    
+    //set to -1 last selected idx
+    self.lastSelectedPieChartSliceIdx = -1;
+}
+
+- (void) configureGraph:(NSString *)title ofType:(NSString *)type {
+    if ([@"bar" isEqualToString:type]) {
+        [self configureBarGraph:title];
+    } else if([@"pie" isEqualToString:type]) {
+        [self configurePieGraph:title];
+    }
+}
+
+- (void) configureAxes {
+    
+}
+
+#pragma mark <CPTPlotDelegate> method
+
+// Plot did finished drawing
+- (void) didFinishDrawing:(CPTPlot *)plot {
+    NSLog(@"finish drawing");
+}
+
+// Plot click handler
+- (void) barPlot:(CPTBarPlot *)plot barWasSelectedAtRecordIndex:(NSUInteger)idx {
     if (plot.isHidden) return;
     NSNumber *price = [self.nachDS numberForPlot:plot field:CPTBarPlotFieldBarTip recordIndex:idx];
     NSNumber *month = [self.nachDS numberForPlot:plot field:CPTBarPlotFieldBarLocation recordIndex:idx];
@@ -193,11 +470,8 @@ CGFloat const CPDBarInitialX = 0.25f;
 //    NSLog(@"position=%@", NSStringFromCGPoint(self.strelka.position));
 }
 
-/*
- Pie chart click handler
- */
-- (void) pieChart:(CPTPieChart *)plot sliceWasSelectedAtRecordIndex:(NSUInteger)idx
-{
+// Pie chart click handler
+- (void) pieChart:(CPTPieChart *)plot sliceWasSelectedAtRecordIndex:(NSUInteger)idx {
     NSNumber *flsCount = [self.nachDS numberForPlot:plot field:CPTPieChartFieldSliceWidth recordIndex:idx];
         
     if (!self.leftSideAnnotation) {
@@ -283,6 +557,25 @@ CGFloat const CPDBarInitialX = 0.25f;
 //    self.lastSelectedPieChartSliceIdx = idx;
 }
 
+#pragma mark Other stuff
+
+// Show loading indicator
+- (void) showLoadingMask {
+    NSLog(@"showing load mask");
+    if (!self.loadingMask) {
+        self.loadingMask = [[UIActivityIndicatorView alloc] initWithFrame:self.hostingView.bounds];
+        [self.loadingMask hidesWhenStopped];
+        [self.loadingMask startAnimating];
+    }
+    [self.loadingMask startAnimating];
+}
+
+// Hide loading indicator
+- (void) hideLoadingMask {
+    NSLog(@"hiding load mask");
+    [self.loadingMask stopAnimating];
+}
+
 - (void) pan:(UIPanGestureRecognizer *)recognizer {
     if ((recognizer.state == UIGestureRecognizerStateChanged) ||
         (recognizer.state == UIGestureRecognizerStateEnded)) {
@@ -293,273 +586,8 @@ CGFloat const CPDBarInitialX = 0.25f;
     }
 }
 
-- (void) addPlot:(NSString *)title ofType:(NSString *)type
-{
+- (void) addPlot:(NSString *)title ofType:(NSString *)type {
     [self configureGraph:title ofType:type];
-}
-
-- (void) viewDidLoad
-{
-    [super viewDidLoad];
-    [self.view addSubview:self.hostingView];
-    float width = self.view.bounds.size.width,
-          height = self.view.bounds.size.height,
-          borderWidth = 3.0f;
-    
-    CGRect upperHalfRect = CGRectMake(0.0f, 0.0f, width, height / 2 - 5.0f);
-    
-    CGRect bottomHalfRect = CGRectMake(0.0f, height / 2 - 3.0f, width, height / 2 - 2.0f);
-    
-    CGRect upperHalfRectForTableView = CGRectMake(5.0f, 45.0f, width - 10.0f, height / 2 - 47.0f);
-    
-    UITableView *tableView = [[UITableView alloc] initWithFrame:upperHalfRectForTableView
-                                                          style:UITableViewStylePlain];
-    
-    UITableViewController *tableViewController = [[TableViewController alloc] initWithStyle:UITableViewStylePlain];
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:tableViewController];
-    
-    [tableViewController setView:tableView];
-    [self addChildViewController:navigationController];
-    
-    tableView.backgroundColor = [UIColor blackColor];
-    tableView.separatorColor = [UIColor darkGrayColor];
-    tableView.dataSource = self.tableDataSource;
-    tableView.delegate = tableViewController;    
-    // --------- Table header
-    CGRect tableLabelRect = CGRectMake(0.0f, 0.0f, width, 44.0f);
-    UILabel *tableLabel = [[UILabel alloc] initWithFrame:tableLabelRect];
-    tableLabel.text = @"МосЭнерго";
-    tableLabel.textAlignment = NSTextAlignmentCenter;
-    tableLabel.textColor = [UIColor orangeColor];
-    tableLabel.backgroundColor = [UIColor darkGrayColor];
-    // Create the path (with only the top-left, and top-right corner rounded)
-    UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:tableLabel.bounds
-                                                   byRoundingCorners:UIRectCornerTopLeft | UIRectCornerTopRight
-                                                         cornerRadii:CGSizeMake(10.0, 10.0)];
-    
-    // Create the shape layer and set its path
-    CAShapeLayer *maskLayer = [CAShapeLayer layer];
-    maskLayer.frame = tableLabel.bounds;
-    maskLayer.path = maskPath.CGPath;
-    
-    // Set the newly created shape layer as the mask for the label view's layer
-    tableLabel.layer.mask = maskLayer;
-    
-    [self.view addSubview:tableLabel];
-    
-    [self.view addSubview:tableView];
-    // --------- top screen layer
-    CALayer *layer = [CALayer layer];
-    [layer setFrame:upperHalfRect];
-    [layer setCornerRadius:12.0];
-    [layer setBorderWidth:borderWidth];
-    [layer setBorderColor:[[UIColor darkGrayColor] CGColor]];
-    [layer setOpacity:0.75];
-    self.upperHalfBorderLayer = layer;
-    
-    [[self.view layer] addSublayer:layer];
-    // --------- bottom screen layer
-    CALayer *bottomLayer = [CALayer layer];
-    [bottomLayer setFrame:bottomHalfRect];
-    [bottomLayer setCornerRadius:12.0];
-    [bottomLayer setBorderWidth:borderWidth];
-    [bottomLayer setBorderColor:[[UIColor darkGrayColor] CGColor]];
-    [bottomLayer setOpacity:0.75];
-    self.bottomHalfBorderLayer = bottomLayer;
-    
-    [[self.view layer] addSublayer:bottomLayer];
-}
-
-- (void) configureBarGraph:(NSString *)title {
-    CPTGraph *graph = [[CPTXYGraph alloc] initWithFrame:self.bottomHalfBorderLayer.frame];
-    [self.graphDictionary setObject:graph forKey:title];
-    self.hostingView.hostedGraph = graph;
-    [graph.plotAreaFrame setPaddingLeft:30.0f];
-    [graph.plotAreaFrame setPaddingRight:20.0f];
-    [graph.plotAreaFrame setPaddingTop:27.0f];
-    [graph.plotAreaFrame setPaddingBottom:35.0f];
-    graph.plotAreaFrame.backgroundColor = [UIColor blackColor].CGColor;
-    
-    //---- strelka
-    
-    CPTPlotAreaFrame *plotAreaFrame = graph.plotAreaFrame;
-    
-    CALayer *layer = [CALayer layer];
-    [layer setFrame:CGRectMake(plotAreaFrame.bounds.origin.x + 16.0f,
-                               plotAreaFrame.bounds.origin.y + 18.0f,
-                               16.0f,
-                               16.0f)];
-    
-    NSString *path = [[NSBundle mainBundle] pathForResource:@"triangle" ofType:@"png"];
-    UIImage *image = [UIImage imageWithContentsOfFile:path];
-    layer.contents = (id)(image.CGImage);
-    layer.contentsGravity = kCAGravityCenter;
-    layer.transform = CATransform3DMakeRotation(M_PI, 1.0, 0.0, 0.0);
-    [plotAreaFrame addSublayer:layer];
-    self.strelka = layer;
-    
-    CGFloat xMin = 0.0f;
-    CGFloat xMax = 4.0f;
-    CGFloat yMin = 0.0f;
-    CGFloat yMax = 20.0f;
-    
-    CPTXYPlotSpace *plotSpace = (CPTXYPlotSpace *) graph.defaultPlotSpace;
-    plotSpace.xRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(xMin) length:CPTDecimalFromFloat(xMax)];
-    plotSpace.yRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(yMin) length:CPTDecimalFromFloat(yMax)];
-    
-    CPTMutableTextStyle *axisLabelStyle = [CPTMutableTextStyle textStyle];
-    axisLabelStyle.color = [[CPTColor grayColor] colorWithAlphaComponent:0.8f];
-    axisLabelStyle.fontSize = 9.0f;
-         
-    CPTXYAxisSet *xyAxisSet = (CPTXYAxisSet *) graph.axisSet;
-    
-    CPTMutableTextStyle *axisTitleStyle = [CPTMutableTextStyle textStyle];
-    axisTitleStyle.color = [[CPTColor grayColor] colorWithAlphaComponent:0.8f];
-    axisTitleStyle.fontName = @"Helvetica-Bold";
-    axisTitleStyle.fontSize = 13.0f;
-    
-    xyAxisSet.xAxis.titleTextStyle = axisTitleStyle;
-    xyAxisSet.xAxis.title = @"Период";
-    xyAxisSet.xAxis.titleOffset = 15.0f;
-    
-    xyAxisSet.yAxis.titleTextStyle = axisTitleStyle;
-    xyAxisSet.yAxis.title = @"Начислено";
-    xyAxisSet.yAxis.titleOffset = 260.0f;
-    
-    CPTMutableLineStyle *axisLineStyle = [CPTMutableLineStyle lineStyle];
-    axisLineStyle.lineWidth = 1.0f;
-    axisLineStyle.lineColor = [[CPTColor grayColor] colorWithAlphaComponent:0.3f];
-    
-    xyAxisSet.yAxis.labelTextStyle = axisLabelStyle;
-
-    //----------- major ticks
-    
-    xyAxisSet.yAxis.minorTickLength = 4.0f;
-    xyAxisSet.yAxis.tickDirection = CPTSignPositive;
-    xyAxisSet.yAxis.labelOffset = 15.0f;
-    
-    NSInteger minorIncrement = 5;
-    
-    NSMutableSet *yLabels = [NSMutableSet set];
-    NSMutableSet *yMajorLocations = [NSMutableSet set];
-
-    for (NSInteger j = minorIncrement; j <= yMax; j += minorIncrement) {        
-        CPTAxisLabel *label = [[CPTAxisLabel alloc] initWithText:[NSString stringWithFormat:@"%i", j*100] textStyle:xyAxisSet.yAxis.labelTextStyle];
-        NSDecimal location = CPTDecimalFromInteger(j);
-        label.tickLocation = location;
-        label.offset = -xyAxisSet.yAxis.majorTickLength - xyAxisSet.yAxis.labelOffset;
-        if (label) {
-            [yLabels addObject:label];
-        }
-        [yMajorLocations addObject:[NSDecimalNumber decimalNumberWithDecimal:location]];
-    }
-    
-    xyAxisSet.yAxis.axisLabels = yLabels;
-    xyAxisSet.yAxis.majorTickLocations = yMajorLocations;
-    //-----------------------
-    xyAxisSet.yAxis.titleTextStyle = axisTitleStyle;
-    xyAxisSet.yAxis.axisLineStyle = nil;
-    xyAxisSet.xAxis.axisLineStyle = nil;
-//    xyAxisSet.yAxis.majorGridLineStyle = axisLineStyle;
-    xyAxisSet.yAxis.majorGridLineStyle = axisLineStyle;
-    xyAxisSet.yAxis.majorTickLineStyle = nil;
-
-    xyAxisSet.yAxis.labelingPolicy = CPTAxisLabelingPolicyNone;
-    xyAxisSet.xAxis.labelingPolicy = CPTAxisLabelingPolicyNone;
-    
-    [self configureAxes];
-    
-    graph.paddingLeft = graph.paddingRight = graph.paddingBottom = graph.paddingTop = 5.0f;
-    
-    CPTPlotArea *plotArea = graph.plotAreaFrame.plotArea;
-    
-    plotArea.fill = [CPTFill fillWithColor:[CPTColor blackColor]];
-    [self configureBarPlot:graph withTitle:title];
-}
-
-- (void) configurePieGraph:(NSString *)title
-{
-    // set left and right annotations to nil
-    
-    self.rightSideAnnotation = nil;
-    self.leftSideAnnotation = nil;
-    
-    CPTGraph *graph = [[CPTXYGraph alloc] initWithFrame:self.hostingView.frame];
-    [self.graphDictionary setObject:graph forKey:title];
-    self.hostingView.hostedGraph = graph;
-    [graph.plotAreaFrame setPaddingLeft:0.0f];
-    [graph.plotAreaFrame setPaddingRight:0.0f];
-    [graph.plotAreaFrame setPaddingTop:0.0f];
-    [graph.plotAreaFrame setPaddingBottom:0.0f];
-    graph.plotAreaFrame.backgroundColor = [UIColor blackColor].CGColor;
-    
-    [self configurePieChart:graph withTitle:title];
-    
-    // 2 - Create legend
-    CPTLegend *theLegend = [CPTLegend legendWithGraph:graph];
-    // 3 - Configure legend
-    theLegend.numberOfColumns = 1;
-    theLegend.fill = [CPTFill fillWithColor:[CPTColor blackColor]];
-    CPTMutableLineStyle *legendLineStyle = [CPTMutableLineStyle lineStyle];
-    legendLineStyle.lineColor = [CPTColor darkGrayColor];
-    legendLineStyle.lineWidth = 2.0f;
-    CPTMutableTextStyle *legendTextStyle = [CPTMutableTextStyle textStyle];
-    legendTextStyle.color = [CPTColor whiteColor];
-    theLegend.textStyle = legendTextStyle;
-    theLegend.borderLineStyle = legendLineStyle;
-    theLegend.cornerRadius = 5.0;
-    // 4 - Add legend to graph
-    graph.legend = theLegend;
-    graph.legendAnchor = CPTRectAnchorRight;
-    CGFloat legendPadding = -(self.view.bounds.size.width / 22);
-    graph.legendDisplacement = CGPointMake(legendPadding, 0.0);
-}
-
-- (void) configureBarPlot:(CPTGraph *)graph withTitle: (NSString *) title {
-    CPTBarPlot *plot = [[CPTBarPlot alloc] initWithFrame:graph.frame];
-    plot.lineStyle = nil;
-    plot.dataSource = self.nachDS;
-    plot.delegate = self;
-    plot.title = title;
-    plot.barWidth = CPTDecimalFromDouble(CPDBarWidth);
-    [graph addPlot:plot];
-}
-
-- (void) configurePieChart:(CPTGraph *)graph withTitle: (NSString *) title
-{
-    CPTPieChart *pieChart = [[CPTPieChart alloc] init];
-    pieChart.dataSource = self.nachDS;
-    pieChart.delegate = self;
-    pieChart.title = title;
-    CGFloat pieRadius = (self.hostingView.bounds.size.height * 0.7) / 2;
-    pieChart.pieRadius = pieRadius;
-    pieChart.pieInnerRadius = pieRadius / 4;
-    pieChart.startAngle = M_PI_4;
-    pieChart.sliceDirection = CPTPieDirectionClockwise;
-    pieChart.labelOffset = -pieRadius + pieRadius * 3/7;
-    CPTMutableShadow *shadow = [CPTMutableShadow shadow];
-    shadow.shadowColor = [CPTColor blackColor];
-    shadow.shadowOffset = CGSizeMake(1.0f, -1.0f);
-    shadow.shadowBlurRadius = 0.0f;
-    pieChart.labelShadow = shadow;
-    // 4 - Add chart to graph
-    [graph addPlot:pieChart];
-        
-    //set to -1 last selected idx
-    self.lastSelectedPieChartSliceIdx = -1;
-}
-
-- (void) configureGraph:(NSString *)title ofType:(NSString *)type
-{
-    if ([@"bar" isEqualToString:type]) {
-        [self configureBarGraph:title];
-    } else if([@"pie" isEqualToString:type]) {
-        [self configurePieGraph:title];
-    }
-}
-
-- (void) configureAxes {
-    
 }
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
@@ -569,13 +597,11 @@ CGFloat const CPDBarInitialX = 0.25f;
     }
 }
 
-- (void) addNewMetricByString:(NSString *)identifier
-{
+- (void) addNewMetricByString:(NSString *)identifier {
 
 }
 
-- (void) animationDidStart:(CAAnimation *)anim
-{
+- (void) animationDidStart:(CAAnimation *)anim {
     NSLog(@"strelka start pos=%@", NSStringFromCGPoint(self.strelkaPie.position));
     NSString *value = [anim valueForKey:@"animType"];
     if ([@"nach" isEqualToString:value]) {
@@ -585,8 +611,7 @@ CGFloat const CPDBarInitialX = 0.25f;
     }
 }
 
-- (void) animationDidStop:(CAAnimation *)anim finished:(BOOL)flag
-{
+- (void) animationDidStop:(CAAnimation *)anim finished:(BOOL)flag {
     NSString *value = [anim valueForKey:@"animType"];
     if ([@"nach" isEqualToString:value]) {
         

@@ -21,18 +21,17 @@
 @synthesize graphValues = _graphValues;
 @synthesize isLoading =   _isLoading;
 
--(BOOL)axis:(CPTAxis *)axis shouldUpdateAxisLabelsAtLocations:(NSSet *)locations
-{
+- (BOOL) axis:(CPTAxis *)axis shouldUpdateAxisLabelsAtLocations:(NSSet *)locations {
     axis.axisTitle = [[CPTAxisTitle alloc] initWithText:@"Период" textStyle:[CPTTextStyle textStyle]];
     return YES;
 }
 
--(NSUInteger)numberOfRecordsForPlot:(CPTPlot *)plot
-{
+- (NSUInteger) numberOfRecordsForPlot:(CPTPlot *)plot {
     if ([@"fls" isEqualToString:plot.title]) return 4; // todo remove this stub
     // Todo : invoked 4 times for some reason
     NSUInteger numberOfRecords = 0;
     if (!self.isLoading) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"ShowLoadingMask" object:self];
         self.isLoading = YES; // very bad
         AFHTTPClient *client = [BasicAuthModule httpClient];
         NSDictionary *requestParams = [[NSDictionary alloc] initWithObjectsAndKeys:plot.title, @"type", nil];
@@ -50,11 +49,13 @@
             }
             [plot reloadData];
             self.isLoading = NO;
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"HideLoadingMask" object:self];
             NSLog(@"success");
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             self.isLoading = NO;
             self.graphValues = [NSArray array];
             NSLog(@"failure");
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"HideLoadingMask" object:self];
         }];
     } else {
         numberOfRecords = [self.graphValues count];
@@ -63,8 +64,7 @@
     return numberOfRecords;
 }
 
--(CPTFill *)barFillForBarPlot:(CPTBarPlot *)barPlot recordIndex:(NSUInteger)idx
-{
+- (CPTFill *) barFillForBarPlot:(CPTBarPlot *)barPlot recordIndex:(NSUInteger)idx {
 //    if (idx % 2 == 0) {
         CPTColor *begin = [CPTColor colorWithComponentRed:0.74f green:0.259f blue:0.0f alpha:1.0f];
         CPTColor *end = [CPTColor colorWithComponentRed:1.0f green:0.5833f blue:0.0f alpha:1.0f];
@@ -76,8 +76,7 @@
 //    }
 }
 
--(NSNumber *)numberForPlot:(CPTPlot *)plot field:(NSUInteger)fieldEnum recordIndex:(NSUInteger)idx
-{
+- (NSNumber *) numberForPlot:(CPTPlot *)plot field:(NSUInteger)fieldEnum recordIndex:(NSUInteger)idx {
     // todo remove this stub (Pie Chart)
     if ([@"fls" isEqualToString:plot.title]) {
         int result = 0;
@@ -112,10 +111,9 @@
     return result;
 }
 
-// --------------------------------- Pie Chart 
+#pragma mark Pie chart
 
--(CPTFill *)sliceFillForPieChart:(CPTPieChart *)pieChart recordIndex:(NSUInteger)idx
-{
+- (CPTFill *) sliceFillForPieChart:(CPTPieChart *)pieChart recordIndex:(NSUInteger)idx {
     CPTColor *color;
     switch (idx) {
         case 0:
@@ -145,8 +143,7 @@
     return [CPTFill fillWithColor:color];
 }
 
--(NSString *)legendTitleForPieChart:(CPTPieChart *)pieChart recordIndex:(NSUInteger)idx
-{
+- (NSString *) legendTitleForPieChart:(CPTPieChart *)pieChart recordIndex:(NSUInteger)idx {
     NSString *result;
     switch (idx) {
         case 0:
@@ -167,8 +164,7 @@
     return result;
 }
 
--(CPTLayer *)dataLabelForPlot:(CPTPlot *)plot recordIndex:(NSUInteger)idx
-{
+- (CPTLayer *) dataLabelForPlot:(CPTPlot *)plot recordIndex:(NSUInteger)idx {
     if ([@"nach" isEqualToString:plot.title]) return nil;
     CPTLayer *result;
     //int sum = 15;

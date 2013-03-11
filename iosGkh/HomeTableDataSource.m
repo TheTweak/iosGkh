@@ -18,8 +18,7 @@
 
 @synthesize paramsArray = _paramsArray;
 
--(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:nil];
     cell.detailTextLabel.textColor = [UIColor darkGrayColor];
     cell.textLabel.textColor = [UIColor orangeColor];
@@ -42,9 +41,12 @@
     return cell;
 }
 
--(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
+- (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+#warning Delete! only for dev purpose
+    [BasicAuthModule authenticateWithLogin:@"glava" andPassword:@"1234"];
+#warning end
     if (!self.paramsArray) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"ShowLoadingMask" object:self];
         AFHTTPClient *client = [BasicAuthModule httpClient];
         [client getPath:@"param/list" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
             SBJsonParser *jsonParser = [[SBJsonParser alloc] init];
@@ -53,8 +55,10 @@
             NSArray *params = [jsonParser objectWithString:responseString];
             self.paramsArray = params;
             [tableView reloadData];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"HideLoadingMask" object:self];
             NSLog(@"success");
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"HideLoadingMask" object:self];
             NSLog(@"failure");
         }];
     }
