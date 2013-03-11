@@ -58,19 +58,7 @@ CGFloat const CPDBarInitialX = 0.25f;
 - (void) viewDidLoad {
     [super viewDidLoad];
     [self registerForNotifications];
-    [self.view addSubview:self.hostingView];
-    float width = self.view.bounds.size.width,
-    height = self.view.bounds.size.height,
-    borderWidth = 3.0f;
     
-    CGRect upperHalfRect = CGRectMake(0.0f, 0.0f, width, height / 2 - 5.0f);
-    
-    CGRect bottomHalfRect = CGRectMake(0.0f, height / 2 - 3.0f, width, height / 2 - 2.0f);
-    
-    CGRect upperHalfRectForTableView = CGRectMake(5.0f, 45.0f, width - 10.0f, height / 2 - 47.0f);
-    
-    /*UITableView *tableView = [[UITableView alloc] initWithFrame:upperHalfRectForTableView
-                                                          style:UITableViewStylePlain];*/
     UITableView *tableView = self.tableView;
     
     UITableViewController *tableViewController = [[TableViewController alloc] initWithStyle:UITableViewStylePlain];
@@ -83,49 +71,7 @@ CGFloat const CPDBarInitialX = 0.25f;
     tableView.separatorColor = [UIColor darkGrayColor];
     tableView.dataSource = self.tableDataSource;
     tableView.delegate = tableViewController;
-    // --------- Table header
-    /*CGRect tableLabelRect = CGRectMake(0.0f, 0.0f, width, 44.0f);
-    UILabel *tableLabel = [[UILabel alloc] initWithFrame:tableLabelRect];
-    tableLabel.text = @"МосЭнерго";
-    tableLabel.textAlignment = NSTextAlignmentCenter;
-    tableLabel.textColor = [UIColor orangeColor];
-    tableLabel.backgroundColor = [UIColor darkGrayColor];
-    // Create the path (with only the top-left, and top-right corner rounded)
-    UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:tableLabel.bounds
-                                                   byRoundingCorners:UIRectCornerTopLeft | UIRectCornerTopRight
-                                                         cornerRadii:CGSizeMake(10.0, 10.0)];
-    
-    // Create the shape layer and set its path
-    CAShapeLayer *maskLayer = [CAShapeLayer layer];
-    maskLayer.frame = tableLabel.bounds;
-    maskLayer.path = maskPath.CGPath;
-    
-    // Set the newly created shape layer as the mask for the label view's layer
-    tableLabel.layer.mask = maskLayer;
-    
-    [self.view addSubview:tableLabel];
-    */
-//    [self.view addSubview:tableView];
-    // --------- top screen layer
-    CALayer *layer = [CALayer layer];
-    [layer setFrame:upperHalfRect];
-    [layer setCornerRadius:12.0];
-    [layer setBorderWidth:borderWidth];
-    [layer setBorderColor:[[UIColor darkGrayColor] CGColor]];
-    [layer setOpacity:0.75];
-    self.upperHalfBorderLayer = layer;
-    
-    [[self.view layer] addSublayer:layer];
-    // --------- bottom screen layer
-    CALayer *bottomLayer = [CALayer layer];
-    [bottomLayer setFrame:bottomHalfRect];
-    [bottomLayer setCornerRadius:12.0];
-    [bottomLayer setBorderWidth:borderWidth];
-    [bottomLayer setBorderColor:[[UIColor darkGrayColor] CGColor]];
-    [bottomLayer setOpacity:0.75];
-    self.bottomHalfBorderLayer = bottomLayer;
-    
-    [[self.view layer] addSublayer:bottomLayer];
+    [self.view addSubview:self.hostingView];
 }
 // enabling shake event!
 - (BOOL) canBecomeFirstResponder {
@@ -183,10 +129,10 @@ CGFloat const CPDBarInitialX = 0.25f;
 
 - (CPTGraphHostingView *) hostingView {
     if (!_hostingView) {
-        CGRect hostViewRect = CGRectMake(self.view.frame.origin.x,
-                                         0.0f + self.view.bounds.size.height / 2,
+        CGRect hostViewRect = CGRectMake(0.0,
+                                         160.0,
                                          self.view.bounds.size.width,
-                                         self.view.bounds.size.height / 2);
+                                         260.0);
         
         CPTGraphHostingView *hostView = [[CPTGraphHostingView alloc] initWithFrame:hostViewRect];
         _hostingView = hostView;
