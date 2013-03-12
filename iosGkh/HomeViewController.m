@@ -85,16 +85,20 @@ CGFloat const CPDBarInitialX = 0.25f;
                                              selector:@selector(hideLoadingMask)
                                                  name:@"HideLoadingMask"
                                                object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(reloadDataForCurrentOnScreenPlot) name:@"ReloadCurrentGraph"
+                                               object:nil];
+    
 }
 
 // shake motion handler
 
 - (void) motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event {
-    if (motion == UIEventSubtypeMotionShake)
-    {
-        CPTPlot *plot = [self.graphView.hostedGraph.allPlots objectAtIndex:0];
-        [plot reloadData];
+    if (motion == UIEventSubtypeMotionShake) {
         NSLog(@"SHAKEEE");
+        
+        [self.nachDS loadDataFor:@"nach"];
     }
 }
 #pragma mark Accessors
@@ -133,9 +137,12 @@ CGFloat const CPDBarInitialX = 0.25f;
     switch (indexPath.row) {
         case 0:
         {
+            NSMutableArray *nachArray = [[NSMutableArray alloc] init];
+            [graphDict setValue:nachArray forKey:@"nachArray"];
+            [self.nachDS loadDataFor:@"nach"];
             CPTGraph *graph = (CPTGraph *) [graphDict valueForKey:@"nach"];
             if (graph) {
-                [parentViewController setValue:graph forKeyPath:@"graphView.hostedGraph"];
+                self.graphView.hostedGraph = graph;
             } else {
                 [(id<CPTGraphHolderProtocol>) parentViewController addPlot:@"nach"
                                                                     ofType:@"bar"];
@@ -560,6 +567,7 @@ CGFloat const CPDBarInitialX = 0.25f;
     if (!self.loadingMask) {
         self.loadingMask = [[UIActivityIndicatorView alloc] initWithFrame:self.graphView.bounds];
         [self.loadingMask hidesWhenStopped];
+        [self.graphView addSubview:self.loadingMask];
         [self.loadingMask startAnimating];
     }
     [self.loadingMask startAnimating];
@@ -569,6 +577,13 @@ CGFloat const CPDBarInitialX = 0.25f;
 - (void) hideLoadingMask {
     NSLog(@"hiding load mask");
     [self.loadingMask stopAnimating];
+}
+
+- (void) reloadDataForCurrentOnScreenPlot {
+    NSLog(@"reloading current graph");
+    CPTPlot *currentPlot = [[self.graphView.hostedGraph allPlots] objectAtIndex:0];
+    currentPlot.dataSource = self.nachDS;
+//    [self.graphView.hostedGraph reloadData];
 }
 
 - (void) pan:(UIPanGestureRecognizer *)recognizer {

@@ -11,6 +11,6 @@
 
 @interface Nach : NSObject <CPTBarPlotDataSource, CPTAxisDelegate, CPTPieChartDataSource>
 
-+ (void) loadDataFor: (NSString *) type;
+- (void) loadDataFor: (NSString *) type;
 
 @end
