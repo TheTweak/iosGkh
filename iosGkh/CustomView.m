@@ -30,7 +30,7 @@
     NSLog(@"pressed");
     NSArray *array = [NSArray arrayWithObjects:@"01.2012", @"02.2012", @"03.2012", @"04.2012", nil];
     [ActionSheetStringPicker showPickerWithTitle:@"Период" rows:array initialSelection:nil doneBlock:^(ActionSheetStringPicker *picker, NSInteger selectedIndex, id selectedValue) {
-        NSLog(@"done");
+        NSLog(@"done");        
     } cancelBlock:^(ActionSheetStringPicker *picker) {
         NSLog(@"cancel");
     } origin:self];

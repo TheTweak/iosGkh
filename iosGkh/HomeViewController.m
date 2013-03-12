@@ -24,8 +24,6 @@
 @property (nonatomic, strong) CPTAnnotation       *rightSideAnnotation;
 @property (nonatomic, strong) CALayer             *strelka;
 @property (nonatomic, strong) CALayer             *strelkaPie;
-@property (nonatomic, strong) CALayer             *upperHalfBorderLayer;
-@property (nonatomic, strong) CALayer             *bottomHalfBorderLayer;
 @property (nonatomic, strong) HomeTableDataSource *tableDataSource;
 @property (nonatomic, strong) NSMutableDictionary *graphDictionary;
 @property (nonatomic) NSUInteger lastSelectedPieChartSliceIdx;
@@ -46,8 +44,6 @@ CGFloat const CPDBarInitialX = 0.25f;
 @synthesize rightSideAnnotation =          _rightSideAnnotation;
 @synthesize tableDataSource =              _tableDataSource;
 @synthesize graphDictionary =              _graphDictionary;
-@synthesize upperHalfBorderLayer =         _upperHalfBorderLayer;
-@synthesize bottomHalfBorderLayer =        _bottomHalfBorderLayer;
 @synthesize lastSelectedPieChartSliceIdx = _lastSelectedPieChartSliceIdx;
 @synthesize loadingMask =                  _loadingMask;
 @synthesize tableView =                    _tableView;
@@ -121,7 +117,8 @@ CGFloat const CPDBarInitialX = 0.25f;
 
 #pragma mark - Table view delegate
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView *)tableView
+        didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     CATransition *animation = [CATransition animation];
     animation.delegate = self;
     animation.duration = 0.5;
@@ -176,6 +173,7 @@ CGFloat const CPDBarInitialX = 0.25f;
      [self.navigationController pushViewController:detailViewController animated:YES];
      */
 }
+
 - (void)tableView:(UITableView *)tableView
         accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
     UIViewController *viewController = [[UIViewController alloc] init];
@@ -194,17 +192,18 @@ CGFloat const CPDBarInitialX = 0.25f;
 #pragma mark Configuring plots and graphs and axes
 
 - (void) configureBarGraph:(NSString *)title {
-    CPTGraph *graph = [[CPTXYGraph alloc] initWithFrame:self.bottomHalfBorderLayer.frame];
+    CPTGraph *graph = [[CPTXYGraph alloc] initWithFrame:self.graphView.frame];
     [self.graphDictionary setObject:graph forKey:title];
     self.graphView.hostedGraph = graph;
+    
     [graph.plotAreaFrame setPaddingLeft:30.0f];
     [graph.plotAreaFrame setPaddingRight:20.0f];
     [graph.plotAreaFrame setPaddingTop:27.0f];
     [graph.plotAreaFrame setPaddingBottom:35.0f];
+    
     graph.plotAreaFrame.backgroundColor = [UIColor blackColor].CGColor;
     
     //---- strelka
-    
     CPTPlotAreaFrame *plotAreaFrame = graph.plotAreaFrame;
     
     CALayer *layer = [CALayer layer];
@@ -256,7 +255,6 @@ CGFloat const CPDBarInitialX = 0.25f;
     xyAxisSet.yAxis.labelTextStyle = axisLabelStyle;
     
     //----------- major ticks
-    
     xyAxisSet.yAxis.minorTickLength = 4.0f;
     xyAxisSet.yAxis.tickDirection = CPTSignPositive;
     xyAxisSet.yAxis.labelOffset = 15.0f;
@@ -295,8 +293,8 @@ CGFloat const CPDBarInitialX = 0.25f;
     graph.paddingLeft = graph.paddingRight = graph.paddingBottom = graph.paddingTop = 5.0f;
     
     CPTPlotArea *plotArea = graph.plotAreaFrame.plotArea;
-    
     plotArea.fill = [CPTFill fillWithColor:[CPTColor blackColor]];
+    
     [self configureBarPlot:graph withTitle:title];
 }
 
@@ -340,7 +338,7 @@ CGFloat const CPDBarInitialX = 0.25f;
 - (void) configureBarPlot:(CPTGraph *)graph withTitle: (NSString *) title {
     CPTBarPlot *plot = [[CPTBarPlot alloc] initWithFrame:graph.frame];
     plot.lineStyle = nil;
-    plot.dataSource = self.nachDS;
+    plot.dataSource = nil;
     plot.delegate = self;
     plot.title = title;
     plot.barWidth = CPTDecimalFromDouble(CPDBarWidth);
