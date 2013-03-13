@@ -9,6 +9,7 @@
 #import "Constants.h"
 
 @implementation Constants
-NSString *const BarPlot  = @"BAR_PLOT";
-NSString *const PieChart = @"PIE_CHART";
+NSString *const BarPlot                  = @"BAR_PLOT";
+NSString *const PieChart                 = @"PIE_CHART";
+NSString *const ButtonToScriptMappingKey = @"parameterScriptId";
 @end

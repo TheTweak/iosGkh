@@ -10,14 +10,9 @@
 #import "ActionSheetStringPicker.h"
 #import "BasicAuthModule.h"
 #import "SBJsonParser.h"
-
-@interface CustomView()
-@property (nonatomic, strong) NSString *paramId;
-@end
+#import "UIButton+scriptId.h"
 
 @implementation CustomView
-
-@synthesize paramId = _paramId;
 
 - (id)initWithFrame:(CGRect)frame
              inputs:(NSArray *)inputsArray {
@@ -28,14 +23,15 @@
             NSDictionary *inputMetaData = [inputsArray objectAtIndex:i];
             
             UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-            button.frame = CGRectMake(0, 0, 220, 44);
+            
+            button.frame = CGRectMake(0, i * 50, 220, 44);
             
             NSString *inputDescription = [inputMetaData valueForKey:@"description"];
-            self.paramId = [inputMetaData valueForKey:@"id"];
-            
+            NSString *paramId = [inputMetaData valueForKey:@"id"];
+            [button setParameterScriptId:paramId];
             [button setTitle:inputDescription forState:UIControlStateNormal];
             [button addTarget:self
-                       action:@selector(buttonPressed)
+                       action:@selector(buttonPressed:)
              forControlEvents:UIControlEventTouchDown];
             [self addSubview:button];
         }
@@ -43,11 +39,11 @@
     return self;
 }
 
-- (void) buttonPressed {
+- (void) buttonPressed:(id) button {
     NSLog(@"pressed");
-    
     AFHTTPClient *client = [BasicAuthModule httpClient];
-    NSDictionary *requestParams = [[NSDictionary alloc] initWithObjectsAndKeys:self.paramId, @"type", nil];
+    NSString *paramId = [button getParameterScriptId];
+    NSDictionary *requestParams = [[NSDictionary alloc] initWithObjectsAndKeys:paramId, @"type", nil];
     [client postPath:@"param/value" parameters:requestParams success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"post succeeded");
         SBJsonParser *jsonParser = [[SBJsonParser alloc] init];

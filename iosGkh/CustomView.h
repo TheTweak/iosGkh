@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface CustomView : UIView
-- (void) buttonPressed;
-- (id)initWithFrame:(CGRect)frame
-             inputs:(NSArray *)inputsArray;
+- (void) buttonPressed:(id) button;
+- (id) initWithFrame:(CGRect)frame
+              inputs:(NSArray *)inputsArray;
 @end
