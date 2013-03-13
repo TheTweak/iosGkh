@@ -9,6 +9,7 @@
 #import "HomeTableDataSource.h"
 #import "BasicAuthModule.h"
 #import "SBJsonParser.h"
+#import "Constants.h"
 
 @interface HomeTableDataSource ()
 @property (nonatomic, strong) NSArray* paramsArray;
@@ -36,9 +37,9 @@
     
     NSString *graphType = [paramJson objectForKey:@"graph"];
     NSString *pngFileName;
-    if ([@"BAR_PLOT" isEqualToString:graphType]) {
+    if ([BarPlot isEqualToString:graphType]) {
         pngFileName = @"coins48";
-    } else if ([@"PIE_CHART" isEqualToString:graphType]) {
+    } else if ([PieChart isEqualToString:graphType]) {
         pngFileName = @"fls48";
     } else if ([@"SCATTERED" isEqualToString:graphType]) {
         pngFileName = @"stocks48";
@@ -55,7 +56,7 @@
     [BasicAuthModule authenticateWithLogin:@"glava" andPassword:@"1234"];
 #warning end
     if (!self.paramsArray) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"ShowLoadingMask" object:self];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"ShowTableLoadingMask" object:self];
         AFHTTPClient *client = [BasicAuthModule httpClient];
         [client getPath:@"param/list" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
             SBJsonParser *jsonParser = [[SBJsonParser alloc] init];
@@ -64,10 +65,10 @@
             NSArray *params = [jsonParser objectWithString:responseString];
             self.paramsArray = params;
             [tableView reloadData];
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"HideLoadingMask" object:self];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"HideTableLoadingMask" object:self];
             NSLog(@"success");
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"HideLoadingMask" object:self];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"HideTableLoadingMask" object:self];
             NSLog(@"failure");
         }];
     }
