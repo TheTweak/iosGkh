@@ -29,6 +29,7 @@
 @property (nonatomic, strong) NSMutableDictionary *graphDictionary;
 @property (nonatomic) NSUInteger lastSelectedPieChartSliceIdx;
 @property (nonatomic, strong) UIActivityIndicatorView *loadingMask;
+@property (nonatomic, strong) UIActivityIndicatorView *tableLoadingMask;
 @end
 
 @implementation HomeViewController
@@ -49,6 +50,7 @@ CGFloat const CPDBarInitialX = 0.25f;
 @synthesize loadingMask =                  _loadingMask;
 @synthesize tableView =                    _tableView;
 @synthesize graphView =                    _graphView;
+@synthesize tableLoadingMask =             _tableLoadingMask;
 
 #pragma mark Init
 
@@ -83,8 +85,18 @@ CGFloat const CPDBarInitialX = 0.25f;
                                                object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(showTableLoadingMask)
+                                                 name:@"ShowTableLoadingMask"
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(hideLoadingMask)
                                                  name:@"HideLoadingMask"
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(hideTableLoadingMask)
+                                                 name:@"HideTableLoadingMask"
                                                object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -92,14 +104,13 @@ CGFloat const CPDBarInitialX = 0.25f;
                                                object:nil];
     
 }
-
 // shake motion handler
-
 - (void) motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event {
     if (motion == UIEventSubtypeMotionShake) {
         NSLog(@"SHAKEEE");        
     }
 }
+
 #pragma mark Accessors
 
 - (Nach *) nachDS {
@@ -527,14 +538,32 @@ CGFloat const CPDBarInitialX = 0.25f;
         [self.loadingMask hidesWhenStopped];
         [self.graphView addSubview:self.loadingMask];
         [self.loadingMask startAnimating];
+    } else {
+        [self.loadingMask startAnimating];
     }
-    [self.loadingMask startAnimating];
+}
+
+- (void) showTableLoadingMask {
+    NSLog(@"showing table load mask");
+    if (!self.tableLoadingMask) {
+        self.tableLoadingMask = [[UIActivityIndicatorView alloc] initWithFrame:self.tableView.bounds];
+        [self.tableLoadingMask hidesWhenStopped];
+        [self.tableView addSubview:self.tableLoadingMask];
+        [self.tableLoadingMask startAnimating];
+    } else {
+        [self.tableLoadingMask startAnimating];
+    }
 }
 
 // Hide loading indicator
 - (void) hideLoadingMask {
     NSLog(@"hiding load mask");
     [self.loadingMask stopAnimating];
+}
+
+- (void) hideTableLoadingMask {
+    NSLog(@"hiding table loading mask");
+    [self.tableLoadingMask stopAnimating];
 }
 
 - (void) reloadDataForCurrentOnScreenPlot {
