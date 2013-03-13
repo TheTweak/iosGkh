@@ -20,7 +20,7 @@
 @synthesize paramsArray = _paramsArray;
 
 // Get custom properties of a parameter (id, ... etc) from the home screen table
-- (NSDictionary *)customPropertiesAtRowIndex:(NSUInteger)index {
+- (NSDictionary *) customPropertiesAtRowIndex:(NSUInteger)index {
     NSDictionary *properties;
     if (self.paramsArray) {
         properties = [self.paramsArray objectAtIndex:index];

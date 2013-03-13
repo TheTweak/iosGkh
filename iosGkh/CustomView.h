@@ -10,4 +10,6 @@
 
 @interface CustomView : UIView
 - (void) buttonPressed;
+- (id)initWithFrame:(CGRect)frame
+             inputs:(NSArray *)inputsArray;
 @end

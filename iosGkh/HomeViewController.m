@@ -152,15 +152,14 @@ CGFloat const CPDBarInitialX = 0.25f;
 
 - (void)tableView:(UITableView *)tableView
         accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
+    NSDictionary *customProperties = [self.tableDataSource customPropertiesAtRowIndex:indexPath.row];
+    NSArray *inputsArray = [customProperties valueForKey:@"input"];
+    CustomView *custom = [[CustomView alloc] initWithFrame:self.view.bounds inputs:inputsArray];
+    custom.backgroundColor = [UIColor orangeColor];
     UIViewController *viewController = [[UIViewController alloc] init];
-    UIView *view = [[UIView alloc] initWithFrame:tableView.bounds];
-    view.backgroundColor = [UIColor orangeColor];
-    viewController.view = view;
-    CustomView *custom = [[CustomView alloc] initWithFrame:CGRectMake(0, 0, 128, 44)];
-    [view addSubview:custom];
+    viewController.view = custom;
     UINavigationController *navigationController = (UINavigationController *) self.parentViewController;
     [navigationController pushViewController:viewController animated:YES];
-    NSLog(@"tapped");
 }
 
 #pragma mark Core plot stuff
