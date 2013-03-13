@@ -10,7 +10,4 @@
 #import "CorePlot-CocoaTouch.h"
 
 @interface Nach : NSObject <CPTBarPlotDataSource, CPTAxisDelegate, CPTPieChartDataSource>
-
-- (void) loadDataFor: (NSString *) type;
-
 @end

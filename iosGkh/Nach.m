@@ -13,42 +13,15 @@
 
 @interface Nach ()
 @property (nonatomic, strong) NSArray *graphValues;
-@property (atomic) BOOL isLoaded;
+@property (atomic) BOOL isLoading;
 @property (nonatomic, strong) NSDictionary *dataToType;
 @end
 
 @implementation Nach
 
 @synthesize graphValues = _graphValues;
-@synthesize isLoaded = _isLoaded;
+@synthesize isLoading = _isLoading;
 @synthesize dataToType = _dataToType;
-
-- (void) loadDataFor:(NSString *)type {
-    if (!self.isLoaded) {
-        AFHTTPClient *client = [BasicAuthModule httpClient];
-        NSDictionary *requestParams = [[NSDictionary alloc] initWithObjectsAndKeys:type, @"type", nil];
-        [client postPath:@"param/value" parameters:requestParams success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            NSLog(@"post succeeded");
-            SBJsonParser *jsonParser = [[SBJsonParser alloc] init];
-            NSData *responseData = (NSData *)responseObject;
-            NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
-            NSDictionary *responseJson = [jsonParser objectWithString:responseString];
-            NSArray *params = [responseJson objectForKey:@"values"];
-            self.graphValues = params;
-            for (int i = 0, l = [params count]; i < l; i++) {
-                NSDictionary *jsonObject = [params objectAtIndex:i];
-                NSLog(@"nach x : %@, y : %@", [jsonObject objectForKey:@"x"], [jsonObject objectForKey:@"y"]);
-            }
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"HideLoadingMask" object:self];
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"ReloadCurrentGraph" object:self];
-            self.isLoaded = YES;
-            NSLog(@"success");
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            NSLog(@"failure");
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"HideLoadingMask" object:self];
-        }];
-    }
-}
 
 - (BOOL) axis:(CPTAxis *)axis shouldUpdateAxisLabelsAtLocations:(NSSet *)locations {
     axis.axisTitle = [[CPTAxisTitle alloc] initWithText:@"Период" textStyle:[CPTTextStyle textStyle]];
@@ -56,11 +29,14 @@
 }
 
 - (NSUInteger) numberOfRecordsForPlot:(CPTPlot *)plot {
-    if ([@"fls" isEqualToString:plot.title]) return 4; // todo remove this stub
+    if ([@"flsCount" isEqualToString:plot.title]) {
+        NSLog(@"flsCount numberOfRecords()");
+        return 4; // todo remove this stub
+    }
     // Todo : invoked 4 times for some reason
     NSUInteger numberOfRecords = 0;
     numberOfRecords = [self.graphValues count];
-    /*if (!self.isLoading) {
+    if (!self.isLoading) {
         [[NSNotificationCenter defaultCenter] postNotificationName:@"ShowLoadingMask" object:self];
         self.isLoading = YES; // very bad
         AFHTTPClient *client = [BasicAuthModule httpClient];
@@ -89,7 +65,7 @@
         }];
     } else {
         numberOfRecords = [self.graphValues count];
-    }*/
+    }
     NSLog(@"number of records=%d", numberOfRecords);
     return numberOfRecords;
 }
@@ -108,7 +84,7 @@
 
 - (NSNumber *) numberForPlot:(CPTPlot *)plot field:(NSUInteger)fieldEnum recordIndex:(NSUInteger)idx {
     // todo remove this stub (Pie Chart)
-    if ([@"fls" isEqualToString:plot.title]) {
+    if ([@"flsCount" isEqualToString:plot.title]) {
         int result = 0;
         if (CPTPieChartFieldSliceWidth == fieldEnum) {
             switch (idx) {
