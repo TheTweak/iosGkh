@@ -18,6 +18,15 @@
 
 @synthesize paramsArray = _paramsArray;
 
+// Get custom properties of a parameter (id, ... etc) from the home screen table
+- (NSDictionary *)customPropertiesAtRowIndex:(NSUInteger)index {
+    NSDictionary *properties;
+    if (self.paramsArray) {
+        properties = [self.paramsArray objectAtIndex:index];
+    }
+    return properties;
+}
+
 - (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:nil];
     cell.detailTextLabel.textColor = [UIColor darkGrayColor];
