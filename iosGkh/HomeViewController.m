@@ -12,6 +12,7 @@
 #import "BarPlotSelectingArrow.h"
 #import "HomeTableDataSource.h"
 #import "CustomView.h"
+#import "Constants.h"
 
 @interface HomeViewController ()
 - (void)addPlot:(NSString *)title
@@ -96,9 +97,7 @@ CGFloat const CPDBarInitialX = 0.25f;
 
 - (void) motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event {
     if (motion == UIEventSubtypeMotionShake) {
-        NSLog(@"SHAKEEE");
-        
-        [self.nachDS loadDataFor:@"nach"];
+        NSLog(@"SHAKEEE");        
     }
 }
 #pragma mark Accessors
@@ -118,7 +117,6 @@ CGFloat const CPDBarInitialX = 0.25f;
     return _tableDataSource;
 }
 
-
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView
@@ -130,55 +128,15 @@ CGFloat const CPDBarInitialX = 0.25f;
     animation.type = @"oglFlip";
     animation.subtype = @"fromLeft";
     animation.delegate = self;
-    NSString *value;
-    UIViewController *parentViewController = self;
-    NSDictionary *graphDict = [parentViewController valueForKey:@"graphDictionary"];
-    CPTPlotAreaFrame *plotAreaFrame;
-    switch (indexPath.row) {
-        case 0:
-        {
-            NSMutableArray *nachArray = [[NSMutableArray alloc] init];
-            [graphDict setValue:nachArray forKey:@"nachArray"];
-            [self.nachDS loadDataFor:@"nach"];
-            CPTGraph *graph = (CPTGraph *) [graphDict valueForKey:@"nach"];
-            if (graph) {
-                self.graphView.hostedGraph = graph;
-            } else {
-                [(id<CPTGraphHolderProtocol>) parentViewController addPlot:@"nach"
-                                                                    ofType:@"bar"];
-            }
-            break;
-        }
-        case 1:
-        {
-            [(id<CPTGraphHolderProtocol>) parentViewController addPlot:@"fls"
-                                                                ofType:@"pie"];
-            break;
-        }
-        case 2:
-        {
-            [(id<CPTGraphHolderProtocol>) parentViewController addPlot:@"ДПУ"
-                                                                ofType:@"xy"];
-            break;
-        }
-        default:
-            break;
-    }
-    [animation setValue:value forKey:@"animType"];
-    if (!plotAreaFrame) {
-        CALayer *layer = (CALayer *) [parentViewController valueForKeyPath:@"graphView.layer"];
-        [layer addAnimation:animation forKey:nil];
-    } else {
-        //    [plotAreaFrame addAnimation:animation forKey:nil];
-    }
+    CALayer *layer = (CALayer *) self.graphView.layer;
+    [layer addAnimation:animation forKey:nil];
     
-    // Navigation logic may go here. Create and push another view controller.
-    /*
-     <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-     // ...
-     // Pass the selected object to the new view controller.
-     [self.navigationController pushViewController:detailViewController animated:YES];
-     */
+    NSDictionary *customProperties = [self.tableDataSource customPropertiesAtRowIndex:indexPath.row];
+    NSString *paramId = [customProperties valueForKey:@"id"];
+    NSString *graphType = [customProperties valueForKey:@"graph"];
+    
+    //draw graph
+    [self addPlot:paramId ofType:graphType];
 }
 
 - (void)tableView:(UITableView *)tableView
@@ -345,7 +303,7 @@ CGFloat const CPDBarInitialX = 0.25f;
 - (void) configureBarPlot:(CPTGraph *)graph withTitle: (NSString *) title {
     CPTBarPlot *plot = [[CPTBarPlot alloc] initWithFrame:graph.frame];
     plot.lineStyle = nil;
-    plot.dataSource = nil;
+    plot.dataSource = self.nachDS;
     plot.delegate = self;
     plot.title = title;
     plot.barWidth = CPTDecimalFromDouble(CPDBarWidth);
@@ -376,9 +334,9 @@ CGFloat const CPDBarInitialX = 0.25f;
 }
 
 - (void) configureGraph:(NSString *)title ofType:(NSString *)type {
-    if ([@"bar" isEqualToString:type]) {
+    if ([BarPlot isEqualToString:type]) {
         [self configureBarGraph:title];
-    } else if([@"pie" isEqualToString:type]) {
+    } else if([PieChart isEqualToString:type]) {
         [self configurePieGraph:title];
     }
 }
@@ -583,7 +541,7 @@ CGFloat const CPDBarInitialX = 0.25f;
     NSLog(@"reloading current graph");
     CPTPlot *currentPlot = [[self.graphView.hostedGraph allPlots] objectAtIndex:0];
     currentPlot.dataSource = self.nachDS;
-//    [self.graphView.hostedGraph reloadData];
+    [self.graphView.hostedGraph reloadData];
 }
 
 - (void) pan:(UIPanGestureRecognizer *)recognizer {
