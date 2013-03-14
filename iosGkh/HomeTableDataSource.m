@@ -71,7 +71,7 @@
             NSData *responseData = (NSData *)responseObject;
             NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
             NSArray *params = [jsonParser objectWithString:responseString];
-            self.paramsArray = params;
+            self.paramsArray = [params mutableCopy];
             [tableView reloadData];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"HideTableLoadingMask" object:self];
             NSLog(@"success");
