@@ -10,4 +10,6 @@
 
 @interface CustomViewController : UIViewController
 - (void) rightBarButtonHandler;
+// row index, which input represented by CustomView
+@property(nonatomic) NSUInteger tableRowIndex;
 @end

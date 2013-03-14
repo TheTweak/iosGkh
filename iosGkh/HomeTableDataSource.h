@@ -16,4 +16,8 @@
 // set custom info
 - (void) setCustomProperties:(NSDictionary *) props
                      atIndex:(NSUInteger) index;
+
+// set custom Input info
+- (void) setCustomInputProperties:(NSDictionary *) props
+                          atIndex:(NSUInteger) index;
 @end

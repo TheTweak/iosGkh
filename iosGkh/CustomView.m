@@ -12,20 +12,24 @@
 @implementation CustomView
 
 - (id)initWithFrame:(CGRect)frame
-             inputs:(NSArray *)inputsArray {
+             inputs:(NSDictionary *)inputs {
     self = [super initWithFrame:frame];
     if (self) {
-        // Initialization code
-        for (int i = 0, l = [inputsArray count]; i < l; i++) {
-            NSDictionary *inputMetaData = [inputsArray objectAtIndex:i];
+        // Initialization code        
+        NSEnumerator *enumerator = [inputs keyEnumerator];
+        id key;
+        int i = 0;
+        while ((key = [enumerator nextObject])) {
+            NSDictionary *inputMetaData = [inputs valueForKey:key];
+            
             NSString *inputDescription = [inputMetaData valueForKey:@"description"];
-            NSString *paramId = [inputMetaData valueForKey:@"id"];
             PickerField *textField = [[PickerField alloc] initWithFrame:CGRectMake(20, i * 50, 220, 44)];
-            textField.inputId = paramId;
+            textField.inputId = (NSString *) key;
             textField.placeholder = inputDescription;
             textField.pickerDescription = inputDescription;
             [self addSubview:textField];
-        }
+            i++;
+        }        
     }
     return self;
 }

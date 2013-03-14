@@ -100,8 +100,15 @@ CGFloat const CPDBarInitialX = 0.25f;
                                                object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(reloadDataForCurrentOnScreenPlot) name:@"ReloadCurrentGraph"
-                                               object:nil];    
+                                             selector:@selector(reloadDataForCurrentOnScreenPlot)
+                                                 name:@"ReloadCurrentGraph"
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(updateTableData:)
+                                                 name:@"UpdateTableData"
+                                               object:nil];
+
 }
 // shake motion handler
 - (void) motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event {
@@ -187,13 +194,14 @@ CGFloat const CPDBarInitialX = 0.25f;
 - (void)tableView:(UITableView *)tableView
         accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
     NSDictionary *customProperties = [self.tableDataSource customPropertiesAtRowIndex:indexPath.row];
-    NSArray *inputsArray = [customProperties valueForKey:@"input"];
-    CustomView *custom = [[CustomView alloc] initWithFrame:self.view.bounds inputs:inputsArray];
+    NSDictionary *inputs = [customProperties valueForKey:@"input"];
+    CustomView *custom = [[CustomView alloc] initWithFrame:self.view.bounds inputs:inputs];
     
-    // title for custom view :
     custom.backgroundColor = [UIColor blackColor];
     CustomViewController *viewController = [[CustomViewController alloc] init];
+    viewController.tableRowIndex = indexPath.row;
     viewController.view = custom;
+    // title for custom vc :
     viewController.title = [customProperties valueForKey:@"name"];
     viewController.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"ОК"
                                                                                         style:UIBarButtonItemStylePlain
@@ -600,6 +608,26 @@ CGFloat const CPDBarInitialX = 0.25f;
     /*CPTPlot *currentPlot = [[self.graphView.hostedGraph allPlots] objectAtIndex:0];
     currentPlot.dataSource = self.nachDS;
     [self.graphView.hostedGraph reloadData];*/
+}
+
+// updating the param input.
+// updating the input param value 
+- (void) updateTableData:(NSNotification *) notification {
+    NSString *keyToUpdate = [notification.userInfo valueForKey:@"updateKey"];
+    id newValue = [notification.userInfo valueForKey:@"newValue"];
+    NSNumber *rowIndex = [notification.userInfo valueForKey:@"rowIndex"];
+    NSUInteger row = [rowIndex integerValue];
+    NSDictionary *properties = [self.tableDataSource customPropertiesAtRowIndex:row];
+    NSMutableDictionary *newInput = [NSMutableDictionary dictionaryWithDictionary:[properties valueForKey:@"input"]];
+    NSMutableDictionary *newParamInput = [newInput valueForKey:keyToUpdate];
+    [newParamInput setValue:newValue forKey:@"value"];
+    [newInput setValue:newParamInput forKey:keyToUpdate];
+    
+    NSMutableDictionary *newProperties = [NSMutableDictionary dictionaryWithDictionary:properties];
+    [newProperties setValue:newInput forKey:@"input"];
+    
+    properties = [newProperties dictionaryWithValuesForKeys:[properties allKeys]];
+    [self.tableDataSource setCustomInputProperties:properties atIndex:row];
 }
 
 // updating the data for row in table

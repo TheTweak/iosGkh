@@ -15,9 +15,24 @@
 
 @interface CustomViewController ()
 
+// storing selected values : paramId - value
+@property(nonatomic, strong) NSMutableDictionary *selectedValues;
+
 @end
 
 @implementation CustomViewController
+
+@synthesize tableRowIndex = _tableRowIndex;
+@synthesize selectedValues = _selectedValues;
+
+#pragma mark Acessors
+
+- (NSMutableDictionary *) selectedValues {
+    if (!_selectedValues) {
+        _selectedValues = [NSMutableDictionary dictionary];
+    }
+    return _selectedValues;
+}
 
 - (id)init {
     self = [super init];
@@ -34,6 +49,17 @@
 
 - (void)rightBarButtonHandler {
     NSLog(@"right bar button clicked");
+    NSEnumerator *enumerator = [self.selectedValues keyEnumerator];
+    id key;
+    while ((key = [enumerator nextObject])) {    
+        NSDictionary *notificationDictionary = [NSDictionary dictionaryWithObjectsAndKeys:key, @"updateKey"
+                                                ,[self.selectedValues valueForKey:key], @"newValue"
+                                                ,self.tableRowIndex, @"rowIndex"
+                                                ,nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateTableData"
+                                                            object:self
+                                                          userInfo:notificationDictionary];
+    }
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -47,7 +73,7 @@
 
 - (void)viewDidLoad
 {
-    [super viewDidLoad];    
+    [super viewDidLoad];
 	// Do any additional setup after loading the view.
 }
 
@@ -82,7 +108,7 @@
                                                NSDictionary *selectedJson = [responseJson objectAtIndex:selectedIndex];
                                                UITextField *inputField = (UITextField *) notification.object;
                                                inputField.text = [selectedJson valueForKey:@"name"];
-//                                               self.pickedValueId = [selectedJson valueForKey:@"id"];
+                                               [self.selectedValues setValue:[selectedJson valueForKey:@"id"] forKey:paramId];
                                                NSLog(@"selected: %@", selectedJson);
                                            }
                                          cancelBlock:^(ActionSheetStringPicker *picker) {

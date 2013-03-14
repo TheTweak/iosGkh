@@ -31,6 +31,11 @@
     [self.paramsArray replaceObjectAtIndex:index withObject:props];
 }
 
+- (void) setCustomInputProperties:(NSDictionary *)props atIndex:(NSUInteger)index {
+    NSDictionary *allProperties = [self.paramsArray objectAtIndex:index];
+    NSLog(@"");
+}
+
 - (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:nil];
     cell.detailTextLabel.textColor = [UIColor darkGrayColor];

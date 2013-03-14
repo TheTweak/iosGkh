@@ -10,5 +10,5 @@
 
 @interface CustomView : UIView
 - (id) initWithFrame:(CGRect)frame
-              inputs:(NSArray *)inputsArray;
+              inputs:(NSDictionary *)inputs;
 @end
