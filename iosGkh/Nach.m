@@ -49,12 +49,12 @@
         [requestParameters setValue:self.paramId forKey:@"type"];
         
         // other, param-dependent parameters
-        for (int i = 0, l = self.requestParams.count; i < l; i++) {
-            NSDictionary *param = [self.requestParams objectAtIndex:i];
-            NSString *paramName = [param valueForKey:@"id"];
+        NSEnumerator *enumerator = [self.requestParams keyEnumerator];
+        id key;
+        while ((key = [enumerator nextObject])) {
+            NSDictionary *param = [self.requestParams valueForKey:key];
             NSString *paramValue = [param valueForKey:@"value"];
-            
-            [requestParameters setValue:paramValue forKey:paramName];
+            [requestParameters setValue:paramValue forKey:key];
         }
                 
         [client postPath:@"param/value" parameters:requestParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {

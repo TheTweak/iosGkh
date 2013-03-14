@@ -11,6 +11,6 @@
 
 @interface Nach : NSObject <CPTBarPlotDataSource, CPTAxisDelegate, CPTPieChartDataSource>
 // Plot-specific data request params
-@property (nonatomic, copy) NSArray *requestParams;
+@property (nonatomic, copy) NSDictionary *requestParams;
 @property (nonatomic, strong) NSString *paramId;
 @end
