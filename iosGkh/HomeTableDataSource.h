@@ -9,5 +9,11 @@
 #import <Foundation/Foundation.h>
 
 @interface HomeTableDataSource : NSObject <UITableViewDataSource>
+
+// Get custom properties of a parameter (id, ... etc) from the home screen table
 - (NSDictionary *) customPropertiesAtRowIndex:(NSUInteger) index;
+
+// set custom info
+- (void) setCustomProperties:(NSDictionary *) props
+                     atIndex:(NSUInteger) index;
 @end

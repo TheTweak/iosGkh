@@ -17,6 +17,7 @@
 @property (weak, nonatomic) IBOutlet CPTGraphHostingView *graphView;
 @property (weak, nonatomic) IBOutlet UINavigationBar *navigationBar;
 @property (weak, nonatomic) IBOutlet UIToolbar *toolbar;
--(void)hideLoadingMask;
--(void)showLoadingMask;
+- (void) hideLoadingMask;
+- (void) showLoadingMask;
+- (void) updateRowAtIndex:(NSUInteger)row withData:(NSDictionary *)data;
 @end

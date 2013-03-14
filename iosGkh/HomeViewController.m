@@ -12,6 +12,7 @@
 #import "BarPlotSelectingArrow.h"
 #import "HomeTableDataSource.h"
 #import "CustomView.h"
+#import "CustomViewController.h"
 #import "Constants.h"
 
 @interface HomeViewController ()
@@ -100,8 +101,7 @@ CGFloat const CPDBarInitialX = 0.25f;
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(reloadDataForCurrentOnScreenPlot) name:@"ReloadCurrentGraph"
-                                               object:nil];
-    
+                                               object:nil];    
 }
 // shake motion handler
 - (void) motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event {
@@ -189,9 +189,16 @@ CGFloat const CPDBarInitialX = 0.25f;
     NSDictionary *customProperties = [self.tableDataSource customPropertiesAtRowIndex:indexPath.row];
     NSArray *inputsArray = [customProperties valueForKey:@"input"];
     CustomView *custom = [[CustomView alloc] initWithFrame:self.view.bounds inputs:inputsArray];
+    
+    // title for custom view :
     custom.backgroundColor = [UIColor blackColor];
-    UIViewController *viewController = [[UIViewController alloc] init];
+    CustomViewController *viewController = [[CustomViewController alloc] init];
     viewController.view = custom;
+    viewController.title = [customProperties valueForKey:@"name"];
+    viewController.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"ОК"
+                                                                                        style:UIBarButtonItemStylePlain
+                                                                                       target:viewController
+                                                                                       action:@selector(rightBarButtonHandler)];
     UINavigationController *navigationController = (UINavigationController *) self.parentViewController;
     [navigationController pushViewController:viewController animated:YES];
 }
@@ -593,6 +600,11 @@ CGFloat const CPDBarInitialX = 0.25f;
     /*CPTPlot *currentPlot = [[self.graphView.hostedGraph allPlots] objectAtIndex:0];
     currentPlot.dataSource = self.nachDS;
     [self.graphView.hostedGraph reloadData];*/
+}
+
+// updating the data for row in table
+- (void) updateRowAtIndex:(NSUInteger)row withData:(NSDictionary *)data {
+    [self.tableDataSource setCustomProperties:data atIndex:row];
 }
 
 - (void) pan:(UIPanGestureRecognizer *)recognizer {

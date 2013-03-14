@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 
 @interface PickerField : UITextField
-@property(nonatomic, strong) NSString *scriptId;
+@property(nonatomic, strong) NSString *inputId;
 @property(nonatomic, strong) NSString *pickerDescription;
+// selected value's identity
+@property(nonatomic, strong) NSString *pickedValueId;
 @end

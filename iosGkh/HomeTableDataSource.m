@@ -12,20 +12,23 @@
 #import "Constants.h"
 
 @interface HomeTableDataSource ()
-@property (nonatomic, strong) NSArray* paramsArray;
+@property (nonatomic, strong) NSMutableArray* paramsArray;
 @end
 
 @implementation HomeTableDataSource
 
 @synthesize paramsArray = _paramsArray;
 
-// Get custom properties of a parameter (id, ... etc) from the home screen table
 - (NSDictionary *) customPropertiesAtRowIndex:(NSUInteger)index {
     NSDictionary *properties;
     if (self.paramsArray) {
         properties = [self.paramsArray objectAtIndex:index];
     }
     return properties;
+}
+
+- (void) setCustomProperties:(NSDictionary *)props atIndex:(NSUInteger)index {
+    [self.paramsArray replaceObjectAtIndex:index withObject:props];
 }
 
 - (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {

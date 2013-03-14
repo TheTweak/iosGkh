@@ -21,7 +21,7 @@
             NSString *inputDescription = [inputMetaData valueForKey:@"description"];
             NSString *paramId = [inputMetaData valueForKey:@"id"];
             PickerField *textField = [[PickerField alloc] initWithFrame:CGRectMake(20, i * 50, 220, 44)];
-            textField.scriptId = paramId;
+            textField.inputId = paramId;
             textField.placeholder = inputDescription;
             textField.pickerDescription = inputDescription;
             [self addSubview:textField];

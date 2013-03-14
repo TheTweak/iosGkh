@@ -57,6 +57,7 @@
 		61A6B30D16F07E3E00C6D1A6 /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 61A6B30C16F07E3E00C6D1A6 /* Constants.m */; };
 		61A6B31716F0C54000C6D1A6 /* PickerField.m in Sources */ = {isa = PBXBuildFile; fileRef = 61A6B31616F0C54000C6D1A6 /* PickerField.m */; };
 		61E81AF916EE054B00819BDD /* CustomView.m in Sources */ = {isa = PBXBuildFile; fileRef = 61E81AF816EE054B00819BDD /* CustomView.m */; };
+		61F45D6F16F1D46900598213 /* CustomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 61F45D6E16F1D46900598213 /* CustomViewController.m */; };
 		D83773B297B749B6AFE8FF1C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7716AF1534D04DE2AFEC9746 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -140,6 +141,8 @@
 		61A6B31616F0C54000C6D1A6 /* PickerField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickerField.m; sourceTree = "<group>"; };
 		61E81AF716EE054B00819BDD /* CustomView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomView.h; sourceTree = "<group>"; };
 		61E81AF816EE054B00819BDD /* CustomView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomView.m; sourceTree = "<group>"; };
+		61F45D6D16F1D46900598213 /* CustomViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomViewController.h; sourceTree = "<group>"; };
+		61F45D6E16F1D46900598213 /* CustomViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomViewController.m; sourceTree = "<group>"; };
 		7716AF1534D04DE2AFEC9746 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -308,6 +311,8 @@
 				61A3AC4C16904862005D3311 /* OperationsViewController.h */,
 				61A3AC4D16904863005D3311 /* LoginScreenViewController.h */,
 				61A3AC4E16904863005D3311 /* LoginScreenViewController.m */,
+				61F45D6D16F1D46900598213 /* CustomViewController.h */,
+				61F45D6E16F1D46900598213 /* CustomViewController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -503,6 +508,7 @@
 				61E81AF916EE054B00819BDD /* CustomView.m in Sources */,
 				61A6B30D16F07E3E00C6D1A6 /* Constants.m in Sources */,
 				61A6B31716F0C54000C6D1A6 /* PickerField.m in Sources */,
+				61F45D6F16F1D46900598213 /* CustomViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
