@@ -43,9 +43,21 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:@"ShowLoadingMask" object:self];
         self.isLoading = YES; // very bad
         AFHTTPClient *client = [BasicAuthModule httpClient];
-        NSDictionary *requestParams = [[NSDictionary alloc] initWithObjectsAndKeys:self.paramId, @"type", nil];
+
+        NSMutableDictionary *requestParameters = [[NSMutableDictionary alloc] init];
+        // necessary request param, unique identifier of requesting data
+        [requestParameters setValue:self.paramId forKey:@"type"];
         
-        [client postPath:@"param/value" parameters:requestParams success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        // other, param-dependent parameters
+        for (int i = 0, l = self.requestParams.count; i < l; i++) {
+            NSDictionary *param = [self.requestParams objectAtIndex:i];
+            NSString *paramName = [param valueForKey:@"id"];
+            NSString *paramValue = [param valueForKey:@"value"];
+            
+            [requestParameters setValue:paramValue forKey:paramName];
+        }
+                
+        [client postPath:@"param/value" parameters:requestParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
             NSLog(@"post succeeded");
             SBJsonParser *jsonParser = [[SBJsonParser alloc] init];
             NSData *responseData = (NSData *)responseObject;

@@ -177,6 +177,7 @@ CGFloat const CPDBarInitialX = 0.25f;
     dataSource.paramId = paramId;
     // put data source into map for having at least one strong reference
     [self.paramToCPDataSource setValue:dataSource forKey:paramId];
+    
     dataSource.requestParams = [customProperties valueForKey:@"input"];
     
     // draw graph
