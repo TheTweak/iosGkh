@@ -128,6 +128,24 @@ CGFloat const CPDBarInitialX = 0.25f;
     return _tableDataSource;
 }
 
+- (UIActivityIndicatorView *) loadingMask {
+    if (!_loadingMask) {
+        _loadingMask = [[UIActivityIndicatorView alloc] initWithFrame:self.graphView.bounds];
+        [_loadingMask hidesWhenStopped];
+        [self.graphView addSubview:_loadingMask];
+    }
+    return _loadingMask;
+}
+
+- (UIActivityIndicatorView *) tableLoadingMask {
+    if (!_tableLoadingMask) {
+        _tableLoadingMask = [[UIActivityIndicatorView alloc] initWithFrame:self.tableView.bounds];
+        [_tableLoadingMask hidesWhenStopped];
+        [self.tableView addSubview:_tableLoadingMask];
+    }
+    return _tableLoadingMask;
+}
+
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView
@@ -155,7 +173,7 @@ CGFloat const CPDBarInitialX = 0.25f;
     NSDictionary *customProperties = [self.tableDataSource customPropertiesAtRowIndex:indexPath.row];
     NSArray *inputsArray = [customProperties valueForKey:@"input"];
     CustomView *custom = [[CustomView alloc] initWithFrame:self.view.bounds inputs:inputsArray];
-    custom.backgroundColor = [UIColor orangeColor];
+    custom.backgroundColor = [UIColor blackColor];
     UIViewController *viewController = [[UIViewController alloc] init];
     viewController.view = custom;
     UINavigationController *navigationController = (UINavigationController *) self.parentViewController;
@@ -532,26 +550,12 @@ CGFloat const CPDBarInitialX = 0.25f;
 // Show loading indicator
 - (void) showLoadingMask {
     NSLog(@"showing load mask");
-    if (!self.loadingMask) {
-        self.loadingMask = [[UIActivityIndicatorView alloc] initWithFrame:self.graphView.bounds];
-        [self.loadingMask hidesWhenStopped];
-        [self.graphView addSubview:self.loadingMask];
-        [self.loadingMask startAnimating];
-    } else {
-        [self.loadingMask startAnimating];
-    }
+    [self.loadingMask startAnimating];
 }
 
 - (void) showTableLoadingMask {
     NSLog(@"showing table load mask");
-    if (!self.tableLoadingMask) {
-        self.tableLoadingMask = [[UIActivityIndicatorView alloc] initWithFrame:self.tableView.bounds];
-        [self.tableLoadingMask hidesWhenStopped];
-        [self.tableView addSubview:self.tableLoadingMask];
-        [self.tableLoadingMask startAnimating];
-    } else {
-        [self.tableLoadingMask startAnimating];
-    }
+    [self.tableLoadingMask startAnimating];
 }
 
 // Hide loading indicator
