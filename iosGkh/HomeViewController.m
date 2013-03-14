@@ -199,7 +199,7 @@ CGFloat const CPDBarInitialX = 0.25f;
     
     custom.backgroundColor = [UIColor blackColor];
     CustomViewController *viewController = [[CustomViewController alloc] init];
-    viewController.tableRowIndex = indexPath.row;
+    viewController.tableRowIndex = [NSNumber numberWithInteger:indexPath.row];
     viewController.view = custom;
     // title for custom vc :
     viewController.title = [customProperties valueForKey:@"name"];
