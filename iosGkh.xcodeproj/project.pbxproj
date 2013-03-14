@@ -84,7 +84,6 @@
 		6191BC62169AE50D00CE85BA /* fls48.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fls48.png; sourceTree = "<group>"; };
 		6191BC64169AE67200CE85BA /* dynamic48.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dynamic48.png; sourceTree = "<group>"; };
 		6191BC66169AE76A00CE85BA /* stocks48.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = stocks48.png; sourceTree = "<group>"; };
-		619A515016E8B6DC0017E2C5 /* CPTGraphHolderProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CPTGraphHolderProtocol.h; sourceTree = "<group>"; };
 		61A3ABD9169038A5005D3311 /* iosGkh.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iosGkh.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		61A3ABDD169038A5005D3311 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		61A3ABDF169038A5005D3311 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -181,14 +180,6 @@
 			name = Models;
 			sourceTree = "<group>";
 		};
-		619A514F16E8B68C0017E2C5 /* Protocols */ = {
-			isa = PBXGroup;
-			children = (
-				619A515016E8B6DC0017E2C5 /* CPTGraphHolderProtocol.h */,
-			);
-			name = Protocols;
-			sourceTree = "<group>";
-		};
 		61A3ABCE169038A5005D3311 = {
 			isa = PBXGroup;
 			children = (
@@ -226,7 +217,6 @@
 			isa = PBXGroup;
 			children = (
 				61E81AF616EE052600819BDD /* Views */,
-				619A514F16E8B68C0017E2C5 /* Protocols */,
 				6140D1A7169721B20066F51C /* Models */,
 				61A3AC6216904DB9005D3311 /* Core Plot DS */,
 				61A3AC5B1690490E005D3311 /* Auth */,
