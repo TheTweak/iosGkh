@@ -15,12 +15,8 @@
 #import "Constants.h"
 
 @interface HomeViewController ()
-- (void)addPlot:(NSString *)title
-         ofType:(NSString *)type;
-- (void)configureGraph:(NSString *)title
-                ofType:(NSString *)type;
-- (void)configureAxes;
-@property (nonatomic, strong) Nach                *nachDS;
+
+//@property (nonatomic, strong) Nach                *nachDS;
 @property (nonatomic, strong) CPTAnnotation       *leftSideAnnotation;
 @property (nonatomic, strong) CPTAnnotation       *rightSideAnnotation;
 @property (nonatomic, strong) CALayer             *strelka;
@@ -30,6 +26,8 @@
 @property (nonatomic) NSUInteger lastSelectedPieChartSliceIdx;
 @property (nonatomic, strong) UIActivityIndicatorView *loadingMask;
 @property (nonatomic, strong) UIActivityIndicatorView *tableLoadingMask;
+// mapping between param id and his plot data source
+@property (nonatomic, strong) NSMutableDictionary *paramToCPDataSource;
 @end
 
 @implementation HomeViewController
@@ -39,7 +37,7 @@ CGFloat const CPDBarInitialX = 0.25f;
 
 @synthesize navigationBar =                _navigationBar;
 @synthesize toolbar =                      _toolbar;
-@synthesize nachDS =                       _nachDS;
+//@synthesize nachDS =                       _nachDS;
 @synthesize strelka =                      _strelka;
 @synthesize strelkaPie =                   _strelkaPie;
 @synthesize leftSideAnnotation =           _leftSideAnnotation;
@@ -51,6 +49,7 @@ CGFloat const CPDBarInitialX = 0.25f;
 @synthesize tableView =                    _tableView;
 @synthesize graphView =                    _graphView;
 @synthesize tableLoadingMask =             _tableLoadingMask;
+@synthesize paramToCPDataSource =          _paramToCPDataSource;
 
 #pragma mark Init
 
@@ -113,10 +112,10 @@ CGFloat const CPDBarInitialX = 0.25f;
 
 #pragma mark Accessors
 
-- (Nach *) nachDS {
+/*- (Nach *) nachDS {
     if(!_nachDS) _nachDS = [[Nach alloc] init];
     return _nachDS;
-}
+}*/
 
 - (NSDictionary *) graphDictionary {
     if (!_graphDictionary) _graphDictionary = [NSMutableDictionary dictionary];
@@ -146,6 +145,13 @@ CGFloat const CPDBarInitialX = 0.25f;
     return _tableLoadingMask;
 }
 
+- (NSMutableDictionary *) paramToCPDataSource {
+    if (!_paramToCPDataSource) {
+        _paramToCPDataSource = [[NSMutableDictionary alloc] init];
+    }
+    return _paramToCPDataSource;
+}
+
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView
@@ -160,12 +166,21 @@ CGFloat const CPDBarInitialX = 0.25f;
     CALayer *layer = (CALayer *) self.graphView.layer;
     [layer addAnimation:animation forKey:nil];
     
+    // get selected param all custom properties
+    // (meta-data, like : graph type, unique param id, input params.. etc)
     NSDictionary *customProperties = [self.tableDataSource customPropertiesAtRowIndex:indexPath.row];
     NSString *paramId = [customProperties valueForKey:@"id"];
     NSString *graphType = [customProperties valueForKey:@"graph"];
+    #warning TODO : don't needed to create new ds each time!!! get from Dictionary instead!
+    // now create this param's plot data source
+    Nach *dataSource = [[Nach alloc] init];
+    dataSource.paramId = paramId;
+    // put data source into map for having at least one strong reference
+    [self.paramToCPDataSource setValue:dataSource forKey:paramId];
+    dataSource.requestParams = [customProperties valueForKey:@"input"];
     
-    //draw graph
-    [self addPlot:paramId ofType:graphType];
+    // draw graph
+    [self addPlot:paramId ofType:graphType dataSource:dataSource];
 }
 
 - (void)tableView:(UITableView *)tableView
@@ -184,7 +199,7 @@ CGFloat const CPDBarInitialX = 0.25f;
 
 #pragma mark Configuring plots and graphs and axes
 
-- (void) configureBarGraph:(NSString *)title {
+- (void) configureBarGraph:(NSString *)title dataSource:(id<CPTPlotDataSource>)ds {
     CPTGraph *graph = [[CPTXYGraph alloc] initWithFrame:self.graphView.frame];
     [self.graphDictionary setObject:graph forKey:title];
     self.graphView.hostedGraph = graph;
@@ -288,10 +303,10 @@ CGFloat const CPDBarInitialX = 0.25f;
     CPTPlotArea *plotArea = graph.plotAreaFrame.plotArea;
     plotArea.fill = [CPTFill fillWithColor:[CPTColor blackColor]];
     
-    [self configureBarPlot:graph withTitle:title];
+    [self configureBarPlot:graph withTitle:title dataSource:ds];
 }
 
-- (void) configurePieGraph:(NSString *)title {
+- (void) configurePieGraph:(NSString *)title dataSource:(id<CPTPlotDataSource>)ds {
     // set left and right annotations to nil
     
     self.rightSideAnnotation = nil;
@@ -306,7 +321,7 @@ CGFloat const CPDBarInitialX = 0.25f;
     [graph.plotAreaFrame setPaddingBottom:0.0f];
     graph.plotAreaFrame.backgroundColor = [UIColor blackColor].CGColor;
     
-    [self configurePieChart:graph withTitle:title];
+    [self configurePieChart:graph withTitle:title dataSource:ds];
     
     // 2 - Create legend
     CPTLegend *theLegend = [CPTLegend legendWithGraph:graph];
@@ -328,19 +343,19 @@ CGFloat const CPDBarInitialX = 0.25f;
     graph.legendDisplacement = CGPointMake(legendPadding, 0.0);
 }
 
-- (void) configureBarPlot:(CPTGraph *)graph withTitle: (NSString *) title {
+- (void) configureBarPlot:(CPTGraph *)graph withTitle: (NSString *) title dataSource:(id<CPTPlotDataSource>)ds {
     CPTBarPlot *plot = [[CPTBarPlot alloc] initWithFrame:graph.frame];
     plot.lineStyle = nil;
-    plot.dataSource = self.nachDS;
+    plot.dataSource = ds;
     plot.delegate = self;
     plot.title = title;
     plot.barWidth = CPTDecimalFromDouble(CPDBarWidth);
     [graph addPlot:plot];
 }
 
-- (void) configurePieChart:(CPTGraph *)graph withTitle: (NSString *) title {
+- (void) configurePieChart:(CPTGraph *)graph withTitle: (NSString *) title dataSource:(id<CPTPlotDataSource>)ds {
     CPTPieChart *pieChart = [[CPTPieChart alloc] init];
-    pieChart.dataSource = self.nachDS;
+    pieChart.dataSource = ds;
     pieChart.delegate = self;
     pieChart.title = title;
     CGFloat pieRadius = (self.graphView.bounds.size.height * 0.7) / 2;
@@ -361,11 +376,11 @@ CGFloat const CPDBarInitialX = 0.25f;
     self.lastSelectedPieChartSliceIdx = -1;
 }
 
-- (void) configureGraph:(NSString *)title ofType:(NSString *)type {
+- (void) configureGraph:(NSString *)title ofType:(NSString *)type dataSource:(id<CPTPlotDataSource>)ds {
     if ([BarPlot isEqualToString:type]) {
-        [self configureBarGraph:title];
+        [self configureBarGraph:title dataSource:ds];
     } else if([PieChart isEqualToString:type]) {
-        [self configurePieGraph:title];
+        [self configurePieGraph:title dataSource:ds];
     }
 }
 
@@ -383,8 +398,9 @@ CGFloat const CPDBarInitialX = 0.25f;
 // Plot click handler
 - (void) barPlot:(CPTBarPlot *)plot barWasSelectedAtRecordIndex:(NSUInteger)idx {
     if (plot.isHidden) return;
-    NSNumber *price = [self.nachDS numberForPlot:plot field:CPTBarPlotFieldBarTip recordIndex:idx];
-    NSNumber *month = [self.nachDS numberForPlot:plot field:CPTBarPlotFieldBarLocation recordIndex:idx];
+    // get this plot data source by his title:
+    NSNumber *price = [plot.dataSource numberForPlot:plot field:CPTBarPlotFieldBarTip recordIndex:idx];
+    NSNumber *month = [plot.dataSource numberForPlot:plot field:CPTBarPlotFieldBarLocation recordIndex:idx];
     
     price = [NSNumber numberWithInt:([price intValue] * 100)];
     
@@ -460,7 +476,9 @@ CGFloat const CPDBarInitialX = 0.25f;
 
 // Pie chart click handler
 - (void) pieChart:(CPTPieChart *)plot sliceWasSelectedAtRecordIndex:(NSUInteger)idx {
-    NSNumber *flsCount = [self.nachDS numberForPlot:plot field:CPTPieChartFieldSliceWidth recordIndex:idx];
+    if (plot.isHidden) return;
+    
+    NSNumber *flsCount = [plot.dataSource numberForPlot:plot field:CPTPieChartFieldSliceWidth recordIndex:idx];
         
     if (!self.leftSideAnnotation) {
         CPTLayerAnnotation *annotation = [[CPTLayerAnnotation alloc] initWithAnchorLayer:plot];
@@ -571,9 +589,9 @@ CGFloat const CPDBarInitialX = 0.25f;
 
 - (void) reloadDataForCurrentOnScreenPlot {
     NSLog(@"reloading current graph");
-    CPTPlot *currentPlot = [[self.graphView.hostedGraph allPlots] objectAtIndex:0];
+    /*CPTPlot *currentPlot = [[self.graphView.hostedGraph allPlots] objectAtIndex:0];
     currentPlot.dataSource = self.nachDS;
-    [self.graphView.hostedGraph reloadData];
+    [self.graphView.hostedGraph reloadData];*/
 }
 
 - (void) pan:(UIPanGestureRecognizer *)recognizer {
@@ -586,8 +604,8 @@ CGFloat const CPDBarInitialX = 0.25f;
     }
 }
 
-- (void) addPlot:(NSString *)title ofType:(NSString *)type {
-    [self configureGraph:title ofType:type];
+- (void) addPlot:(NSString *)title ofType:(NSString *)type dataSource:(id<CPTPlotDataSource>) ds {
+    [self configureGraph:title ofType:type dataSource:ds];
 }
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {

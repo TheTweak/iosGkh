@@ -52,9 +52,9 @@
 }
 
 - (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-#warning Delete! only for dev purpose
+    #warning Delete! only for dev purpose
     [BasicAuthModule authenticateWithLogin:@"glava" andPassword:@"1234"];
-#warning end
+    #warning end
     if (!self.paramsArray) {
         [[NSNotificationCenter defaultCenter] postNotificationName:@"ShowTableLoadingMask" object:self];
         AFHTTPClient *client = [BasicAuthModule httpClient];

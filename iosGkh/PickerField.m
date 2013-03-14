@@ -41,7 +41,7 @@
     AFHTTPClient *client = [BasicAuthModule httpClient];
     NSString *paramId = self.scriptId;
     if (!paramId) return NO;
-#warning TODO : loading mask
+    #warning TODO : loading mask
     NSDictionary *requestParams = [[NSDictionary alloc] initWithObjectsAndKeys:paramId, @"type", nil];
     [client postPath:@"param/value" parameters:requestParams success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"post succeeded");

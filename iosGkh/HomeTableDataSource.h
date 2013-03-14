@@ -9,5 +9,5 @@
 #import <Foundation/Foundation.h>
 
 @interface HomeTableDataSource : NSObject <UITableViewDataSource>
--(NSDictionary *) customPropertiesAtRowIndex:(NSUInteger) index;
+- (NSDictionary *) customPropertiesAtRowIndex:(NSUInteger) index;
 @end

@@ -9,10 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "CorePlot-CocoaTouch.h"
 #import "MetricConsumerProtocol.h"
-#import "CPTGraphHolderProtocol.h"
 
 @interface HomeViewController : UIViewController <MetricConsumerProtocol, CPTBarPlotDelegate, UITableViewDelegate,
-                                                  CPTPieChartDelegate, CPTGraphHolderProtocol>
+                                                  CPTPieChartDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet CPTGraphHostingView *graphView;

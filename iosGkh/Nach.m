@@ -10,6 +10,7 @@
 #import "CorePlot-CocoaTouch.h"
 #import "BasicAuthModule.h"
 #import "SBJsonParser.h"
+#import "HomeTableDataSource.h"
 
 @interface Nach ()
 @property (nonatomic, strong) NSArray *graphValues;
@@ -22,6 +23,8 @@
 @synthesize graphValues = _graphValues;
 @synthesize isLoading = _isLoading;
 @synthesize dataToType = _dataToType;
+@synthesize requestParams = _requestParams;
+@synthesize paramId = _paramId;
 
 - (BOOL) axis:(CPTAxis *)axis shouldUpdateAxisLabelsAtLocations:(NSSet *)locations {
     axis.axisTitle = [[CPTAxisTitle alloc] initWithText:@"Период" textStyle:[CPTTextStyle textStyle]];
@@ -29,7 +32,7 @@
 }
 
 - (NSUInteger) numberOfRecordsForPlot:(CPTPlot *)plot {
-    if ([@"flsCount" isEqualToString:plot.title]) {
+    if ([@"flsCount" isEqualToString:self.paramId]) {
         NSLog(@"flsCount numberOfRecords()");
         return 4; // todo remove this stub
     }
@@ -40,7 +43,8 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:@"ShowLoadingMask" object:self];
         self.isLoading = YES; // very bad
         AFHTTPClient *client = [BasicAuthModule httpClient];
-        NSDictionary *requestParams = [[NSDictionary alloc] initWithObjectsAndKeys:plot.title, @"type", nil];
+        NSDictionary *requestParams = [[NSDictionary alloc] initWithObjectsAndKeys:self.paramId, @"type", nil];
+        
         [client postPath:@"param/value" parameters:requestParams success:^(AFHTTPRequestOperation *operation, id responseObject) {
             NSLog(@"post succeeded");
             SBJsonParser *jsonParser = [[SBJsonParser alloc] init];
