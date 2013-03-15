@@ -124,7 +124,7 @@
                             <constraint firstItem="NW5-Oa-o6v" firstAttribute="bottom" secondItem="4wk-Tn-ogs" secondAttribute="bottom" type="default" id="w5o-Wh-xEK"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Test" id="SJe-TZ-FNa"/>
+                    <navigationItem key="navigationItem" title="Google" id="SJe-TZ-FNa"/>
                     <connections>
                         <outlet property="graphView" destination="NW5-Oa-o6v" id="Rz1-MJ-Axa"/>
                         <outlet property="tableView" destination="JIW-yt-sTY" id="8vi-4h-ecD"/>

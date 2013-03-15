@@ -41,6 +41,7 @@
     cell.detailTextLabel.textColor = [UIColor darkGrayColor];
     cell.textLabel.textColor = [UIColor orangeColor];
     cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
+    cell.selectionStyle = UITableViewCellSelectionStyleGray;
     NSDictionary *paramJson = [self.paramsArray objectAtIndex:indexPath.row];
     
     NSString *graphType = [paramJson objectForKey:@"graph"];

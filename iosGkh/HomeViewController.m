@@ -62,6 +62,10 @@ CGFloat const CPDBarInitialX = 0.25f;
     tableView.separatorColor = [UIColor darkGrayColor];
     tableView.dataSource = self.tableDataSource;
     tableView.delegate = self;
+    UINavigationBar *navBar = [[self navigationController] navigationBar];
+    [navBar setTintColor:[UIColor orangeColor]];
+//    UIImage *backgroundImage = [UIImage imageNamed:@"backgr_02.png"];
+//    [navBar setBackgroundImage:backgroundImage forBarMetrics:UIBarMetricsDefault];
 }
 // enabling shake event!
 - (BOOL) canBecomeFirstResponder {
