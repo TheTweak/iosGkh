@@ -255,66 +255,8 @@ CGFloat const CPDBarInitialX = 0.25f;
     plotSpace.yRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(yMin)
                                                     length:CPTDecimalFromFloat(yMax)];
     
-    CPTMutableTextStyle *axisLabelStyle = [CPTMutableTextStyle textStyle];
-    axisLabelStyle.color = [[CPTColor grayColor] colorWithAlphaComponent:0.8f];
-    axisLabelStyle.fontSize = 9.0f;
-    
-    CPTXYAxisSet *xyAxisSet = (CPTXYAxisSet *) graph.axisSet;
-    
-    CPTMutableTextStyle *axisTitleStyle = [CPTMutableTextStyle textStyle];
-    axisTitleStyle.color = [[CPTColor grayColor] colorWithAlphaComponent:0.8f];
-    axisTitleStyle.fontName = @"Helvetica-Bold";
-    axisTitleStyle.fontSize = 13.0f;
-    
-    xyAxisSet.xAxis.titleTextStyle = axisTitleStyle;
-    xyAxisSet.xAxis.title = @"Период";
-    xyAxisSet.xAxis.titleOffset = 15.0f;
-    
-    xyAxisSet.yAxis.titleTextStyle = axisTitleStyle;
-    xyAxisSet.yAxis.title = @"Начислено";
-    xyAxisSet.yAxis.titleOffset = 260.0f;
-    
-    CPTMutableLineStyle *axisLineStyle = [CPTMutableLineStyle lineStyle];
-    axisLineStyle.lineWidth = 1.0f;
-    axisLineStyle.lineColor = [[CPTColor grayColor] colorWithAlphaComponent:0.3f];
-    
-    xyAxisSet.yAxis.labelTextStyle = axisLabelStyle;
-    
-    //----------- major ticks
-    xyAxisSet.yAxis.minorTickLength = 4.0f;
-    xyAxisSet.yAxis.tickDirection = CPTSignPositive;
-    xyAxisSet.yAxis.labelOffset = 15.0f;
-    
-    NSInteger minorIncrement = 5;
-    
-    NSMutableSet *yLabels = [NSMutableSet set];
-    NSMutableSet *yMajorLocations = [NSMutableSet set];
-    
-    for (NSInteger j = minorIncrement; j <= yMax; j += minorIncrement) {
-        CPTAxisLabel *label = [[CPTAxisLabel alloc] initWithText:[NSString stringWithFormat:@"%i", j*100] textStyle:xyAxisSet.yAxis.labelTextStyle];
-        NSDecimal location = CPTDecimalFromInteger(j);
-        label.tickLocation = location;
-        label.offset = -xyAxisSet.yAxis.majorTickLength - xyAxisSet.yAxis.labelOffset;
-        if (label) {
-            [yLabels addObject:label];
-        }
-        [yMajorLocations addObject:[NSDecimalNumber decimalNumberWithDecimal:location]];
-    }
-    
-    xyAxisSet.yAxis.axisLabels = yLabels;
-    xyAxisSet.yAxis.majorTickLocations = yMajorLocations;
-    //-----------------------
-    xyAxisSet.yAxis.titleTextStyle = axisTitleStyle;
-    xyAxisSet.yAxis.axisLineStyle = nil;
-    xyAxisSet.xAxis.axisLineStyle = nil;
-    //    xyAxisSet.yAxis.majorGridLineStyle = axisLineStyle;
-    xyAxisSet.yAxis.majorGridLineStyle = axisLineStyle;
-    xyAxisSet.yAxis.majorTickLineStyle = nil;
-    
-    xyAxisSet.yAxis.labelingPolicy = CPTAxisLabelingPolicyNone;
-    xyAxisSet.xAxis.labelingPolicy = CPTAxisLabelingPolicyNone;
-    
-    [self configureAxes];
+    // configure axes
+    [self configureAxes:graph yMax:yMax];
     
     graph.paddingLeft = graph.paddingRight = graph.paddingBottom = graph.paddingTop = 5.0f;
     
@@ -367,16 +309,79 @@ CGFloat const CPDBarInitialX = 0.25f;
     graph.plotAreaFrame.backgroundColor = [UIColor blackColor].CGColor;
     graph.paddingLeft = graph.paddingRight = graph.paddingBottom = graph.paddingTop = 5.0f;
     CPTXYPlotSpace *plotSpace = (CPTXYPlotSpace *) graph.defaultPlotSpace;
-    plotSpace.xRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(0.0) length:CPTDecimalFromFloat(25)];
+    plotSpace.xRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(0.0) length:CPTDecimalFromFloat(10)];
     plotSpace.yRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(0.0) length:CPTDecimalFromFloat(21)];
-        
+    [graph.plotAreaFrame setPaddingLeft:20.0f];
+//    [graph.plotAreaFrame setPaddingRight:5.0f];
+    [graph.plotAreaFrame setPaddingTop:25.0f];
+    [graph.plotAreaFrame setPaddingBottom:25.0f];
+    
+    // axes
+    
+    // label text style
+    CPTMutableTextStyle *axisLabelStyle = [CPTMutableTextStyle textStyle];
+    axisLabelStyle.color = [[CPTColor grayColor] colorWithAlphaComponent:0.8f];
+    axisLabelStyle.fontSize = 9.0f;
+    // title axis style
+    CPTMutableTextStyle *axisTitleStyle = [CPTMutableTextStyle textStyle];
+    axisTitleStyle.color = [[CPTColor grayColor] colorWithAlphaComponent:0.8f];
+    axisTitleStyle.fontName = @"Helvetica-Bold";
+    axisTitleStyle.fontSize = 13.0f;
+    // axis line style
+    CPTMutableLineStyle *axisLineStyle = [CPTMutableLineStyle lineStyle];
+    axisLineStyle.lineWidth = 2.0f;
+    axisLineStyle.lineColor = [[CPTColor grayColor] colorWithAlphaComponent:0.8f];
+    
+    CPTXYAxisSet *xyAxisSet = (CPTXYAxisSet *) graph.axisSet;
+    // x axis title
+    xyAxisSet.xAxis.titleTextStyle = axisTitleStyle;
+    xyAxisSet.xAxis.title = @"Период";
+    xyAxisSet.xAxis.titleOffset = 5.0f;
+    xyAxisSet.xAxis.axisLineStyle = axisLineStyle;
+    // y axis
+    xyAxisSet.yAxis.titleTextStyle = axisTitleStyle;
+    xyAxisSet.yAxis.title = @"Показания";
+    xyAxisSet.yAxis.titleOffset = 5.0f;
+    xyAxisSet.yAxis.axisLineStyle = axisLineStyle;
+    // ticks
+    //----------- major ticks
+      /*xyAxisSet.yAxis.minorTickLength = 4.0f;
+    xyAxisSet.yAxis.tickDirection = CPTSignPositive;
+    xyAxisSet.yAxis.labelOffset = 15.0f;
+    
+    NSInteger minorIncrement = 5;
+  
+    NSMutableSet *yLabels = [NSMutableSet set];
+    NSMutableSet *yMajorLocations = [NSMutableSet set];
+    for (NSInteger j = minorIncrement; j <= 21; j += minorIncrement) {
+        CPTAxisLabel *label = [[CPTAxisLabel alloc] initWithText:[NSString stringWithFormat:@"%i", j*100] textStyle:xyAxisSet.yAxis.labelTextStyle];
+        NSDecimal location = CPTDecimalFromInteger(j);
+        label.tickLocation = location;
+        label.offset = -xyAxisSet.yAxis.majorTickLength - xyAxisSet.yAxis.labelOffset;
+        if (label) {
+            [yLabels addObject:label];
+        }
+        [yMajorLocations addObject:[NSDecimalNumber decimalNumberWithDecimal:location]];
+    }
+    
+    xyAxisSet.yAxis.axisLabels = yLabels;
+    xyAxisSet.yAxis.majorTickLocations = yMajorLocations;
+    */
+    
     // plot
     CPTScatterPlot *plot = [[CPTScatterPlot alloc] init];
     plot.interpolation = CPTScatterPlotInterpolationCurved;
     plot.dataSource = ds;
     plot.labelTextStyle = nil;
+    CPTColor *begin = [CPTColor colorWithComponentRed:0.74f green:0.259f blue:0.0f alpha:0.1f];
+    CPTColor *end = [CPTColor colorWithComponentRed:1.0f green:0.5833f blue:0.0f alpha:1.0f];
+    CPTGradient *gradient = [CPTGradient gradientWithBeginningColor:begin endingColor:end];
+    gradient.angle = 90.0f;
+    plot.areaFill = [CPTFill fillWithGradient:gradient];
+    plot.areaBaseValue = [[NSNumber numberWithFloat:0.0] decimalValue];
     CPTMutableLineStyle *lineStyle = [[CPTMutableLineStyle alloc] init];
     lineStyle.lineColor = [CPTColor orangeColor];
+    lineStyle.lineWidth = 2.0;
     plot.dataLineStyle = lineStyle;
     [graph addPlot:plot];
 }
@@ -424,8 +429,64 @@ CGFloat const CPDBarInitialX = 0.25f;
     }
 }
 
-- (void) configureAxes {
+- (void) configureAxes:(CPTGraph *)graph yMax:(NSUInteger)yMax {
+    CPTMutableTextStyle *axisLabelStyle = [CPTMutableTextStyle textStyle];
+    axisLabelStyle.color = [[CPTColor grayColor] colorWithAlphaComponent:0.8f];
+    axisLabelStyle.fontSize = 9.0f;
     
+    CPTXYAxisSet *xyAxisSet = (CPTXYAxisSet *) graph.axisSet;
+    
+    CPTMutableTextStyle *axisTitleStyle = [CPTMutableTextStyle textStyle];
+    axisTitleStyle.color = [[CPTColor grayColor] colorWithAlphaComponent:0.8f];
+    axisTitleStyle.fontName = @"Helvetica-Bold";
+    axisTitleStyle.fontSize = 13.0f;
+    
+    xyAxisSet.xAxis.titleTextStyle = axisTitleStyle;
+    xyAxisSet.xAxis.title = @"Период";
+    xyAxisSet.xAxis.titleOffset = 15.0f;
+    
+    xyAxisSet.yAxis.titleTextStyle = axisTitleStyle;
+    xyAxisSet.yAxis.title = @"Начислено";
+    xyAxisSet.yAxis.titleOffset = 260.0f;
+    
+    CPTMutableLineStyle *axisLineStyle = [CPTMutableLineStyle lineStyle];
+    axisLineStyle.lineWidth = 1.0f;
+    axisLineStyle.lineColor = [[CPTColor grayColor] colorWithAlphaComponent:0.3f];
+    
+    xyAxisSet.yAxis.labelTextStyle = axisLabelStyle;
+    
+    //----------- major ticks
+    xyAxisSet.yAxis.minorTickLength = 4.0f;
+    xyAxisSet.yAxis.tickDirection = CPTSignPositive;
+    xyAxisSet.yAxis.labelOffset = 15.0f;
+    
+    NSInteger minorIncrement = 5;
+    
+    NSMutableSet *yLabels = [NSMutableSet set];
+    NSMutableSet *yMajorLocations = [NSMutableSet set];
+    
+    for (NSInteger j = minorIncrement; j <= yMax; j += minorIncrement) {
+        CPTAxisLabel *label = [[CPTAxisLabel alloc] initWithText:[NSString stringWithFormat:@"%i", j*100] textStyle:xyAxisSet.yAxis.labelTextStyle];
+        NSDecimal location = CPTDecimalFromInteger(j);
+        label.tickLocation = location;
+        label.offset = -xyAxisSet.yAxis.majorTickLength - xyAxisSet.yAxis.labelOffset;
+        if (label) {
+            [yLabels addObject:label];
+        }
+        [yMajorLocations addObject:[NSDecimalNumber decimalNumberWithDecimal:location]];
+    }
+    
+    xyAxisSet.yAxis.axisLabels = yLabels;
+    xyAxisSet.yAxis.majorTickLocations = yMajorLocations;
+    //-----------------------
+    xyAxisSet.yAxis.titleTextStyle = axisTitleStyle;
+    xyAxisSet.yAxis.axisLineStyle = nil;
+    xyAxisSet.xAxis.axisLineStyle = nil;
+    xyAxisSet.yAxis.majorGridLineStyle = axisLineStyle;
+    xyAxisSet.yAxis.majorTickLineStyle = nil;
+    
+    xyAxisSet.yAxis.labelingPolicy = CPTAxisLabelingPolicyNone;
+    xyAxisSet.xAxis.labelingPolicy = CPTAxisLabelingPolicyNone;
 }
 
 #pragma mark <CPTPlotDelegate> method
