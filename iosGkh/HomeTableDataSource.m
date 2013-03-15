@@ -49,7 +49,7 @@
         pngFileName = @"coins48";
     } else if ([PieChart isEqualToString:graphType]) {
         pngFileName = @"fls48";
-    } else if ([@"SCATTERED" isEqualToString:graphType]) {
+    } else if ([XYPlot isEqualToString:graphType]) {
         pngFileName = @"stocks48";
     }
     NSString *path = [[NSBundle mainBundle] pathForResource:pngFileName ofType:@"png"];

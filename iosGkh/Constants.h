@@ -11,5 +11,5 @@
 @interface Constants : NSObject
 FOUNDATION_EXPORT NSString *const BarPlot;
 FOUNDATION_EXPORT NSString *const PieChart;
-FOUNDATION_EXPORT NSString *const ButtonToScriptMappingKey;
+FOUNDATION_EXPORT NSString *const XYPlot;
 @end

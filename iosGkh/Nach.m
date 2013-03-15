@@ -35,7 +35,7 @@
     if ([@"flsCount" isEqualToString:self.paramId]) {
         NSLog(@"flsCount numberOfRecords()");
         return 4; // todo remove this stub
-    }
+    }        
     // Todo : invoked 4 times for some reason
     NSUInteger numberOfRecords = 0;
     numberOfRecords = [self.graphValues count];
@@ -99,6 +99,7 @@
 }
 
 - (NSNumber *) numberForPlot:(CPTPlot *)plot field:(NSUInteger)fieldEnum recordIndex:(NSUInteger)idx {
+
     // todo remove this stub (Pie Chart)
     if ([@"flsCount" isEqualToString:plot.title]) {
         int result = 0;
@@ -121,15 +122,24 @@
         }
         return [NSNumber numberWithInt:result];
     }
-    
+        
     NSDictionary *jsonObject = [self.graphValues objectAtIndex:idx];
     NSNumber *result;
     
-    if (CPTBarPlotFieldBarLocation == fieldEnum) {
-        result = [jsonObject objectForKey:@"x"];
-    } else if (CPTBarPlotFieldBarTip == fieldEnum) {
-        result = [jsonObject objectForKey:@"y"];
+    if ([plot isKindOfClass:[CPTScatterPlot class]]) {
+        if (CPTScatterPlotFieldX == fieldEnum) {            
+            result = [jsonObject objectForKey:@"x"];
+        } else if (CPTScatterPlotFieldY == fieldEnum) {
+            result = [jsonObject objectForKey:@"y"];
+        }
+    } else if ([plot isKindOfClass:[CPTBarPlot class]]) {
+        if (CPTBarPlotFieldBarLocation == fieldEnum) {
+            result = [jsonObject objectForKey:@"x"];
+        } else if (CPTBarPlotFieldBarTip == fieldEnum) {
+            result = [jsonObject objectForKey:@"y"];
+        }
     }
+    
     return result;
 }
 
@@ -187,6 +197,7 @@
 }
 
 - (CPTLayer *) dataLabelForPlot:(CPTPlot *)plot recordIndex:(NSUInteger)idx {
+    if ([plot isKindOfClass:[CPTScatterPlot class]]) return nil;
     if ([@"nach" isEqualToString:plot.title]) return nil;
     CPTLayer *result;
     //int sum = 15;
@@ -205,6 +216,13 @@
     // 5 - Create and return layer with label text
     result = [[CPTTextLayer alloc] initWithText:labelValue style:labelText];
     return result;
+}
+
+#pragma mark XY plot
+
+- (CPTPlotSymbol *) symbolForScatterPlot:(CPTScatterPlot *)plot
+                             recordIndex:(NSUInteger)idx {
+    return nil;
 }
 
 @end

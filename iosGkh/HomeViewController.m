@@ -250,8 +250,10 @@ CGFloat const CPDBarInitialX = 0.25f;
     CGFloat yMax = 20.0f;
     
     CPTXYPlotSpace *plotSpace = (CPTXYPlotSpace *) graph.defaultPlotSpace;
-    plotSpace.xRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(xMin) length:CPTDecimalFromFloat(xMax)];
-    plotSpace.yRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(yMin) length:CPTDecimalFromFloat(yMax)];
+    plotSpace.xRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(xMin)
+                                                    length:CPTDecimalFromFloat(xMax)];
+    plotSpace.yRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(yMin)
+                                                    length:CPTDecimalFromFloat(yMax)];
     
     CPTMutableTextStyle *axisLabelStyle = [CPTMutableTextStyle textStyle];
     axisLabelStyle.color = [[CPTColor grayColor] colorWithAlphaComponent:0.8f];
@@ -359,6 +361,26 @@ CGFloat const CPDBarInitialX = 0.25f;
     graph.legendDisplacement = CGPointMake(legendPadding, 0.0);
 }
 
+- (void) configureXYGraph:(NSString *)title dataSource:(id<CPTPlotDataSource>)ds {
+    CPTGraph *graph = [[CPTXYGraph alloc] initWithFrame:self.graphView.frame];
+    self.graphView.hostedGraph = graph;
+    graph.plotAreaFrame.backgroundColor = [UIColor blackColor].CGColor;
+    graph.paddingLeft = graph.paddingRight = graph.paddingBottom = graph.paddingTop = 5.0f;
+    CPTXYPlotSpace *plotSpace = (CPTXYPlotSpace *) graph.defaultPlotSpace;
+    plotSpace.xRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(0.0) length:CPTDecimalFromFloat(25)];
+    plotSpace.yRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(0.0) length:CPTDecimalFromFloat(21)];
+        
+    // plot
+    CPTScatterPlot *plot = [[CPTScatterPlot alloc] init];
+    plot.interpolation = CPTScatterPlotInterpolationCurved;
+    plot.dataSource = ds;
+    plot.labelTextStyle = nil;
+    CPTMutableLineStyle *lineStyle = [[CPTMutableLineStyle alloc] init];
+    lineStyle.lineColor = [CPTColor orangeColor];
+    plot.dataLineStyle = lineStyle;
+    [graph addPlot:plot];
+}
+
 - (void) configureBarPlot:(CPTGraph *)graph withTitle: (NSString *) title dataSource:(id<CPTPlotDataSource>)ds {
     CPTBarPlot *plot = [[CPTBarPlot alloc] initWithFrame:graph.frame];
     plot.lineStyle = nil;
@@ -397,6 +419,8 @@ CGFloat const CPDBarInitialX = 0.25f;
         [self configureBarGraph:title dataSource:ds];
     } else if([PieChart isEqualToString:type]) {
         [self configurePieGraph:title dataSource:ds];
+    } else if([XYPlot isEqualToString:type]) {
+        [self configureXYGraph:title dataSource:ds];
     }
 }
 

@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "CorePlot-CocoaTouch.h"
 
-@interface Nach : NSObject <CPTBarPlotDataSource, CPTAxisDelegate, CPTPieChartDataSource>
+@interface Nach : NSObject <CPTBarPlotDataSource, CPTAxisDelegate, CPTPieChartDataSource, CPTScatterPlotDataSource>
 // Plot-specific data request params
 @property (nonatomic, copy) NSDictionary *requestParams;
 @property (nonatomic, strong) NSString *paramId;
