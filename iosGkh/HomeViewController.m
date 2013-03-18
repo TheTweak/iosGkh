@@ -32,8 +32,12 @@
 // graph hosting view
 @property (nonatomic, strong) CPTGraphHostingView *graphView;
 // array of view controllers, that could be pages in the page control
+// of the current on-screen graph
 @property (nonatomic, strong) NSMutableArray *pageViewControllersArray;
 @property (nonatomic) BOOL pageControlUsed;
+// mapping between graph and array of pages to scroll between at
+// bottom of the screen
+@property (nonatomic, strong) NSMutableDictionary *graphToPagesDictionary;
 @end
 
 @implementation HomeViewController
@@ -58,6 +62,7 @@ CGFloat const CPDBarInitialX = 0.25f;
 @synthesize paramToCPDataSource =          _paramToCPDataSource;
 @synthesize pageControlView =              _pageControlView;
 @synthesize pageViewControllersArray =     _pageViewControllersArray;
+@synthesize graphToPagesDictionary =       _graphToPagesDictionary;
 
 #pragma mark Init
 
@@ -71,6 +76,7 @@ CGFloat const CPDBarInitialX = 0.25f;
     tableView.delegate = self;
     UINavigationBar *navBar = [[self navigationController] navigationBar];
     [navBar setTintColor:[UIColor orangeColor]];
+#warning todo remove explicit height calculation
     float graphViewWidth = self.view.bounds.size.width
          ,graphViewHeight = self.view.frame.size.height - 160 - 44;
     
@@ -87,13 +93,24 @@ CGFloat const CPDBarInitialX = 0.25f;
 
 #pragma mark Scroll view delegate methods
 
-- (void) scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+- (void) addViewControllerToPageControl:(int) index {
+    
+}
+
+- (void) scrollViewDidEndDecelerating:(UIScrollView *) scrollView {
     int pageNumber = [self determineCurrentPageNumber:scrollView.contentOffset.x];
     self.pageControlView.currentPage = pageNumber;
+    if (pageNumber > 0) {
+        NSArray *pages = [self.graphToPagesDictionary valueForKey:[[self.graphView.hostedGraph.allPlots objectAtIndex:0] title]];
+        UIViewController *viewController = (UIViewController *) [pages objectAtIndex:pageNumber - 1];
+        UITableView *tableView = (UITableView *) viewController.view;
+        [tableView reloadData];
+    }
     NSLog(@"EndDecelerating:%i", pageNumber);
 }
 
 - (int) determineCurrentPageNumber:(float) offset {
+#warning todo remove explicit 320
     return offset / 320;
 }
 
@@ -196,6 +213,13 @@ CGFloat const CPDBarInitialX = 0.25f;
     return _paramToCPDataSource;
 }
 
+- (NSMutableDictionary *) graphToPagesDictionary {
+    if (!_graphToPagesDictionary) {
+        _graphToPagesDictionary = [[NSMutableDictionary alloc] init];
+    }
+    return _graphToPagesDictionary;
+}
+
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView
@@ -226,6 +250,23 @@ CGFloat const CPDBarInitialX = 0.25f;
     
     // draw graph
     [self addPlot:paramId ofType:graphType dataSource:dataSource];
+    
+    // create custom representation
+    NSString *representationType = [customProperties valueForKey:@"additionalRep"];
+    if (representationType) {
+        if ([@"TABLE" isEqualToString:representationType]) {
+            UITableViewController *tableViewController = [[UITableViewController alloc] initWithStyle:UITableViewStylePlain];
+            NSArray *pageViewControllers = [NSArray arrayWithObjects:tableViewController, nil];
+            [self.graphToPagesDictionary setValue:pageViewControllers forKey:paramId];
+            UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(320, 0, 320, 220)];
+            tableViewController.view = tableView;
+            tableView.dataSource = dataSource;
+            tableView.backgroundColor = [UIColor blackColor];
+            tableView.separatorColor = [UIColor darkGrayColor];
+            
+            [self.bottomView addSubview:tableView];
+        }
+    }
 }
 
 - (void)tableView:(UITableView *)tableView

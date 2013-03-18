@@ -86,6 +86,41 @@
     return numberOfRecords;
 }
 
+- (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return [self.graphValues count];
+}
+
+- (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:nil];
+    cell.detailTextLabel.textColor = [UIColor darkGrayColor];
+    cell.textLabel.textColor = [UIColor orangeColor];
+    cell.selectionStyle = UITableViewCellSelectionStyleGray;
+    
+    NSDictionary *jsonObject = [self.graphValues objectAtIndex:indexPath.row];
+    NSNumber *price = [jsonObject objectForKey:@"y"];
+    price = [NSNumber numberWithInt:([price intValue] * 100)];
+    
+    NSArray *monthsArray = [NSArray arrayWithObjects:@"Январь", @"Февраль",
+                            @"Март", @"Апрель", @"Май",
+                            @"Июнь", @"Июль", @"Август",
+                            @"Сентябрь", @"Октябрь", @"Ноябрь",
+                            @"Декабрь", nil];
+    NSString *monthValue = [monthsArray objectAtIndex:indexPath.row];
+    
+    static NSNumberFormatter *formatter = nil;
+    if (!formatter) {
+        formatter = [[NSNumberFormatter alloc] init];
+        [formatter setMaximumFractionDigits:2];
+        [formatter setUsesGroupingSeparator:YES];
+        [formatter setGroupingSize:3];
+        [formatter setGroupingSeparator:@" "];
+    }
+    NSString *priceValue = [[formatter stringFromNumber:price] stringByAppendingString:@"р."];
+    
+    cell.textLabel.text = [monthValue stringByAppendingFormat:@" - %@", priceValue];
+    return cell;
+}
+
 - (CPTFill *) barFillForBarPlot:(CPTBarPlot *)barPlot recordIndex:(NSUInteger)idx {
 //    if (idx % 2 == 0) {
         CPTColor *begin = [CPTColor colorWithComponentRed:0.74f green:0.259f blue:0.0f alpha:1.0f];
