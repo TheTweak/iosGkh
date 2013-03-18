@@ -103,8 +103,8 @@
                         <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NW5-Oa-o6v" customClass="CPTGraphHostingView">
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ke2-8n-u07" customClass="UIScrollView">
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="JIW-yt-sTY">
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -112,27 +112,35 @@
                                     <constraint firstAttribute="height" constant="160" id="AK0-mz-LtA"/>
                                 </constraints>
                             </tableView>
+                            <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="2" translatesAutoresizingMaskIntoConstraints="NO" id="els-ZB-SKO">
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="40" id="fgq-RV-VqI"/>
+                                </constraints>
+                            </pageControl>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstAttribute="bottom" secondItem="ke2-8n-u07" secondAttribute="bottom" constant="23" id="331-yi-vEi"/>
                             <constraint firstItem="JIW-yt-sTY" firstAttribute="leading" secondItem="4wk-Tn-ogs" secondAttribute="leading" type="default" id="6ZD-sd-E5E"/>
-                            <constraint firstItem="NW5-Oa-o6v" firstAttribute="leading" secondItem="4wk-Tn-ogs" secondAttribute="leading" type="default" id="IEW-44-L88"/>
-                            <constraint firstItem="NW5-Oa-o6v" firstAttribute="top" secondItem="4wk-Tn-ogs" secondAttribute="top" constant="161" id="PJB-cf-9O6"/>
-                            <constraint firstItem="NW5-Oa-o6v" firstAttribute="trailing" secondItem="4wk-Tn-ogs" secondAttribute="trailing" type="default" id="Qwg-VL-6ss"/>
+                            <constraint firstItem="ke2-8n-u07" firstAttribute="trailing" secondItem="4wk-Tn-ogs" secondAttribute="trailing" type="default" id="LDh-NE-rls"/>
                             <constraint firstItem="JIW-yt-sTY" firstAttribute="top" secondItem="4wk-Tn-ogs" secondAttribute="top" type="default" id="VEB-FZ-uxO"/>
+                            <constraint firstItem="ke2-8n-u07" firstAttribute="leading" secondItem="4wk-Tn-ogs" secondAttribute="leading" type="default" id="aN8-jc-0IV"/>
                             <constraint firstItem="JIW-yt-sTY" firstAttribute="trailing" secondItem="4wk-Tn-ogs" secondAttribute="trailing" type="default" id="iAf-q2-Zzj"/>
-                            <constraint firstItem="NW5-Oa-o6v" firstAttribute="bottom" secondItem="4wk-Tn-ogs" secondAttribute="bottom" type="default" id="w5o-Wh-xEK"/>
+                            <constraint firstItem="els-ZB-SKO" firstAttribute="bottom" secondItem="4wk-Tn-ogs" secondAttribute="bottom" type="default" id="jp2-va-Lwp"/>
+                            <constraint firstItem="els-ZB-SKO" firstAttribute="centerX" secondItem="ke2-8n-u07" secondAttribute="centerX" type="default" id="vcG-NC-9yj"/>
+                            <constraint firstItem="ke2-8n-u07" firstAttribute="top" secondItem="4wk-Tn-ogs" secondAttribute="top" constant="161" id="w1q-yM-y3J"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Google" id="SJe-TZ-FNa"/>
                     <connections>
-                        <outlet property="graphView" destination="NW5-Oa-o6v" id="Rz1-MJ-Axa"/>
+                        <outlet property="bottomView" destination="ke2-8n-u07" id="Vfh-2t-Kah"/>
+                        <outlet property="pageControlView" destination="els-ZB-SKO" id="Lap-Vt-xnY"/>
                         <outlet property="tableView" destination="JIW-yt-sTY" id="8vi-4h-ecD"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CZr-Ej-pk0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="337" y="-503"/>
+            <point key="canvasLocation" x="308" y="-422"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="5bw-Gx-bX6">
@@ -154,14 +162,12 @@
         </scene>
     </scenes>
     <classes>
-        <class className="CPTGraphHostingView" superclassName="UIView">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/CPTGraphHostingView.h"/>
-        </class>
         <class className="HomeViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/HomeViewController.h"/>
             <relationships>
-                <relationship kind="outlet" name="graphView" candidateClass="CPTGraphHostingView"/>
+                <relationship kind="outlet" name="bottomView" candidateClass="UIScrollView"/>
                 <relationship kind="outlet" name="navigationBar" candidateClass="UINavigationBar"/>
+                <relationship kind="outlet" name="pageControlView" candidateClass="UIPageControl"/>
                 <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
                 <relationship kind="outlet" name="toolbar" candidateClass="UIToolbar"/>
             </relationships>
