@@ -2,3 +2,6 @@ Pods/*
 Podfile.lock
 iosGkh.xcworkspace/xcuserdata/*
 *.xcuserstate
+*.xcbkptlist
+
+*.xcbkptlist
