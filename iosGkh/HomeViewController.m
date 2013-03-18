@@ -29,6 +29,11 @@
 @property (nonatomic, strong) UIActivityIndicatorView *tableLoadingMask;
 // mapping between param id and his plot data source
 @property (nonatomic, strong) NSMutableDictionary *paramToCPDataSource;
+// graph hosting view
+@property (nonatomic, strong) CPTGraphHostingView *graphView;
+// array of view controllers, that could be pages in the page control
+@property (nonatomic, strong) NSMutableArray *pageViewControllersArray;
+@property (nonatomic) BOOL pageControlUsed;
 @end
 
 @implementation HomeViewController
@@ -51,6 +56,8 @@ CGFloat const CPDBarInitialX = 0.25f;
 @synthesize graphView =                    _graphView;
 @synthesize tableLoadingMask =             _tableLoadingMask;
 @synthesize paramToCPDataSource =          _paramToCPDataSource;
+@synthesize pageControlView =              _pageControlView;
+@synthesize pageViewControllersArray =     _pageViewControllersArray;
 
 #pragma mark Init
 
@@ -64,9 +71,35 @@ CGFloat const CPDBarInitialX = 0.25f;
     tableView.delegate = self;
     UINavigationBar *navBar = [[self navigationController] navigationBar];
     [navBar setTintColor:[UIColor orangeColor]];
-//    UIImage *backgroundImage = [UIImage imageNamed:@"backgr_02.png"];
-//    [navBar setBackgroundImage:backgroundImage forBarMetrics:UIBarMetricsDefault];
+    float graphViewWidth = self.view.bounds.size.width
+         ,graphViewHeight = self.view.frame.size.height - 160 - 44;
+    
+    self.graphView = [[CPTGraphHostingView alloc] initWithFrame:CGRectMake(0, 0, graphViewWidth, graphViewHeight)];
+    self.pageControlView.numberOfPages = 2;
+    // scroll view settings
+    self.bottomView.contentSize = CGSizeMake(graphViewWidth * 2, 0);
+    self.bottomView.showsHorizontalScrollIndicator = NO;
+    self.bottomView.showsVerticalScrollIndicator = NO;
+    self.bottomView.pagingEnabled = YES;
+    self.bottomView.delegate = self;
+    [self.bottomView addSubview:self.graphView];
 }
+
+#pragma mark Scroll view delegate methods
+
+- (void) scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+    int pageNumber = [self determineCurrentPageNumber:scrollView.contentOffset.x];
+    self.pageControlView.currentPage = pageNumber;
+    NSLog(@"EndDecelerating:%i", pageNumber);
+}
+
+- (int) determineCurrentPageNumber:(float) offset {
+    return offset / 320;
+}
+
+- (void) scrollViewDidScroll:(UIScrollView *)scrollView {
+}
+
 // enabling shake event!
 - (BOOL) canBecomeFirstResponder {
     return YES;
@@ -262,7 +295,8 @@ CGFloat const CPDBarInitialX = 0.25f;
     // configure axes
     [self configureAxes:graph yMax:yMax];
     
-    graph.paddingLeft = graph.paddingRight = graph.paddingBottom = graph.paddingTop = 5.0f;
+    graph.paddingLeft = graph.paddingRight = graph.paddingTop = 5.0f;
+    graph.paddingBottom = 20.0f;
     
     CPTPlotArea *plotArea = graph.plotAreaFrame.plotArea;
     plotArea.fill = [CPTFill fillWithColor:[CPTColor blackColor]];
@@ -311,7 +345,8 @@ CGFloat const CPDBarInitialX = 0.25f;
     CPTGraph *graph = [[CPTXYGraph alloc] initWithFrame:self.graphView.frame];
     self.graphView.hostedGraph = graph;
     graph.plotAreaFrame.backgroundColor = [UIColor blackColor].CGColor;
-    graph.paddingLeft = graph.paddingRight = graph.paddingBottom = graph.paddingTop = 5.0f;
+    graph.paddingLeft = graph.paddingRight = graph.paddingTop = 5.0f;
+    graph.paddingBottom = 25.0f;
     CPTXYPlotSpace *plotSpace = (CPTXYPlotSpace *) graph.defaultPlotSpace;
     plotSpace.xRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(0.0) length:CPTDecimalFromFloat(10)];
     plotSpace.yRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(0.0) length:CPTDecimalFromFloat(21)];
@@ -447,7 +482,7 @@ CGFloat const CPDBarInitialX = 0.25f;
     
     xyAxisSet.xAxis.titleTextStyle = axisTitleStyle;
     xyAxisSet.xAxis.title = @"Период";
-    xyAxisSet.xAxis.titleOffset = 15.0f;
+    xyAxisSet.xAxis.titleOffset = 5.0f;
     
     xyAxisSet.yAxis.titleTextStyle = axisTitleStyle;
     xyAxisSet.yAxis.title = @"Начислено";
