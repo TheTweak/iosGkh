@@ -71,7 +71,9 @@ CGFloat const CPDBarInitialX = 0.25f;
     float graphViewWidth = self.view.bounds.size.width
          ,graphViewHeight = self.view.frame.size.height - 160 - 44;
     
-    self.graphView = [[CPTGraphHostingView alloc] initWithFrame:CGRectMake(0, 0, graphViewWidth, graphViewHeight)];
+    self.graphView = [[CPTGraphHostingView alloc] initWithFrame:CGRectMake(0, 0,
+                                                                           graphViewWidth,
+                                                                           graphViewHeight)];
     self.pageControlView.numberOfPages = 2;
     // scroll view settings
     self.bottomView.contentSize = CGSizeMake(graphViewWidth * 2, 0);
@@ -95,7 +97,8 @@ CGFloat const CPDBarInitialX = 0.25f;
     int pageNumber = [self determineCurrentPageNumber:scrollView.contentOffset.x];
     self.pageControlView.currentPage = pageNumber;
     if (pageNumber > 0) {
-        NSArray *pages = [self.graphToPagesDictionary valueForKey:[[self.graphView.hostedGraph.allPlots objectAtIndex:0] title]];
+        CPTPlot *current = [self.graphView.hostedGraph.allPlots objectAtIndex:0];
+        NSArray *pages = [self.graphToPagesDictionary valueForKey:[current title]];
         UIViewController *viewController = (UIViewController *) [pages objectAtIndex:pageNumber - 1];
         UITableView *tableView = (UITableView *) viewController.view;
         [tableView reloadData];
@@ -270,10 +273,11 @@ CGFloat const CPDBarInitialX = 0.25f;
     viewController.view = custom;
     // title for custom vc :
     viewController.title = [customProperties valueForKey:@"name"];
-    viewController.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"ОК"
-                                                                                        style:UIBarButtonItemStylePlain
-                                                                                       target:viewController
-                                                                                       action:@selector(rightBarButtonHandler)];
+    UINavigationItem *navItem = viewController.navigationItem;
+    navItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"ОК"
+                                                                  style:UIBarButtonItemStylePlain
+                                                                 target:viewController
+                                                                 action:@selector(rightBarButtonHandler)];
     UINavigationController *navigationController = (UINavigationController *) self.parentViewController;
     [navigationController pushViewController:viewController animated:YES];
 }
@@ -382,8 +386,10 @@ CGFloat const CPDBarInitialX = 0.25f;
     graph.paddingLeft = graph.paddingRight = graph.paddingTop = 5.0f;
     graph.paddingBottom = 25.0f;
     CPTXYPlotSpace *plotSpace = (CPTXYPlotSpace *) graph.defaultPlotSpace;
-    plotSpace.xRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(0.0) length:CPTDecimalFromFloat(10)];
-    plotSpace.yRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(0.0) length:CPTDecimalFromFloat(21)];
+    plotSpace.xRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(0.0)
+                                                    length:CPTDecimalFromFloat(10)];
+    plotSpace.yRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(0.0)
+                                                    length:CPTDecimalFromFloat(21)];
     [graph.plotAreaFrame setPaddingLeft:20.0f];
 //    [graph.plotAreaFrame setPaddingRight:5.0f];
     [graph.plotAreaFrame setPaddingTop:25.0f];
@@ -417,29 +423,6 @@ CGFloat const CPDBarInitialX = 0.25f;
     xyAxisSet.yAxis.titleOffset = 5.0f;
     xyAxisSet.yAxis.axisLineStyle = axisLineStyle;
     // ticks
-    //----------- major ticks
-      /*xyAxisSet.yAxis.minorTickLength = 4.0f;
-    xyAxisSet.yAxis.tickDirection = CPTSignPositive;
-    xyAxisSet.yAxis.labelOffset = 15.0f;
-    
-    NSInteger minorIncrement = 5;
-  
-    NSMutableSet *yLabels = [NSMutableSet set];
-    NSMutableSet *yMajorLocations = [NSMutableSet set];
-    for (NSInteger j = minorIncrement; j <= 21; j += minorIncrement) {
-        CPTAxisLabel *label = [[CPTAxisLabel alloc] initWithText:[NSString stringWithFormat:@"%i", j*100] textStyle:xyAxisSet.yAxis.labelTextStyle];
-        NSDecimal location = CPTDecimalFromInteger(j);
-        label.tickLocation = location;
-        label.offset = -xyAxisSet.yAxis.majorTickLength - xyAxisSet.yAxis.labelOffset;
-        if (label) {
-            [yLabels addObject:label];
-        }
-        [yMajorLocations addObject:[NSDecimalNumber decimalNumberWithDecimal:location]];
-    }
-    
-    xyAxisSet.yAxis.axisLabels = yLabels;
-    xyAxisSet.yAxis.majorTickLocations = yMajorLocations;
-    */
     
     // plot
     CPTScatterPlot *plot = [[CPTScatterPlot alloc] init];
@@ -459,7 +442,8 @@ CGFloat const CPDBarInitialX = 0.25f;
     [graph addPlot:plot];
 }
 
-- (void) configureBarPlot:(CPTGraph *)graph withTitle: (NSString *) title dataSource:(id<CPTPlotDataSource>)ds {
+- (void) configureBarPlot:(CPTGraph *)graph withTitle: (NSString *) title
+               dataSource:(id<CPTPlotDataSource>)ds {
     CPTBarPlot *plot = [[CPTBarPlot alloc] initWithFrame:graph.frame];
     plot.lineStyle = nil;
     plot.dataSource = ds;
@@ -469,7 +453,8 @@ CGFloat const CPDBarInitialX = 0.25f;
     [graph addPlot:plot];
 }
 
-- (void) configurePieChart:(CPTGraph *)graph withTitle: (NSString *) title dataSource:(id<CPTPlotDataSource>)ds {
+- (void) configurePieChart:(CPTGraph *)graph withTitle: (NSString *) title
+                dataSource:(id<CPTPlotDataSource>)ds {
     CPTPieChart *pieChart = [[CPTPieChart alloc] init];
     pieChart.dataSource = ds;
     pieChart.delegate = self.plotDelegate;
@@ -489,7 +474,8 @@ CGFloat const CPDBarInitialX = 0.25f;
     [graph addPlot:pieChart];
 }
 
-- (void) configureGraph:(NSString *)title ofType:(NSString *)type dataSource:(id<CPTPlotDataSource>)ds {
+- (void) configureGraph:(NSString *)title ofType:(NSString *)type
+             dataSource:(id<CPTPlotDataSource>)ds {
     if ([BarPlot isEqualToString:type]) {
         [self configureBarGraph:title dataSource:ds];
     } else if([PieChart isEqualToString:type]) {
@@ -536,7 +522,9 @@ CGFloat const CPDBarInitialX = 0.25f;
     NSMutableSet *yMajorLocations = [NSMutableSet set];
     
     for (NSInteger j = minorIncrement; j <= yMax; j += minorIncrement) {
-        CPTAxisLabel *label = [[CPTAxisLabel alloc] initWithText:[NSString stringWithFormat:@"%i", j*100] textStyle:xyAxisSet.yAxis.labelTextStyle];
+        NSString *text = [NSString stringWithFormat:@"%i", j*100];
+        CPTAxisLabel *label = [[CPTAxisLabel alloc] initWithText:text
+                                                       textStyle:xyAxisSet.yAxis.labelTextStyle];
         NSDecimal location = CPTDecimalFromInteger(j);
         label.tickLocation = location;
         label.offset = -xyAxisSet.yAxis.majorTickLength - xyAxisSet.yAxis.labelOffset;
@@ -585,8 +573,6 @@ CGFloat const CPDBarInitialX = 0.25f;
 
 - (void) reloadDataForCurrentOnScreenPlot {
     NSLog(@"reloading current graph");
-    /*CPTPlot *currentPlot = [[self.graphView.hostedGraph allPlots] objectAtIndex:0];
-    currentPlot.dataSource = self.nachDS;*/
     [self.graphView.hostedGraph reloadData];
 }
 
@@ -598,7 +584,8 @@ CGFloat const CPDBarInitialX = 0.25f;
     NSNumber *rowIndex = [notification.userInfo valueForKey:@"rowIndex"];
     NSUInteger row = [rowIndex integerValue];
     NSDictionary *properties = [self.tableDataSource customPropertiesAtRowIndex:row];
-    NSMutableDictionary *newInput = [NSMutableDictionary dictionaryWithDictionary:[properties valueForKey:@"input"]];
+    NSDictionary *input = [properties valueForKey:@"input"];
+    NSMutableDictionary *newInput = [NSMutableDictionary dictionaryWithDictionary:input];
     NSMutableDictionary *newParamInput = [newInput valueForKey:keyToUpdate];
     [newParamInput setValue:newValue forKey:@"value"];
     [newInput setValue:newParamInput forKey:keyToUpdate];
@@ -619,7 +606,10 @@ CGFloat const CPDBarInitialX = 0.25f;
     if ((recognizer.state == UIGestureRecognizerStateChanged) ||
         (recognizer.state == UIGestureRecognizerStateEnded)) {
         CGPoint translation = [recognizer translationInView:recognizer.view];
-        CGRect rect = CGRectMake(recognizer.view.frame.origin.x + translation.x, recognizer.view.frame.origin.y + translation.y, recognizer.view.frame.size.width, recognizer.view.frame.size.height);
+        CGRect rect = CGRectMake(recognizer.view.frame.origin.x + translation.x
+                                ,recognizer.view.frame.origin.y + translation.y
+                                ,recognizer.view.frame.size.width
+                                ,recognizer.view.frame.size.height);
         recognizer.view.frame = rect;
         [recognizer setTranslation:CGPointZero inView:recognizer.view];
     }
