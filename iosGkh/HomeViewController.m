@@ -16,7 +16,6 @@
 #import "Constants.h"
 
 @interface HomeViewController ()
-@property (nonatomic, strong) CALayer             *strelkaPie;
 @property (nonatomic, strong) HomeTableDataSource *tableDataSource;
 @property (nonatomic, strong) NSMutableDictionary *graphDictionary;
 @property (nonatomic) NSUInteger lastSelectedPieChartSliceIdx;
@@ -44,7 +43,6 @@ CGFloat const CPDBarInitialX = 0.25f;
 
 @synthesize navigationBar =                _navigationBar;
 @synthesize toolbar =                      _toolbar;
-@synthesize strelkaPie =                   _strelkaPie;
 @synthesize tableDataSource =              _tableDataSource;
 @synthesize graphDictionary =              _graphDictionary;
 @synthesize lastSelectedPieChartSliceIdx = _lastSelectedPieChartSliceIdx;
@@ -738,45 +736,6 @@ CGFloat const CPDBarInitialX = 0.25f;
 
 - (void) addNewMetricByString:(NSString *)identifier {
 
-}
-
-- (void) animationDidStart:(CAAnimation *)anim {
-    NSLog(@"strelka start pos=%@", NSStringFromCGPoint(self.strelkaPie.position));
-    NSString *value = [anim valueForKey:@"animType"];
-    if ([@"nach" isEqualToString:value]) {
-        NSLog(@"nachAnim");
-    } else if([@"fls" isEqualToString:value]) {
-        NSLog(@"flsAnim");
-    }
-}
-
-- (void) animationDidStop:(CAAnimation *)anim finished:(BOOL)flag {
-    NSString *value = [anim valueForKey:@"animType"];
-    if ([@"nach" isEqualToString:value]) {
-        
-    } else if([@"fls" isEqualToString:value]) {
-        NSLog(@"flsAnim");
-    } else if([@"pieChart" isEqualToString:value]) {
-        NSLog(@"strelka end pos=%@", NSStringFromCGPoint(self.strelkaPie.position));
-        /*CAKeyframeAnimation *keyFrameAnim = (CAKeyframeAnimation *) anim;
-        CGPathRef pathRef = keyFrameAnim.path;
-        NSMutableArray* a = [NSMutableArray arrayWithObject:[NSNumber numberWithBool:YES]];
-        CGPathApply(pathRef, (__bridge void *)(a), MyCGPathApplierFunc);
-        CGPoint endPoint;
-        for (NSInteger i = 1, l = [a count]; i < l; i++)
-        {
-            NSDictionary* d = [a objectAtIndex:i];
-            int type = [[d objectForKey:@"type"] intValue];
-            
-            CGPoint* points = (CGPoint*) [[d objectForKey:@"points"] bytes];
-
-            if (type == kCGPathElementAddCurveToPoint) {
-                NSLog(@"point=%@", NSStringFromCGPoint(*points));
-                endPoint = *points;
-            }
-        }
-        self.strelkaPie.position = endPoint;*/
-    }
 }
 
 @end
