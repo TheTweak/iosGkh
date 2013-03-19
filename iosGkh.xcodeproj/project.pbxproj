@@ -13,6 +13,7 @@
 		61514BDC16A48A56003F4BED /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 61514BDB16A48A56003F4BED /* CoreImage.framework */; };
 		6178216F16F8433D00E4BED1 /* CorePlotUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 6178216E16F8433D00E4BED1 /* CorePlotUtils.m */; };
 		6178217416F8482000E4BED1 /* BarPlotDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6178217316F8482000E4BED1 /* BarPlotDelegate.m */; };
+		6178217716F85D1200E4BED1 /* PieChartDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6178217616F85D1200E4BED1 /* PieChartDelegate.m */; };
 		6191BC5C169AD63500CE85BA /* HomeTableDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 6191BC5B169AD63500CE85BA /* HomeTableDataSource.m */; };
 		6191BC5F169AE0F000CE85BA /* money48.png in Resources */ = {isa = PBXBuildFile; fileRef = 6191BC5E169AE0F000CE85BA /* money48.png */; };
 		6191BC61169AE1E100CE85BA /* coins48.png in Resources */ = {isa = PBXBuildFile; fileRef = 6191BC60169AE1E100CE85BA /* coins48.png */; };
@@ -83,6 +84,8 @@
 		6178216E16F8433D00E4BED1 /* CorePlotUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CorePlotUtils.m; sourceTree = "<group>"; };
 		6178217216F8482000E4BED1 /* BarPlotDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BarPlotDelegate.h; sourceTree = "<group>"; };
 		6178217316F8482000E4BED1 /* BarPlotDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BarPlotDelegate.m; sourceTree = "<group>"; };
+		6178217516F85D1200E4BED1 /* PieChartDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PieChartDelegate.h; sourceTree = "<group>"; };
+		6178217616F85D1200E4BED1 /* PieChartDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PieChartDelegate.m; sourceTree = "<group>"; };
 		6191BC5A169AD63500CE85BA /* HomeTableDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeTableDataSource.h; sourceTree = "<group>"; };
 		6191BC5B169AD63500CE85BA /* HomeTableDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeTableDataSource.m; sourceTree = "<group>"; };
 		6191BC5E169AE0F000CE85BA /* money48.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = money48.png; sourceTree = "<group>"; };
@@ -191,6 +194,8 @@
 			children = (
 				6178217216F8482000E4BED1 /* BarPlotDelegate.h */,
 				6178217316F8482000E4BED1 /* BarPlotDelegate.m */,
+				6178217516F85D1200E4BED1 /* PieChartDelegate.h */,
+				6178217616F85D1200E4BED1 /* PieChartDelegate.m */,
 			);
 			name = Delegates;
 			sourceTree = "<group>";
@@ -523,6 +528,7 @@
 				61F45D6F16F1D46900598213 /* CustomViewController.m in Sources */,
 				6178216F16F8433D00E4BED1 /* CorePlotUtils.m in Sources */,
 				6178217416F8482000E4BED1 /* BarPlotDelegate.m in Sources */,
+				6178217716F85D1200E4BED1 /* PieChartDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

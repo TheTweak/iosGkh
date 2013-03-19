@@ -14,11 +14,12 @@
 #import "CustomView.h"
 #import "CustomViewController.h"
 #import "Constants.h"
+#import "BarPlotDelegate.h"
+#import "PieChartDelegate.h"
 
 @interface HomeViewController ()
 @property (nonatomic, strong) HomeTableDataSource *tableDataSource;
 @property (nonatomic, strong) NSMutableDictionary *graphDictionary;
-@property (nonatomic) NSUInteger lastSelectedPieChartSliceIdx;
 @property (nonatomic, strong) UIActivityIndicatorView *loadingMask;
 @property (nonatomic, strong) UIActivityIndicatorView *tableLoadingMask;
 // mapping between param id and his plot data source
@@ -45,7 +46,6 @@ CGFloat const CPDBarInitialX = 0.25f;
 @synthesize toolbar =                      _toolbar;
 @synthesize tableDataSource =              _tableDataSource;
 @synthesize graphDictionary =              _graphDictionary;
-@synthesize lastSelectedPieChartSliceIdx = _lastSelectedPieChartSliceIdx;
 @synthesize loadingMask =                  _loadingMask;
 @synthesize tableView =                    _tableView;
 @synthesize graphView =                    _graphView;
@@ -349,6 +349,10 @@ CGFloat const CPDBarInitialX = 0.25f;
     [graph.plotAreaFrame setPaddingBottom:0.0f];
     graph.plotAreaFrame.backgroundColor = [UIColor blackColor].CGColor;
     
+    // instantiating delegate
+    PieChartDelegate *pieChartDelegate = [[PieChartDelegate alloc] init];
+    self.plotDelegate = pieChartDelegate;
+    
     [self configurePieChart:graph withTitle:title dataSource:ds];
     
     // 2 - Create legend
@@ -468,7 +472,7 @@ CGFloat const CPDBarInitialX = 0.25f;
 - (void) configurePieChart:(CPTGraph *)graph withTitle: (NSString *) title dataSource:(id<CPTPlotDataSource>)ds {
     CPTPieChart *pieChart = [[CPTPieChart alloc] init];
     pieChart.dataSource = ds;
-    pieChart.delegate = self;
+    pieChart.delegate = self.plotDelegate;
     pieChart.title = title;
     CGFloat pieRadius = (self.graphView.bounds.size.height * 0.7) / 2;
     pieChart.pieRadius = pieRadius;
@@ -483,9 +487,6 @@ CGFloat const CPDBarInitialX = 0.25f;
     pieChart.labelShadow = shadow;
     // 4 - Add chart to graph
     [graph addPlot:pieChart];
-    
-    //set to -1 last selected idx
-    self.lastSelectedPieChartSliceIdx = -1;
 }
 
 - (void) configureGraph:(NSString *)title ofType:(NSString *)type dataSource:(id<CPTPlotDataSource>)ds {
@@ -556,105 +557,6 @@ CGFloat const CPDBarInitialX = 0.25f;
     
     xyAxisSet.yAxis.labelingPolicy = CPTAxisLabelingPolicyNone;
     xyAxisSet.xAxis.labelingPolicy = CPTAxisLabelingPolicyNone;
-}
-
-#pragma mark <CPTPlotDelegate> method
-
-// Plot did finished drawing
-- (void) didFinishDrawing:(CPTPlot *)plot {
-    NSLog(@"finish drawing");
-}
-
-// Pie chart click handler
-- (void) pieChart:(CPTPieChart *)plot sliceWasSelectedAtRecordIndex:(NSUInteger)idx {
-    if (plot.isHidden) return;
-    
-    NSNumber *flsCount = [plot.dataSource numberForPlot:plot field:CPTPieChartFieldSliceWidth recordIndex:idx];
-    
-    /*
-    if (!self.leftSideAnnotation) {
-        CPTLayerAnnotation *annotation = [[CPTLayerAnnotation alloc] initWithAnchorLayer:plot];
-        CPTTextLayer *textLayer = [CPTTextLayer layer];
-        CPTMutableTextStyle *annotationTextStyle = [CPTMutableTextStyle textStyle];
-        annotationTextStyle.color = [CPTColor orangeColor];
-        annotationTextStyle.fontName = @"Helvetica-Bold";
-        annotationTextStyle.fontSize = 13.0f;
-        
-        textLayer.textStyle = annotationTextStyle;
-        annotation.contentLayer = textLayer;
-        
-        annotation.displacement = CGPointMake(-100.0, -5.0);
-        [plot addAnnotation:annotation];
-        
-        self.leftSideAnnotation = annotation;
-    }
-    
-    if (!self.rightSideAnnotation) {
-        CPTLayerAnnotation *annotation = [[CPTLayerAnnotation alloc] initWithAnchorLayer:plot];
-        CPTTextLayer *textLayer = [CPTTextLayer layer];
-        CPTMutableTextStyle *annotationTextStyle = [CPTMutableTextStyle textStyle];
-        annotationTextStyle.color = [CPTColor orangeColor];
-        annotationTextStyle.fontName = @"Helvetica-Bold";
-        annotationTextStyle.fontSize = 13.0f;
-        
-        textLayer.textStyle = annotationTextStyle;
-        annotation.contentLayer = textLayer;
-        
-        annotation.displacement = CGPointMake(80.0, -5.0);
-        [plot addAnnotation:annotation];
-        
-        self.rightSideAnnotation = annotation;
-    }*/
-    
-    /*
-    CPTLayerAnnotation *leftLayerAnnotation = (CPTLayerAnnotation *) self.leftSideAnnotation;
-    CPTTextLayer *leftAnnotationTextLayer = (CPTTextLayer *) leftLayerAnnotation.contentLayer;
-    leftAnnotationTextLayer.text = [NSString stringWithFormat:@"Дом №%d", idx + 1];
-    
-    CPTLayerAnnotation *rightLayerAnnotation = (CPTLayerAnnotation *) self.rightSideAnnotation;
-    CPTTextLayer *rightAnnotationTextLayer = (CPTTextLayer *) rightLayerAnnotation.contentLayer;
-    rightAnnotationTextLayer.text = [NSString stringWithFormat:@"Кол-во ФЛС:%d",     [flsCount intValue]];
-    */
-    
-    /*
-    CGFloat startAngle = 1.5 * M_PI;
-    if (self.lastSelectedPieChartSliceIdx != -1) {
-        startAngle = [plot medianAngleForPieSliceIndex:self.lastSelectedPieChartSliceIdx];
-    }
-    CGFloat medianAngle = [plot medianAngleForPieSliceIndex:idx];
-        
-//    self.strelkaPie.anchorPoint = CGPointMake(5.0, 5.0);
-    
-//    self.strelkaPie.transform = CATransform3DMakeRotation(medianAngle, 0.0, 0.0, 1.0);
-    
-    // Set rotation animation
-    CATransform3D rotationTransform = CATransform3DMakeRotation(medianAngle, 0.0, 0.0, 1.0);
-    CABasicAnimation *rotationAnimation = [CABasicAnimation animationWithKeyPath:@"transform"];
-    rotationAnimation.toValue = [NSValue valueWithCATransform3D:rotationTransform];
-    rotationAnimation.duration = 1.0f;
-    rotationAnimation.cumulative = YES;
-    
-    [self.strelkaPie addAnimation:rotationAnimation forKey:@"transform"];
-    
-    
-    UIBezierPath *solidPath = [UIBezierPath bezierPathWithArcCenter:plot.position
-                                                              radius:plot.pieRadius
-                                                          startAngle:startAngle
-                                                            endAngle:medianAngle
-                                                           clockwise:YES];
-    
-    CAKeyframeAnimation *anim = [CAKeyframeAnimation animationWithKeyPath:@"position"];
-
-//    anim.rotationMode = kCAAnimationRotateAuto;
-    anim.duration = 1.0;
-    anim.path = solidPath.CGPath;
-    anim.delegate = self;
-    anim.fillMode = kCAFillModeBoth;
-    [anim setValue:@"pieChart" forKey:@"animType"];
-//    [anim setValue:solidPath forKey:@"path"];
-    [self.strelkaPie addAnimation:anim forKey:nil];
-    */
-//    self.lastSelectedPieChartSliceIdx = idx;
 }
 
 #pragma mark Other stuff
