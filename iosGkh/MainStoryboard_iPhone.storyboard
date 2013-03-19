@@ -109,7 +109,7 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="JIW-yt-sTY">
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="160" id="AK0-mz-LtA"/>
+                                    <constraint firstAttribute="height" constant="140" id="ZMc-Ps-Pkn"/>
                                 </constraints>
                             </tableView>
                             <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="2" translatesAutoresizingMaskIntoConstraints="NO" id="els-ZB-SKO">
@@ -122,15 +122,15 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="ke2-8n-u07" firstAttribute="bottom" secondItem="4wk-Tn-ogs" secondAttribute="bottom" type="default" id="5Am-Yw-EgS"/>
                             <constraint firstItem="JIW-yt-sTY" firstAttribute="leading" secondItem="4wk-Tn-ogs" secondAttribute="leading" type="default" id="6ZD-sd-E5E"/>
-                            <constraint firstItem="ke2-8n-u07" firstAttribute="bottom" secondItem="4wk-Tn-ogs" secondAttribute="bottom" type="default" id="9BF-0J-dID"/>
                             <constraint firstItem="ke2-8n-u07" firstAttribute="trailing" secondItem="4wk-Tn-ogs" secondAttribute="trailing" type="default" id="LDh-NE-rls"/>
-                            <constraint firstItem="JIW-yt-sTY" firstAttribute="top" secondItem="4wk-Tn-ogs" secondAttribute="top" type="default" id="VEB-FZ-uxO"/>
+                            <constraint firstItem="JIW-yt-sTY" firstAttribute="top" secondItem="4wk-Tn-ogs" secondAttribute="top" constant="1" id="LNE-4b-d9O"/>
                             <constraint firstItem="ke2-8n-u07" firstAttribute="leading" secondItem="4wk-Tn-ogs" secondAttribute="leading" type="default" id="aN8-jc-0IV"/>
+                            <constraint firstItem="ke2-8n-u07" firstAttribute="top" secondItem="4wk-Tn-ogs" secondAttribute="top" constant="142" id="gIa-u8-KpU"/>
                             <constraint firstItem="JIW-yt-sTY" firstAttribute="trailing" secondItem="4wk-Tn-ogs" secondAttribute="trailing" type="default" id="iAf-q2-Zzj"/>
                             <constraint firstItem="els-ZB-SKO" firstAttribute="bottom" secondItem="4wk-Tn-ogs" secondAttribute="bottom" type="default" id="jp2-va-Lwp"/>
                             <constraint firstItem="els-ZB-SKO" firstAttribute="centerX" secondItem="ke2-8n-u07" secondAttribute="centerX" type="default" id="vcG-NC-9yj"/>
-                            <constraint firstItem="ke2-8n-u07" firstAttribute="top" secondItem="4wk-Tn-ogs" secondAttribute="top" constant="161" id="w1q-yM-y3J"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Prosoftlab" id="SJe-TZ-FNa"/>
