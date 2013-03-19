@@ -65,6 +65,9 @@ CGFloat const CPDBarInitialX = 0.25f;
     tableView.separatorColor = [UIColor grayColor];
     tableView.dataSource = self.tableDataSource;
     tableView.delegate = self;
+    tableView.layer.borderColor = [UIColor orangeColor].CGColor;
+    tableView.layer.borderWidth = 2.0f;
+    tableView.layer.cornerRadius = 8.0f;
     UINavigationBar *navBar = [[self navigationController] navigationBar];
     [navBar setTintColor:[UIColor orangeColor]];
 #warning todo remove explicit height calculation
@@ -82,6 +85,9 @@ CGFloat const CPDBarInitialX = 0.25f;
     self.bottomView.pagingEnabled = YES;
     self.bottomView.delegate = self;
     self.bottomView.backgroundColor = [UIColor underPageBackgroundColor];
+    self.bottomView.layer.borderColor = [UIColor orangeColor].CGColor;
+    self.bottomView.layer.borderWidth = 2.0f;
+    self.bottomView.layer.cornerRadius = 8.0f;
     [self.bottomView addSubview:self.graphView];
 }
 
@@ -256,7 +262,9 @@ CGFloat const CPDBarInitialX = 0.25f;
             tableView.dataSource = dataSource;
             tableView.backgroundColor = [UIColor underPageBackgroundColor];
             tableView.separatorColor = [UIColor grayColor];
-            
+//            tableView.layer.borderColor = [UIColor orangeColor].CGColor;
+//            tableView.layer.borderWidth = 2.0f;
+            tableView.layer.cornerRadius = 8.0f;
             [self.bottomView addSubview:tableView];
         }
     }
