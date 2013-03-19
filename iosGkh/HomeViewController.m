@@ -16,11 +16,6 @@
 #import "Constants.h"
 
 @interface HomeViewController ()
-
-//@property (nonatomic, strong) Nach                *nachDS;
-@property (nonatomic, strong) CPTAnnotation       *leftSideAnnotation;
-@property (nonatomic, strong) CPTAnnotation       *rightSideAnnotation;
-@property (nonatomic, strong) CALayer             *strelka;
 @property (nonatomic, strong) CALayer             *strelkaPie;
 @property (nonatomic, strong) HomeTableDataSource *tableDataSource;
 @property (nonatomic, strong) NSMutableDictionary *graphDictionary;
@@ -38,6 +33,8 @@
 // mapping between graph and array of pages to scroll between at
 // bottom of the screen
 @property (nonatomic, strong) NSMutableDictionary *graphToPagesDictionary;
+// current on-screen plot's delegate
+@property id<CPTPlotDelegate> plotDelegate;
 @end
 
 @implementation HomeViewController
@@ -47,11 +44,7 @@ CGFloat const CPDBarInitialX = 0.25f;
 
 @synthesize navigationBar =                _navigationBar;
 @synthesize toolbar =                      _toolbar;
-//@synthesize nachDS =                       _nachDS;
-@synthesize strelka =                      _strelka;
 @synthesize strelkaPie =                   _strelkaPie;
-@synthesize leftSideAnnotation =           _leftSideAnnotation;
-@synthesize rightSideAnnotation =          _rightSideAnnotation;
 @synthesize tableDataSource =              _tableDataSource;
 @synthesize graphDictionary =              _graphDictionary;
 @synthesize lastSelectedPieChartSliceIdx = _lastSelectedPieChartSliceIdx;
@@ -318,8 +311,11 @@ CGFloat const CPDBarInitialX = 0.25f;
     layer.contentsGravity = kCAGravityCenter;
     layer.transform = CATransform3DMakeRotation(M_PI, 1.0, 0.0, 0.0);
     [plotAreaFrame addSublayer:layer];
-    self.strelka = layer;
-    
+
+    BarPlotDelegate *barPlotDelegate = [[BarPlotDelegate alloc] init];
+    barPlotDelegate.arrow = layer;
+    self.plotDelegate = barPlotDelegate;
+        
     CGFloat xMin = 0.0f;
     CGFloat xMax = 4.0f;
     CGFloat yMin = 0.0f;
@@ -345,9 +341,6 @@ CGFloat const CPDBarInitialX = 0.25f;
 
 - (void) configurePieGraph:(NSString *)title dataSource:(id<CPTPlotDataSource>)ds {
     // set left and right annotations to nil
-    
-    self.rightSideAnnotation = nil;
-    self.leftSideAnnotation = nil;
     
     CPTGraph *graph = [[CPTXYGraph alloc] initWithFrame:self.graphView.frame];
     [self.graphDictionary setObject:graph forKey:title];
@@ -468,7 +461,7 @@ CGFloat const CPDBarInitialX = 0.25f;
     CPTBarPlot *plot = [[CPTBarPlot alloc] initWithFrame:graph.frame];
     plot.lineStyle = nil;
     plot.dataSource = ds;
-    plot.delegate = self;
+    plot.delegate = self.plotDelegate;
     plot.title = title;
     plot.barWidth = CPTDecimalFromDouble(CPDBarWidth);
     [graph addPlot:plot];
@@ -574,92 +567,13 @@ CGFloat const CPDBarInitialX = 0.25f;
     NSLog(@"finish drawing");
 }
 
-// Plot click handler
-- (void) barPlot:(CPTBarPlot *)plot barWasSelectedAtRecordIndex:(NSUInteger)idx {
-    if (plot.isHidden) {
-        return;
-    }
-    NSNumber *price = [plot.dataSource numberForPlot:plot field:CPTBarPlotFieldBarTip recordIndex:idx];
-    NSNumber *month = [plot.dataSource numberForPlot:plot field:CPTBarPlotFieldBarLocation recordIndex:idx];
-    
-    price = [NSNumber numberWithInt:([price intValue] * 100)];
-    
-    NSArray *monthsArray = [NSArray arrayWithObjects:@"Январь", @"Февраль",
-                            @"Март", @"Апрель", @"Май",
-                            @"Июнь", @"Июль", @"Август",
-                            @"Сентябрь", @"Октябрь", @"Ноябрь",
-                            @"Декабрь", nil];
-    
-    static CPTMutableTextStyle *style = nil;
-    if (!style) {
-        style = [CPTMutableTextStyle textStyle];
-        style.color= [CPTColor orangeColor];
-        style.fontSize = 13.0f;
-        style.fontName = @"Helvetica-Bold";
-    }
-    
-    static NSNumberFormatter *formatter = nil;
-    if (!formatter) {
-        formatter = [[NSNumberFormatter alloc] init];
-        [formatter setMaximumFractionDigits:2];
-        [formatter setUsesGroupingSeparator:YES];
-        [formatter setGroupingSize:3];
-        [formatter setGroupingSeparator:@" "];
-    }
-    
-    if (!self.leftSideAnnotation) {
-        NSNumber *x = [NSNumber numberWithFloat:0.25f];
-        NSNumber *y = [NSNumber numberWithFloat:21.5f];
-        NSArray *anchorPoint = [NSArray arrayWithObjects:x, y, nil];
-        self.leftSideAnnotation = [[CPTPlotSpaceAnnotation alloc] initWithPlotSpace:plot.plotSpace anchorPlotPoint:anchorPoint];
-    }
-
-    if (!self.rightSideAnnotation) { 
-        NSNumber *x = [NSNumber numberWithFloat:3.5f];
-        NSNumber *y = [NSNumber numberWithFloat:21.5f];
-        NSArray *anchorPoint = [NSArray arrayWithObjects:x, y, nil];
-        self.rightSideAnnotation = [[CPTPlotSpaceAnnotation alloc] initWithPlotSpace:plot.plotSpace anchorPlotPoint:anchorPoint];
-    }
-    
-    NSString *priceValue = [[formatter stringFromNumber:price] stringByAppendingString:@"р."];
-    CPTTextLayer *textLayer = [[CPTTextLayer alloc] initWithText:priceValue style:style];
-    self.rightSideAnnotation.contentLayer = textLayer;
-    
-    NSString *monthValue = [monthsArray objectAtIndex:idx];
-    textLayer = [[CPTTextLayer alloc] initWithText:monthValue style:style];
-    self.leftSideAnnotation.contentLayer = textLayer;
-    
-    NSDecimal plotPoint[2]; // "plot" point coords
-    plotPoint[CPTCoordinateX] = month.decimalValue;
-    plotPoint[CPTCoordinateY] = price.decimalValue;
-    CGPoint cgPlotPoint = [plot.plotSpace plotAreaViewPointForPlotPoint:plotPoint]; // plot view area coords
-//    NSLog(@"plot point=%@", NSStringFromCGPoint(cgPlotPoint));
-    
-    CGPoint dataPoint = [plot.graph.plotAreaFrame convertPoint:cgPlotPoint fromLayer:plot.graph.plotAreaFrame.plotArea];
-//    NSLog(@"converted plot point=%@", NSStringFromCGPoint(dataPoint));
-    // 8 - Add the annotation
-    [plot.graph.plotAreaFrame.plotArea addAnnotation:self.leftSideAnnotation];
-    [plot.graph.plotAreaFrame.plotArea addAnnotation:self.rightSideAnnotation];
-    
-    //animation for strelka
-    CABasicAnimation *animation = [CABasicAnimation animation];
-    CGPoint newStrelkaPosition = CGPointMake(dataPoint.x, self.strelka.position.y);
-    animation.toValue = [NSValue valueWithCGPoint:newStrelkaPosition];
-    [animation setFillMode:kCAFillModeForwards];
-    [animation setRemovedOnCompletion:NO];
-    [self.strelka addAnimation:animation forKey:@"position"];
-    [self.strelka setPosition:newStrelkaPosition];
-//    CGPoint convertedPoint = [self.strelka convertPoint:newStrelkaPosition ];
-//    NSLog(@"converted=%@", NSStringFromCGPoint(convertedPoint));
-//    NSLog(@"position=%@", NSStringFromCGPoint(self.strelka.position));
-}
-
 // Pie chart click handler
 - (void) pieChart:(CPTPieChart *)plot sliceWasSelectedAtRecordIndex:(NSUInteger)idx {
     if (plot.isHidden) return;
     
     NSNumber *flsCount = [plot.dataSource numberForPlot:plot field:CPTPieChartFieldSliceWidth recordIndex:idx];
-        
+    
+    /*
     if (!self.leftSideAnnotation) {
         CPTLayerAnnotation *annotation = [[CPTLayerAnnotation alloc] initWithAnchorLayer:plot];
         CPTTextLayer *textLayer = [CPTTextLayer layer];
@@ -692,8 +606,9 @@ CGFloat const CPDBarInitialX = 0.25f;
         [plot addAnnotation:annotation];
         
         self.rightSideAnnotation = annotation;
-    }
+    }*/
     
+    /*
     CPTLayerAnnotation *leftLayerAnnotation = (CPTLayerAnnotation *) self.leftSideAnnotation;
     CPTTextLayer *leftAnnotationTextLayer = (CPTTextLayer *) leftLayerAnnotation.contentLayer;
     leftAnnotationTextLayer.text = [NSString stringWithFormat:@"Дом №%d", idx + 1];
@@ -701,6 +616,7 @@ CGFloat const CPDBarInitialX = 0.25f;
     CPTLayerAnnotation *rightLayerAnnotation = (CPTLayerAnnotation *) self.rightSideAnnotation;
     CPTTextLayer *rightAnnotationTextLayer = (CPTTextLayer *) rightLayerAnnotation.contentLayer;
     rightAnnotationTextLayer.text = [NSString stringWithFormat:@"Кол-во ФЛС:%d",     [flsCount intValue]];
+    */
     
     /*
     CGFloat startAngle = 1.5 * M_PI;

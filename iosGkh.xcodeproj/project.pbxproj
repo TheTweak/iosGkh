@@ -11,6 +11,8 @@
 		6140D1A916972AE20066F51C /* triangle.png in Resources */ = {isa = PBXBuildFile; fileRef = 6140D1A816972AE20066F51C /* triangle.png */; };
 		6140D1AB16972D6B0066F51C /* triangle32.png in Resources */ = {isa = PBXBuildFile; fileRef = 6140D1AA16972D6B0066F51C /* triangle32.png */; };
 		61514BDC16A48A56003F4BED /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 61514BDB16A48A56003F4BED /* CoreImage.framework */; };
+		6178216F16F8433D00E4BED1 /* CorePlotUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 6178216E16F8433D00E4BED1 /* CorePlotUtils.m */; };
+		6178217416F8482000E4BED1 /* BarPlotDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6178217316F8482000E4BED1 /* BarPlotDelegate.m */; };
 		6191BC5C169AD63500CE85BA /* HomeTableDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 6191BC5B169AD63500CE85BA /* HomeTableDataSource.m */; };
 		6191BC5F169AE0F000CE85BA /* money48.png in Resources */ = {isa = PBXBuildFile; fileRef = 6191BC5E169AE0F000CE85BA /* money48.png */; };
 		6191BC61169AE1E100CE85BA /* coins48.png in Resources */ = {isa = PBXBuildFile; fileRef = 6191BC60169AE1E100CE85BA /* coins48.png */; };
@@ -77,6 +79,10 @@
 		6140D1A816972AE20066F51C /* triangle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = triangle.png; sourceTree = "<group>"; };
 		6140D1AA16972D6B0066F51C /* triangle32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = triangle32.png; sourceTree = "<group>"; };
 		61514BDB16A48A56003F4BED /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
+		6178216D16F8433D00E4BED1 /* CorePlotUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CorePlotUtils.h; sourceTree = "<group>"; };
+		6178216E16F8433D00E4BED1 /* CorePlotUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CorePlotUtils.m; sourceTree = "<group>"; };
+		6178217216F8482000E4BED1 /* BarPlotDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BarPlotDelegate.h; sourceTree = "<group>"; };
+		6178217316F8482000E4BED1 /* BarPlotDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BarPlotDelegate.m; sourceTree = "<group>"; };
 		6191BC5A169AD63500CE85BA /* HomeTableDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeTableDataSource.h; sourceTree = "<group>"; };
 		6191BC5B169AD63500CE85BA /* HomeTableDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeTableDataSource.m; sourceTree = "<group>"; };
 		6191BC5E169AE0F000CE85BA /* money48.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = money48.png; sourceTree = "<group>"; };
@@ -180,6 +186,15 @@
 			name = Models;
 			sourceTree = "<group>";
 		};
+		6178217116F8480900E4BED1 /* Delegates */ = {
+			isa = PBXGroup;
+			children = (
+				6178217216F8482000E4BED1 /* BarPlotDelegate.h */,
+				6178217316F8482000E4BED1 /* BarPlotDelegate.m */,
+			);
+			name = Delegates;
+			sourceTree = "<group>";
+		};
 		61A3ABCE169038A5005D3311 = {
 			isa = PBXGroup;
 			children = (
@@ -216,6 +231,7 @@
 		61A3ABE3169038A5005D3311 /* iosGkh */ = {
 			isa = PBXGroup;
 			children = (
+				6178217116F8480900E4BED1 /* Delegates */,
 				61E81AF616EE052600819BDD /* Views */,
 				6140D1A7169721B20066F51C /* Models */,
 				61A3AC6216904DB9005D3311 /* Core Plot DS */,
@@ -229,6 +245,8 @@
 				61A3ABE4169038A5005D3311 /* Supporting Files */,
 				61A6B30B16F07E3E00C6D1A6 /* Constants.h */,
 				61A6B30C16F07E3E00C6D1A6 /* Constants.m */,
+				6178216D16F8433D00E4BED1 /* CorePlotUtils.h */,
+				6178216E16F8433D00E4BED1 /* CorePlotUtils.m */,
 			);
 			path = iosGkh;
 			sourceTree = "<group>";
@@ -503,6 +521,8 @@
 				61A6B30D16F07E3E00C6D1A6 /* Constants.m in Sources */,
 				61A6B31716F0C54000C6D1A6 /* PickerField.m in Sources */,
 				61F45D6F16F1D46900598213 /* CustomViewController.m in Sources */,
+				6178216F16F8433D00E4BED1 /* CorePlotUtils.m in Sources */,
+				6178217416F8482000E4BED1 /* BarPlotDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

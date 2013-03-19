@@ -9,8 +9,10 @@
 #import <UIKit/UIKit.h>
 #import "CorePlot-CocoaTouch.h"
 #import "MetricConsumerProtocol.h"
+#import "CorePlotUtils.h"
+#import "BarPlotDelegate.h"
 
-@interface HomeViewController : UIViewController <MetricConsumerProtocol, CPTBarPlotDelegate, UITableViewDelegate,
+@interface HomeViewController : UIViewController <MetricConsumerProtocol, UITableViewDelegate,
                                                   CPTPieChartDelegate, UIScrollViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
