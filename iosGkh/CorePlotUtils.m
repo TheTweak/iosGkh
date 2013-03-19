@@ -17,8 +17,8 @@ static NSArray *_monthsArray;
 + (CPTMutableTextStyle *)orangeHelvetica {
     if (!_orangeHelvetica) {
         _orangeHelvetica = [CPTMutableTextStyle textStyle];
-        _orangeHelvetica.color= [CPTColor orangeColor];
-        _orangeHelvetica.fontSize = 13.0f;
+        _orangeHelvetica.color= [CPTColor whiteColor];
+        _orangeHelvetica.fontSize = 15.0f;
         _orangeHelvetica.fontName = @"Helvetica-Bold";
     }
     return _orangeHelvetica;

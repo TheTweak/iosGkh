@@ -11,6 +11,7 @@
 #import "BasicAuthModule.h"
 #import "SBJsonParser.h"
 #import "HomeTableDataSource.h"
+#import "CorePlotUtils.h"
 
 @interface Nach ()
 @property (nonatomic, strong) NSArray *graphValues;
@@ -91,32 +92,21 @@
 }
 
 - (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:nil];
+    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle
+                                                   reuseIdentifier:nil];
     cell.detailTextLabel.textColor = [UIColor darkGrayColor];
-    cell.textLabel.textColor = [UIColor orangeColor];
-    cell.selectionStyle = UITableViewCellSelectionStyleGray;
+    cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+    cell.textLabel.textColor = [UIColor whiteColor];
+    cell.textLabel.shadowColor = [UIColor darkGrayColor];
     
     NSDictionary *jsonObject = [self.graphValues objectAtIndex:indexPath.row];
     NSNumber *price = [jsonObject objectForKey:@"y"];
-    price = [NSNumber numberWithInt:([price intValue] * 100)];
     
-    NSArray *monthsArray = [NSArray arrayWithObjects:@"Январь", @"Февраль",
-                            @"Март", @"Апрель", @"Май",
-                            @"Июнь", @"Июль", @"Август",
-                            @"Сентябрь", @"Октябрь", @"Ноябрь",
-                            @"Декабрь", nil];
+    NSArray *monthsArray = [CorePlotUtils monthsArray];
     NSString *monthValue = [monthsArray objectAtIndex:indexPath.row];
     
-    static NSNumberFormatter *formatter = nil;
-    if (!formatter) {
-        formatter = [[NSNumberFormatter alloc] init];
-        [formatter setMaximumFractionDigits:2];
-        [formatter setUsesGroupingSeparator:YES];
-        [formatter setGroupingSize:3];
-        [formatter setGroupingSeparator:@" "];
-    }
+    NSNumberFormatter *formatter = [CorePlotUtils thousandsSeparator];
     NSString *priceValue = [[formatter stringFromNumber:price] stringByAppendingString:@"р."];
-    
     cell.textLabel.text = [monthValue stringByAppendingFormat:@" - %@", priceValue];
     return cell;
 }

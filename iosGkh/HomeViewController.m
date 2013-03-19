@@ -61,8 +61,8 @@ CGFloat const CPDBarInitialX = 0.25f;
     [super viewDidLoad];
     [self registerForNotifications];    
     UITableView *tableView = self.tableView;
-    tableView.backgroundColor = [UIColor blackColor];
-    tableView.separatorColor = [UIColor darkGrayColor];
+    tableView.backgroundColor = [UIColor underPageBackgroundColor];
+    tableView.separatorColor = [UIColor grayColor];
     tableView.dataSource = self.tableDataSource;
     tableView.delegate = self;
     UINavigationBar *navBar = [[self navigationController] navigationBar];
@@ -81,6 +81,7 @@ CGFloat const CPDBarInitialX = 0.25f;
     self.bottomView.showsVerticalScrollIndicator = NO;
     self.bottomView.pagingEnabled = YES;
     self.bottomView.delegate = self;
+    self.bottomView.backgroundColor = [UIColor underPageBackgroundColor];
     [self.bottomView addSubview:self.graphView];
 }
 
@@ -250,11 +251,11 @@ CGFloat const CPDBarInitialX = 0.25f;
             UITableViewController *tableViewController = [[UITableViewController alloc] initWithStyle:UITableViewStylePlain];
             NSArray *pageViewControllers = [NSArray arrayWithObjects:tableViewController, nil];
             [self.graphToPagesDictionary setValue:pageViewControllers forKey:paramId];
-            UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(320, 0, 320, 220)];
+            UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(320, 0, 320, 230)];
             tableViewController.view = tableView;
             tableView.dataSource = dataSource;
-            tableView.backgroundColor = [UIColor blackColor];
-            tableView.separatorColor = [UIColor darkGrayColor];
+            tableView.backgroundColor = [UIColor underPageBackgroundColor];
+            tableView.separatorColor = [UIColor grayColor];
             
             [self.bottomView addSubview:tableView];
         }
@@ -266,8 +267,8 @@ CGFloat const CPDBarInitialX = 0.25f;
     NSDictionary *customProperties = [self.tableDataSource customPropertiesAtRowIndex:indexPath.row];
     NSDictionary *inputs = [customProperties valueForKey:@"input"];
     CustomView *custom = [[CustomView alloc] initWithFrame:self.view.bounds inputs:inputs];
-    
-    custom.backgroundColor = [UIColor blackColor];
+    UIColor *viewColor = [UIColor underPageBackgroundColor];
+    custom.backgroundColor = viewColor;
     CustomViewController *viewController = [[CustomViewController alloc] init];
     viewController.tableRowIndex = [NSNumber numberWithInteger:indexPath.row];
     viewController.view = custom;
@@ -295,8 +296,8 @@ CGFloat const CPDBarInitialX = 0.25f;
     [graph.plotAreaFrame setPaddingRight:20.0f];
     [graph.plotAreaFrame setPaddingTop:27.0f];
     [graph.plotAreaFrame setPaddingBottom:35.0f];
-    
-    graph.plotAreaFrame.backgroundColor = [UIColor blackColor].CGColor;
+    CGColorRef underPage = [UIColor underPageBackgroundColor].CGColor;
+    graph.plotAreaFrame.backgroundColor = underPage;
     
     //---- strelka
     CPTPlotAreaFrame *plotAreaFrame = graph.plotAreaFrame;
@@ -333,10 +334,10 @@ CGFloat const CPDBarInitialX = 0.25f;
     [self configureAxes:graph yMax:yMax];
     
     graph.paddingLeft = graph.paddingRight = graph.paddingTop = 5.0f;
-    graph.paddingBottom = 20.0f;
+    graph.paddingBottom = 25.0f;
     
     CPTPlotArea *plotArea = graph.plotAreaFrame.plotArea;
-    plotArea.fill = [CPTFill fillWithColor:[CPTColor blackColor]];
+    plotArea.fill = [CPTFill fillWithColor:[CPTColor colorWithCGColor:underPage]];
     
     [self configureBarPlot:graph withTitle:title dataSource:ds];
 }
@@ -351,8 +352,9 @@ CGFloat const CPDBarInitialX = 0.25f;
     [graph.plotAreaFrame setPaddingRight:0.0f];
     [graph.plotAreaFrame setPaddingTop:0.0f];
     [graph.plotAreaFrame setPaddingBottom:0.0f];
-    graph.plotAreaFrame.backgroundColor = [UIColor blackColor].CGColor;
-    
+    CGColorRef underPage = [UIColor underPageBackgroundColor].CGColor;
+    graph.plotAreaFrame.backgroundColor = underPage;
+    graph.paddingBottom = 25.0f;
     // instantiating delegate
     PieChartDelegate *pieChartDelegate = [[PieChartDelegate alloc] init];
     self.plotDelegate = pieChartDelegate;
@@ -363,7 +365,7 @@ CGFloat const CPDBarInitialX = 0.25f;
     CPTLegend *theLegend = [CPTLegend legendWithGraph:graph];
     // 3 - Configure legend
     theLegend.numberOfColumns = 1;
-    theLegend.fill = [CPTFill fillWithColor:[CPTColor blackColor]];
+    theLegend.fill = [CPTFill fillWithColor:[CPTColor colorWithCGColor:underPage]];
     CPTMutableLineStyle *legendLineStyle = [CPTMutableLineStyle lineStyle];
     legendLineStyle.lineColor = [CPTColor darkGrayColor];
     legendLineStyle.lineWidth = 2.0f;
@@ -382,7 +384,8 @@ CGFloat const CPDBarInitialX = 0.25f;
 - (void) configureXYGraph:(NSString *)title dataSource:(id<CPTPlotDataSource>)ds {
     CPTGraph *graph = [[CPTXYGraph alloc] initWithFrame:self.graphView.frame];
     self.graphView.hostedGraph = graph;
-    graph.plotAreaFrame.backgroundColor = [UIColor blackColor].CGColor;
+    CGColorRef underPage = [UIColor underPageBackgroundColor].CGColor;
+    graph.plotAreaFrame.backgroundColor = underPage;
     graph.paddingLeft = graph.paddingRight = graph.paddingTop = 5.0f;
     graph.paddingBottom = 25.0f;
     CPTXYPlotSpace *plotSpace = (CPTXYPlotSpace *) graph.defaultPlotSpace;
@@ -403,7 +406,7 @@ CGFloat const CPDBarInitialX = 0.25f;
     axisLabelStyle.fontSize = 9.0f;
     // title axis style
     CPTMutableTextStyle *axisTitleStyle = [CPTMutableTextStyle textStyle];
-    axisTitleStyle.color = [[CPTColor grayColor] colorWithAlphaComponent:0.8f];
+    axisTitleStyle.color = [[CPTColor darkGrayColor] colorWithAlphaComponent:1.0f];
     axisTitleStyle.fontName = @"Helvetica-Bold";
     axisTitleStyle.fontSize = 13.0f;
     // axis line style
@@ -417,15 +420,22 @@ CGFloat const CPDBarInitialX = 0.25f;
     xyAxisSet.xAxis.title = @"Период";
     xyAxisSet.xAxis.titleOffset = 5.0f;
     xyAxisSet.xAxis.axisLineStyle = axisLineStyle;
+    xyAxisSet.xAxis.labelTextStyle = nil;
     // y axis
     xyAxisSet.yAxis.titleTextStyle = axisTitleStyle;
     xyAxisSet.yAxis.title = @"Показания";
     xyAxisSet.yAxis.titleOffset = 5.0f;
     xyAxisSet.yAxis.axisLineStyle = axisLineStyle;
+    xyAxisSet.yAxis.labelTextStyle = nil;
     // ticks
     
     // plot
     CPTScatterPlot *plot = [[CPTScatterPlot alloc] init];
+    CPTMutableShadow *shadow = [CPTMutableShadow shadow];
+    shadow.shadowColor = [CPTColor blackColor];
+    shadow.shadowBlurRadius = 0.5;
+    shadow.shadowOffset = CGSizeMake(1.0, 1.0);
+    plot.shadow = shadow;
     plot.interpolation = CPTScatterPlotInterpolationCurved;
     plot.dataSource = ds;
     plot.labelTextStyle = nil;
@@ -487,13 +497,13 @@ CGFloat const CPDBarInitialX = 0.25f;
 
 - (void) configureAxes:(CPTGraph *)graph yMax:(NSUInteger)yMax {
     CPTMutableTextStyle *axisLabelStyle = [CPTMutableTextStyle textStyle];
-    axisLabelStyle.color = [[CPTColor grayColor] colorWithAlphaComponent:0.8f];
+    axisLabelStyle.color = [[CPTColor darkGrayColor] colorWithAlphaComponent:0.8f];
     axisLabelStyle.fontSize = 9.0f;
     
     CPTXYAxisSet *xyAxisSet = (CPTXYAxisSet *) graph.axisSet;
     
     CPTMutableTextStyle *axisTitleStyle = [CPTMutableTextStyle textStyle];
-    axisTitleStyle.color = [[CPTColor grayColor] colorWithAlphaComponent:0.8f];
+    axisTitleStyle.color = [[CPTColor darkGrayColor] colorWithAlphaComponent:0.8f];
     axisTitleStyle.fontName = @"Helvetica-Bold";
     axisTitleStyle.fontSize = 13.0f;
     
@@ -507,7 +517,7 @@ CGFloat const CPDBarInitialX = 0.25f;
     
     CPTMutableLineStyle *axisLineStyle = [CPTMutableLineStyle lineStyle];
     axisLineStyle.lineWidth = 1.0f;
-    axisLineStyle.lineColor = [[CPTColor grayColor] colorWithAlphaComponent:0.3f];
+    axisLineStyle.lineColor = [[CPTColor darkGrayColor] colorWithAlphaComponent:0.3f];
     
     xyAxisSet.yAxis.labelTextStyle = axisLabelStyle;
     
@@ -524,7 +534,7 @@ CGFloat const CPDBarInitialX = 0.25f;
     for (NSInteger j = minorIncrement; j <= yMax; j += minorIncrement) {
         NSString *text = [NSString stringWithFormat:@"%i", j*100];
         CPTAxisLabel *label = [[CPTAxisLabel alloc] initWithText:text
-                                                       textStyle:xyAxisSet.yAxis.labelTextStyle];
+                                                       textStyle:axisLabelStyle];
         NSDecimal location = CPTDecimalFromInteger(j);
         label.tickLocation = location;
         label.offset = -xyAxisSet.yAxis.majorTickLength - xyAxisSet.yAxis.labelOffset;

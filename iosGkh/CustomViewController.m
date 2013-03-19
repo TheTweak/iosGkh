@@ -43,7 +43,8 @@
 
         // notificates when user tapped on input param field
         [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(paramInputFieldTapped:) name:@"ParamInputFieldTapped"
+                                                 selector:@selector(paramInputFieldTapped:)
+                                                     name:@"ParamInputFieldTapped"
                                                    object:nil];
     }
     return self;
@@ -53,7 +54,9 @@
     NSLog(@"right bar button clicked");
     NSEnumerator *enumerator = [self.selectedValues keyEnumerator];
     id key;
-    while ((key = [enumerator nextObject])) {    
+    BOOL reload = NO;
+    while ((key = [enumerator nextObject])) {
+        reload = YES;
         NSDictionary *notificationDictionary = [NSDictionary dictionaryWithObjectsAndKeys:key, @"updateKey"
                                                 ,[self.selectedValues valueForKey:key], @"newValue"
                                                 ,self.tableRowIndex, @"rowIndex"
@@ -62,7 +65,9 @@
                                                             object:self
                                                           userInfo:notificationDictionary];        
     }
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"ReloadCurrentGraph" object:nil];
+    if (reload) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"ReloadCurrentGraph" object:nil];
+    }
     UINavigationController *navigationController = (UINavigationController *) self.parentViewController;
     [navigationController popViewControllerAnimated:YES];
 }

@@ -21,9 +21,12 @@
         int i = 0;
         while ((key = [enumerator nextObject])) {
             NSDictionary *inputMetaData = [inputs valueForKey:key];
-            
             NSString *inputDescription = [inputMetaData valueForKey:@"description"];
-            PickerField *textField = [[PickerField alloc] initWithFrame:CGRectMake(20, i * 50, 220, 44)];
+            float width = self.frame.size.width
+                 ,height = 44
+                 ,padding = 25;
+            CGRect rectangle = CGRectMake(padding, i * 55 + 10, width - 2 * padding, height);
+            PickerField *textField = [[PickerField alloc] initWithFrame:rectangle];
             textField.inputId = (NSString *) key;
             textField.placeholder = inputDescription;
             textField.pickerDescription = inputDescription;

@@ -37,9 +37,11 @@
 }
 
 - (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:nil];
+    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle
+                                                   reuseIdentifier:nil];
     cell.detailTextLabel.textColor = [UIColor darkGrayColor];
-    cell.textLabel.textColor = [UIColor orangeColor];
+    cell.textLabel.textColor = [UIColor whiteColor];
+    cell.textLabel.shadowColor = [UIColor darkGrayColor];
     cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
 //    cell.selectionStyle = UITableViewCellSelectionStyleGray;
     NSDictionary *paramJson = [self.paramsArray objectAtIndex:indexPath.row];

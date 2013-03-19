@@ -43,6 +43,10 @@
     NSString *monthValue = [monthsArray objectAtIndex:idx];
     CPTTextLayer *textLayerLeft = [[CPTTextLayer alloc] initWithText:monthValue
                                                                style:style];
+    CPTMutableShadow *shadow = [CPTMutableShadow shadow];
+    shadow.shadowColor = [CPTColor grayColor];
+    shadow.shadowOffset = CGSizeMake(1.0, 1.0);
+    textLayerLeft.shadow = shadow;
     self.leftSideAnnotation.contentLayer = textLayerLeft;
     // right annotation - bar height "value"
     if (!self.rightSideAnnotation) {
@@ -58,6 +62,7 @@
                             stringByAppendingString:@"р."];
     CPTTextLayer *textLayer = [[CPTTextLayer alloc] initWithText:priceValue
                                                            style:style];
+    textLayer.shadow = shadow;
     self.rightSideAnnotation.contentLayer = textLayer;
     
     [plot.graph.plotAreaFrame.plotArea addAnnotation:self.leftSideAnnotation];
