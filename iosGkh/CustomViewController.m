@@ -2,6 +2,8 @@
 //  CustomViewController.m
 //  iosGkh
 //
+//  Controller for view, showing when accessory button on a cell pressed.
+//
 //  Created by Evgeniy Sorokin on 14.03.13.
 //  Copyright (c) 2013 Prosoftlab. All rights reserved.
 //
@@ -58,8 +60,11 @@
                                                 ,nil];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateTableData"
                                                             object:self
-                                                          userInfo:notificationDictionary];
+                                                          userInfo:notificationDictionary];        
     }
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"ReloadCurrentGraph" object:nil];
+    UINavigationController *navigationController = (UINavigationController *) self.parentViewController;
+    [navigationController popViewControllerAnimated:YES];
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil

@@ -98,6 +98,9 @@ CGFloat const CPDBarInitialX = 0.25f;
 }
 
 - (void) scrollViewDidEndDecelerating:(UIScrollView *) scrollView {
+    if (scrollView != self.bottomView) {
+        return;
+    }
     int pageNumber = [self determineCurrentPageNumber:scrollView.contentOffset.x];
     self.pageControlView.currentPage = pageNumber;
     if (pageNumber > 0) {
@@ -172,11 +175,6 @@ CGFloat const CPDBarInitialX = 0.25f;
 }
 
 #pragma mark Accessors
-
-/*- (Nach *) nachDS {
-    if(!_nachDS) _nachDS = [[Nach alloc] init];
-    return _nachDS;
-}*/
 
 - (NSDictionary *) graphDictionary {
     if (!_graphDictionary) _graphDictionary = [NSMutableDictionary dictionary];
@@ -578,8 +576,9 @@ CGFloat const CPDBarInitialX = 0.25f;
 
 // Plot click handler
 - (void) barPlot:(CPTBarPlot *)plot barWasSelectedAtRecordIndex:(NSUInteger)idx {
-    if (plot.isHidden) return;
-    // get this plot data source by his title:
+    if (plot.isHidden) {
+        return;
+    }
     NSNumber *price = [plot.dataSource numberForPlot:plot field:CPTBarPlotFieldBarTip recordIndex:idx];
     NSNumber *month = [plot.dataSource numberForPlot:plot field:CPTBarPlotFieldBarLocation recordIndex:idx];
     
@@ -771,8 +770,8 @@ CGFloat const CPDBarInitialX = 0.25f;
 - (void) reloadDataForCurrentOnScreenPlot {
     NSLog(@"reloading current graph");
     /*CPTPlot *currentPlot = [[self.graphView.hostedGraph allPlots] objectAtIndex:0];
-    currentPlot.dataSource = self.nachDS;
-    [self.graphView.hostedGraph reloadData];*/
+    currentPlot.dataSource = self.nachDS;*/
+    [self.graphView.hostedGraph reloadData];
 }
 
 // updating the param input.
