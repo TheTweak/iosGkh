@@ -97,8 +97,8 @@
     
     if (!paramId) return;
 #warning TODO : loading mask
-    NSDictionary *requestParams = [[NSDictionary alloc] initWithObjectsAndKeys:paramId, @"type", nil];
-    [client postPath:@"param/value" parameters:requestParams success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    NSDictionary *requestParams = [[NSDictionary alloc] initWithObjectsAndKeys:paramId, @"param", nil];
+    [client postPath:@"param/value/list" parameters:requestParams success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"post succeeded");
         SBJsonParser *jsonParser = [[SBJsonParser alloc] init];
         NSData *responseData = (NSData *)responseObject;
