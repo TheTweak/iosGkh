@@ -330,7 +330,7 @@ CGFloat const CPDBarInitialX = 0.25f;
     CGFloat xMin = 0.0f;
     CGFloat xMax = 4.0f;
     CGFloat yMin = 0.0f;
-    CGFloat yMax = 20.0f;
+    CGFloat yMax = 1.0f;
     
     CPTXYPlotSpace *plotSpace = (CPTXYPlotSpace *) graph.defaultPlotSpace;
     plotSpace.xRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(xMin)
@@ -503,7 +503,7 @@ CGFloat const CPDBarInitialX = 0.25f;
     }
 }
 
-- (void) configureAxes:(CPTGraph *)graph yMax:(NSUInteger)yMax {
+- (void) configureAxes:(CPTGraph *)graph yMax:(CGFloat)yMax {
     CPTMutableTextStyle *axisLabelStyle = [CPTMutableTextStyle textStyle];
     axisLabelStyle.color = [[CPTColor darkGrayColor] colorWithAlphaComponent:0.8f];
     axisLabelStyle.fontSize = 9.0f;
@@ -534,16 +534,16 @@ CGFloat const CPDBarInitialX = 0.25f;
     xyAxisSet.yAxis.tickDirection = CPTSignPositive;
     xyAxisSet.yAxis.labelOffset = 15.0f;
     
-    NSInteger minorIncrement = 5;
+    CGFloat minorInc = 0.1;
     
     NSMutableSet *yLabels = [NSMutableSet set];
     NSMutableSet *yMajorLocations = [NSMutableSet set];
     
-    for (NSInteger j = minorIncrement; j <= yMax; j += minorIncrement) {
-        NSString *text = [NSString stringWithFormat:@"%i", j*100];
-        CPTAxisLabel *label = [[CPTAxisLabel alloc] initWithText:text
+    for (CGFloat j = minorInc; j <= yMax; j += minorInc) {
+//        NSString *text = [NSString stringWithFormat:@"%f", j];
+        CPTAxisLabel *label = [[CPTAxisLabel alloc] initWithText:@""
                                                        textStyle:axisLabelStyle];
-        NSDecimal location = CPTDecimalFromInteger(j);
+        NSDecimal location = CPTDecimalFromCGFloat(j);
         label.tickLocation = location;
         label.offset = -xyAxisSet.yAxis.majorTickLength - xyAxisSet.yAxis.labelOffset;
         if (label) {

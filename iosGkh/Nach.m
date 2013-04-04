@@ -17,6 +17,7 @@
 @property (nonatomic, strong) NSArray *graphValues;
 @property (atomic) BOOL isLoading;
 @property (nonatomic, strong) NSDictionary *dataToType;
+@property NSDecimalNumber *maxHeight;
 @end
 
 @implementation Nach
@@ -66,10 +67,15 @@
             NSDictionary *responseJson = [jsonParser objectWithString:responseString];
             NSArray *params = [responseJson objectForKey:@"values"];
             self.graphValues = params;
+            NSDecimalNumber *maxH = [NSDecimalNumber zero];
             for (int i = 0, l = [params count]; i < l; i++) {
                 NSDictionary *jsonObject = [params objectAtIndex:i];
-                NSLog(@"nach x : %@, y : %@", [jsonObject objectForKey:@"x"], [jsonObject objectForKey:@"y"]);
+                NSDecimalNumber *y = [NSDecimalNumber decimalNumberWithString:[jsonObject objectForKey:@"y"]];
+                NSComparisonResult compare = [maxH compare:y];
+                if (compare == NSOrderedAscending) maxH = y;
+                NSLog(@"nach x : %@, y : %@", [jsonObject objectForKey:@"x"], y);
             }
+            self.maxHeight = maxH;
             [plot reloadData];
             self.isLoading = NO;
             [[NSNotificationCenter defaultCenter] postNotificationName:@"HideLoadingMask" object:self];
@@ -86,6 +92,8 @@
     NSLog(@"number of records=%d", numberOfRecords);
     return numberOfRecords;
 }
+
+#pragma mark <UITableViewDataSource> routine:
 
 - (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return [self.graphValues count];
@@ -111,16 +119,23 @@
     return cell;
 }
 
+#pragma mark <BarPlotDataSource> routine:
+
 - (CPTFill *) barFillForBarPlot:(CPTBarPlot *)barPlot recordIndex:(NSUInteger)idx {
-//    if (idx % 2 == 0) {
-        CPTColor *begin = [CPTColor colorWithComponentRed:0.74f green:0.259f blue:0.0f alpha:1.0f];
-        CPTColor *end = [CPTColor colorWithComponentRed:1.0f green:0.5833f blue:0.0f alpha:1.0f];
-    CPTGradient *gradient = [CPTGradient gradientWithBeginningColor:begin endingColor:end];
+    NSDictionary *jsonObject = [self.graphValues objectAtIndex:idx];
+    
+    CPTGradient *gradient;
+    CPTColor *begin = [CPTColor colorWithComponentRed:0.74f green:0.259f blue:0.0f alpha:1.0f];
+    CPTColor *end = [CPTColor colorWithComponentRed:1.0f green:0.5833f blue:0.0f alpha:1.0f];
+    if ([jsonObject objectForKey:@"y2"]) {
+        NSDecimalNumber *y2 = [NSDecimalNumber decimalNumberWithString:[jsonObject objectForKey:@"y2"]];
+        y2 = [y2 decimalNumberByDividingBy:self.maxHeight];
+        gradient = [CPTGradient gradientWithBeginningColor:[CPTColor greenColor] endingColor:end beginningPosition:0.0 endingPosition:[y2 floatValue]];
+    } else {
+        gradient = [CPTGradient gradientWithBeginningColor:begin endingColor:end];
+    }
     gradient.angle = 90.0f;
-        return [CPTFill fillWithGradient:gradient];
-//    } else {
-//        return [CPTFill fillWithColor:[CPTColor colorWithComponentRed:0.0f green:0.5667f blue:1.0f alpha:1.0f]];
-//    }
+    return [CPTFill fillWithGradient:gradient];
 }
 
 - (NSNumber *) numberForPlot:(CPTPlot *)plot field:(NSUInteger)fieldEnum recordIndex:(NSUInteger)idx {
@@ -161,7 +176,8 @@
         if (CPTBarPlotFieldBarLocation == fieldEnum) {
             result = [jsonObject objectForKey:@"x"];
         } else if (CPTBarPlotFieldBarTip == fieldEnum) {
-            result = [jsonObject objectForKey:@"y"];
+            NSDecimalNumber *y = [NSDecimalNumber decimalNumberWithString:[jsonObject objectForKey:@"y"]];
+            result = [y decimalNumberByDividingBy:self.maxHeight];
         }
     }
     
