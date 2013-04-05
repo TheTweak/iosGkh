@@ -11,17 +11,39 @@
 @implementation CorePlotUtils
 
 static CPTMutableTextStyle *_orangeHelvetica;
+static CPTMutableTextStyle *_greenHelvetica;
+static CPTMutableTextStyle *_whiteHelvetica;
 static NSNumberFormatter *_thousandsSeparator;
 static NSArray *_monthsArray;
 
 + (CPTMutableTextStyle *)orangeHelvetica {
     if (!_orangeHelvetica) {
         _orangeHelvetica = [CPTMutableTextStyle textStyle];
-        _orangeHelvetica.color= [CPTColor whiteColor];
-        _orangeHelvetica.fontSize = 15.0f;
+        _orangeHelvetica.color= [CPTColor colorWithComponentRed:0 green:.3943 blue:.91 alpha:1];
+        _orangeHelvetica.fontSize = 17.0f;
         _orangeHelvetica.fontName = @"Helvetica-Bold";
     }
     return _orangeHelvetica;
+}
+
++ (CPTMutableTextStyle *)whiteHelvetica {
+    if (!_whiteHelvetica) {
+        _whiteHelvetica = [CPTMutableTextStyle textStyle];
+        _whiteHelvetica.color= [CPTColor whiteColor];
+        _whiteHelvetica.fontSize = 17.0f;
+        _whiteHelvetica.fontName = @"Helvetica-Bold";
+    }
+    return _whiteHelvetica;
+}
+
++ (CPTMutableTextStyle *)greenHelvetica {
+    if (!_greenHelvetica) {
+        _greenHelvetica = [CPTMutableTextStyle textStyle];
+        _greenHelvetica.color= [CPTColor colorWithComponentRed:0.6793 green:1.0 blue:0.26 alpha:1];
+        _greenHelvetica.fontSize = 17.0f;
+        _greenHelvetica.fontName = @"Helvetica-Bold";
+    }
+    return _greenHelvetica;
 }
 
 + (NSNumberFormatter *)thousandsSeparator {

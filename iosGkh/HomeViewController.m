@@ -303,7 +303,7 @@ CGFloat const CPDBarInitialX = 0.25f;
     
     [graph.plotAreaFrame setPaddingLeft:10.0f];
     [graph.plotAreaFrame setPaddingRight:10.0f];
-    [graph.plotAreaFrame setPaddingTop:35.0f];
+    [graph.plotAreaFrame setPaddingTop:65.0f];
     [graph.plotAreaFrame setPaddingBottom:20.0f];
     CGColorRef underPage = [UIColor underPageBackgroundColor].CGColor;
     graph.plotAreaFrame.backgroundColor = underPage;
@@ -468,7 +468,16 @@ CGFloat const CPDBarInitialX = 0.25f;
     plot.lineStyle = nil;
     plot.dataSource = ds;
     plot.delegate = self.plotDelegate;
+    /*CPTMutableShadow *shadow = [CPTMutableShadow shadow];
+    shadow.shadowColor = [CPTColor blackColor];
+    shadow.shadowBlurRadius = 1;
+    shadow.shadowOffset = CGSizeMake(1.0, 1.0);
+    plot.shadow = shadow;*/
+    plot.shadowRadius = 20.0;
+    plot.shadowOffset = CGSizeMake(1.0, 1.0);
+    plot.shadowColor = [[CPTColor blackColor] cgColor];
     plot.title = title;
+    plot.barCornerRadius = 5.0;
     plot.barWidth = CPTDecimalFromDouble(CPDBarWidth);
     [graph addPlot:plot];
     

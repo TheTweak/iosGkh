@@ -12,6 +12,8 @@
 @interface CorePlotUtils : NSObject
 
 + (CPTMutableTextStyle *) orangeHelvetica;
++ (CPTMutableTextStyle *) whiteHelvetica;
++ (CPTMutableTextStyle *) greenHelvetica;
 + (NSNumberFormatter *) thousandsSeparator;
 + (NSArray *) monthsArray;
 
