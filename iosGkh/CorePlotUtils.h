@@ -14,6 +14,7 @@
 + (CPTMutableTextStyle *) orangeHelvetica;
 + (CPTMutableTextStyle *) whiteHelvetica;
 + (CPTMutableTextStyle *) greenHelvetica;
++ (CGColorRef) blueColor;
 + (NSNumberFormatter *) thousandsSeparator;
 + (NSArray *) monthsArray;
 

@@ -16,6 +16,7 @@
 #import "Constants.h"
 #import "BarPlotDelegate.h"
 #import "PieChartDelegate.h"
+#import "CorePlotUtils.h"
 
 @interface HomeViewController ()
 @property (nonatomic, strong) HomeTableDataSource *tableDataSource;
@@ -61,15 +62,15 @@ CGFloat const CPDBarInitialX = 0.25f;
     [super viewDidLoad];
     [self registerForNotifications];    
     UITableView *tableView = self.tableView;
-    tableView.backgroundColor = [UIColor underPageBackgroundColor];
-    tableView.separatorColor = [UIColor grayColor];
+    tableView.backgroundColor = [UIColor viewFlipsideBackgroundColor];
+    tableView.separatorColor = [UIColor darkGrayColor];
     tableView.dataSource = self.tableDataSource;
     tableView.delegate = self;
-    tableView.layer.borderColor = [UIColor orangeColor].CGColor;
+    tableView.layer.borderColor = [CorePlotUtils blueColor];
     tableView.layer.borderWidth = 2.0f;
     tableView.layer.cornerRadius = 8.0f;
     UINavigationBar *navBar = [[self navigationController] navigationBar];
-    [navBar setTintColor:[UIColor orangeColor]];
+    [navBar setTintColor:[UIColor colorWithRed:0 green:.3943 blue:.91 alpha:1]];
 #warning todo remove explicit height calculation
     float graphViewWidth = self.view.bounds.size.width
          ,graphViewHeight = self.view.frame.size.height - 160 - 44;
@@ -84,8 +85,8 @@ CGFloat const CPDBarInitialX = 0.25f;
     self.bottomView.showsVerticalScrollIndicator = NO;
     self.bottomView.pagingEnabled = YES;
     self.bottomView.delegate = self;
-    self.bottomView.backgroundColor = [UIColor underPageBackgroundColor];
-    self.bottomView.layer.borderColor = [UIColor orangeColor].CGColor;
+    self.bottomView.backgroundColor = [UIColor viewFlipsideBackgroundColor];
+    self.bottomView.layer.borderColor = [CorePlotUtils blueColor];
     self.bottomView.layer.borderWidth = 2.0f;
     self.bottomView.layer.cornerRadius = 8.0f;
     [self.bottomView addSubview:self.graphView];
@@ -305,7 +306,7 @@ CGFloat const CPDBarInitialX = 0.25f;
     [graph.plotAreaFrame setPaddingRight:10.0f];
     [graph.plotAreaFrame setPaddingTop:65.0f];
     [graph.plotAreaFrame setPaddingBottom:20.0f];
-    CGColorRef underPage = [UIColor underPageBackgroundColor].CGColor;
+    CGColorRef underPage = [UIColor viewFlipsideBackgroundColor].CGColor;
     graph.plotAreaFrame.backgroundColor = underPage;
     
     //---- strelka

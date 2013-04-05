@@ -13,8 +13,16 @@
 static CPTMutableTextStyle *_orangeHelvetica;
 static CPTMutableTextStyle *_greenHelvetica;
 static CPTMutableTextStyle *_whiteHelvetica;
+static CGColorRef _blueColor;
 static NSNumberFormatter *_thousandsSeparator;
 static NSArray *_monthsArray;
+
++ (CGColorRef) blueColor {
+    if (!_blueColor) {
+        _blueColor = [[CPTColor colorWithComponentRed:0 green:.3943 blue:.91 alpha:1] cgColor];
+    }
+    return _blueColor;
+}
 
 + (CPTMutableTextStyle *)orangeHelvetica {
     if (!_orangeHelvetica) {
