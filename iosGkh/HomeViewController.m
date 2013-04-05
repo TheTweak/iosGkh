@@ -300,10 +300,10 @@ CGFloat const CPDBarInitialX = 0.25f;
     [self.graphDictionary setObject:graph forKey:title];
     self.graphView.hostedGraph = graph;
     
-    [graph.plotAreaFrame setPaddingLeft:30.0f];
-    [graph.plotAreaFrame setPaddingRight:20.0f];
-    [graph.plotAreaFrame setPaddingTop:27.0f];
-    [graph.plotAreaFrame setPaddingBottom:35.0f];
+    [graph.plotAreaFrame setPaddingLeft:10.0f];
+    [graph.plotAreaFrame setPaddingRight:10.0f];
+    [graph.plotAreaFrame setPaddingTop:35.0f];
+    [graph.plotAreaFrame setPaddingBottom:20.0f];
     CGColorRef underPage = [UIColor underPageBackgroundColor].CGColor;
     graph.plotAreaFrame.backgroundColor = underPage;
     
@@ -312,7 +312,7 @@ CGFloat const CPDBarInitialX = 0.25f;
     
     CALayer *layer = [CALayer layer];
     [layer setFrame:CGRectMake(plotAreaFrame.bounds.origin.x + 16.0f,
-                               plotAreaFrame.bounds.origin.y + 18.0f,
+                               plotAreaFrame.bounds.origin.y + 4.5f,
                                16.0f,
                                16.0f)];
     
@@ -325,6 +325,7 @@ CGFloat const CPDBarInitialX = 0.25f;
 
     BarPlotDelegate *barPlotDelegate = [[BarPlotDelegate alloc] init];
     barPlotDelegate.arrow = layer;
+    barPlotDelegate.homeVC = self;
     self.plotDelegate = barPlotDelegate;
         
     CGFloat xMin = 0.0f;
@@ -528,7 +529,7 @@ CGFloat const CPDBarInitialX = 0.25f;
     xyAxisSet.xAxis.titleOffset = 5.0f;
     
     xyAxisSet.yAxis.titleTextStyle = axisTitleStyle;
-    xyAxisSet.yAxis.title = @"Начислено";
+//    xyAxisSet.yAxis.title = @"Начислено";
     xyAxisSet.yAxis.titleOffset = 260.0f;
     
     CPTMutableLineStyle *axisLineStyle = [CPTMutableLineStyle lineStyle];
@@ -574,6 +575,12 @@ CGFloat const CPDBarInitialX = 0.25f;
 }
 
 #pragma mark Other stuff
+
+- (NSDictionary *) selectedParameterMeta {
+    NSIndexPath *path = [self.tableView indexPathForSelectedRow];
+    NSDictionary *meta = [self.tableDataSource customPropertiesAtRowIndex:path.item];
+    return meta;
+}
 
 // Show loading indicator
 - (void) showLoadingMask {

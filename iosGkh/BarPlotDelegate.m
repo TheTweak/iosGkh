@@ -7,6 +7,7 @@
 //
 
 #import "BarPlotDelegate.h"
+#import "Nach.h"
 
 @interface BarPlotDelegate ()
 @property (nonatomic, strong) CPTAnnotation *leftSideAnnotation;
@@ -14,7 +15,9 @@
 @end
 
 @implementation BarPlotDelegate
-
+CGFloat const label_height = 1.1;
+CGFloat const left_label_pos = 0.5;
+CGFloat const right_label_pos = 3.5;
 @synthesize leftSideAnnotation = _leftSideAnnotation;
 @synthesize rightSideAnnotation = _rightSideAnnotation;
 @synthesize arrow = _arrow;
@@ -23,6 +26,12 @@
     if (plot.isHidden) {
         return;
     }
+    // get business values for selected bar
+    Nach *nach = (Nach *) plot.dataSource;
+    NSDictionary *businessVals = [nach getBusinessValues:idx];
+    // get meta info
+    NSDictionary *metaInfo = [self.homeVC selectedParameterMeta];
+    
     NSNumber *barHeight = [plot.dataSource numberForPlot:plot
                                                    field:CPTBarPlotFieldBarTip
                                              recordIndex:idx];
@@ -32,8 +41,8 @@
     CPTMutableTextStyle *style = [CorePlotUtils orangeHelvetica];
     // left annotation - bar position "value"
     if (!self.leftSideAnnotation) {
-        NSNumber *x = [NSNumber numberWithFloat:0.25f];
-        NSNumber *y = [NSNumber numberWithFloat:21.5f];
+        NSNumber *x = [NSNumber numberWithFloat:left_label_pos];
+        NSNumber *y = [NSNumber numberWithFloat:label_height];
         NSArray *anchorPoint = [NSArray arrayWithObjects:x, y, nil];
         self.leftSideAnnotation = [[CPTPlotSpaceAnnotation alloc]
                                    initWithPlotSpace:plot.plotSpace
@@ -50,8 +59,8 @@
     self.leftSideAnnotation.contentLayer = textLayerLeft;
     // right annotation - bar height "value"
     if (!self.rightSideAnnotation) {
-        NSNumber *x = [NSNumber numberWithFloat:3.5f];
-        NSNumber *y = [NSNumber numberWithFloat:21.5f];
+        NSNumber *x = [NSNumber numberWithFloat:right_label_pos];
+        NSNumber *y = [NSNumber numberWithFloat:label_height];
         NSArray *anchorPoint = [NSArray arrayWithObjects:x, y, nil];
         self.rightSideAnnotation = [[CPTPlotSpaceAnnotation alloc]
                                     initWithPlotSpace:plot.plotSpace

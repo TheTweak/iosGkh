@@ -9,8 +9,10 @@
 #import <Foundation/Foundation.h>
 #import "CorePlot-CocoaTouch.h"
 #import "CorePlotUtils.h"
+#import "HomeViewController.h"
 
 @interface BarPlotDelegate : NSObject <CPTBarPlotDelegate>
 // arrow, pointing on clicked bar
 @property (nonatomic, strong) CALayer *arrow;
+@property (nonatomic, weak) HomeViewController *homeVC;
 @end

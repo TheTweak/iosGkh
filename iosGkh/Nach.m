@@ -126,8 +126,10 @@
     CPTColor *begin = [CPTColor colorWithComponentRed:0.74f green:0.259f blue:0.0f alpha:1.0f];
     CPTColor *end = [CPTColor colorWithComponentRed:1.0f green:0.5833f blue:0.0f alpha:1.0f];
     if ([@"sec" isEqualToString:barPlot.title]) {
-        gradient = [CPTGradient gradientWithBeginningColor:[CPTColor blueColor]
-                                               endingColor:[CPTColor cyanColor]];
+        CPTColor *begin = [CPTColor colorWithComponentRed:0.4023 green:0.71 blue:0 alpha:1];
+        CPTColor *end = [CPTColor colorWithComponentRed:0.6793 green:1.0 blue:0.26 alpha:1];
+        gradient = [CPTGradient gradientWithBeginningColor:begin
+                                               endingColor:end];
     } else {
         gradient = [CPTGradient gradientWithBeginningColor:begin endingColor:end];
     }
@@ -173,7 +175,7 @@
         if (CPTBarPlotFieldBarLocation == fieldEnum) {
             result = [jsonObject objectForKey:@"x"];
             if ([@"sec" isEqualToString:plot.title]) {
-                result = [NSNumber numberWithFloat:[result floatValue] + 0.1f];
+                result = [NSNumber numberWithFloat:[result floatValue]];
             }
         } else if (CPTBarPlotFieldBarTip == fieldEnum) {
             NSDecimalNumber *y;
@@ -187,6 +189,13 @@
     }
     
     return result;
+}
+
+- (NSDictionary *)getBusinessValues:(NSUInteger)idx {
+    if (self.graphValues) {
+        return (NSDictionary *) [self.graphValues objectAtIndex:idx];
+    }
+    return nil;
 }
 
 #pragma mark Pie chart
@@ -244,6 +253,7 @@
 
 - (CPTLayer *) dataLabelForPlot:(CPTPlot *)plot recordIndex:(NSUInteger)idx {
     if ([plot isKindOfClass:[CPTScatterPlot class]]) return nil;
+    if ([plot isKindOfClass:[CPTBarPlot class]]) return nil;
     if ([@"nach" isEqualToString:plot.title]) return nil;
     CPTLayer *result;
     //int sum = 15;
