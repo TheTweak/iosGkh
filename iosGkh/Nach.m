@@ -16,7 +16,7 @@
 @interface Nach ()
 @property (nonatomic, strong) NSArray *graphValues;
 @property (atomic) BOOL isLoading;
-@property (nonatomic, strong) NSDictionary *dataToType;
+@property (nonatomic, strong) NSDictionary *metaInfo;
 @property NSDecimalNumber *maxHeight;
 @end
 
@@ -24,9 +24,10 @@
 
 @synthesize graphValues = _graphValues;
 @synthesize isLoading = _isLoading;
-@synthesize dataToType = _dataToType;
+@synthesize metaInfo = _metaInfo;
 @synthesize requestParams = _requestParams;
 @synthesize paramId = _paramId;
+@synthesize homeTableDS = _homeTableDS;
 
 - (BOOL) axis:(CPTAxis *)axis shouldUpdateAxisLabelsAtLocations:(NSSet *)locations {
     axis.axisTitle = [[CPTAxisTitle alloc] initWithText:@"Период" textStyle:[CPTTextStyle textStyle]];
@@ -138,7 +139,11 @@
 }
 
 - (NSNumber *) numberForPlot:(CPTPlot *)plot field:(NSUInteger)fieldEnum recordIndex:(NSUInteger)idx {
-
+    // load meta-info once
+    if (!self.metaInfo) {
+        self.metaInfo = [self.homeTableDS customPropertiesAtRowIndex:idx];
+    }
+    
     // todo remove this stub (Pie Chart)
     if ([@"flsCount" isEqualToString:plot.title]) {
         int result = 0;
@@ -172,11 +177,15 @@
             result = [jsonObject objectForKey:@"y"];
         }
     } else if ([plot isKindOfClass:[CPTBarPlot class]]) {
+        // get key for X, Y values
+        /*NSString *xKey = [self.metaInfo valueForKey:@"x"];
+        NSString *yKey = [self.metaInfo valueForKey:@"y"];
+        NSString *y2Key = [self.metaInfo valueForKey:@"y2"];*/
         if (CPTBarPlotFieldBarLocation == fieldEnum) {
             result = [jsonObject objectForKey:@"x"];
-            if ([@"sec" isEqualToString:plot.title]) {
-                result = [NSNumber numberWithFloat:[result floatValue]];
-            }
+            /*double offset = width / 2;
+            offset = offset + [result doubleValue] + 0.2;
+            result = [NSNumber numberWithDouble:offset];*/
         } else if (CPTBarPlotFieldBarTip == fieldEnum) {
             NSDecimalNumber *y;
             if ([@"sec" isEqualToString:plot.title]) {

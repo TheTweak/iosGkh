@@ -8,10 +8,12 @@
 
 #import <Foundation/Foundation.h>
 #import "CorePlot-CocoaTouch.h"
+#import "HomeTableDataSource.h"
 
 @interface Nach : NSObject <CPTBarPlotDataSource, CPTAxisDelegate, CPTPieChartDataSource, CPTScatterPlotDataSource, UITableViewDataSource>
 - (NSDictionary *) getBusinessValues: (NSUInteger) idx;
 // Plot-specific data request params
 @property (nonatomic, copy) NSDictionary *requestParams;
 @property (nonatomic, strong) NSString *paramId;
+@property (nonatomic, weak) HomeTableDataSource *homeTableDS;
 @end

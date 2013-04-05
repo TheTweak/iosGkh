@@ -242,6 +242,7 @@ CGFloat const CPDBarInitialX = 0.25f;
     // now create this param's plot data source
     Nach *dataSource = [[Nach alloc] init];
     dataSource.paramId = paramId;
+    dataSource.homeTableDS = self.tableDataSource;
     // put data source into map for having at least one strong reference
     [self.paramToCPDataSource setValue:dataSource forKey:paramId];
     
