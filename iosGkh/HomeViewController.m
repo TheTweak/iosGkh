@@ -469,6 +469,14 @@ CGFloat const CPDBarInitialX = 0.25f;
     plot.title = title;
     plot.barWidth = CPTDecimalFromDouble(CPDBarWidth);
     [graph addPlot:plot];
+    
+    CPTBarPlot *plot2 = [[CPTBarPlot alloc] initWithFrame:graph.frame];
+    plot2.lineStyle = nil;
+    plot2.dataSource = ds;
+    plot2.delegate = self.plotDelegate;
+    plot2.title = @"sec";
+    plot2.barWidth = CPTDecimalFromDouble(CPDBarWidth);
+    [graph addPlot:plot2];
 }
 
 - (void) configurePieChart:(CPTGraph *)graph withTitle: (NSString *) title

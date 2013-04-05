@@ -76,7 +76,7 @@
                 NSLog(@"nach x : %@, y : %@", [jsonObject objectForKey:@"x"], y);
             }
             self.maxHeight = maxH;
-            [plot reloadData];
+            [plot.graph reloadData];
             self.isLoading = NO;
             [[NSNotificationCenter defaultCenter] postNotificationName:@"HideLoadingMask" object:self];
             NSLog(@"success");
@@ -122,15 +122,12 @@
 #pragma mark <BarPlotDataSource> routine:
 
 - (CPTFill *) barFillForBarPlot:(CPTBarPlot *)barPlot recordIndex:(NSUInteger)idx {
-    NSDictionary *jsonObject = [self.graphValues objectAtIndex:idx];
-    
     CPTGradient *gradient;
     CPTColor *begin = [CPTColor colorWithComponentRed:0.74f green:0.259f blue:0.0f alpha:1.0f];
     CPTColor *end = [CPTColor colorWithComponentRed:1.0f green:0.5833f blue:0.0f alpha:1.0f];
-    if ([jsonObject objectForKey:@"y2"]) {
-        NSDecimalNumber *y2 = [NSDecimalNumber decimalNumberWithString:[jsonObject objectForKey:@"y2"]];
-        y2 = [y2 decimalNumberByDividingBy:self.maxHeight];
-        gradient = [CPTGradient gradientWithBeginningColor:[CPTColor greenColor] endingColor:end beginningPosition:0.0 endingPosition:[y2 floatValue]];
+    if ([@"sec" isEqualToString:barPlot.title]) {
+        gradient = [CPTGradient gradientWithBeginningColor:[CPTColor blueColor]
+                                               endingColor:[CPTColor cyanColor]];
     } else {
         gradient = [CPTGradient gradientWithBeginningColor:begin endingColor:end];
     }
@@ -175,8 +172,16 @@
     } else if ([plot isKindOfClass:[CPTBarPlot class]]) {
         if (CPTBarPlotFieldBarLocation == fieldEnum) {
             result = [jsonObject objectForKey:@"x"];
+            if ([@"sec" isEqualToString:plot.title]) {
+                result = [NSNumber numberWithFloat:[result floatValue] + 0.1f];
+            }
         } else if (CPTBarPlotFieldBarTip == fieldEnum) {
-            NSDecimalNumber *y = [NSDecimalNumber decimalNumberWithString:[jsonObject objectForKey:@"y"]];
+            NSDecimalNumber *y;
+            if ([@"sec" isEqualToString:plot.title]) {
+                y = [NSDecimalNumber decimalNumberWithString:[jsonObject objectForKey:@"y2"]];
+            } else {
+                y = [NSDecimalNumber decimalNumberWithString:[jsonObject objectForKey:@"y"]];
+            }
             result = [y decimalNumberByDividingBy:self.maxHeight];
         }
     }
