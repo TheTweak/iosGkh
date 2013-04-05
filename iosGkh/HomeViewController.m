@@ -330,7 +330,7 @@ CGFloat const CPDBarInitialX = 0.25f;
     self.plotDelegate = barPlotDelegate;
         
     CGFloat xMin = 0.0f;
-    CGFloat xMax = 4.0f;
+    CGFloat xMax = 1.0f;
     CGFloat yMin = 0.0f;
     CGFloat yMax = 1.0f;
     

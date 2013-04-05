@@ -16,8 +16,8 @@
 
 @implementation BarPlotDelegate
 CGFloat const label_height = 1.1;
-CGFloat const left_label_pos = 0.5;
-CGFloat const right_label_pos = 3.5;
+CGFloat const left_label_pos = 0.1;
+CGFloat const right_label_pos = 0.9;
 @synthesize leftSideAnnotation = _leftSideAnnotation;
 @synthesize rightSideAnnotation = _rightSideAnnotation;
 @synthesize arrow = _arrow;

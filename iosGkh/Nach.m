@@ -181,11 +181,14 @@
         /*NSString *xKey = [self.metaInfo valueForKey:@"x"];
         NSString *yKey = [self.metaInfo valueForKey:@"y"];
         NSString *y2Key = [self.metaInfo valueForKey:@"y2"];*/
+       NSNumber *width = [jsonObject objectForKey:@"width"];
+        ((CPTBarPlot *)plot).barWidth = [width decimalValue];
         if (CPTBarPlotFieldBarLocation == fieldEnum) {
             result = [jsonObject objectForKey:@"x"];
             /*double offset = width / 2;
             offset = offset + [result doubleValue] + 0.2;
             result = [NSNumber numberWithDouble:offset];*/
+            result = [NSNumber numberWithDouble:[result doubleValue]];
         } else if (CPTBarPlotFieldBarTip == fieldEnum) {
             NSDecimalNumber *y;
             if ([@"sec" isEqualToString:plot.title]) {
