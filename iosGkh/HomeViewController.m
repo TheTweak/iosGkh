@@ -112,6 +112,8 @@ CGFloat const CPDBarInitialX = 0.25f;
         NSArray *pages = [self.graphToPagesDictionary valueForKey:[current title]];
         UIViewController *viewController = (UIViewController *) [pages objectAtIndex:pageNumber - 1];
         UITableView *tableView = (UITableView *) viewController.view;
+        Nach *ds = (Nach *) tableView.dataSource;
+        ds.tableNeedsReloading = YES;
         [tableView reloadData];
     }
     NSLog(@"EndDecelerating:%i", pageNumber);
@@ -266,6 +268,7 @@ CGFloat const CPDBarInitialX = 0.25f;
     #warning TODO : don't needed to create new ds each time!!! get from Dictionary instead!
     // now create this param's plot data source
     Nach *dataSource = [[Nach alloc] init];
+    dataSource.tableNeedsReloading = NO;
     dataSource.paramId = paramId;
     dataSource.homeTableDS = self.tableDataSource;
     // put data source into map for having at least one strong reference
@@ -286,8 +289,8 @@ CGFloat const CPDBarInitialX = 0.25f;
             UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(320, 0, 320, 230)];
             tableViewController.view = tableView;
             tableView.dataSource = dataSource;
-            tableView.backgroundColor = [UIColor underPageBackgroundColor];
-            tableView.separatorColor = [UIColor grayColor];
+            tableView.backgroundColor = [UIColor viewFlipsideBackgroundColor];
+            tableView.separatorColor = [UIColor darkGrayColor];
 //            tableView.layer.borderColor = [UIColor orangeColor].CGColor;
 //            tableView.layer.borderWidth = 2.0f;
             tableView.layer.cornerRadius = 8.0f;

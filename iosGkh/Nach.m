@@ -15,6 +15,7 @@
 
 @interface Nach ()
 @property (nonatomic, strong) NSArray *graphValues;
+@property (nonatomic, strong) NSArray *tableValues;
 @property (atomic) BOOL isLoading;
 @property (nonatomic, strong) NSDictionary *metaInfo;
 @property NSDecimalNumber *maxHeight;
@@ -23,11 +24,13 @@
 @implementation Nach
 
 @synthesize graphValues = _graphValues;
+@synthesize tableValues = _tableValues;
 @synthesize isLoading = _isLoading;
 @synthesize metaInfo = _metaInfo;
 @synthesize requestParams = _requestParams;
 @synthesize paramId = _paramId;
 @synthesize homeTableDS = _homeTableDS;
+@synthesize tableNeedsReloading = _tableNeedsReloading;
 
 - (BOOL) axis:(CPTAxis *)axis shouldUpdateAxisLabelsAtLocations:(NSSet *)locations {
     axis.axisTitle = [[CPTAxisTitle alloc] initWithText:@"Период" textStyle:[CPTTextStyle textStyle]];
@@ -99,26 +102,60 @@
 #pragma mark <UITableViewDataSource> routine:
 
 - (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [self.graphValues count];
+    NSInteger numberOfRecords = [self.tableValues count];
+    if (self.tableNeedsReloading) {
+        if (!self.isLoading) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"ShowLoadingMask" object:self];
+            self.isLoading = YES; // very bad
+            AFHTTPClient *client = [BasicAuthModule httpClient];
+            
+            NSMutableDictionary *requestParameters = [[NSMutableDictionary alloc] init];
+            // necessary request param, unique identifier of requesting data
+            [requestParameters setValue:self.paramId forKey:@"type"];
+            
+            [client postPath:@"param/value" parameters:requestParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                NSLog(@"post succeeded");
+                
+                SBJsonParser *jsonParser = [[SBJsonParser alloc] init];
+                NSData *responseData = (NSData *)responseObject;
+                NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+                NSDictionary *responseJson = [jsonParser objectWithString:responseString];
+                NSArray *params = [responseJson objectForKey:@"values"];
+                self.tableValues = params;
+                for (int i = 0, l = [params count]; i < l; i++) {
+                    NSDictionary *jsonObject = [params objectAtIndex:i];
+                    NSDecimalNumber *y = [NSDecimalNumber decimalNumberWithString:[jsonObject objectForKey:@"y"]];
+                }
+                [tableView reloadData];
+                self.isLoading = NO;
+                self.tableNeedsReloading = NO;
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"HideLoadingMask" object:self];
+                NSLog(@"success");
+            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                self.isLoading = NO;
+                NSLog(@"failure");
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"HideLoadingMask" object:self];
+            }];
+        }
+    }
+    return numberOfRecords;
 }
 
 - (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle
                                                    reuseIdentifier:nil];
-    cell.detailTextLabel.textColor = [UIColor darkGrayColor];
+    cell.detailTextLabel.textColor = [UIColor greenColor];
     cell.selectionStyle = UITableViewCellSelectionStyleBlue;
     cell.textLabel.textColor = [UIColor whiteColor];
     cell.textLabel.shadowColor = [UIColor darkGrayColor];
     
-    NSDictionary *jsonObject = [self.graphValues objectAtIndex:indexPath.row];
-    NSNumber *price = [jsonObject objectForKey:@"y"];
-    
-    NSArray *monthsArray = [CorePlotUtils monthsArray];
-    NSString *monthValue = [monthsArray objectAtIndex:indexPath.row];
-    
+    NSDictionary *jsonObject = [self.tableValues objectAtIndex:indexPath.row];
+    NSString *kladr = [jsonObject objectForKey:@"kladr"];
     NSNumberFormatter *formatter = [CorePlotUtils thousandsSeparator];
-    NSString *priceValue = [[formatter stringFromNumber:price] stringByAppendingString:@"р."];
-    cell.textLabel.text = [monthValue stringByAppendingFormat:@" - %@", priceValue];
+    
+    NSString *percent = [jsonObject valueForKey:@"percent"];
+    cell.textLabel.text = kladr;
+    cell.detailTextLabel.text = [percent stringByAppendingString:@"%"];
     return cell;
 }
 

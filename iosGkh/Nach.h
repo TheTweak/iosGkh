@@ -17,4 +17,5 @@
 @property (nonatomic, strong) NSString *paramId;
 @property (nonatomic, weak) HomeTableDataSource *homeTableDS;
 @property (nonatomic, strong) NSString *scope;
+@property BOOL tableNeedsReloading;
 @end
