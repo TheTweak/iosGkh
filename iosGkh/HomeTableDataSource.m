@@ -49,7 +49,7 @@
     NSString *graphType = [paramJson objectForKey:@"graph"];
     NSString *pngFileName;
     if ([BarPlot isEqualToString:graphType]) {
-        pngFileName = @"coins48";
+        pngFileName = @"green_money48";
     } else if ([PieChart isEqualToString:graphType]) {
         pngFileName = @"fls48";
     } else if ([XYPlot isEqualToString:graphType]) {

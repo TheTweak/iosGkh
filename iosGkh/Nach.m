@@ -66,6 +66,7 @@
             NSData *responseData = (NSData *)responseObject;
             NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
             NSDictionary *responseJson = [jsonParser objectWithString:responseString];
+            self.scope = [responseJson valueForKey:@"scope"];
             NSArray *params = [responseJson objectForKey:@"values"];
             self.graphValues = params;
             NSDecimalNumber *maxH = [NSDecimalNumber zero];

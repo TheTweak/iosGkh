@@ -15,6 +15,8 @@
 @property (nonatomic, strong) CPTAnnotation *payAnnotation;
 @property (nonatomic, strong) CPTAnnotation *rightSideBottomAnnotation;
 @property (nonatomic, strong) CPTAnnotation *percentAnnotation;
+@property (nonatomic, strong) CPTAnnotation *scopeAnnotation;
+@property (nonatomic, strong) CPTShadow *shadow;
 @end
 
 @implementation BarPlotDelegate
@@ -28,19 +30,52 @@ CGFloat const pay_label_pos = 0.2;
 CGFloat const period_label_height = -0.1;
 CGFloat const period_label_pos = 0.85;
 
+CGFloat const scope_label_height = 1.3;
+CGFloat const scope_label_pos = 0.5;
+
 @synthesize periodAnnotation = _periodAnnotation;
 @synthesize nachAnnotation = _nachAnnotation;
 @synthesize rightSideBottomAnnotation = _rightSideBottomAnnotation;
 @synthesize payAnnotation = _payAnnotation;
 @synthesize percentAnnotation = _percentAnnotation;
+@synthesize scopeAnnotation = _scopeAnnotation;
+@synthesize shadow = _shadow;
 @synthesize arrow = _arrow;
+
+- (CPTShadow *) shadow {
+    if (!_shadow) {
+        CPTMutableShadow *shadow = [CPTMutableShadow shadow];
+        shadow.shadowColor = [CPTColor grayColor];
+        shadow.shadowOffset = CGSizeMake(1.0, 1.0);
+        _shadow = shadow;
+    }
+    return _shadow;
+}
 
 - (void) barPlot:(CPTBarPlot *)plot barWasSelectedAtRecordIndex:(NSUInteger)idx {
     if (plot.isHidden) {
         return;
     }
+    CPTPlotArea *plotArea = plot.graph.plotAreaFrame.plotArea;
     // get business values for selected bar
     Nach *nach = (Nach *) plot.dataSource;
+    
+    if (!self.scopeAnnotation) {
+        NSNumber *x = [NSNumber numberWithFloat:scope_label_pos];
+        NSNumber *y = [NSNumber numberWithFloat:scope_label_height];
+        NSArray *anchorPoint = [NSArray arrayWithObjects:x, y, nil];
+        self.scopeAnnotation = [[CPTPlotSpaceAnnotation alloc]
+                                initWithPlotSpace:plot.plotSpace
+                                anchorPlotPoint:anchorPoint];
+        NSString *scope = nach.scope;
+        CPTTextLayer *textLayerLeft = [[CPTTextLayer alloc] initWithText:scope
+                                                                   style:[CorePlotUtils whiteHelvetica]];
+        textLayerLeft.shadow = self.shadow;
+        self.scopeAnnotation.contentLayer = textLayerLeft;
+        
+        [plotArea addAnnotation:self.scopeAnnotation];
+    }
+    
     NSDictionary *businessVals = [nach getBusinessValues:idx];
     // get meta info
     NSDictionary *metaInfo = [self.homeVC selectedParameterMeta];
@@ -66,10 +101,8 @@ CGFloat const period_label_pos = 0.85;
     }
     CPTTextLayer *textLayerLeft = [[CPTTextLayer alloc] initWithText:period
                                                                style:[CorePlotUtils whiteHelvetica]];
-    CPTMutableShadow *shadow = [CPTMutableShadow shadow];
-    shadow.shadowColor = [CPTColor grayColor];
-    shadow.shadowOffset = CGSizeMake(1.0, 1.0);
-    textLayerLeft.shadow = shadow;
+
+    textLayerLeft.shadow = self.shadow;
     self.periodAnnotation.contentLayer = textLayerLeft;
     // right annotation - bar height "value"
     if (!self.nachAnnotation) {
@@ -92,16 +125,14 @@ CGFloat const period_label_pos = 0.85;
 
     CPTTextLayer *textLayer = [[CPTTextLayer alloc] initWithText:nachis
                                                            style:[CorePlotUtils orangeHelvetica]];
-    textLayer.shadow = shadow;
+    textLayer.shadow = self.shadow;
     self.nachAnnotation.contentLayer = textLayer;
     
     CPTTextLayer *textLayerRMiddle = [[CPTTextLayer alloc] initWithText:pay
                                                            style:[CorePlotUtils greenHelvetica]];
-    textLayerRMiddle.shadow = shadow;
+    textLayerRMiddle.shadow = self.shadow;
     self.payAnnotation.contentLayer = textLayerRMiddle;
-    
-    CPTPlotArea *plotArea = plot.graph.plotAreaFrame.plotArea;
-    
+        
     [plotArea addAnnotation:self.periodAnnotation];
     [plotArea addAnnotation:self.nachAnnotation];
     [plotArea addAnnotation:self.payAnnotation];
@@ -134,7 +165,7 @@ CGFloat const period_label_pos = 0.85;
     CPTTextLayer *percentText = [[CPTTextLayer alloc] initWithText:percentLabel
                                                              style:[CorePlotUtils whiteHelvetica]];
     percentText.opacity = 0;
-    percentText.shadow = shadow;
+    percentText.shadow = self.shadow;
     self.percentAnnotation.contentLayer = percentText;
     [plotArea addAnnotation:self.percentAnnotation];
     
