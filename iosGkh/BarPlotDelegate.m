@@ -133,9 +133,17 @@ CGFloat const period_label_pos = 0.85;
                               anchorPlotPoint:anchorPoint];
     CPTTextLayer *percentText = [[CPTTextLayer alloc] initWithText:percentLabel
                                                              style:[CorePlotUtils whiteHelvetica]];
+    percentText.opacity = 0;
     percentText.shadow = shadow;
     self.percentAnnotation.contentLayer = percentText;
     [plotArea addAnnotation:self.percentAnnotation];
+    
+    CABasicAnimation *fadeInAnimation = [CABasicAnimation animationWithKeyPath:@"opacity"];
+    fadeInAnimation.duration = 0.5f;
+    fadeInAnimation.removedOnCompletion = NO;
+    fadeInAnimation.fillMode = kCAFillModeForwards;
+    fadeInAnimation.toValue = [NSNumber numberWithFloat:1.0];
+    [percentText addAnimation:fadeInAnimation forKey:@"animateOpacity"];
     
     // animation for arrow
     CABasicAnimation *animation = [CABasicAnimation animation];
