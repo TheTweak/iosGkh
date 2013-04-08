@@ -73,7 +73,7 @@ CGFloat const CPDBarInitialX = 0.25f;
     [navBar setTintColor:[UIColor colorWithRed:0 green:.3943 blue:.91 alpha:1]];
 #warning todo remove explicit height calculation
     float graphViewWidth = self.view.bounds.size.width
-         ,graphViewHeight = self.view.frame.size.height - 160 - 44;
+         ,graphViewHeight = self.view.frame.size.height - 160 - 28;
     
     self.graphView = [[CPTGraphHostingView alloc] initWithFrame:CGRectMake(0, 0,
                                                                            graphViewWidth,
@@ -305,7 +305,7 @@ CGFloat const CPDBarInitialX = 0.25f;
     [graph.plotAreaFrame setPaddingLeft:10.0f];
     [graph.plotAreaFrame setPaddingRight:10.0f];
     [graph.plotAreaFrame setPaddingTop:65.0f];
-    [graph.plotAreaFrame setPaddingBottom:20.0f];
+    [graph.plotAreaFrame setPaddingBottom:25.0f];
     CGColorRef underPage = [UIColor viewFlipsideBackgroundColor].CGColor;
     graph.plotAreaFrame.backgroundColor = underPage;
     

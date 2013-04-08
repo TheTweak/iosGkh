@@ -38,7 +38,7 @@ static NSArray *_monthsArray;
     if (!_whiteHelvetica) {
         _whiteHelvetica = [CPTMutableTextStyle textStyle];
         _whiteHelvetica.color= [CPTColor whiteColor];
-        _whiteHelvetica.fontSize = 17.0f;
+        _whiteHelvetica.fontSize = 15.0f;
         _whiteHelvetica.fontName = @"Helvetica-Bold";
     }
     return _whiteHelvetica;
