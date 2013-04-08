@@ -36,6 +36,8 @@
 @property (nonatomic, strong) NSMutableDictionary *graphToPagesDictionary;
 // current on-screen plot's delegate
 @property id<CPTPlotDelegate> plotDelegate;
+// scope label
+@property (nonatomic, strong) UILabel *scopeLabel;
 @end
 
 @implementation HomeViewController
@@ -55,6 +57,7 @@ CGFloat const CPDBarInitialX = 0.25f;
 @synthesize pageControlView =              _pageControlView;
 @synthesize pageViewControllersArray =     _pageViewControllersArray;
 @synthesize graphToPagesDictionary =       _graphToPagesDictionary;
+@synthesize scopeLabel =                   _scopeLabel;
 
 #pragma mark Init
 
@@ -167,6 +170,11 @@ CGFloat const CPDBarInitialX = 0.25f;
                                              selector:@selector(updateTableData:)
                                                  name:@"UpdateTableData"
                                                object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(addScopeLabel:)
+                                                 name:@"ShowScopeLabel"
+                                               object:nil];
 
 }
 // shake motion handler
@@ -177,6 +185,21 @@ CGFloat const CPDBarInitialX = 0.25f;
 }
 
 #pragma mark Accessors
+- (UILabel *) scopeLabel {
+    if (!_scopeLabel) {
+        CGRect frame = CGRectMake(5, 0,
+                                  self.bottomView.frame.size.width, 32);
+        UILabel *label = [[UILabel alloc] initWithFrame:frame];
+        label.backgroundColor = [UIColor viewFlipsideBackgroundColor];
+        label.font = [UIFont fontWithName:@"Helvetica-Bold" size:16.0];
+        label.textColor = [UIColor whiteColor];
+        label.layer.shadowColor = [UIColor blackColor].CGColor;
+        _scopeLabel = label;
+        
+        [self.bottomView addSubview:_scopeLabel];
+    }
+    return _scopeLabel;
+}
 
 - (NSDictionary *) graphDictionary {
     if (!_graphDictionary) _graphDictionary = [NSMutableDictionary dictionary];
@@ -224,6 +247,7 @@ CGFloat const CPDBarInitialX = 0.25f;
 
 - (void)tableView:(UITableView *)tableView
         didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [self resetLabels];
     CATransition *animation = [CATransition animation];
     animation.delegate = self;
     animation.duration = 0.5;
@@ -586,6 +610,17 @@ CGFloat const CPDBarInitialX = 0.25f;
 }
 
 #pragma mark Other stuff
+
+- (void) resetLabels {
+    self.scopeLabel.text = @"";
+    [self.graphView.hostedGraph.plotAreaFrame.plotArea removeAllAnnotations];
+}
+
+- (void) addScopeLabel:(NSNotification *)notification {
+    [self resetLabels];
+    NSString *text = [notification.userInfo valueForKey:@"scopeLabel"];
+    self.scopeLabel.text = text;
+}
 
 - (NSDictionary *) selectedParameterMeta {
     NSIndexPath *path = [self.tableView indexPathForSelectedRow];

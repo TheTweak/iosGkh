@@ -15,7 +15,6 @@
 @property (nonatomic, strong) CPTAnnotation *payAnnotation;
 @property (nonatomic, strong) CPTAnnotation *rightSideBottomAnnotation;
 @property (nonatomic, strong) CPTAnnotation *percentAnnotation;
-@property (nonatomic, strong) CPTAnnotation *scopeAnnotation;
 @property (nonatomic, strong) CPTShadow *shadow;
 @end
 
@@ -30,15 +29,11 @@ CGFloat const pay_label_pos = 0.2;
 CGFloat const period_label_height = -0.1;
 CGFloat const period_label_pos = 0.85;
 
-CGFloat const scope_label_height = 1.3;
-CGFloat const scope_label_pos = 0.5;
-
 @synthesize periodAnnotation = _periodAnnotation;
 @synthesize nachAnnotation = _nachAnnotation;
 @synthesize rightSideBottomAnnotation = _rightSideBottomAnnotation;
 @synthesize payAnnotation = _payAnnotation;
 @synthesize percentAnnotation = _percentAnnotation;
-@synthesize scopeAnnotation = _scopeAnnotation;
 @synthesize shadow = _shadow;
 @synthesize arrow = _arrow;
 
@@ -59,23 +54,7 @@ CGFloat const scope_label_pos = 0.5;
     CPTPlotArea *plotArea = plot.graph.plotAreaFrame.plotArea;
     // get business values for selected bar
     Nach *nach = (Nach *) plot.dataSource;
-    
-    if (!self.scopeAnnotation) {
-        NSNumber *x = [NSNumber numberWithFloat:scope_label_pos];
-        NSNumber *y = [NSNumber numberWithFloat:scope_label_height];
-        NSArray *anchorPoint = [NSArray arrayWithObjects:x, y, nil];
-        self.scopeAnnotation = [[CPTPlotSpaceAnnotation alloc]
-                                initWithPlotSpace:plot.plotSpace
-                                anchorPlotPoint:anchorPoint];
-        NSString *scope = nach.scope;
-        CPTTextLayer *textLayerLeft = [[CPTTextLayer alloc] initWithText:scope
-                                                                   style:[CorePlotUtils whiteHelvetica]];
-        textLayerLeft.shadow = self.shadow;
-        self.scopeAnnotation.contentLayer = textLayerLeft;
         
-        [plotArea addAnnotation:self.scopeAnnotation];
-    }
-    
     NSDictionary *businessVals = [nach getBusinessValues:idx];
     // get meta info
     NSDictionary *metaInfo = [self.homeVC selectedParameterMeta];
@@ -156,7 +135,17 @@ CGFloat const scope_label_pos = 0.5;
     NSNumber *percent = [businessVals valueForKey:@"percent"];
     NSString *percentLabel = [[percent description] stringByAppendingString:@"%"];
     if (self.percentAnnotation) {
-        [plotArea removeAnnotation:self.percentAnnotation];
+        BOOL deleted = NO;
+        for (int i = 0, l = [plotArea.annotations count]; i < l; i++) {
+            CPTAnnotation *annotation = [plotArea.annotations objectAtIndex:i];
+            if (annotation == self.percentAnnotation) {
+                [plotArea removeAnnotation:self.percentAnnotation];
+                deleted = YES;
+            }
+        }
+        if (!deleted) {
+            self.percentAnnotation = nil;
+        }
     }
     NSArray *anchorPoint = [NSArray arrayWithObjects:barPosition, [NSNumber numberWithFloat:0.1], nil];
     self.percentAnnotation = [[CPTPlotSpaceAnnotation alloc]

@@ -62,11 +62,12 @@
                 
         [client postPath:@"param/value" parameters:requestParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
             NSLog(@"post succeeded");
+            
             SBJsonParser *jsonParser = [[SBJsonParser alloc] init];
             NSData *responseData = (NSData *)responseObject;
             NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
             NSDictionary *responseJson = [jsonParser objectWithString:responseString];
-            self.scope = [responseJson valueForKey:@"scope"];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"ShowScopeLabel" object:self userInfo:[NSDictionary dictionaryWithObject:[responseJson valueForKey:@"scope"] forKey:@"scopeLabel"]];
             NSArray *params = [responseJson objectForKey:@"values"];
             self.graphValues = params;
             NSDecimalNumber *maxH = [NSDecimalNumber zero];
