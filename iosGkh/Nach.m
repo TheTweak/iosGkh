@@ -76,14 +76,30 @@
             NSArray *params = [responseJson objectForKey:@"values"];
             self.graphValues = params;
             NSDecimalNumber *maxH = [NSDecimalNumber zero];
+            NSDecimalNumber *maxH2 = [NSDecimalNumber zero];
             for (int i = 0, l = [params count]; i < l; i++) {
                 NSDictionary *jsonObject = [params objectAtIndex:i];
                 NSDecimalNumber *y = [NSDecimalNumber decimalNumberWithString:[jsonObject objectForKey:@"y"]];
                 NSComparisonResult compare = [maxH compare:y];
                 if (compare == NSOrderedAscending) maxH = y;
+                NSDecimalNumber *y2 = [NSDecimalNumber decimalNumberWithString:[jsonObject objectForKey:@"y2"]];
+                NSComparisonResult compare2 = [maxH2 compare:y2];
+                if (compare2 == NSOrderedAscending) maxH2 = y2;
                 NSLog(@"nach x : %@, y : %@", [jsonObject objectForKey:@"x"], y);
             }
-            self.maxHeight = maxH;
+            NSComparisonResult compare = [maxH compare:[NSDecimalNumber zero]];
+            if (compare != NSOrderedSame) {
+                self.maxHeight = maxH;
+            } else {
+                compare = [maxH2 compare:[NSDecimalNumber zero]];
+                if (compare != NSOrderedSame) {
+                    self.maxHeight = maxH2;
+                }
+            }
+
+            if (!self.maxHeight) {
+                self.maxHeight = [NSDecimalNumber decimalNumberWithString:@"1"];
+            }
             [plot.graph reloadData];
             self.isLoading = NO;
             [[NSNotificationCenter defaultCenter] postNotificationName:@"HideLoadingMask" object:self];
@@ -142,7 +158,7 @@
 - (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle
                                                    reuseIdentifier:nil];
-    UILabel *accessoryLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
+    UILabel *accessoryLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 44, 40)];
     accessoryLabel.textColor = [UIColor greenColor];
     accessoryLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:15.0];
     accessoryLabel.shadowColor = [UIColor darkGrayColor];
@@ -159,20 +175,17 @@
     
     NSDecimalNumber *nach = [NSDecimalNumber decimalNumberWithString:[jsonObject valueForKey:@"nach"]];
     NSString *nachFormatted = [formatter stringFromNumber:nach];
-    NSMutableString *detailText = [NSMutableString string];
-    [detailText appendString:payFormatted];
-    [detailText appendString:@" / "];
-    [detailText appendString:nachFormatted];
     
-    CGRect contentRect = CGRectMake(8, -12, cell.frame.size.width - 44, 50);
+    CGRect contentRect = CGRectMake(5, 7, cell.frame.size.width - 44, 15);
     UILabel *contentLabel = [[UILabel alloc] initWithFrame:contentRect];
     contentLabel.text = kladr;
+    contentLabel.textAlignment = NSTextAlignmentLeft;
     contentLabel.textColor = [UIColor whiteColor];
     contentLabel.shadowColor = [UIColor darkGrayColor];
     contentLabel.backgroundColor = [UIColor viewFlipsideBackgroundColor];
     contentLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:14.0];
         
-    CGRect bottomLeftRect = CGRectMake(0, 32, contentRect.size.width / 3, 20);
+    CGRect bottomLeftRect = CGRectMake(5, 22, contentRect.size.width / 3, 15);
     UILabel *bottomLeft = [[UILabel alloc] initWithFrame:bottomLeftRect];
     NSMutableString *payed = [NSMutableString string];
     [payed appendString:payFormatted];
@@ -182,9 +195,9 @@
     bottomLeft.backgroundColor = [UIColor viewFlipsideBackgroundColor];
     bottomLeft.font = [UIFont fontWithName:@"Helvetica-Bold" size:12.0];
     
-    [contentLabel addSubview:bottomLeft];
+    [cell.contentView addSubview:bottomLeft];
     
-    CGRect bottomRightRect = CGRectMake(bottomLeftRect.size.width, 32,
+    CGRect bottomRightRect = CGRectMake(bottomLeftRect.size.width, 22,
                                         bottomLeftRect.size.width,
                                         bottomLeftRect.size.height);
     UILabel *bottomRight = [[UILabel alloc] initWithFrame:bottomRightRect];
@@ -196,7 +209,7 @@
     bottomRight.backgroundColor = [UIColor viewFlipsideBackgroundColor];
     bottomRight.font = [UIFont fontWithName:@"Helvetica-Bold" size:12.0];
     
-    [contentLabel addSubview:bottomRight];
+    [cell.contentView addSubview:bottomRight];
     
     [cell.contentView addSubview:contentLabel];
 

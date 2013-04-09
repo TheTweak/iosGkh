@@ -290,9 +290,9 @@ CGFloat const CPDBarInitialX = 0.25f;
         if ([@"TABLE" isEqualToString:type]) {
             UITableViewController *tableViewController = [[UITableViewController alloc] initWithStyle:UITableViewStylePlain];
             [pageViewControllers addObject:tableViewController];
-            UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(320 * (i + 1), 0, 320, 230)];
+            UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(320 * (i + 1), 0, 320, 250)];
             tableViewController.view = tableView;
-            
+
             Nach *dataSource = [[Nach alloc] init];
             dataSource.tableNeedsReloading = NO;
             dataSource.paramId = repId;

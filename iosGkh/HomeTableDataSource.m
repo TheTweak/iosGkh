@@ -43,6 +43,11 @@
     cell.textLabel.textColor = [UIColor whiteColor];
     cell.textLabel.shadowColor = [UIColor darkGrayColor];
     cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
+    
+    UIView *bgColorView = [[UIView alloc] init];
+    [bgColorView setBackgroundColor:[UIColor colorWithRed:0.4023 green:0.71 blue:0 alpha:1]];
+    cell.selectedBackgroundView = bgColorView;
+    
 //    cell.selectionStyle = UITableViewCellSelectionStyleGray;
     NSDictionary *paramJson = [self.paramsArray objectAtIndex:indexPath.row];
     

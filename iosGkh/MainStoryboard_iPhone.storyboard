@@ -109,7 +109,7 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="JIW-yt-sTY">
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="140" id="ZMc-Ps-Pkn"/>
+                                    <constraint firstAttribute="height" constant="134" id="op9-pE-41P"/>
                                 </constraints>
                             </tableView>
                             <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="els-ZB-SKO">
@@ -122,15 +122,15 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="ke2-8n-u07" firstAttribute="bottom" secondItem="4wk-Tn-ogs" secondAttribute="bottom" type="default" id="5Am-Yw-EgS"/>
+                            <constraint firstItem="ke2-8n-u07" firstAttribute="top" secondItem="4wk-Tn-ogs" secondAttribute="top" constant="137" id="5Ph-br-TP9"/>
                             <constraint firstItem="JIW-yt-sTY" firstAttribute="leading" secondItem="4wk-Tn-ogs" secondAttribute="leading" type="default" id="6ZD-sd-E5E"/>
                             <constraint firstItem="els-ZB-SKO" firstAttribute="trailing" secondItem="4wk-Tn-ogs" secondAttribute="trailing" type="default" id="Gh1-Jf-TyK"/>
-                            <constraint firstItem="ke2-8n-u07" firstAttribute="trailing" secondItem="4wk-Tn-ogs" secondAttribute="trailing" type="default" id="LDh-NE-rls"/>
                             <constraint firstItem="JIW-yt-sTY" firstAttribute="top" secondItem="4wk-Tn-ogs" secondAttribute="top" constant="1" id="LNE-4b-d9O"/>
+                            <constraint firstItem="ke2-8n-u07" firstAttribute="trailing" secondItem="4wk-Tn-ogs" secondAttribute="trailing" type="default" id="Lhb-MR-OTX"/>
                             <constraint firstItem="ke2-8n-u07" firstAttribute="leading" secondItem="4wk-Tn-ogs" secondAttribute="leading" type="default" id="aN8-jc-0IV"/>
-                            <constraint firstItem="ke2-8n-u07" firstAttribute="top" secondItem="4wk-Tn-ogs" secondAttribute="top" constant="142" id="gIa-u8-KpU"/>
                             <constraint firstItem="JIW-yt-sTY" firstAttribute="trailing" secondItem="4wk-Tn-ogs" secondAttribute="trailing" type="default" id="iAf-q2-Zzj"/>
                             <constraint firstItem="els-ZB-SKO" firstAttribute="bottom" secondItem="4wk-Tn-ogs" secondAttribute="bottom" type="default" id="jp2-va-Lwp"/>
+                            <constraint firstItem="ke2-8n-u07" firstAttribute="bottom" secondItem="4wk-Tn-ogs" secondAttribute="bottom" type="default" id="kdK-5u-yhV"/>
                             <constraint firstItem="els-ZB-SKO" firstAttribute="leading" secondItem="4wk-Tn-ogs" secondAttribute="leading" type="default" id="nRM-ae-RZ7"/>
                         </constraints>
                     </view>
