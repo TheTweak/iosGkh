@@ -25,9 +25,9 @@
         CPTLayerAnnotation *annotation = [[CPTLayerAnnotation alloc]
                                           initWithAnchorLayer:plot];
         CPTTextLayer *textLayer = [CPTTextLayer layer];
-        textLayer.textStyle = [CorePlotUtils orangeHelvetica];
+        textLayer.textStyle = [CorePlotUtils whiteHelvetica];
         annotation.contentLayer = textLayer;
-        annotation.displacement = CGPointMake(-100.0, -5.0);
+        annotation.displacement = CGPointMake(-90.0, -22.0);
         [plot addAnnotation:annotation];
         
         self.leftSideAnnotation = annotation;
@@ -36,9 +36,9 @@
         CPTLayerAnnotation *annotation = [[CPTLayerAnnotation alloc]
                                           initWithAnchorLayer:plot];
         CPTTextLayer *textLayer = [CPTTextLayer layer];
-        textLayer.textStyle = [CorePlotUtils orangeHelvetica];
+        textLayer.textStyle = [CorePlotUtils whiteHelvetica];
         annotation.contentLayer = textLayer;
-        annotation.displacement = CGPointMake(80.0, -5.0);
+        annotation.displacement = CGPointMake(-85.0, -215.0);
         [plot addAnnotation:annotation];
         
         self.rightSideAnnotation = annotation;

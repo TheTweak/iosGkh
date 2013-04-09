@@ -81,7 +81,7 @@ CGFloat const CPDBarInitialX = 0.25f;
     self.graphView = [[CPTGraphHostingView alloc] initWithFrame:CGRectMake(0, 0,
                                                                            graphViewWidth,
                                                                            graphViewHeight)];
-    self.pageControlView.numberOfPages = 2;
+    self.pageControlView.numberOfPages = 0;
     // scroll view settings
     self.bottomView.contentSize = CGSizeMake(graphViewWidth * 2, 0);
     self.bottomView.showsHorizontalScrollIndicator = NO;
@@ -196,6 +196,7 @@ CGFloat const CPDBarInitialX = 0.25f;
         label.font = [UIFont fontWithName:@"Helvetica-Bold" size:16.0];
         label.textColor = [UIColor whiteColor];
         label.layer.shadowColor = [UIColor blackColor].CGColor;
+        label.textAlignment = NSTextAlignmentCenter;
         _scopeLabel = label;
         
         [self.bottomView addSubview:_scopeLabel];
@@ -280,23 +281,34 @@ CGFloat const CPDBarInitialX = 0.25f;
     [self addPlot:paramId ofType:graphType dataSource:dataSource];
     
     // create custom representation
-    NSString *representationType = [customProperties valueForKey:@"additionalRep"];
-    if (representationType) {
-        if ([@"TABLE" isEqualToString:representationType]) {
+    NSArray *representations = [customProperties valueForKey:@"additionalRep"];
+    NSMutableArray *pageViewControllers = [NSMutableArray array];
+    for (int i = 0, l = representations.count; i < l; i++) {
+        NSDictionary *representation = [representations objectAtIndex:i];
+        NSString *type = [representation valueForKey:@"type"];
+        NSString *repId = [representation valueForKey:@"id"];
+        if ([@"TABLE" isEqualToString:type]) {
             UITableViewController *tableViewController = [[UITableViewController alloc] initWithStyle:UITableViewStylePlain];
-            NSArray *pageViewControllers = [NSArray arrayWithObjects:tableViewController, nil];
-            [self.graphToPagesDictionary setValue:pageViewControllers forKey:paramId];
-            UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(320, 0, 320, 230)];
+            [pageViewControllers addObject:tableViewController];
+            UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(320 * (i + 1), 0, 320, 230)];
             tableViewController.view = tableView;
+            
+            Nach *dataSource = [[Nach alloc] init];
+            dataSource.tableNeedsReloading = NO;
+            dataSource.paramId = repId;
+            dataSource.homeTableDS = self.tableDataSource;
+            [self.paramToCPDataSource setValue:dataSource forKey:repId];
+            
             tableView.dataSource = dataSource;
             tableView.backgroundColor = [UIColor viewFlipsideBackgroundColor];
             tableView.separatorColor = [UIColor darkGrayColor];
-//            tableView.layer.borderColor = [UIColor orangeColor].CGColor;
-//            tableView.layer.borderWidth = 2.0f;
             tableView.layer.cornerRadius = 8.0f;
             [self.bottomView addSubview:tableView];
         }
     }
+    self.pageControlView.numberOfPages = pageViewControllers.count + 1;
+    self.bottomView.contentSize = CGSizeMake((1 + pageViewControllers.count) * self.graphView.frame.size.width, 0);
+    [self.graphToPagesDictionary setValue:pageViewControllers forKey:paramId];
 }
 
 - (void)tableView:(UITableView *)tableView
@@ -390,7 +402,7 @@ CGFloat const CPDBarInitialX = 0.25f;
     [graph.plotAreaFrame setPaddingRight:0.0f];
     [graph.plotAreaFrame setPaddingTop:0.0f];
     [graph.plotAreaFrame setPaddingBottom:0.0f];
-    CGColorRef underPage = [UIColor underPageBackgroundColor].CGColor;
+    CGColorRef underPage = [UIColor viewFlipsideBackgroundColor].CGColor;
     graph.plotAreaFrame.backgroundColor = underPage;
     graph.paddingBottom = 25.0f;
     // instantiating delegate
@@ -415,14 +427,14 @@ CGFloat const CPDBarInitialX = 0.25f;
     // 4 - Add legend to graph
     graph.legend = theLegend;
     graph.legendAnchor = CPTRectAnchorRight;
-    CGFloat legendPadding = -(self.view.bounds.size.width / 22);
+    CGFloat legendPadding = -(self.view.bounds.size.width / 36);
     graph.legendDisplacement = CGPointMake(legendPadding, 0.0);
 }
 
 - (void) configureXYGraph:(NSString *)title dataSource:(id<CPTPlotDataSource>)ds {
     CPTGraph *graph = [[CPTXYGraph alloc] initWithFrame:self.graphView.frame];
     self.graphView.hostedGraph = graph;
-    CGColorRef underPage = [UIColor underPageBackgroundColor].CGColor;
+    CGColorRef underPage = [UIColor viewFlipsideBackgroundColor].CGColor;
     graph.plotAreaFrame.backgroundColor = underPage;
     graph.paddingLeft = graph.paddingRight = graph.paddingTop = 5.0f;
     graph.paddingBottom = 25.0f;
@@ -432,8 +444,8 @@ CGFloat const CPDBarInitialX = 0.25f;
     plotSpace.yRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(0.0)
                                                     length:CPTDecimalFromFloat(21)];
     [graph.plotAreaFrame setPaddingLeft:20.0f];
-//    [graph.plotAreaFrame setPaddingRight:5.0f];
-    [graph.plotAreaFrame setPaddingTop:25.0f];
+    [graph.plotAreaFrame setPaddingRight:5.0f];
+    [graph.plotAreaFrame setPaddingTop:30.0f];
     [graph.plotAreaFrame setPaddingBottom:25.0f];
     
     // axes
@@ -454,37 +466,41 @@ CGFloat const CPDBarInitialX = 0.25f;
     
     CPTXYAxisSet *xyAxisSet = (CPTXYAxisSet *) graph.axisSet;
     // x axis title
+    CPTLineCap *lineCap = [CPTLineCap solidArrowPlotLineCap];
+    lineCap.lineStyle = axisLineStyle;
     xyAxisSet.xAxis.titleTextStyle = axisTitleStyle;
     xyAxisSet.xAxis.title = @"Период";
     xyAxisSet.xAxis.titleOffset = 5.0f;
     xyAxisSet.xAxis.axisLineStyle = axisLineStyle;
     xyAxisSet.xAxis.labelTextStyle = nil;
+    xyAxisSet.xAxis.axisLineCapMax = lineCap;
     // y axis
     xyAxisSet.yAxis.titleTextStyle = axisTitleStyle;
     xyAxisSet.yAxis.title = @"Показания";
     xyAxisSet.yAxis.titleOffset = 5.0f;
     xyAxisSet.yAxis.axisLineStyle = axisLineStyle;
     xyAxisSet.yAxis.labelTextStyle = nil;
+    xyAxisSet.yAxis.axisLineCapMax = lineCap;
     // ticks
     
     // plot
     CPTScatterPlot *plot = [[CPTScatterPlot alloc] init];
     CPTMutableShadow *shadow = [CPTMutableShadow shadow];
-    shadow.shadowColor = [CPTColor blackColor];
+    shadow.shadowColor = [CPTColor darkGrayColor];
     shadow.shadowBlurRadius = 0.5;
     shadow.shadowOffset = CGSizeMake(1.0, 1.0);
     plot.shadow = shadow;
     plot.interpolation = CPTScatterPlotInterpolationCurved;
     plot.dataSource = ds;
     plot.labelTextStyle = nil;
-    CPTColor *begin = [CPTColor colorWithComponentRed:0.74f green:0.259f blue:0.0f alpha:0.1f];
-    CPTColor *end = [CPTColor colorWithComponentRed:1.0f green:0.5833f blue:0.0f alpha:1.0f];
+    CPTColor *begin = [CPTColor colorWithComponentRed:0 green:.3943 blue:.91 alpha:1];
+    CPTColor *end = [CPTColor colorWithComponentRed:0 green:.3943 blue:.91 alpha:.2];
     CPTGradient *gradient = [CPTGradient gradientWithBeginningColor:begin endingColor:end];
     gradient.angle = 90.0f;
-    plot.areaFill = [CPTFill fillWithGradient:gradient];
+//    plot.areaFill = [CPTFill fillWithGradient:gradient];
     plot.areaBaseValue = [[NSNumber numberWithFloat:0.0] decimalValue];
     CPTMutableLineStyle *lineStyle = [[CPTMutableLineStyle alloc] init];
-    lineStyle.lineColor = [CPTColor orangeColor];
+    lineStyle.lineColor = [CPTColor greenColor];
     lineStyle.lineWidth = 2.0;
     plot.dataLineStyle = lineStyle;
     [graph addPlot:plot];

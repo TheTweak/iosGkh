@@ -70,7 +70,9 @@
             NSData *responseData = (NSData *)responseObject;
             NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
             NSDictionary *responseJson = [jsonParser objectWithString:responseString];
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"ShowScopeLabel" object:self userInfo:[NSDictionary dictionaryWithObject:[responseJson valueForKey:@"scope"] forKey:@"scopeLabel"]];
+            if ([responseJson valueForKey:@"scope"]) {
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"ShowScopeLabel" object:self userInfo:[NSDictionary dictionaryWithObject:[responseJson valueForKey:@"scope"] forKey:@"scopeLabel"]];
+            }
             NSArray *params = [responseJson objectForKey:@"values"];
             self.graphValues = params;
             NSDecimalNumber *maxH = [NSDecimalNumber zero];
@@ -122,10 +124,6 @@
                 NSDictionary *responseJson = [jsonParser objectWithString:responseString];
                 NSArray *params = [responseJson objectForKey:@"values"];
                 self.tableValues = params;
-                for (int i = 0, l = [params count]; i < l; i++) {
-                    NSDictionary *jsonObject = [params objectAtIndex:i];
-                    NSDecimalNumber *y = [NSDecimalNumber decimalNumberWithString:[jsonObject objectForKey:@"y"]];
-                }
                 [tableView reloadData];
                 self.isLoading = NO;
                 self.tableNeedsReloading = NO;
@@ -144,18 +142,64 @@
 - (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle
                                                    reuseIdentifier:nil];
-    cell.detailTextLabel.textColor = [UIColor greenColor];
-    cell.selectionStyle = UITableViewCellSelectionStyleBlue;
-    cell.textLabel.textColor = [UIColor whiteColor];
-    cell.textLabel.shadowColor = [UIColor darkGrayColor];
-    
+    UILabel *accessoryLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
+    accessoryLabel.textColor = [UIColor greenColor];
+    accessoryLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:15.0];
+    accessoryLabel.shadowColor = [UIColor darkGrayColor];
+    accessoryLabel.backgroundColor = [UIColor viewFlipsideBackgroundColor];
     NSDictionary *jsonObject = [self.tableValues objectAtIndex:indexPath.row];
-    NSString *kladr = [jsonObject objectForKey:@"kladr"];
-    NSNumberFormatter *formatter = [CorePlotUtils thousandsSeparator];
-    
     NSString *percent = [jsonObject valueForKey:@"percent"];
-    cell.textLabel.text = kladr;
-    cell.detailTextLabel.text = [percent stringByAppendingString:@"%"];
+    accessoryLabel.text = [percent stringByAppendingString:@"%"];
+    cell.accessoryView = accessoryLabel;
+    
+    NSString *kladr = [jsonObject objectForKey:@"scope"];
+    NSNumberFormatter *formatter = [CorePlotUtils thousandsSeparator];
+    NSDecimalNumber *pay = [NSDecimalNumber decimalNumberWithString:[jsonObject valueForKey:@"pay"]];
+    NSString *payFormatted = [formatter stringFromNumber:pay];
+    
+    NSDecimalNumber *nach = [NSDecimalNumber decimalNumberWithString:[jsonObject valueForKey:@"nach"]];
+    NSString *nachFormatted = [formatter stringFromNumber:nach];
+    NSMutableString *detailText = [NSMutableString string];
+    [detailText appendString:payFormatted];
+    [detailText appendString:@" / "];
+    [detailText appendString:nachFormatted];
+    
+    CGRect contentRect = CGRectMake(8, -12, cell.frame.size.width - 44, 50);
+    UILabel *contentLabel = [[UILabel alloc] initWithFrame:contentRect];
+    contentLabel.text = kladr;
+    contentLabel.textColor = [UIColor whiteColor];
+    contentLabel.shadowColor = [UIColor darkGrayColor];
+    contentLabel.backgroundColor = [UIColor viewFlipsideBackgroundColor];
+    contentLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:14.0];
+        
+    CGRect bottomLeftRect = CGRectMake(0, 32, contentRect.size.width / 3, 20);
+    UILabel *bottomLeft = [[UILabel alloc] initWithFrame:bottomLeftRect];
+    NSMutableString *payed = [NSMutableString string];
+    [payed appendString:payFormatted];
+    [payed appendString:@" р."];
+    bottomLeft.text = payed;
+    bottomLeft.textColor = [UIColor greenColor];
+    bottomLeft.backgroundColor = [UIColor viewFlipsideBackgroundColor];
+    bottomLeft.font = [UIFont fontWithName:@"Helvetica-Bold" size:12.0];
+    
+    [contentLabel addSubview:bottomLeft];
+    
+    CGRect bottomRightRect = CGRectMake(bottomLeftRect.size.width, 32,
+                                        bottomLeftRect.size.width,
+                                        bottomLeftRect.size.height);
+    UILabel *bottomRight = [[UILabel alloc] initWithFrame:bottomRightRect];
+    NSMutableString *nachis = [NSMutableString string];
+    [nachis appendString:nachFormatted];
+    [nachis appendString:@" р."];
+    bottomRight.text = nachis;
+    bottomRight.textColor = [UIColor colorWithRed:0 green:.3943 blue:.91 alpha:1];
+    bottomRight.backgroundColor = [UIColor viewFlipsideBackgroundColor];
+    bottomRight.font = [UIFont fontWithName:@"Helvetica-Bold" size:12.0];
+    
+    [contentLabel addSubview:bottomRight];
+    
+    [cell.contentView addSubview:contentLabel];
+
     return cell;
 }
 
@@ -220,7 +264,7 @@
         /*NSString *xKey = [self.metaInfo valueForKey:@"x"];
         NSString *yKey = [self.metaInfo valueForKey:@"y"];
         NSString *y2Key = [self.metaInfo valueForKey:@"y2"];*/
-       NSNumber *width = [jsonObject objectForKey:@"width"];
+        NSNumber *width = [jsonObject objectForKey:@"width"];
         ((CPTBarPlot *)plot).barWidth = [width decimalValue];
         if (CPTBarPlotFieldBarLocation == fieldEnum) {
             result = [jsonObject objectForKey:@"x"];

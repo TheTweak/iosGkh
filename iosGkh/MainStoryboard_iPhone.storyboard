@@ -112,9 +112,9 @@
                                     <constraint firstAttribute="height" constant="140" id="ZMc-Ps-Pkn"/>
                                 </constraints>
                             </tableView>
-                            <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="2" translatesAutoresizingMaskIntoConstraints="NO" id="els-ZB-SKO">
+                            <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="els-ZB-SKO">
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="40" id="fgq-RV-VqI"/>
+                                    <constraint firstAttribute="height" constant="36" id="k20-y7-Uff"/>
                                 </constraints>
                                 <color key="pageIndicatorTintColor" red="0.0" green="0.0" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="currentPageIndicatorTintColor" red="0.40000000596046448" green="0.80000001192092896" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -124,13 +124,14 @@
                         <constraints>
                             <constraint firstItem="ke2-8n-u07" firstAttribute="bottom" secondItem="4wk-Tn-ogs" secondAttribute="bottom" type="default" id="5Am-Yw-EgS"/>
                             <constraint firstItem="JIW-yt-sTY" firstAttribute="leading" secondItem="4wk-Tn-ogs" secondAttribute="leading" type="default" id="6ZD-sd-E5E"/>
+                            <constraint firstItem="els-ZB-SKO" firstAttribute="trailing" secondItem="4wk-Tn-ogs" secondAttribute="trailing" type="default" id="Gh1-Jf-TyK"/>
                             <constraint firstItem="ke2-8n-u07" firstAttribute="trailing" secondItem="4wk-Tn-ogs" secondAttribute="trailing" type="default" id="LDh-NE-rls"/>
                             <constraint firstItem="JIW-yt-sTY" firstAttribute="top" secondItem="4wk-Tn-ogs" secondAttribute="top" constant="1" id="LNE-4b-d9O"/>
                             <constraint firstItem="ke2-8n-u07" firstAttribute="leading" secondItem="4wk-Tn-ogs" secondAttribute="leading" type="default" id="aN8-jc-0IV"/>
                             <constraint firstItem="ke2-8n-u07" firstAttribute="top" secondItem="4wk-Tn-ogs" secondAttribute="top" constant="142" id="gIa-u8-KpU"/>
                             <constraint firstItem="JIW-yt-sTY" firstAttribute="trailing" secondItem="4wk-Tn-ogs" secondAttribute="trailing" type="default" id="iAf-q2-Zzj"/>
                             <constraint firstItem="els-ZB-SKO" firstAttribute="bottom" secondItem="4wk-Tn-ogs" secondAttribute="bottom" type="default" id="jp2-va-Lwp"/>
-                            <constraint firstItem="els-ZB-SKO" firstAttribute="centerX" secondItem="ke2-8n-u07" secondAttribute="centerX" type="default" id="vcG-NC-9yj"/>
+                            <constraint firstItem="els-ZB-SKO" firstAttribute="leading" secondItem="4wk-Tn-ogs" secondAttribute="leading" type="default" id="nRM-ae-RZ7"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Prosoftlab" id="SJe-TZ-FNa"/>
@@ -163,6 +164,31 @@
             <point key="canvasLocation" x="-189" y="-503"/>
         </scene>
     </scenes>
+    <classes>
+        <class className="HomeViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/HomeViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="bottomView" candidateClass="UIScrollView"/>
+                <relationship kind="outlet" name="navigationBar" candidateClass="UINavigationBar"/>
+                <relationship kind="outlet" name="pageControlView" candidateClass="UIPageControl"/>
+                <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
+                <relationship kind="outlet" name="toolbar" candidateClass="UIToolbar"/>
+            </relationships>
+        </class>
+        <class className="LoginScreenViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/LoginScreenViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="authenticatePressed"/>
+                <relationship kind="outlet" name="errorLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="passwordField" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="urlField" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="userNameField" candidateClass="UITextField"/>
+            </relationships>
+        </class>
+        <class className="NSLayoutConstraint" superclassName="NSObject">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/NSLayoutConstraint.h"/>
+        </class>
+    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
