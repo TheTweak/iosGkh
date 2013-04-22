@@ -38,6 +38,10 @@
 @property id<CPTPlotDelegate> plotDelegate;
 // scope label
 @property (nonatomic, strong) UILabel *scopeLabel;
+@property CGRect portraitGraphViewRect;
+@property CGRect portraitBottomViewRect;
+@property CGSize contentSize;
+@property CGRect portraitPageIndicatorRect;
 @end
 
 @implementation HomeViewController
@@ -61,8 +65,72 @@ CGFloat const CPDBarInitialX = 0.25f;
 
 #pragma mark Init
 
+- (void) willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+    if (![self.tableView isHidden]) {
+        // landscape
+        [self.tableView setHidden:YES];
+        [self.navigationController.navigationBar setHidden:YES];
+        CGRect rect = self.graphView.frame;
+        if (CGRectIsEmpty(self.portraitGraphViewRect)) {
+            self.portraitGraphViewRect = rect;
+        }
+        if (CGRectIsEmpty(self.portraitBottomViewRect)) {
+            self.portraitBottomViewRect = self.bottomView.frame;
+        }
+        if (CGRectIsEmpty(self.portraitPageIndicatorRect)) {
+            self.portraitPageIndicatorRect = self.pageControlView.frame;
+        }
+        self.pageControlView.frame = CGRectMake(self.view.window.frame.size.width / 2,
+                                                self.view.window.frame.size.height / 2,
+                                                self.portraitPageIndicatorRect.size.width,
+                                                self.portraitPageIndicatorRect.size.height);
+        self.contentSize = self.bottomView.contentSize;
+        CGRect statusBarRect = [self statusBarFrameViewRect:self.view];
+        float height = self.view.frame.size.height
+                     + self.navigationController.navigationBar.frame.size.height
+                     + statusBarRect.size.height;
+        [self.graphView setFrame:CGRectMake(rect.origin.x, rect.origin.y, height, rect.size.height)];
+        self.bottomView.frame = self.graphView.frame;
+        for (int i = 0, l = [self.pageViewControllersArray count]; i < l; i++) {
+            UIViewController *controller = [self.pageViewControllersArray objectAtIndex:i];
+            UIView *view = controller.view;
+            CGRect frame = CGRectMake(height * (i + 1), 0, height, rect.size.height);
+            [view setFrame:frame];
+        }
+        self.bottomView.contentSize = CGSizeMake((1 + self.pageViewControllersArray.count) * height, 0);
+    } else {
+        // portrait
+        [self.tableView setHidden:NO];
+        [self.navigationController.navigationBar setHidden:NO];
+        [self.graphView setFrame:self.portraitGraphViewRect];
+        self.bottomView.contentSize = self.contentSize;
+        self.bottomView.frame = self.portraitBottomViewRect;
+        self.pageControlView.frame = self.portraitPageIndicatorRect;
+        for (int i = 0, l = [self.pageViewControllersArray count]; i < l; i++) {
+            UIViewController *controller = [self.pageViewControllersArray objectAtIndex:i];
+            UIView *view = controller.view;
+            CGRect rect = self.portraitGraphViewRect;
+            CGRect frame = CGRectMake(rect.size.width * (i + 1), 0, rect.size.width, self.portraitBottomViewRect.size.height);
+            [view setFrame:frame];
+        }
+    }
+}
+
+// get status bar size
+- (CGRect)statusBarFrameViewRect:(UIView*)view {
+    CGRect statusBarFrame = [[UIApplication sharedApplication] statusBarFrame];
+    CGRect statusBarWindowRect = [view.window convertRect:statusBarFrame fromWindow: nil];
+    CGRect statusBarViewRect = [view convertRect:statusBarWindowRect fromView: nil];
+    return statusBarViewRect;
+}
+
+-(void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+
+}
+
 - (void) viewDidLoad {
     [super viewDidLoad];
+    [self.view setAutoresizesSubviews:NO];
     [self registerForNotifications];    
     UITableView *tableView = self.tableView;
     tableView.backgroundColor = [UIColor viewFlipsideBackgroundColor];
@@ -77,12 +145,12 @@ CGFloat const CPDBarInitialX = 0.25f;
 #warning todo remove explicit height calculation
     float graphViewWidth = self.view.bounds.size.width
          ,graphViewHeight = self.view.frame.size.height - 160 - 28;
-    
+        
     self.graphView = [[CPTGraphHostingView alloc] initWithFrame:CGRectMake(0, 0,
                                                                            graphViewWidth,
                                                                            graphViewHeight)];
     self.pageControlView.numberOfPages = 0;
-    // scroll view settings
+    // scroll view settings    
     self.bottomView.contentSize = CGSizeMake(graphViewWidth * 2, 0);
     self.bottomView.showsHorizontalScrollIndicator = NO;
     self.bottomView.showsVerticalScrollIndicator = NO;
@@ -121,7 +189,7 @@ CGFloat const CPDBarInitialX = 0.25f;
 
 - (int) determineCurrentPageNumber:(float) offset {
 #warning todo remove explicit 320
-    return offset / 320;
+    return offset / self.view.frame.size.width;
 }
 
 - (void) scrollViewDidScroll:(UIScrollView *)scrollView {
@@ -309,6 +377,7 @@ CGFloat const CPDBarInitialX = 0.25f;
     self.pageControlView.numberOfPages = pageViewControllers.count + 1;
     self.bottomView.contentSize = CGSizeMake((1 + pageViewControllers.count) * self.graphView.frame.size.width, 0);
     [self.graphToPagesDictionary setValue:pageViewControllers forKey:paramId];
+    self.pageViewControllersArray = pageViewControllers;
 }
 
 - (void)tableView:(UITableView *)tableView
