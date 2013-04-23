@@ -41,7 +41,10 @@
 @property CGRect portraitGraphViewRect;
 @property CGRect portraitBottomViewRect;
 @property CGSize contentSize;
+@property float landscapePageSize;
+@property float landscapeScrollViewHeight;
 @property CGRect portraitPageIndicatorRect;
+@property int onScreenPageNumber;
 @end
 
 @implementation HomeViewController
@@ -66,38 +69,48 @@ CGFloat const CPDBarInitialX = 0.25f;
 #pragma mark Init
 
 - (void) willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-    if (![self.tableView isHidden]) {
-        // landscape
-        [self.tableView setHidden:YES];
-        [self.navigationController.navigationBar setHidden:YES];
-        CGRect rect = self.graphView.frame;
-        if (CGRectIsEmpty(self.portraitGraphViewRect)) {
-            self.portraitGraphViewRect = rect;
+    self.onScreenPageNumber = [self determineCurrentPageNumber:self.bottomView.contentOffset.x];
+    if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
+        if (![self.tableView isHidden]) {
+            // landscape
+            [self.tableView setHidden:YES];
+            [self.navigationController.navigationBar setHidden:YES];
+            CGRect rect = self.graphView.frame;
+            if (CGRectIsEmpty(self.portraitGraphViewRect)) {
+                self.portraitGraphViewRect = rect;
+            }
+            if (CGRectIsEmpty(self.portraitBottomViewRect)) {
+                self.portraitBottomViewRect = self.bottomView.frame;
+            }
+            if (CGRectIsEmpty(self.portraitPageIndicatorRect)) {
+                self.portraitPageIndicatorRect = self.pageControlView.frame;
+            }
+            self.pageControlView.frame = CGRectMake(self.view.window.frame.size.width / 4,
+                                                    self.view.window.frame.size.height / 2
+                                                    + self.portraitPageIndicatorRect.size.height - 8,
+                                                    self.portraitPageIndicatorRect.size.width,
+                                                    self.portraitPageIndicatorRect.size.height);
+            self.contentSize = self.bottomView.contentSize;
+            CGRect statusBarRect = [self statusBarFrameViewRect:self.view];
+            float height = self.view.frame.size.height
+            + self.navigationController.navigationBar.frame.size.height
+            + statusBarRect.size.height;
+            if (self.landscapePageSize == 0) {
+                self.landscapePageSize = height;
+            }
+            [self.graphView setFrame:CGRectMake(rect.origin.x, rect.origin.y, height, rect.size.height)];
+            self.bottomView.frame = self.graphView.frame;
+            if (self.landscapeScrollViewHeight == 0) {
+                self.landscapeScrollViewHeight = self.bottomView.frame.size.height;
+            }
+            for (int i = 0, l = [self.pageViewControllersArray count]; i < l; i++) {
+                UIViewController *controller = [self.pageViewControllersArray objectAtIndex:i];
+                UIView *view = controller.view;
+                CGRect frame = CGRectMake(height * (i + 1), 0, height, rect.size.height);
+                [view setFrame:frame];
+            }
+            self.bottomView.contentSize = CGSizeMake((1 + self.pageViewControllersArray.count) * height, 0);
         }
-        if (CGRectIsEmpty(self.portraitBottomViewRect)) {
-            self.portraitBottomViewRect = self.bottomView.frame;
-        }
-        if (CGRectIsEmpty(self.portraitPageIndicatorRect)) {
-            self.portraitPageIndicatorRect = self.pageControlView.frame;
-        }
-        self.pageControlView.frame = CGRectMake(self.view.window.frame.size.width / 2,
-                                                self.view.window.frame.size.height / 2,
-                                                self.portraitPageIndicatorRect.size.width,
-                                                self.portraitPageIndicatorRect.size.height);
-        self.contentSize = self.bottomView.contentSize;
-        CGRect statusBarRect = [self statusBarFrameViewRect:self.view];
-        float height = self.view.frame.size.height
-                     + self.navigationController.navigationBar.frame.size.height
-                     + statusBarRect.size.height;
-        [self.graphView setFrame:CGRectMake(rect.origin.x, rect.origin.y, height, rect.size.height)];
-        self.bottomView.frame = self.graphView.frame;
-        for (int i = 0, l = [self.pageViewControllersArray count]; i < l; i++) {
-            UIViewController *controller = [self.pageViewControllersArray objectAtIndex:i];
-            UIView *view = controller.view;
-            CGRect frame = CGRectMake(height * (i + 1), 0, height, rect.size.height);
-            [view setFrame:frame];
-        }
-        self.bottomView.contentSize = CGSizeMake((1 + self.pageViewControllersArray.count) * height, 0);
     } else {
         // portrait
         [self.tableView setHidden:NO];
@@ -125,7 +138,23 @@ CGFloat const CPDBarInitialX = 0.25f;
 }
 
 -(void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
-
+    // reload current table view
+    int pageNumber = self.onScreenPageNumber;
+    if (pageNumber - 1 != -1) {
+        UIViewController *controller = [self.pageViewControllersArray objectAtIndex:pageNumber - 1];
+        UIView *view = controller.view;
+        UITableView *tableView = (UITableView *) view;
+        Nach *ds = (Nach *) tableView.dataSource;
+        ds.tableNeedsReloading = YES;
+        [tableView reloadData];
+    }
+    CGPoint point;
+    if (UIInterfaceOrientationIsLandscape(fromInterfaceOrientation)) {
+        point = CGPointMake(self.portraitBottomViewRect.size.width * pageNumber, 0);
+    } else {
+        point = CGPointMake(self.landscapePageSize * pageNumber, 0);
+    }
+    [self.bottomView setContentOffset:point animated:YES];
 }
 
 - (void) viewDidLoad {
