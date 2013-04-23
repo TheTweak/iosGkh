@@ -93,8 +93,8 @@ CGFloat const CPDBarInitialX = 0.25f;
             self.contentSize = self.bottomView.contentSize;
             CGRect statusBarRect = [self statusBarFrameViewRect:self.view];
             float height = self.view.frame.size.height
-            + self.navigationController.navigationBar.frame.size.height
-            + statusBarRect.size.height;
+                         + self.navigationController.navigationBar.frame.size.height
+                         + statusBarRect.size.height;
             if (self.landscapePageSize == 0) {
                 self.landscapePageSize = height;
             }
@@ -377,6 +377,14 @@ CGFloat const CPDBarInitialX = 0.25f;
     // draw graph
     [self addPlot:paramId ofType:graphType dataSource:dataSource];
     
+    // clear views
+    if (self.pageViewControllersArray) {
+        for (int i = 0, l = self.pageViewControllersArray.count; i < l; i++) {
+            UIViewController *controller = [self.pageViewControllersArray objectAtIndex:i];
+            UIView *view = controller.view;
+            [view removeFromSuperview];
+        }
+    }
     // create custom representation
     NSArray *representations = [customProperties valueForKey:@"additionalRep"];
     NSMutableArray *pageViewControllers = [NSMutableArray array];
