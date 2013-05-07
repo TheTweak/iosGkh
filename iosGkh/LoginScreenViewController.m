@@ -48,7 +48,14 @@
 }
 
 - (void) authenticationSucceeded:(NSNotification *)notification {
-    [self performSegueWithIdentifier: @"authDone" sender: self];
+    NSString *role = [[notification userInfo] objectForKey:@"Role"];
+    NSString *segueId;
+    if ([@"dweller" isEqualToString:role]) {
+        segueId = @"authDweller";
+    } else if ([@"glava" isEqualToString:role]) {
+        segueId = @"authGlava";
+    }
+    [self performSegueWithIdentifier: segueId sender: self];
 }
 
 - (BOOL) textFieldShouldReturn:(UITextField *)theTextField {

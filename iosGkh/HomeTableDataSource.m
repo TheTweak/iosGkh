@@ -69,7 +69,7 @@
 
 - (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     #warning Delete! only for dev purpose
-    [BasicAuthModule authenticateWithLogin:@"glava" andPassword:@"1234"];
+//    [BasicAuthModule authenticateWithLogin:@"glava" andPassword:@"1234"];
     #warning end
     if (!self.paramsArray) {
         [[NSNotificationCenter defaultCenter] postNotificationName:@"ShowTableLoadingMask" object:self];

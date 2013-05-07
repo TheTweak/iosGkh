@@ -12,10 +12,16 @@
 @implementation BasicAuthModule
 
 static AFHTTPClient* client;
+static NSString* role;
 
 + (AFHTTPClient *) httpClient
 {
     return client;
+}
+
++ (NSString *) role
+{
+    return role;
 }
 
 + (void) authenticateWithLogin:(NSString *)login
@@ -27,8 +33,13 @@ static AFHTTPClient* client;
     NSURL *nsUrl = [NSURL URLWithString:url];
     client = [AFHTTPClient clientWithBaseURL:nsUrl];
     [client setAuthorizationHeaderWithUsername:login password:password];
-    [client getPath:@"hello" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"AuthenticationSucceeded" object:self];
+    [client getPath:@"auth" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSData *responseData = (NSData *)responseObject;
+        NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+        role = responseString;
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"AuthenticationSucceeded"
+                                                            object:self
+                                                            userInfo:[NSDictionary dictionaryWithObjectsAndKeys:role, @"Role", nil]];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSString *errorDescription = [error localizedDescription];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"AuthenticationError"
