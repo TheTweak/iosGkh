@@ -7,6 +7,7 @@
 
 #import "LoginScreenViewController.h"
 #import "BasicAuthModule.h"
+#import <AFNetworking.h>
 
 @interface LoginScreenViewController ()
 - (void) registerForNotifications;
@@ -27,6 +28,21 @@
     NSString *url = self.urlField.text;
     [self registerForNotifications];
     [[BasicAuthModule class] authenticateWithLogin:userName andPassword:password];
+}
+
+- (IBAction) authenticateDweller {
+    NSString *flsNomer = self.flsNomer.text;
+    NSURL *nsUrl = [NSURL URLWithString:@"http://localhost:8081/jersey"];
+    AFHTTPClient *client = [AFHTTPClient clientWithBaseURL:nsUrl];
+    [client setAuthorizationHeaderWithUsername:@"user" password:@"1234"];
+    [client getPath:@"auth" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSString *errorDescription = [error localizedDescription];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"AuthenticationError"
+                                                            object:self
+                                                          userInfo:[NSDictionary dictionaryWithObjectsAndKeys: errorDescription, @"ErrorDescription", nil]];
+    }];
 }
 
 - (void) registerForNotifications {

@@ -10,8 +10,10 @@
 @interface LoginScreenViewController : UIViewController <UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *userNameField;
 @property (weak, nonatomic) IBOutlet UITextField *passwordField;
+@property (weak, nonatomic) IBOutlet UITextField *flsNomer;
 @property (weak, nonatomic) IBOutlet UILabel *errorLabel;
 @property (weak, nonatomic) IBOutlet UITextField *urlField;
 - (IBAction)authenticatePressed;
+- (IBAction)authenticateDweller;
 
 @end
