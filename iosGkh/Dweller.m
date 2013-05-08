@@ -9,5 +9,14 @@
 #import "Dweller.h"
 
 @implementation Dweller
+static NSString *flsId;
+
++ (NSString *) fls {
+    return flsId;
+}
+
++ (void)setFls:(NSString *)fls {
+    flsId = fls;
+}
 
 @end
