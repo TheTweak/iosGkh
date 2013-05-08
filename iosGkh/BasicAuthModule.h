@@ -20,4 +20,9 @@
                    andPassword:(NSString *) password
                          byURL:(NSString *) url;
 
++ (void) authenticateAsDweller:(NSString *) login
+                      password:(NSString *) password
+                      flsNomer:(NSString *) flsNomer
+                       success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
+                       failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure;
 @end

@@ -11,8 +11,10 @@
 
 @implementation BasicAuthModule
 
-static AFHTTPClient* client;
-static NSString* role;
+static AFHTTPClient *client;
+// client with 'dweller' role
+static AFHTTPClient *dwellerClient;
+static NSString *role;
 
 + (AFHTTPClient *) httpClient
 {
@@ -46,6 +48,18 @@ static NSString* role;
                                                             object:self
                                                           userInfo:[NSDictionary dictionaryWithObjectsAndKeys: errorDescription, @"ErrorDescription", nil]];
     }];
+}
+
++ (void) authenticateAsDweller:(NSString *)login
+                      password:(NSString *)password
+                      flsNomer:(NSString *)flsNomer
+                       success:(void (^)(AFHTTPRequestOperation *, id))success
+                       failure:(void (^)(AFHTTPRequestOperation *, NSError *))failure {
+    NSURL *nsUrl = [NSURL URLWithString:@"http://localhost:8081/jersey"];
+    dwellerClient = [AFHTTPClient clientWithBaseURL:nsUrl];
+    [dwellerClient setAuthorizationHeaderWithUsername:login password:password];
+    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:flsNomer, @"flsNomer", nil];
+    [dwellerClient postPath:@"dweller/counters" parameters:params success:success failure:failure];
 }
 
 @end

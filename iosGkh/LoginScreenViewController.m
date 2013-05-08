@@ -32,17 +32,17 @@
 
 - (IBAction) authenticateDweller {
     NSString *flsNomer = self.flsNomer.text;
-    NSURL *nsUrl = [NSURL URLWithString:@"http://localhost:8081/jersey"];
-    AFHTTPClient *client = [AFHTTPClient clientWithBaseURL:nsUrl];
-    [client setAuthorizationHeaderWithUsername:@"user" password:@"1234"];
-    [client getPath:@"auth" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSString *errorDescription = [error localizedDescription];
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"AuthenticationError"
-                                                            object:self
-                                                          userInfo:[NSDictionary dictionaryWithObjectsAndKeys: errorDescription, @"ErrorDescription", nil]];
-    }];
+    // obtain counter list
+    [[BasicAuthModule class] authenticateAsDweller:@"user"
+                                          password:@"1234"
+                                          flsNomer:flsNomer
+                                           success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                                               NSData *responseData = (NSData *)responseObject;
+                                               NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+//                                               NSDictionary *responseJson = [jsonParser objectWithString:responseString];
+                                           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                               NSLog(@"Failure");
+                                           }];
 }
 
 - (void) registerForNotifications {
