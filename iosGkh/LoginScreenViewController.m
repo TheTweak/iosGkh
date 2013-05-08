@@ -7,6 +7,7 @@
 
 #import "LoginScreenViewController.h"
 #import "BasicAuthModule.h"
+#import "Dweller.h"
 #import <AFNetworking.h>
 
 @interface LoginScreenViewController ()
@@ -32,14 +33,18 @@
 
 - (IBAction) authenticateDweller {
     NSString *flsNomer = self.flsNomer.text;
-    // obtain counter list
     [[BasicAuthModule class] authenticateAsDweller:@"user"
                                           password:@"1234"
                                           flsNomer:flsNomer
                                            success:^(AFHTTPRequestOperation *operation, id responseObject) {
                                                NSData *responseData = (NSData *)responseObject;
-                                               NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
-//                                               NSDictionary *responseJson = [jsonParser objectWithString:responseString];
+                                               NSString *responseString = [[NSString alloc] initWithData:responseData
+                                                                                                encoding:NSUTF8StringEncoding];
+                                               if (responseString) {
+                                                   // fls id obtained, segue to counter table view
+                                                   [[Dweller class] setFls:responseString];
+                                                   [self performSegueWithIdentifier:@"authDweller" sender:self];
+                                               }
                                            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                                                NSLog(@"Failure");
                                            }];

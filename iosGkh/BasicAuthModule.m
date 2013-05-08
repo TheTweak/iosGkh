@@ -21,6 +21,10 @@ static NSString *role;
     return client;
 }
 
++ (AFHTTPClient *) dwellerHttpClient {
+    return dwellerClient;
+}
+
 + (NSString *) role
 {
     return role;
@@ -50,16 +54,17 @@ static NSString *role;
     }];
 }
 
+// authorize as dweller and check FLS existence
 + (void) authenticateAsDweller:(NSString *)login
                       password:(NSString *)password
                       flsNomer:(NSString *)flsNomer
                        success:(void (^)(AFHTTPRequestOperation *, id))success
                        failure:(void (^)(AFHTTPRequestOperation *, NSError *))failure {
-    NSURL *nsUrl = [NSURL URLWithString:@"http://localhost:8081/jersey"];
+    NSURL *nsUrl = [NSURL URLWithString:@"http://localhost:8081/jersey/dweller"];
     dwellerClient = [AFHTTPClient clientWithBaseURL:nsUrl];
     [dwellerClient setAuthorizationHeaderWithUsername:login password:password];
     NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:flsNomer, @"flsNomer", nil];
-    [dwellerClient postPath:@"dweller/counters" parameters:params success:success failure:failure];
+    [dwellerClient postPath:@"fls" parameters:params success:success failure:failure];
 }
 
 @end

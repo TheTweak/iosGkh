@@ -12,6 +12,7 @@
 @interface BasicAuthModule : NSObject
 
 + (AFHTTPClient *) httpClient;
++ (AFHTTPClient *) dwellerHttpClient;
 
 + (void) authenticateWithLogin: (NSString *) login
                    andPassword: (NSString *) password;
