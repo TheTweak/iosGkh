@@ -23,15 +23,14 @@
         // dweller client
         AFHTTPClient *client = [BasicAuthModule dwellerHttpClient];
         NSString *flsId = [[Dweller class] fls];
-        // Странная ошибка тут
-        NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:flsId, "fls", nil];
-        [client postPath:@"countes" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:flsId, @"fls", nil];
+        [client postPath:@"counters" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
             SBJsonParser *jsonParser = [[SBJsonParser alloc] init];
             NSData *responseData = (NSData *)responseObject;
             NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
             NSArray *responseArray = [jsonParser objectWithString:responseString];
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            NSLog(@"Failed to load counters table");
+            NSLog(@"Failed to load counters table: %@", error);
         }];
     }
     return [self.counters count];
