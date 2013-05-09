@@ -13,7 +13,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="glava" borderStyle="roundedRect" placeholder="Пользователь" minimumFontSize="17" id="V9e-ox-Zhx">
-                                <rect key="frame" x="19" y="112" width="281" height="30"/>
+                                <rect key="frame" x="19" y="147" width="281" height="30"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="textColor" red="1" green="0.50196081399917603" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -23,7 +23,7 @@
                                 </connections>
                             </textField>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="1234" borderStyle="roundedRect" placeholder="Пароль" minimumFontSize="17" id="GZR-Q3-6b0">
-                                <rect key="frame" x="19" y="150" width="281" height="30"/>
+                                <rect key="frame" x="19" y="185" width="281" height="30"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="textColor" red="1" green="0.50196081399917603" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -33,7 +33,7 @@
                                 </connections>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="QAw-r6-oD4">
-                                <rect key="frame" x="124" y="199" width="73" height="44"/>
+                                <rect key="frame" x="123" y="266" width="73" height="44"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                 <color key="tintColor" red="1" green="0.80000001190000003" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
@@ -49,13 +49,13 @@
                                 </connections>
                             </button>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="l8c-UO-KL5">
-                                <rect key="frame" x="32" y="250" width="257" height="54"/>
+                                <rect key="frame" x="32" y="285" width="257" height="54"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                 <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="020101000050" borderStyle="roundedRect" placeholder="Лицевой счет" minimumFontSize="17" id="1a0-9d-GBQ">
-                                <rect key="frame" x="20" y="312" width="281" height="30"/>
+                                <rect key="frame" x="19" y="228" width="281" height="30"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="textColor" red="1" green="0.50196081400000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -65,7 +65,7 @@
                                 </connections>
                             </textField>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="N5B-ps-UYO">
-                                <rect key="frame" x="75" y="58" width="171" height="30"/>
+                                <rect key="frame" x="19" y="75" width="281" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <segments>
                                     <segment title="УК"/>
@@ -175,6 +175,32 @@
             <point key="canvasLocation" x="-189" y="253"/>
         </scene>
     </scenes>
+    <classes>
+        <class className="CounterTableViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/CounterTableViewController.h"/>
+        </class>
+        <class className="HomeViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/HomeViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="bottomView" candidateClass="UIScrollView"/>
+                <relationship kind="outlet" name="navigationBar" candidateClass="UINavigationBar"/>
+                <relationship kind="outlet" name="pageControlView" candidateClass="UIPageControl"/>
+                <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
+                <relationship kind="outlet" name="toolbar" candidateClass="UIToolbar"/>
+            </relationships>
+        </class>
+        <class className="LoginScreenViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/LoginScreenViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="authenticatePressed"/>
+                <relationship kind="action" name="segmentChanged:forEvent:" candidateClass="UISegmentedControl"/>
+                <relationship kind="outlet" name="errorLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="flsNomer" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="passwordField" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="userNameField" candidateClass="UITextField"/>
+            </relationships>
+        </class>
+    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

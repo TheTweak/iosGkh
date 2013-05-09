@@ -24,6 +24,10 @@
 @synthesize errorLabel = _errorLabel;
 @synthesize segment = _segment;
 
+- (void) viewDidLoad {
+    [super viewDidLoad];
+}
+
 - (IBAction) authenticatePressed {
     [self registerForNotifications];
     switch (self.segment) {
@@ -70,10 +74,22 @@
 - (IBAction)segmentChanged:(UISegmentedControl *)sender forEvent:(UIEvent *)event {
     self.segment = sender.selectedSegmentIndex;
     switch (sender.selectedSegmentIndex) {
-        case 0: // uk
+        case 0: { // uk
+            [UIView animateWithDuration:0.3 animations:^{
+                self.passwordField.alpha = 1.0;
+                self.userNameField.alpha = 1.0;
+                self.flsNomer.alpha = 0.0;
+            }];
             break;
-        case 1: // dweller
+        }
+        case 1: { // dweller
+            [UIView animateWithDuration:0.3 animations:^{
+                self.passwordField.alpha = 0.0;
+                self.userNameField.alpha = 0.0;
+                self.flsNomer.alpha = 1.0;
+            }];
             break;
+        }
         default:
             break;
     }
