@@ -12,8 +12,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *passwordField;
 @property (weak, nonatomic) IBOutlet UITextField *flsNomer;
 @property (weak, nonatomic) IBOutlet UILabel *errorLabel;
-@property (weak, nonatomic) IBOutlet UITextField *urlField;
 - (IBAction)authenticatePressed;
-- (IBAction)authenticateDweller;
+- (IBAction)segmentChanged:(UISegmentedControl *)sender forEvent:(UIEvent *)event;
 
 @end
