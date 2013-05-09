@@ -23,6 +23,7 @@
         // dweller client
         AFHTTPClient *client = [BasicAuthModule dwellerHttpClient];
         NSString *flsId = [[Dweller class] fls];
+        // Странная ошибка тут
         NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:flsId, "fls", nil];
         [client postPath:@"countes" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
             SBJsonParser *jsonParser = [[SBJsonParser alloc] init];

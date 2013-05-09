@@ -40,10 +40,18 @@
                                                NSData *responseData = (NSData *)responseObject;
                                                NSString *responseString = [[NSString alloc] initWithData:responseData
                                                                                                 encoding:NSUTF8StringEncoding];
-                                               if (responseString) {
+                                               if (responseData) {
                                                    // fls id obtained, segue to counter table view
                                                    [[Dweller class] setFls:responseString];
                                                    [self performSegueWithIdentifier:@"authDweller" sender:self];
+                                               } else {
+                                                   UIAlertView *alert = [[UIAlertView alloc]
+                                                                         initWithTitle:@"Не найден ФЛС"
+                                                                         message:@"Введенный номер не существует"
+                                                                         delegate:nil
+                                                                         cancelButtonTitle:@"OK"
+                                                                         otherButtonTitles:nil];
+                                                   [alert show];
                                                }
                                            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                                                NSLog(@"Failure");
