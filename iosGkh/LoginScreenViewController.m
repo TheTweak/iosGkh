@@ -26,6 +26,25 @@
 
 - (void) viewDidLoad {
     [super viewDidLoad];
+    self.loginTable.dataSource = self;
+}
+
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle
+                                                   reuseIdentifier:nil];
+    cell.textLabel.textColor = [UIColor lightGrayColor];
+    NSString *text;
+    if (indexPath.item == 1) {
+        text = @"Пароль";
+    } else if (indexPath.item == 0) {
+        text = @"Логин";
+    }
+    cell.textLabel.text = text;
+    return cell;
+}
+
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return 2;
 }
 
 - (IBAction) authenticatePressed {
