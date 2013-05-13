@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface CounterTableViewController : UITableViewController
+@interface CounterTableViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate>
 
 @end

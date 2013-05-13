@@ -10,13 +10,20 @@
 #import "BasicAuthModule.h"
 #import "SBJsonParser.h"
 #import "Dweller.h"
+#import "CounterValsViewController.h"
 
 @interface CounterTableViewController ()
 @property BOOL isLoading;
 @property NSArray *devices;
+// <deviceId, viewController>
+@property NSMutableDictionary *viewControllerByCounter;
 @end
 
 @implementation CounterTableViewController
+
+@synthesize isLoading = _isLoading;
+@synthesize devices = _devices;
+@synthesize viewControllerByCounter = _viewControllerByCounter;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -32,6 +39,8 @@
     [super viewDidLoad];
     UITableView *tableView = (UITableView *) self.view;
     tableView.dataSource = self;
+    tableView.delegate = self;
+    self.viewControllerByCounter = [[NSMutableDictionary alloc] init];
 }
 
 - (void)didReceiveMemoryWarning
@@ -106,13 +115,27 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // Navigation logic may go here. Create and push another view controller.
-    /*
-     <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-     // ...
-     // Pass the selected object to the new view controller.
-     [self.navigationController pushViewController:detailViewController animated:YES];
-     */
+    NSArray *counters = [self.devices objectAtIndex:indexPath.section];
+    NSDictionary *counter = [counters objectAtIndex:indexPath.row];
+    NSString *counterId = [counter objectForKey:@"counterId"];
+    UIViewController *counterViewController = [self.viewControllerByCounter objectForKey:counterId];
+    if (counterViewController) {
+        [self.navigationController pushViewController:counterViewController animated:YES];
+    } else {
+        AFHTTPClient *client = [BasicAuthModule dwellerHttpClient];
+        [client postPath:@"counter" parameters:[NSDictionary dictionaryWithObjectsAndKeys:counterId, @"counter", nil]
+                 success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                     CounterValsViewController *counterValsController = [[CounterValsViewController alloc] init];
+                     SBJsonParser *jsonParser = [[SBJsonParser alloc] init];
+                     NSData *responseData = (NSData *) responseObject;
+                     NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+                     counterValsController.counterVals = [jsonParser objectWithString:responseString];
+                     [self.viewControllerByCounter setObject:counterValsController forKey:counterId];
+                     [self.navigationController pushViewController:counterValsController animated:YES];
+                 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                     NSLog(@"fail to load counter vals");
+                 }];
+    }
 }
 
 @end
