@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		612349761739490F00EBBCF1 /* CounterTableDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 612349751739490F00EBBCF1 /* CounterTableDataSource.m */; };
 		61234979173A664C00EBBCF1 /* CounterTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 61234978173A664C00EBBCF1 /* CounterTableViewController.m */; };
 		6123497C173A734F00EBBCF1 /* Dweller.m in Sources */ = {isa = PBXBuildFile; fileRef = 6123497B173A734F00EBBCF1 /* Dweller.m */; };
 		6140D1A5169721960066F51C /* BarPlotSelectingArrow.m in Sources */ = {isa = PBXBuildFile; fileRef = 6140D1A4169721960066F51C /* BarPlotSelectingArrow.m */; };
@@ -79,8 +78,6 @@
 
 /* Begin PBXFileReference section */
 		45E580AE28FA4DB6A717BBF3 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
-		612349741739490F00EBBCF1 /* CounterTableDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CounterTableDataSource.h; sourceTree = "<group>"; };
-		612349751739490F00EBBCF1 /* CounterTableDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CounterTableDataSource.m; sourceTree = "<group>"; };
 		61234977173A664C00EBBCF1 /* CounterTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CounterTableViewController.h; sourceTree = "<group>"; };
 		61234978173A664C00EBBCF1 /* CounterTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CounterTableViewController.m; sourceTree = "<group>"; };
 		6123497A173A734F00EBBCF1 /* Dweller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Dweller.h; sourceTree = "<group>"; };
@@ -196,8 +193,6 @@
 				6191BC5B169AD63500CE85BA /* HomeTableDataSource.m */,
 				6140D1A3169721960066F51C /* BarPlotSelectingArrow.h */,
 				6140D1A4169721960066F51C /* BarPlotSelectingArrow.m */,
-				612349741739490F00EBBCF1 /* CounterTableDataSource.h */,
-				612349751739490F00EBBCF1 /* CounterTableDataSource.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -548,7 +543,6 @@
 				6178216F16F8433D00E4BED1 /* CorePlotUtils.m in Sources */,
 				6178217416F8482000E4BED1 /* BarPlotDelegate.m in Sources */,
 				6178217716F85D1200E4BED1 /* PieChartDelegate.m in Sources */,
-				612349761739490F00EBBCF1 /* CounterTableDataSource.m in Sources */,
 				61234979173A664C00EBBCF1 /* CounterTableViewController.m in Sources */,
 				6123497C173A734F00EBBCF1 /* Dweller.m in Sources */,
 			);

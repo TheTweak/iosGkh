@@ -14,12 +14,15 @@
 @interface CounterTableDataSource ()
 // счетчики
 @property NSArray *counters;
+@property NSUInteger sections;
+@property BOOL isLoaded;
+// counters post request error (if failed)
+@property NSError *error;
 @end
-
 @implementation CounterTableDataSource
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (!self.counters) {
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    if (!self.isLoaded && !self.error) {
         // dweller client
         AFHTTPClient *client = [BasicAuthModule dwellerHttpClient];
         NSString *flsId = [[Dweller class] fls];
@@ -28,12 +31,36 @@
             SBJsonParser *jsonParser = [[SBJsonParser alloc] init];
             NSData *responseData = (NSData *)responseObject;
             NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
-            NSArray *responseArray = [jsonParser objectWithString:responseString];
+            NSDictionary *responseJson = [jsonParser objectWithString:responseString];
+            self.counters = [responseJson objectForKey:@"counters"];
+            self.sections = [responseJson objectForKey:@"sections"];
+            self.isLoaded = YES;
+            self.error = nil;
+            [tableView reloadData];
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            self.error = error;
+            self.isLoaded = NO;
             NSLog(@"Failed to load counters table: %@", error);
         }];
     }
+    return self.sections;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return [self.counters count];
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle
+                                                   reuseIdentifier:nil];
+    cell.detailTextLabel.textColor = [UIColor darkGrayColor];
+    cell.textLabel.textColor = [UIColor whiteColor];
+    cell.textLabel.shadowColor = [UIColor darkGrayColor];
+    cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
+    
+    NSDictionary *counter = [self.counters objectAtIndex:indexPath.item];
+    return nil;
+//    cell.textLabel.text = [counter]
 }
 
 @end
