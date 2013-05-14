@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface CounterValsViewController : UITableViewController <UITableViewDataSource>
+@interface CounterValsViewController : UITableViewController <UITableViewDataSource, UIActionSheetDelegate, UITextFieldDelegate, UIAlertViewDelegate>
 @property NSArray *counterVals;
 @end

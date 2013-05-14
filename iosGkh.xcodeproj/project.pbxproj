@@ -14,6 +14,7 @@
 		6140D1AB16972D6B0066F51C /* triangle32.png in Resources */ = {isa = PBXBuildFile; fileRef = 6140D1AA16972D6B0066F51C /* triangle32.png */; };
 		614C91731741246800F1A91A /* CounterValsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 614C91721741246800F1A91A /* CounterValsViewController.m */; };
 		614C917617412D5E00F1A91A /* CounterValTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 614C917517412D5E00F1A91A /* CounterValTableCell.m */; };
+		614C9179174252B000F1A91A /* DateYearPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 614C9178174252B000F1A91A /* DateYearPicker.m */; };
 		61514BDC16A48A56003F4BED /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 61514BDB16A48A56003F4BED /* CoreImage.framework */; };
 		6178216F16F8433D00E4BED1 /* CorePlotUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 6178216E16F8433D00E4BED1 /* CorePlotUtils.m */; };
 		6178217416F8482000E4BED1 /* BarPlotDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6178217316F8482000E4BED1 /* BarPlotDelegate.m */; };
@@ -92,6 +93,8 @@
 		614C91721741246800F1A91A /* CounterValsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CounterValsViewController.m; sourceTree = "<group>"; };
 		614C917417412D5E00F1A91A /* CounterValTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CounterValTableCell.h; sourceTree = "<group>"; };
 		614C917517412D5E00F1A91A /* CounterValTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CounterValTableCell.m; sourceTree = "<group>"; };
+		614C9177174252B000F1A91A /* DateYearPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DateYearPicker.h; sourceTree = "<group>"; };
+		614C9178174252B000F1A91A /* DateYearPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DateYearPicker.m; sourceTree = "<group>"; };
 		61514BDB16A48A56003F4BED /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
 		6178216D16F8433D00E4BED1 /* CorePlotUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CorePlotUtils.h; sourceTree = "<group>"; };
 		6178216E16F8433D00E4BED1 /* CorePlotUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CorePlotUtils.m; sourceTree = "<group>"; };
@@ -383,6 +386,8 @@
 				61A6B31616F0C54000C6D1A6 /* PickerField.m */,
 				614C917417412D5E00F1A91A /* CounterValTableCell.h */,
 				614C917517412D5E00F1A91A /* CounterValTableCell.m */,
+				614C9177174252B000F1A91A /* DateYearPicker.h */,
+				614C9178174252B000F1A91A /* DateYearPicker.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -557,6 +562,7 @@
 				6123497C173A734F00EBBCF1 /* Dweller.m in Sources */,
 				614C91731741246800F1A91A /* CounterValsViewController.m in Sources */,
 				614C917617412D5E00F1A91A /* CounterValTableCell.m in Sources */,
+				614C9179174252B000F1A91A /* DateYearPicker.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

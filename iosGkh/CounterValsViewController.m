@@ -8,14 +8,18 @@
 
 #import "CounterValsViewController.h"
 #import "CounterValTableCell.h"
+#import "DateYearPicker.h"
 
 @interface CounterValsViewController ()
-
+@property DateYearPicker *datePicker;
+@property UITextField *valueField;
 @end
 
 @implementation CounterValsViewController
 
 @synthesize counterVals = _counterVals;
+@synthesize datePicker = _datePicker;
+@synthesize valueField = _valueField;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -29,10 +33,79 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.title = @"Показания счетчика";
+    self.title = @"Показания";
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Добавить"
+                                                                              style:UIBarButtonItemStylePlain
+                                                                             target:self action:@selector(addButtonHandler)];
     UITableView *tableView = (UITableView *) self.view;
     tableView.dataSource = self;
     [tableView registerClass:[CounterValTableCell class] forCellReuseIdentifier:@"CounterValCell"];
+}
+
+// Кнопка "Добавить"
+- (void) addButtonHandler {
+    UIAlertView *window = [[UIAlertView alloc] initWithTitle:nil
+                                                       message:nil
+                                                      delegate:self
+                                             cancelButtonTitle:nil
+                                             otherButtonTitles:@"Отмена", @"Сохранить", nil];
+
+    CGRect parentViewRect = self.view.frame;
+    window.delegate = self;
+    window.cancelButtonIndex = 0;
+    [window show];
+    int i = 0;
+    for (UIView *subView in window.subviews) {
+        if ([subView isKindOfClass:[UIButton class]]) {
+            UIButton *button = (UIButton *) subView;
+            if (i == 0) {
+                // Otmena
+//                button.backgroundColor = [UIColor redColor];
+            }
+            subView.frame = CGRectMake(i * 169 + 15, 10, 120, 30);
+            i++;
+        }
+    }
+    UITextField *valueField = [[UITextField alloc] initWithFrame:CGRectMake(15, 50, parentViewRect.size.width - 30, 30)];
+    valueField.placeholder = @"Значение";
+    valueField.autocorrectionType = UITextAutocorrectionTypeNo;
+    valueField.keyboardType = UIKeyboardTypeNumbersAndPunctuation;
+    valueField.backgroundColor = [UIColor whiteColor];
+    valueField.borderStyle = UITextBorderStyleRoundedRect;
+    valueField.delegate = self;
+    valueField.returnKeyType = UIReturnKeyDone;
+    self.valueField = valueField;
+    
+    DateYearPicker *datePicker = [[DateYearPicker alloc] initWithFrame:CGRectMake(15, valueField.frame.size.height + 55,
+                                                                                  parentViewRect.size.width - 30,
+                                                                                  parentViewRect.size.height)];
+    self.datePicker = datePicker;
+    [window addSubview:datePicker];
+    [window addSubview:valueField];
+}
+
+-(BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [textField resignFirstResponder];
+    return YES;
+}
+
+#pragma mark - UIAlertViewDelegate
+
+-(void)willPresentAlertView:(UIAlertView *)alertView {
+    alertView.frame = CGRectMake(0, 100,
+                                 self.view.frame.size.width, self.view.frame.size.height - 100);
+}
+
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    switch (buttonIndex) {
+        // добавить
+        case 1: {
+            NSLog(@"Dobavit");
+            break;
+        }
+        default:
+            break;
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -140,7 +213,7 @@
     tableHeader.backgroundColor = [UIColor colorWithRed:0.6162 green:0.6872 blue:0.78 alpha:1.0];
     tableHeader.textColor = [UIColor whiteColor];
     tableHeader.shadowColor = [UIColor grayColor];
-    tableHeader.text = @"    Дата          Показание            Дата ввода";
+    tableHeader.text = @"    Дата            Показание          Дата ввода";
     tableHeader.font = [UIFont fontWithName:@"Helvetica" size:15.0];
     return tableHeader;
 }

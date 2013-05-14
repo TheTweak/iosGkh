@@ -70,7 +70,7 @@
 #pragma mark Remove text
             self.fls.text = @"020101000050";
             self.fls.delegate = self;
-            self.fls.keyboardType = UIKeyboardTypeDecimalPad;
+            self.fls.keyboardType = UIKeyboardTypeNumbersAndPunctuation;
             self.fls.returnKeyType = UIReturnKeyDone;
             self.fls.autocorrectionType = UITextAutocorrectionTypeNo;
         }
