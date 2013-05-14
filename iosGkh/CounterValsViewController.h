@@ -10,4 +10,5 @@
 
 @interface CounterValsViewController : UITableViewController <UITableViewDataSource, UIActionSheetDelegate, UITextFieldDelegate, UIAlertViewDelegate>
 @property NSArray *counterVals;
+@property NSString *counterId;
 @end

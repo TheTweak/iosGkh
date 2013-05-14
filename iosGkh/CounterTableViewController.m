@@ -126,6 +126,8 @@
         [client postPath:@"counter" parameters:[NSDictionary dictionaryWithObjectsAndKeys:counterId, @"counter", nil]
                  success:^(AFHTTPRequestOperation *operation, id responseObject) {
                      CounterValsViewController *counterValsController = [[CounterValsViewController alloc] init];
+                     // set counter id
+                     counterValsController.counterId = counterId;
                      SBJsonParser *jsonParser = [[SBJsonParser alloc] init];
                      NSData *responseData = (NSData *) responseObject;
                      NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];

@@ -8,7 +8,9 @@
 
 #import "CounterValsViewController.h"
 #import "CounterValTableCell.h"
+#import "BasicAuthModule.h"
 #import "DateYearPicker.h"
+#import "SBJsonParser.h"
 
 @interface CounterValsViewController ()
 @property DateYearPicker *datePicker;
@@ -20,6 +22,7 @@
 @synthesize counterVals = _counterVals;
 @synthesize datePicker = _datePicker;
 @synthesize valueField = _valueField;
+@synthesize counterId = _counterId;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -98,9 +101,36 @@
 
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     switch (buttonIndex) {
-        // добавить
+        // кнопка добавить
         case 1: {
-            NSLog(@"Dobavit");
+            // Add counter value
+            // Todo: Value validation
+            AFHTTPClient *client = [BasicAuthModule dwellerHttpClient];
+            NSString *month = [self.datePicker month];
+            NSString *year = [self.datePicker year];
+            NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:self.counterId, @"counter",
+                                                                              self.valueField.text, @"val",
+                                    [NSString stringWithFormat:@"%@.%@", month, year], @"sd", nil];
+            [client postPath:@"countervalue" parameters:params
+                     success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                         SBJsonParser *jsonParser = [[SBJsonParser alloc] init];
+                         NSData *responseData = (NSData *) responseObject;
+                         NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+                         NSDictionary *response = [jsonParser objectWithString:responseString];
+                         id success = [response objectForKey:@"success"];
+                         NSString *msg = [response objectForKey:@"msg"];
+                         if ([@"0" isEqualToString:[success description]]) {
+                             // failed
+                             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Ошибка" message:msg delegate:nil cancelButtonTitle:@"ОК" otherButtonTitles:nil];
+                             [alert show];
+                         } else {
+                             // success
+                             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Сохранено" message:msg delegate:nil cancelButtonTitle:@"ОК" otherButtonTitles:nil];
+                             [alert show];
+                         }
+                     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                         NSLog(@"failed to save counter value");
+                     }];
             break;
         }
         default:

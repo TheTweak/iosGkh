@@ -46,6 +46,18 @@
     return self;
 }
 
+#pragma mark DatePicker -
+
+-(NSString *)year {
+    NSUInteger row = [self selectedRowInComponent:1];
+    return [self.years objectAtIndex:row];
+}
+
+-(NSString *)month {
+    NSUInteger row = [self selectedRowInComponent:0];
+    return [NSString stringWithFormat:@"%02d", row + 1];
+}
+
 #pragma mark <UIDatePickerDataSource>
 
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {

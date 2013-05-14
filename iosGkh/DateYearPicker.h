@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface DateYearPicker : UIPickerView <UIPickerViewDelegate, UIPickerViewDataSource>
-
+- (NSString *) month;
+- (NSString *) year;
 @end
