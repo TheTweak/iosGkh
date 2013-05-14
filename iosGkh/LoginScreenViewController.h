@@ -8,9 +8,7 @@
 #import <UIKit/UIKit.h>
 
 @interface LoginScreenViewController : UIViewController <UITextFieldDelegate, UITableViewDataSource>
-@property (weak, nonatomic) IBOutlet UITextField *userNameField;
-@property (weak, nonatomic) IBOutlet UITextField *passwordField;
-@property (weak, nonatomic) IBOutlet UITextField *flsNomer;
+
 @property (weak, nonatomic) IBOutlet UILabel *errorLabel;
 @property (weak, nonatomic) IBOutlet UITableView *loginTable;
 - (IBAction)authenticatePressed;
