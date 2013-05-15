@@ -127,6 +127,20 @@
                              // success
                              UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Сохранено" message:msg delegate:nil cancelButtonTitle:@"ОК" otherButtonTitles:nil];
                              [alert show];
+                             // reload table
+                             
+                             [client postPath:@"counter" parameters:[NSDictionary dictionaryWithObjectsAndKeys:self.counterId, @"counter", nil]
+                                      success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                                          SBJsonParser *jsonParser = [[SBJsonParser alloc] init];
+                                          NSData *responseData = (NSData *) responseObject;
+                                          NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+                                          self.counterVals = [jsonParser objectWithString:responseString];
+                                          UITableView *tableView = (UITableView *) self.view;
+                                          [tableView reloadData];
+                                      } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                          NSLog(@"fail to load counter vals");
+                                      }];
+                             
                          }
                      } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                          NSLog(@"failed to save counter value");
