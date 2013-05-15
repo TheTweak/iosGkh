@@ -15,6 +15,10 @@
 @interface CounterValsViewController ()
 @property DateYearPicker *datePicker;
 @property UITextField *valueField;
+// ActionSheet с выбором Удалить или Добавить показание
+@property UIActionSheet *addCounterValActionSheet;
+// ActionSheet подтверждения об удалении показания
+@property UIActionSheet *deleteConfirmationActionSheet;
 @end
 
 @implementation CounterValsViewController
@@ -23,6 +27,8 @@
 @synthesize datePicker = _datePicker;
 @synthesize valueField = _valueField;
 @synthesize counterId = _counterId;
+@synthesize addCounterValActionSheet = _addCounterValActionSheet;
+@synthesize deleteConfirmationActionSheet = _deleteConfirmationActionSheet;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -37,7 +43,7 @@
 {
     [super viewDidLoad];
     self.title = @"Показания";
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Добавить"
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Добавить..."
                                                                               style:UIBarButtonItemStylePlain
                                                                              target:self action:@selector(addButtonHandler)];
     UITableView *tableView = (UITableView *) self.view;
@@ -45,14 +51,29 @@
     [tableView registerClass:[CounterValTableCell class] forCellReuseIdentifier:@"CounterValCell"];
 }
 
-// Кнопка "Добавить"
+// Кнопка "Добавить..."
 - (void) addButtonHandler {
-    UIAlertView *window = [[UIAlertView alloc] initWithTitle:nil
-                                                       message:nil
-                                                      delegate:self
-                                             cancelButtonTitle:nil
-                                             otherButtonTitles:@"Отмена", @"Сохранить", nil];
+    
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"Показание"
+                                                             delegate:self
+                                                    cancelButtonTitle:@"Отмена"
+                                               destructiveButtonTitle:nil
+                                                    otherButtonTitles:@"Добавить", @"Удалить последнее", nil];
+    self.addCounterValActionSheet = actionSheet;
+    [actionSheet showInView:self.view];
+}
 
+-(BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [textField resignFirstResponder];
+    return YES;
+}
+
+-(void)addCounterValButtonHandler {
+    UIAlertView *window = [[UIAlertView alloc] initWithTitle:nil
+                                                     message:nil
+                                                    delegate:self
+                                           cancelButtonTitle:nil
+                                           otherButtonTitles:@"Отмена", @"Сохранить", nil];
     CGRect parentViewRect = self.view.frame;
     window.delegate = self;
     window.cancelButtonIndex = 0;
@@ -63,7 +84,7 @@
             UIButton *button = (UIButton *) subView;
             if (i == 0) {
                 // Otmena
-//                button.backgroundColor = [UIColor redColor];
+                //                button.backgroundColor = [UIColor redColor];
             }
             subView.frame = CGRectMake(i * 169 + 15, 10, 120, 30);
             i++;
@@ -87,9 +108,75 @@
     [window addSubview:valueField];
 }
 
--(BOOL)textFieldShouldReturn:(UITextField *)textField {
-    [textField resignFirstResponder];
-    return YES;
+#pragma mark - UIActionSheetDelegate
+
+-(void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
+    switch (buttonIndex) {
+            
+        case 0: {
+            if (actionSheet == self.addCounterValActionSheet) {
+                // меню "показание"
+                // кнопка добавить
+                [self performSelector:@selector(addCounterValButtonHandler) withObject:self afterDelay:0];
+            } else if (actionSheet == self.deleteConfirmationActionSheet) {
+                // кнопка ОК в меню подтверждения об удалении показания
+                self.deleteConfirmationActionSheet = nil;
+                AFHTTPClient *client = [BasicAuthModule dwellerHttpClient];
+                NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:self.counterId, @"counter", nil];
+                [client postPath:@"removelast" parameters:params
+                         success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                             SBJsonParser *jsonParser = [[SBJsonParser alloc] init];
+                             NSData *responseData = (NSData *) responseObject;
+                             NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+                             NSDictionary *response = [jsonParser objectWithString:responseString];
+                             id success = [response objectForKey:@"success"];
+                             NSString *msg = [response objectForKey:@"msg"];
+                             if ([@"0" isEqualToString:[success description]]) {
+                                 // failed
+                                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Ошибка" message:msg delegate:nil cancelButtonTitle:@"ОК" otherButtonTitles:nil];
+                                 [alert show];
+                             } else {
+                                 // success
+                                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Удалено" message:msg delegate:nil cancelButtonTitle:@"ОК" otherButtonTitles:nil];
+                                 [alert show];
+                                 // reload table
+                                 
+                                 [client postPath:@"counter" parameters:[NSDictionary dictionaryWithObjectsAndKeys:self.counterId, @"counter", nil]
+                                          success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                                              SBJsonParser *jsonParser = [[SBJsonParser alloc] init];
+                                              NSData *responseData = (NSData *) responseObject;
+                                              NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+                                              self.counterVals = [jsonParser objectWithString:responseString];
+                                              UITableView *tableView = (UITableView *) self.view;
+                                              [tableView reloadData];
+                                          } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                              NSLog(@"fail to load counter vals");
+                                          }];
+                                 
+                             }
+                         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                             NSLog(@"failed to save counter value");
+                         }];
+            }
+            break;
+        }
+        case 1: {
+            if (actionSheet == self.addCounterValActionSheet) {
+                // удалить последнее показание
+                UIActionSheet *confirmationSheet = [[UIActionSheet alloc] initWithTitle:@"Удалить последнее показание?"
+                                                                               delegate:self
+                                                                      cancelButtonTitle:@"Отмена"
+                                                                 destructiveButtonTitle:nil
+                                                                      otherButtonTitles:@"ОК", nil];
+                [confirmationSheet showInView:self.view];
+                self.deleteConfirmationActionSheet = confirmationSheet;
+            }
+            break;
+        }
+        default:
+            break;
+    }
+    self.addCounterValActionSheet = nil;
 }
 
 #pragma mark - UIAlertViewDelegate
@@ -100,16 +187,17 @@
 }
 
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+        
     switch (buttonIndex) {
-        // кнопка добавить
         case 1: {
+            // кнопка сохранить
             // Add counter value
             // Todo: Value validation
             AFHTTPClient *client = [BasicAuthModule dwellerHttpClient];
             NSString *month = [self.datePicker month];
             NSString *year = [self.datePicker year];
             NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:self.counterId, @"counter",
-                                                                              self.valueField.text, @"val",
+                                    self.valueField.text, @"val",
                                     [NSString stringWithFormat:@"%@.%@", month, year], @"sd", nil];
             [client postPath:@"countervalue" parameters:params
                      success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -169,6 +257,7 @@
     static NSString *CellIdentifier = @"CounterValCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     NSDictionary *counterVal = [self.counterVals objectAtIndex:indexPath.item];
+
     NSString *val = [counterVal objectForKey:@"val"];
     NSString *sd = [counterVal objectForKey:@"sd"];
     NSString *svd = [counterVal objectForKey:@"svd"];
@@ -181,11 +270,13 @@
     sdLabel.textColor = [UIColor grayColor];
     sdLabel.font = [UIFont fontWithName:@"Helvetica" size:14];
     sdLabel.textAlignment = NSTextAlignmentCenter;
+    
     UILabel *valLabel = [[UILabel alloc] initWithFrame:CGRectMake(sdLabel.frame.size.width, 0,
                                                                   columnWidth + 20.0, contentRect.size.height)];
     valLabel.text = val;
     valLabel.font = [UIFont fontWithName:@"Helvetica" size:16];
     valLabel.textAlignment = NSTextAlignmentRight;
+    
     CGFloat svdWidth = contentRect.size.width - sdLabel.frame.size.width - valLabel.frame.size.width;
     UILabel *svdLabel = [[UILabel alloc] initWithFrame:CGRectMake(valLabel.frame.size.width + sdLabel.frame.size.width, 0,
                                                                   svdWidth, contentRect.size.height)];
@@ -196,6 +287,7 @@
     [contentView addSubview:sdLabel];
     [contentView addSubview:valLabel];
     [contentView addSubview:svdLabel];
+        
     return cell;
 }
 
