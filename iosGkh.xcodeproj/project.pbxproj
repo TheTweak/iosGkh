@@ -66,6 +66,7 @@
 		61E81AF916EE054B00819BDD /* CustomView.m in Sources */ = {isa = PBXBuildFile; fileRef = 61E81AF816EE054B00819BDD /* CustomView.m */; };
 		61F2C9101712BFF3009F0CF5 /* green_money48.png in Resources */ = {isa = PBXBuildFile; fileRef = 61F2C90F1712BFF3009F0CF5 /* green_money48.png */; };
 		61F45D6F16F1D46900598213 /* CustomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 61F45D6E16F1D46900598213 /* CustomViewController.m */; };
+		9278FB31174A673900EA0D0A /* money32.png in Resources */ = {isa = PBXBuildFile; fileRef = 9278FB30174A673900EA0D0A /* money32.png */; };
 		92F25FBD174A08F800BE5FF6 /* EpdTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 92F25FBC174A08F800BE5FF6 /* EpdTableViewController.m */; };
 		92F25FC0174A16B100BE5FF6 /* green_check.png in Resources */ = {isa = PBXBuildFile; fileRef = 92F25FBE174A16B100BE5FF6 /* green_check.png */; };
 		92F25FC1174A16B100BE5FF6 /* red_cross.png in Resources */ = {isa = PBXBuildFile; fileRef = 92F25FBF174A16B100BE5FF6 /* red_cross.png */; };
@@ -171,6 +172,7 @@
 		61F45D6D16F1D46900598213 /* CustomViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomViewController.h; sourceTree = "<group>"; };
 		61F45D6E16F1D46900598213 /* CustomViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomViewController.m; sourceTree = "<group>"; };
 		7716AF1534D04DE2AFEC9746 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		9278FB30174A673900EA0D0A /* money32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = money32.png; sourceTree = "<group>"; };
 		92F25FBB174A08F800BE5FF6 /* EpdTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EpdTableViewController.h; sourceTree = "<group>"; };
 		92F25FBC174A08F800BE5FF6 /* EpdTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EpdTableViewController.m; sourceTree = "<group>"; };
 		92F25FBE174A16B100BE5FF6 /* green_check.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = green_check.png; sourceTree = "<group>"; };
@@ -320,6 +322,7 @@
 		61A3AC43169047E9005D3311 /* PNGS */ = {
 			isa = PBXGroup;
 			children = (
+				9278FB30174A673900EA0D0A /* money32.png */,
 				92F25FBE174A16B100BE5FF6 /* green_check.png */,
 				92F25FBF174A16B100BE5FF6 /* red_cross.png */,
 				61F2C90F1712BFF3009F0CF5 /* green_money48.png */,
@@ -511,6 +514,7 @@
 				61F2C9101712BFF3009F0CF5 /* green_money48.png in Resources */,
 				92F25FC0174A16B100BE5FF6 /* green_check.png in Resources */,
 				92F25FC1174A16B100BE5FF6 /* red_cross.png in Resources */,
+				9278FB31174A673900EA0D0A /* money32.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

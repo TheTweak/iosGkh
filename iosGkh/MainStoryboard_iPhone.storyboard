@@ -306,7 +306,7 @@
         <scene sceneID="adS-pF-n7q">
             <objects>
                 <tabBarController definesPresentationContext="YES" id="f9w-sh-BmT" sceneMemberID="viewController">
-                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                    <nil key="simulatedBottomBarMetrics"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" id="fV4-N8-qQi">
                         <rect key="frame" x="129" y="330" width="163" height="49"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
@@ -325,7 +325,7 @@
         <scene sceneID="FL6-S1-ned">
             <objects>
                 <navigationController id="XC5-5x-BXi" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Счетчики" id="Z8y-qL-qAt"/>
+                    <tabBarItem key="tabBarItem" title="Счетчики" image="List.png" id="Z8y-qL-qAt"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="OZP-SY-bLa">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -344,7 +344,7 @@
         <scene sceneID="Zos-gU-jKb">
             <objects>
                 <navigationController id="ZRS-Wn-jOp" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="ЕПД" id="9cW-DI-POP"/>
+                    <tabBarItem key="tabBarItem" title="ЕПД" image="money32.png" id="9cW-DI-POP"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="Qla-kH-Y4T">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -361,7 +361,9 @@
         </scene>
     </scenes>
     <resources>
+        <image name="List.png" width="30" height="30"/>
         <image name="green_check.png" width="16" height="16"/>
+        <image name="money32.png" width="24" height="24"/>
         <image name="red_cross.png" width="16" height="16"/>
     </resources>
     <classes>
