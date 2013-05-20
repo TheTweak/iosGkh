@@ -101,9 +101,23 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    EpdDetailTableViewController *detailViewController = [[UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil]
-                                                          instantiateViewControllerWithIdentifier:@"EpdDetailVC"];
-    [self.navigationController pushViewController:detailViewController animated:YES];
+    NSDictionary *epd = [self.epdArray objectAtIndex:indexPath.row];
+    NSString *epdId = [epd objectForKey:@"id"];
+    NSString *flsId = [[Dweller class] fls];
+    AFHTTPClient *client = [BasicAuthModule dwellerHttpClient];
+    [client getPath:@"epdetails" parameters:[NSDictionary dictionaryWithObjectsAndKeys:epdId, @"epd", flsId, @"fls", nil]
+             success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                 SBJsonParser *jsonParser = [[SBJsonParser alloc] init];
+                 NSData *responseData = (NSData *) responseObject;
+                 NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+                 NSArray *epdDetails = [jsonParser objectWithString:responseString];
+                 EpdDetailTableViewController *detailViewController = [[UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil]
+                                                                       instantiateViewControllerWithIdentifier:@"EpdDetailVC"];
+                 detailViewController.detailsArray = epdDetails;
+                 [self.navigationController pushViewController:detailViewController animated:YES];
+             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                 NSLog(@"fail to load counter vals");
+             }];
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {

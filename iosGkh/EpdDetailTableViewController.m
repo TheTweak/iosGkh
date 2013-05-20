@@ -14,6 +14,8 @@
 
 @implementation EpdDetailTableViewController
 
+@synthesize detailsArray = _detailsArray;
+
 - (id)initWithStyle:(UITableViewStyle)style
 {
     self = [super initWithStyle:style];
@@ -42,28 +44,25 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-#warning Incomplete method implementation.
-    // Return the number of rows in the section.
-    return 3;
+    return self.detailsArray.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"EpdDetailCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-    
-    // Configure the cell...
+    NSDictionary *epdDetail = [self.detailsArray objectAtIndex:indexPath.row];
     // Услуга
     UILabel *serv = (UILabel *) [cell viewWithTag:14];
-    serv.text = @"Коллективная антенна";
+    serv.text = [epdDetail objectForKey:@"serv"];
     
     // Поставщик
     UILabel *provider = (UILabel *) [cell viewWithTag:15];
-    provider.text = @"ООО \"Захват\"";
+    provider.text = [epdDetail objectForKey:@"provider"];
     
     // Сумма
     UILabel *summ = (UILabel *) [cell viewWithTag:16];
-    summ.text = @"12 512.12";
+    summ.text = [epdDetail objectForKey:@"val"];
     
     return cell;
 }

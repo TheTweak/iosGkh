@@ -77,7 +77,7 @@
     CGRect parentViewRect = self.view.frame;
     window.delegate = self;
     window.frame = parentViewRect;
-    window.cancelButtonIndex = 0;
+    window.cancelButtonIndex = 0;    
     [window show];
     int i = 0;
     for (UIView *subView in window.subviews) {
@@ -169,7 +169,7 @@
                                                                       cancelButtonTitle:@"Отмена"
                                                                  destructiveButtonTitle:nil
                                                                       otherButtonTitles:@"ОК", nil];
-                [confirmationSheet showInView:self.view];
+                [confirmationSheet showFromTabBar:self.tabBarController.tabBar];
                 self.deleteConfirmationActionSheet = confirmationSheet;
             }
             break;
@@ -184,7 +184,7 @@
 
 -(void)willPresentAlertView:(UIAlertView *)alertView {
     alertView.frame = CGRectMake(0, 100,
-                                 self.view.frame.size.width, self.view.frame.size.height - 100);
+                                 self.view.frame.size.width, self.view.frame.size.height - 50);
 }
 
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {

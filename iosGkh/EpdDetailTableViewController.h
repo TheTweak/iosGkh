@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface EpdDetailTableViewController : UITableViewController
-
+@property NSArray *detailsArray;
 @end
