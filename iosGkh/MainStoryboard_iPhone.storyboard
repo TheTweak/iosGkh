@@ -56,7 +56,7 @@
                         <outlet property="errorLabel" destination="l8c-UO-KL5" id="bZc-1q-U1t"/>
                         <outlet property="loginTable" destination="2hO-Hc-bLC" id="CFu-ci-2Qz"/>
                         <segue destination="wgO-R6-ecq" kind="modal" identifier="authGlava" id="Fv3-4G-365"/>
-                        <segue destination="XC5-5x-BXi" kind="modal" identifier="authDweller" id="tTr-gZ-7Ko"/>
+                        <segue destination="f9w-sh-BmT" kind="modal" identifier="authDweller" id="ATB-dd-BIh"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4" sceneMemberID="firstResponder"/>
@@ -122,7 +122,7 @@
             <objects>
                 <tableViewController id="AAf-hN-4GT" customClass="CounterTableViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="singleLineEtched" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="BPK-ra-Uga">
-                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="455"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <prototypes>
@@ -150,16 +150,36 @@
                             <outlet property="delegate" destination="AAf-hN-4GT" id="WlY-r7-FV2"/>
                         </connections>
                     </tableView>
+                    <tabBarItem key="tabBarItem" title="Item" id="0YX-Zz-Kte"/>
                     <navigationItem key="navigationItem" title="Счетчики" id="oj2-Al-i7X"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="J0h-kv-g2r" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="337" y="253"/>
+            <point key="canvasLocation" x="793" y="285"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Tab Bar Controller-->
+        <scene sceneID="adS-pF-n7q">
+            <objects>
+                <tabBarController definesPresentationContext="YES" id="f9w-sh-BmT" sceneMemberID="viewController">
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                    <tabBar key="tabBar" contentMode="scaleToFill" id="fV4-N8-qQi">
+                        <rect key="frame" x="129" y="330" width="163" height="49"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    </tabBar>
+                    <connections>
+                        <segue destination="XC5-5x-BXi" kind="relationship" relationship="viewControllers" id="rxW-Fy-CIN"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="MxI-cL-moJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-189" y="182"/>
+        </scene>
+        <!--Navigation Controller - Счетчики-->
         <scene sceneID="FL6-S1-ned">
             <objects>
                 <navigationController id="XC5-5x-BXi" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Счетчики" id="Z8y-qL-qAt"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="OZP-SY-bLa">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -172,9 +192,33 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vlO-Il-lny" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-189" y="253"/>
+            <point key="canvasLocation" x="291" y="29"/>
         </scene>
     </scenes>
+    <classes>
+        <class className="CounterTableViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/CounterTableViewController.h"/>
+        </class>
+        <class className="HomeViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/HomeViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="bottomView" candidateClass="UIScrollView"/>
+                <relationship kind="outlet" name="navigationBar" candidateClass="UINavigationBar"/>
+                <relationship kind="outlet" name="pageControlView" candidateClass="UIPageControl"/>
+                <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
+                <relationship kind="outlet" name="toolbar" candidateClass="UIToolbar"/>
+            </relationships>
+        </class>
+        <class className="LoginScreenViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/LoginScreenViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="authenticatePressed"/>
+                <relationship kind="action" name="segmentChanged:forEvent:" candidateClass="UISegmentedControl"/>
+                <relationship kind="outlet" name="errorLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="loginTable" candidateClass="UITableView"/>
+            </relationships>
+        </class>
+    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

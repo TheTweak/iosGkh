@@ -16,6 +16,7 @@
 @property BOOL isLoading;
 @property NSArray *devices;
 // <deviceId, viewController>
+// todo : --->  <deviceId, dataArray>
 @property NSMutableDictionary *viewControllerByCounter;
 @end
 
