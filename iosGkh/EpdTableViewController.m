@@ -8,11 +8,19 @@
 
 #import "EpdTableViewController.h"
 #import "EpdDetailTableViewController.h"
+#import "BasicAuthModule.h"
+#import "SBJsonParser.h"
+#import "Dweller.h"
 
 @interface EpdTableViewController ()
+@property BOOL isLoading;
+@property NSArray *epdArray;
 @end
 
 @implementation EpdTableViewController
+
+@synthesize isLoading = _isLoading;
+@synthesize epdArray = _epdArray;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -41,9 +49,25 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-#warning Incomplete method implementation.
-    // Return the number of rows in the section.
-    return 4;
+    if (!self.isLoading) {
+        self.isLoading = YES;
+        // dweller client
+        AFHTTPClient *client = [BasicAuthModule dwellerHttpClient];
+        NSString *flsId = [[Dweller class] fls];
+        NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:flsId, @"fls", nil];
+        [client getPath:@"epdlist" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            SBJsonParser *jsonParser = [[SBJsonParser alloc] init];
+            NSData *responseData = (NSData *) responseObject;
+            NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+            self.epdArray = [jsonParser objectWithString:responseString];
+            [tableView reloadData];
+            self.isLoading = NO;
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            self.isLoading = NO;
+            NSLog(@"Failed to load counters table: %@", error);
+        }];
+    }
+    return self.epdArray.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -51,8 +75,9 @@
     static NSString *CellIdentifier = @"EpdCell";
     static NSString *RedCellIdentifier = @"EpdCellRed";
     NSString *identifier;
-    
-    if (indexPath.row % 2 == 0) {
+    NSDictionary *epd = [self.epdArray objectAtIndex:indexPath.row];
+    NSString *isOpl = [epd objectForKey:@"isOpl"];
+    if ([@"YES" isEqualToString:isOpl]) {
         identifier = CellIdentifier;
     } else {
         identifier = RedCellIdentifier;
@@ -61,13 +86,13 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
 
     UILabel *periodL = (UILabel *) [cell viewWithTag:14];
-    periodL.text = @"05.2013";
+    periodL.text = [epd objectForKey:@"period"];
     
     UILabel *createdL = (UILabel *) [cell viewWithTag:15];
-    createdL.text = @"15.04.2013 11:35";
+    createdL.text = [epd objectForKey:@"created"];
     
     UILabel *nachL = (UILabel *) [cell viewWithTag:16];
-    nachL.text = @"10 421.23";
+    nachL.text = [epd objectForKey:@"nach"];
     
     return cell;
 }
@@ -76,13 +101,6 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // Navigation logic may go here. Create and push another view controller.
-    /*
-     <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-     // ...
-     // Pass the selected object to the new view controller.
-     [self.navigationController pushViewController:detailViewController animated:YES];
-     */
     EpdDetailTableViewController *detailViewController = [[UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil]
                                                           instantiateViewControllerWithIdentifier:@"EpdDetailVC"];
     [self.navigationController pushViewController:detailViewController animated:YES];
