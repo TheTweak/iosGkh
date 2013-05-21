@@ -37,6 +37,7 @@
 
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithBool:self.showAllEpd] forKey:@"show_all_epd"];
     [self.tableView reloadData];
 }
 
@@ -46,6 +47,8 @@
     UITableView *tableView = (UITableView *) self.view;
     tableView.dataSource = self;
     tableView.delegate = self;
+    BOOL showAllEpd = [[[NSUserDefaults standardUserDefaults] valueForKey:@"show_all_epd"] boolValue];
+    self.showAllEpd = showAllEpd;
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Настройки" style:UIBarButtonItemStyleBordered
                                                                              target:self action:@selector(naviRightButtonHandler)];
 }
@@ -141,7 +144,7 @@
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:SettingsCellIdentifier forIndexPath:indexPath];
         UILabel *settingName = (UILabel *) [cell viewWithTag:14];
         UISwitch *allEpdSwitch = (UISwitch *) [cell viewWithTag:15];
-        allEpdSwitch.on = NO;
+        allEpdSwitch.on = self.showAllEpd;
         [allEpdSwitch addTarget:self action:@selector(showAllEpdSwitchToggled:) forControlEvents:UIControlEventValueChanged];
         settingName.text = @"Отображать все ЕПД";        
         return cell;
