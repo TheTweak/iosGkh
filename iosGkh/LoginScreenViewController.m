@@ -18,6 +18,7 @@
 @property UITextField *password;
 @property UITextField *login;
 @property UITextField *fls;
+@property (nonatomic)  UIActivityIndicatorView *loadingMask;
 @end
 
 @implementation LoginScreenViewController
@@ -27,11 +28,27 @@
 @synthesize password = _password;
 @synthesize login = _login;
 @synthesize fls = _fls;
+@synthesize loadingMask = _loadingMask;
+
+#pragma mark Accessors
+
+-(UIActivityIndicatorView *)loadingMask {
+    if (!_loadingMask) {
+        _loadingMask = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        _loadingMask.hidesWhenStopped = YES;
+        _loadingMask.center = self.view.center;
+        [self.view addSubview:_loadingMask];
+    }
+    return _loadingMask;
+}
 
 - (void) viewDidLoad {
     [super viewDidLoad];
     self.loginTable.dataSource = self;
+    [self registerForNotifications];
 }
+
+#pragma mark Credentials table delegate
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle
@@ -43,7 +60,7 @@
             if (!self.password) {
                 self.password = [[UITextField alloc] initWithFrame:textFieldRect];
                 self.password.secureTextEntry = YES;
-#pragma mark Remove password
+#warning Remove password
                 self.password.text = @"1234";
                 self.password.placeholder = @"Пароль";
                 self.password.delegate = self;
@@ -55,7 +72,7 @@
             if (!self.login) {
                 self.login = [[UITextField alloc] initWithFrame:textFieldRect];
                 self.login.placeholder = @"Логин";
-#pragma warning Remove login
+#warning Remove login
                 self.login.text = @"glava";
                 self.login.returnKeyType = UIReturnKeyDone;
                 self.login.delegate = self;
@@ -67,7 +84,7 @@
         if (!self.fls) {
             self.fls = [[UITextField alloc] initWithFrame:textFieldRect];
             self.fls.placeholder = @"Лицевой счет";
-#pragma mark Remove text
+#warning Remove text
             self.fls.text = @"020101000050";
             self.fls.delegate = self;
             self.fls.keyboardType = UIKeyboardTypeNumbersAndPunctuation;
@@ -89,12 +106,14 @@
     return rows;
 }
 
+#pragma mark Login button handlers
+
 - (IBAction) authenticatePressed {
-    [self registerForNotifications];
     switch (self.segment) {
         case 0: { // auth uk
             NSString *userName = self.login.text;
             NSString *password = self.password.text;
+            [self showLoadingMask];
             [[BasicAuthModule class] authenticateWithLogin:userName andPassword:password];
             break;
         }
@@ -106,11 +125,13 @@
 }
 
 - (void) authenticateDweller {
+    [self showLoadingMask];
     NSString *flsNomer = self.fls.text;
     [[BasicAuthModule class] authenticateAsDweller:@"user"
                                           password:@"1234"
                                           flsNomer:flsNomer
                                            success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                                               [self hideLoadingMask];
                                                NSData *responseData = (NSData *)responseObject;
                                                NSString *responseString = [[NSString alloc] initWithData:responseData
                                                                                                 encoding:NSUTF8StringEncoding];
@@ -128,9 +149,13 @@
                                                    [alert show];
                                                }
                                            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                               [self hideLoadingMask];
+                                               self.errorLabel.text = [error localizedDescription];
                                                NSLog(@"Failure");
                                            }];
 }
+
+#pragma mark Segment control handlers
 
 - (IBAction)segmentChanged:(UISegmentedControl *)sender forEvent:(UIEvent *)event {
     self.segment = sender.selectedSegmentIndex;
@@ -147,7 +172,18 @@
                                              selector:@selector(authenticationSucceeded:)
                                                  name:@"AuthenticationSucceeded"
                                                object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(showLoadingMask)
+                                                 name:@"ShowLoginLoadingMask"
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(hideLoadingMask)
+                                                 name:@"HideLoginLoadingMask"
+                                               object:nil];
 }
+
+#pragma mark Notifications
 
 - (void) authenticationErrorOccured:(NSNotification *)notification {
     NSString *errorText = [[notification userInfo]
@@ -165,6 +201,16 @@
     }
     [self performSegueWithIdentifier: segueId sender: self];
 }
+
+-(void) showLoadingMask {
+    [self.loadingMask startAnimating];
+}
+
+-(void) hideLoadingMask {
+    [self.loadingMask stopAnimating];
+}
+
+#pragma mark Other
 
 - (BOOL) textFieldShouldReturn:(UITextField *)theTextField {
     [theTextField resignFirstResponder];

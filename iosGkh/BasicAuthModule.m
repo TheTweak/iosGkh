@@ -46,11 +46,13 @@ static NSString *role;
         [[NSNotificationCenter defaultCenter] postNotificationName:@"AuthenticationSucceeded"
                                                             object:self
                                                             userInfo:[NSDictionary dictionaryWithObjectsAndKeys:role, @"Role", nil]];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"HideLoginLoadingMask" object:self];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSString *errorDescription = [error localizedDescription];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"AuthenticationError"
                                                             object:self
                                                           userInfo:[NSDictionary dictionaryWithObjectsAndKeys: errorDescription, @"ErrorDescription", nil]];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"HideLoginLoadingMask" object:self];
     }];
 }
 
