@@ -5,10 +5,12 @@
 	<key>PreferenceSpecifiers</key>
 	<array>
 		<dict>
-			<key>Title</key>
-			<string>Общие</string>
 			<key>Type</key>
-			<string>PSGroupSpecifier</string>
+			<string>PSTextFieldSpecifier</string>
+			<key>Title</key>
+			<string>Адрес сервера</string>
+			<key>Key</key>
+			<string></string>
 		</dict>
 		<dict>
 			<key>DefaultValue</key>

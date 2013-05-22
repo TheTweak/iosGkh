@@ -71,7 +71,9 @@
             NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
             NSDictionary *responseJson = [jsonParser objectWithString:responseString];
             if ([responseJson valueForKey:@"scope"]) {
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"ShowScopeLabel" object:self userInfo:[NSDictionary dictionaryWithObject:[responseJson valueForKey:@"scope"] forKey:@"scopeLabel"]];
+                NSString *label = [NSString stringWithFormat:@"%@/%@", [responseJson valueForKey:@"scope"], [responseJson valueForKey:@"year"]];
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"ShowScopeLabel" object:self
+                                                                  userInfo:@{@"scopeLabel": label}];
             }
             NSArray *params = [responseJson objectForKey:@"values"];
             self.graphValues = params;

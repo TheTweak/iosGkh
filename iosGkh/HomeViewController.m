@@ -494,6 +494,7 @@ CGFloat const CPDBarInitialX = 0.25f;
     
     CPTPlotArea *plotArea = graph.plotAreaFrame.plotArea;
     plotArea.fill = [CPTFill fillWithColor:[CPTColor colorWithCGColor:underPage]];
+    plotArea.paddingLeft = 50.0f;
     
     [self configureBarPlot:graph withTitle:title dataSource:ds];
 }
@@ -637,6 +638,7 @@ CGFloat const CPDBarInitialX = 0.25f;
     plot2.delegate = self.plotDelegate;
     plot2.title = @"sec";
     plot2.barWidth = CPTDecimalFromDouble(CPDBarWidth);
+    plot2.barCornerRadius = 5.0;
     [graph addPlot:plot2];
 }
 
