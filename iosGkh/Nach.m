@@ -31,6 +31,7 @@
 @synthesize paramId = _paramId;
 @synthesize homeTableDS = _homeTableDS;
 @synthesize tableNeedsReloading = _tableNeedsReloading;
+@synthesize period = _period;
 
 - (BOOL) axis:(CPTAxis *)axis shouldUpdateAxisLabelsAtLocations:(NSSet *)locations {
     axis.axisTitle = [[CPTAxisTitle alloc] initWithText:@"Период" textStyle:[CPTTextStyle textStyle]];
@@ -132,8 +133,10 @@
             NSMutableDictionary *requestParameters = [[NSMutableDictionary alloc] init];
             // necessary request param, unique identifier of requesting data
             [requestParameters setValue:self.paramId forKey:@"type"];
+            [requestParameters setValue:self.period forKey:@"period"];
             
-            [client postPath:@"param/value" parameters:requestParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            [client postPath:@"param/value" parameters:requestParameters success:^(AFHTTPRequestOperation *operation,
+                                                                                   id responseObject) {
                 NSLog(@"post succeeded");
                 
                 SBJsonParser *jsonParser = [[SBJsonParser alloc] init];
@@ -146,6 +149,10 @@
                 self.isLoading = NO;
                 self.tableNeedsReloading = NO;
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"HideLoadingMask" object:self];
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdatePeriodField" object:self
+                                                                  userInfo:@{@"period" : [responseJson
+                                                                                          objectForKey:@"period"],
+                                                                             @"needReload" : [NSNumber numberWithBool:NO]}];
                 NSLog(@"success");
             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                 self.isLoading = NO;

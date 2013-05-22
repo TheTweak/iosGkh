@@ -17,6 +17,10 @@
 #import "BarPlotDelegate.h"
 #import "PieChartDelegate.h"
 #import "CorePlotUtils.h"
+#import "BasicAuthModule.h"
+#import "ActionSheetStringPicker.h"
+#import "SBJsonParser.h"
+#import "Nach.h"
 
 @interface HomeViewController ()
 @property (nonatomic, strong) HomeTableDataSource *tableDataSource;
@@ -45,6 +49,7 @@
 @property float landscapeScrollViewHeight;
 @property CGRect portraitPageIndicatorRect;
 @property int onScreenPageNumber;
+@property NSMutableArray *periodFieldControllerArray;
 @end
 
 @implementation HomeViewController
@@ -68,7 +73,8 @@ CGFloat const CPDBarInitialX = 0.25f;
 
 #pragma mark Init
 
-- (void) willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+- (void) willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+                                 duration:(NSTimeInterval)duration {
     self.onScreenPageNumber = [self determineCurrentPageNumber:self.bottomView.contentOffset.x];
     if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
         if (![self.tableView isHidden]) {
@@ -217,7 +223,6 @@ CGFloat const CPDBarInitialX = 0.25f;
 }
 
 - (int) determineCurrentPageNumber:(float) offset {
-#warning todo remove explicit 320
     return offset / self.view.frame.size.width;
 }
 
@@ -273,6 +278,11 @@ CGFloat const CPDBarInitialX = 0.25f;
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(addScopeLabel:)
                                                  name:@"ShowScopeLabel"
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(updateCurrentPeriodField:)
+                                                 name:@"UpdatePeriodField"
                                                object:nil];
 
 }
@@ -393,9 +403,10 @@ CGFloat const CPDBarInitialX = 0.25f;
         NSString *type = [representation valueForKey:@"type"];
         NSString *repId = [representation valueForKey:@"id"];
         if ([@"TABLE" isEqualToString:type]) {
-            UITableViewController *tableViewController = [[UITableViewController alloc] initWithStyle:UITableViewStylePlain];
+            UITableViewController *tableViewController = [[UITableViewController alloc]
+                                                          initWithStyle:UITableViewStylePlain];
             [pageViewControllers addObject:tableViewController];
-            UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(320 * (i + 1), 0, 320, 250)];
+            UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(320 * (i + 1), 0, 320, 200)];
             tableViewController.view = tableView;
 
             Nach *dataSource = [[Nach alloc] init];
@@ -409,6 +420,19 @@ CGFloat const CPDBarInitialX = 0.25f;
             tableView.separatorColor = [UIColor darkGrayColor];
             tableView.layer.cornerRadius = 8.0f;
             [self.bottomView addSubview:tableView];
+            
+            UITextField *period = [[UITextField alloc] initWithFrame:CGRectMake(320 * (i + 1) + 5,
+                                                                                tableView.frame.size.height + 10,
+                                                                                310, 40)];
+            period.placeholder = @"Период";
+            period.textAlignment = NSTextAlignmentCenter;
+            period.delegate = self;
+            period.borderStyle = UITextBorderStyleRoundedRect;
+            period.font = [UIFont systemFontOfSize:15];
+            period.clearButtonMode = UITextFieldViewModeWhileEditing;
+            period.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+            period.tag = 14 + i;
+            [self.bottomView addSubview:period];
         }
     }
     self.pageControlView.numberOfPages = pageViewControllers.count + 1;
@@ -755,6 +779,8 @@ CGFloat const CPDBarInitialX = 0.25f;
     return meta;
 }
 
+#pragma mark Notification handlers
+
 // Show loading indicator
 - (void) showLoadingMask {
     NSLog(@"showing load mask");
@@ -808,6 +834,28 @@ CGFloat const CPDBarInitialX = 0.25f;
     [self.tableDataSource setCustomProperties:data atIndex:row];
 }
 
+// update current page period text field
+-(void) updateCurrentPeriodField:(NSNotification *) notification {
+    NSDictionary *userInfo = [notification userInfo];
+    [self _updateCurrentPeriodField:[userInfo objectForKey:@"period"]
+     reloadTable:[[userInfo objectForKey:@"needReload"] boolValue]];
+}
+
+-(void) _updateCurrentPeriodField:(NSString *) period
+                      reloadTable:(BOOL) reload{
+    NSInteger currentPage = [self determineCurrentPageNumber:self.bottomView.contentOffset.x];
+    UITableViewController *pageTableViewController = [self.pageViewControllersArray objectAtIndex:currentPage - 1];
+    UITableView *tableView = pageTableViewController.tableView;
+    Nach *dataSource = (Nach *) tableView.dataSource;
+    dataSource.tableNeedsReloading = reload;
+    dataSource.period = period;
+    UITextField *periodField = (UITextField *) [self.bottomView viewWithTag:14 + (currentPage - 1)];
+    periodField.text = period;
+    if (reload) {
+        [tableView reloadData];
+    }
+}
+
 - (void) pan:(UIPanGestureRecognizer *)recognizer {
     if ((recognizer.state == UIGestureRecognizerStateChanged) ||
         (recognizer.state == UIGestureRecognizerStateEnded)) {
@@ -834,6 +882,48 @@ CGFloat const CPDBarInitialX = 0.25f;
 
 - (void) addNewMetricByString:(NSString *)identifier {
 
+}
+
+#pragma mark UITextField delegate
+
+-(BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
+    NSLog(@"period field tapped");
+    
+    AFHTTPClient *client = [BasicAuthModule httpClient];
+    
+#warning TODO : loading mask
+    NSDictionary *requestParams = @{@"param": @"period"};
+    [client postPath:@"param/value/list" parameters:requestParams success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"post succeeded");
+        SBJsonParser *jsonParser = [[SBJsonParser alloc] init];
+        NSData *responseData = (NSData *)responseObject;
+        NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+        NSArray *responseJson = [jsonParser objectWithString:responseString];
+        NSMutableArray *comboDataArray = [NSMutableArray array];
+        for(int i = 0, l = [responseJson count]; i < l; i++) {
+            NSDictionary *jsonObject = [responseJson objectAtIndex:i];
+            NSString *name = [jsonObject valueForKey:@"name"];
+            [comboDataArray insertObject:name atIndex:i];
+        }
+        
+        [ActionSheetStringPicker showPickerWithTitle:@"Период"
+                                                rows:comboDataArray
+                                    initialSelection:0
+                                           doneBlock:^(ActionSheetStringPicker *picker, NSInteger selectedIndex, id selectedValue) {
+                                               NSDictionary *selectedJson = [responseJson objectAtIndex:selectedIndex];
+                                               [self _updateCurrentPeriodField:[selectedJson valueForKey:@"name"]
+                                                                   reloadTable:YES];
+                                               NSLog(@"selected: %@", selectedJson);
+                                         }
+                                         cancelBlock:^(ActionSheetStringPicker *picker) {
+                                             NSLog(@"cancel");
+                                         }
+                                              origin:self.view];
+        NSLog(@"success");
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"failure");
+    }];
+    return NO;
 }
 
 @end

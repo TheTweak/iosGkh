@@ -18,4 +18,6 @@
 @property (nonatomic, weak) HomeTableDataSource *homeTableDS;
 @property (nonatomic, strong) NSString *scope;
 @property BOOL tableNeedsReloading;
+// период за который загружаются данные в табличках для отчета Платежи в проценте от начислений
+@property NSString *period;
 @end

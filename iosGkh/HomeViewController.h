@@ -12,7 +12,7 @@
 #import "CorePlotUtils.h"
 
 @interface HomeViewController : UIViewController <MetricConsumerProtocol, UITableViewDelegate,
-                                                UIScrollViewDelegate>
+                                                UIScrollViewDelegate, UITextFieldDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIScrollView *bottomView;
