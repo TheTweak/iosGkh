@@ -50,6 +50,12 @@
 @property CGRect portraitPageIndicatorRect;
 @property int onScreenPageNumber;
 @property NSMutableArray *periodFieldControllerArray;
+// выбранные значения для запроса графика
+@property(nonatomic, strong) NSMutableDictionary *selectedValues;
+// для выбора этих значений
+@property UIView *selectValuesView;
+// индекс строки таблицы на которую нажали
+@property NSNumber *selectedRow;
 @end
 
 @implementation HomeViewController
@@ -172,9 +178,9 @@ CGFloat const CPDBarInitialX = 0.25f;
     tableView.separatorColor = [UIColor darkGrayColor];
     tableView.dataSource = self.tableDataSource;
     tableView.delegate = self;
-    tableView.layer.borderColor = [CorePlotUtils blueColor];
+    /*tableView.layer.borderColor = [CorePlotUtils blueColor];
     tableView.layer.borderWidth = 2.0f;
-    tableView.layer.cornerRadius = 8.0f;
+    tableView.layer.cornerRadius = 8.0f;*/
     UINavigationBar *navBar = [[self navigationController] navigationBar];
     [navBar setTintColor:[UIColor colorWithRed:0 green:.3943 blue:.91 alpha:1]];
 #warning todo remove explicit height calculation
@@ -284,7 +290,11 @@ CGFloat const CPDBarInitialX = 0.25f;
                                              selector:@selector(updateCurrentPeriodField:)
                                                  name:@"UpdatePeriodField"
                                                object:nil];
-
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(paramInputFieldTapped:)
+                                                 name:@"ParamInputFieldTapped"
+                                               object:nil];
 }
 // shake motion handler
 - (void) motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event {
@@ -351,6 +361,13 @@ CGFloat const CPDBarInitialX = 0.25f;
         _graphToPagesDictionary = [[NSMutableDictionary alloc] init];
     }
     return _graphToPagesDictionary;
+}
+
+- (NSMutableDictionary *) selectedValues {
+    if (!_selectedValues) {
+        _selectedValues = [NSMutableDictionary dictionary];
+    }
+    return _selectedValues;
 }
 
 #pragma mark - Table view delegate
@@ -431,6 +448,8 @@ CGFloat const CPDBarInitialX = 0.25f;
             period.font = [UIFont systemFontOfSize:15];
             period.clearButtonMode = UITextFieldViewModeWhileEditing;
             period.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+            period.backgroundColor = [UIColor underPageBackgroundColor];
+            period.textColor = [UIColor yellowColor];            
             period.tag = 14 + i;
             [self.bottomView addSubview:period];
         }
@@ -443,23 +462,67 @@ CGFloat const CPDBarInitialX = 0.25f;
 
 - (void)tableView:(UITableView *)tableView
         accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
+    self.selectedRow = [NSNumber numberWithInteger:indexPath.row];
     NSDictionary *customProperties = [self.tableDataSource customPropertiesAtRowIndex:indexPath.row];
     NSDictionary *inputs = [customProperties valueForKey:@"input"];
-    CustomView *custom = [[CustomView alloc] initWithFrame:self.view.bounds inputs:inputs];
-    UIColor *viewColor = [UIColor viewFlipsideBackgroundColor];
-    custom.backgroundColor = viewColor;
-    CustomViewController *viewController = [[CustomViewController alloc] init];
-    viewController.tableRowIndex = [NSNumber numberWithInteger:indexPath.row];
-    viewController.view = custom;
-    // title for custom vc :
-    viewController.title = [customProperties valueForKey:@"name"];
-    UINavigationItem *navItem = viewController.navigationItem;
-    navItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"ОК"
-                                                                  style:UIBarButtonItemStylePlain
-                                                                 target:viewController
-                                                                 action:@selector(rightBarButtonHandler)];
-    UINavigationController *navigationController = (UINavigationController *) self.parentViewController;
-    [navigationController pushViewController:viewController animated:YES];
+    CGFloat width = self.view.frame.size.width,
+            height = self.tableView.frame.size.height;
+    if (!self.selectValuesView) {
+        CustomView *custom = [[CustomView alloc] initWithFrame:CGRectMake(width, 0, width, height)
+                                                        inputs:inputs];
+        UIColor *viewColor = [UIColor viewFlipsideBackgroundColor];
+        custom.backgroundColor = viewColor;
+        self.selectValuesView = custom;
+    }
+    [self.view addSubview:self.selectValuesView];
+    [UIView animateWithDuration:0.5
+                     animations:^{
+                         self.selectValuesView.frame = CGRectMake(0, 0, width, height);
+                     } completion:^(BOOL finished) {
+                         self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Назад"
+                                                                                                  style:UIBarButtonItemStylePlain
+                                                                                                 target:self
+                                                                                                 action:@selector(backButtonHandler)];
+                         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
+                                                                                                                target:self
+                                                                                                                action:@selector(refreshButtonHandler)];
+                         
+                     }];
+}
+
+// кнопка Назад на экране выбора параметров для графика
+-(void) backButtonHandler {
+    self.navigationItem.leftBarButtonItem = nil;
+    self.navigationItem.rightBarButtonItem = nil;
+    [UIView animateWithDuration:0.5
+                     animations:^{
+                         CGFloat width = self.view.frame.size.width,
+                                 height = self.tableView.frame.size.height;
+                         self.selectValuesView.frame = CGRectMake(width, 0, width, height);
+                     } completion:^(BOOL finished) {
+                         [self.selectValuesView removeFromSuperview];
+                     }];
+}
+
+// Кнопка обновить на экране выбора параметров для графика
+-(void)refreshButtonHandler {
+    NSLog(@"refresh button clicked");
+    NSEnumerator *enumerator = [self.selectedValues keyEnumerator];
+    id key;
+    BOOL reload = NO;
+    while ((key = [enumerator nextObject])) {
+        reload = YES;
+        NSDictionary *dictionary = @{@"updateKey": key,
+                                     @"newValue" : [self.selectedValues objectForKey:key],
+                                     @"rowIndex" : self.selectedRow};
+#warning Переделать без Notifications
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateTableData"
+                                                            object:self
+                                                          userInfo:dictionary];
+    }
+    if (reload) {
+        [self reloadDataForCurrentOnScreenPlot];
+    }
 }
 
 #pragma mark Core plot stuff
@@ -779,6 +842,34 @@ CGFloat const CPDBarInitialX = 0.25f;
     return meta;
 }
 
+- (void) pan:(UIPanGestureRecognizer *)recognizer {
+    if ((recognizer.state == UIGestureRecognizerStateChanged) ||
+        (recognizer.state == UIGestureRecognizerStateEnded)) {
+        CGPoint translation = [recognizer translationInView:recognizer.view];
+        CGRect rect = CGRectMake(recognizer.view.frame.origin.x + translation.x
+                                 ,recognizer.view.frame.origin.y + translation.y
+                                 ,recognizer.view.frame.size.width
+                                 ,recognizer.view.frame.size.height);
+        recognizer.view.frame = rect;
+        [recognizer setTranslation:CGPointZero inView:recognizer.view];
+    }
+}
+
+- (void) addPlot:(NSString *)title ofType:(NSString *)type dataSource:(id<CPTPlotDataSource>) ds {
+    [self configureGraph:title ofType:type dataSource:ds];
+}
+
+- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if ([segue.identifier isEqualToString:@"SelectMetrics"]) {
+        MetricSelectionViewController *metricsVC = (MetricSelectionViewController *) segue.destinationViewController;
+        metricsVC.metricConsumer = self;
+    }
+}
+
+- (void) addNewMetricByString:(NSString *)identifier {
+    
+}
+
 #pragma mark Notification handlers
 
 // Show loading indicator
@@ -856,32 +947,52 @@ CGFloat const CPDBarInitialX = 0.25f;
     }
 }
 
-- (void) pan:(UIPanGestureRecognizer *)recognizer {
-    if ((recognizer.state == UIGestureRecognizerStateChanged) ||
-        (recognizer.state == UIGestureRecognizerStateEnded)) {
-        CGPoint translation = [recognizer translationInView:recognizer.view];
-        CGRect rect = CGRectMake(recognizer.view.frame.origin.x + translation.x
-                                ,recognizer.view.frame.origin.y + translation.y
-                                ,recognizer.view.frame.size.width
-                                ,recognizer.view.frame.size.height);
-        recognizer.view.frame = rect;
-        [recognizer setTranslation:CGPointZero inView:recognizer.view];
-    }
-}
-
-- (void) addPlot:(NSString *)title ofType:(NSString *)type dataSource:(id<CPTPlotDataSource>) ds {
-    [self configureGraph:title ofType:type dataSource:ds];
-}
-
-- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    if ([segue.identifier isEqualToString:@"SelectMetrics"]) {
-        MetricSelectionViewController *metricsVC = (MetricSelectionViewController *) segue.destinationViewController;
-        metricsVC.metricConsumer = self;
-    }
-}
-
-- (void) addNewMetricByString:(NSString *)identifier {
-
+// обработчик нажатия на поле выбора параметра графика
+- (void)paramInputFieldTapped:(NSNotification *)notification {
+    NSLog(@"param input field tapped");
+    if (!notification) return;
+    AFHTTPClient *client = [BasicAuthModule httpClient];
+    
+    NSString *paramId = [notification.userInfo valueForKey:@"inputId"];
+    NSString *fieldDescription = [notification.userInfo valueForKey:@"pickerDescription"];
+    
+    if (!paramId) return;
+#warning TODO : loading mask
+    NSDictionary *requestParams = [[NSDictionary alloc] initWithObjectsAndKeys:paramId, @"param", nil];
+    [client postPath:@"param/value/list" parameters:requestParams success:^(AFHTTPRequestOperation *operation,
+                                                                            id responseObject) {
+        NSLog(@"post succeeded");
+        SBJsonParser *jsonParser = [[SBJsonParser alloc] init];
+        NSData *responseData = (NSData *)responseObject;
+        NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+        NSArray *responseJson = [jsonParser objectWithString:responseString];
+        NSMutableArray *comboDataArray = [NSMutableArray array];
+        for(int i = 0, l = [responseJson count]; i < l; i++) {
+            NSDictionary *jsonObject = [responseJson objectAtIndex:i];
+            NSString *name = [jsonObject valueForKey:@"name"];
+            [comboDataArray insertObject:name atIndex:i];
+        }
+        
+        [ActionSheetStringPicker showPickerWithTitle:fieldDescription
+                                                rows:comboDataArray
+                                    initialSelection:0
+                                           doneBlock:^(ActionSheetStringPicker *picker, NSInteger selectedIndex,
+                                                       id selectedValue) {
+                                               NSDictionary *selectedJson = [responseJson objectAtIndex:selectedIndex];
+                                               UITextField *inputField = (UITextField *) notification.object;
+                                               inputField.text = [selectedJson valueForKey:@"name"];
+                                               [self.selectedValues setValue:[selectedJson valueForKey:@"id"]
+                                                                      forKey:paramId];
+                                               NSLog(@"selected: %@", selectedJson);
+                                           }
+                                         cancelBlock:^(ActionSheetStringPicker *picker) {
+                                             NSLog(@"cancel");
+                                         }
+                                              origin:self.view];
+        NSLog(@"success");
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"failure");
+    }];
 }
 
 #pragma mark UITextField delegate

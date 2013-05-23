@@ -38,88 +38,6 @@
     return YES;
 }
 
-- (NSUInteger) numberOfRecordsForPlot:(CPTPlot *)plot {
-    if ([@"flsCount" isEqualToString:self.paramId]) {
-        NSLog(@"flsCount numberOfRecords()");
-        return 4; // todo remove this stub
-    }        
-    // Todo : invoked 4 times for some reason
-    NSUInteger numberOfRecords = 0;
-    numberOfRecords = [self.graphValues count];
-    if (!self.isLoading) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"ShowLoadingMask" object:self];
-        self.isLoading = YES; // very bad
-        AFHTTPClient *client = [BasicAuthModule httpClient];
-
-        NSMutableDictionary *requestParameters = [[NSMutableDictionary alloc] init];
-        // necessary request param, unique identifier of requesting data
-        [requestParameters setValue:self.paramId forKey:@"type"];
-        
-        // other, param-dependent parameters
-        NSEnumerator *enumerator = [self.requestParams keyEnumerator];
-        id key;
-        while ((key = [enumerator nextObject])) {
-            NSDictionary *param = [self.requestParams valueForKey:key];
-            NSString *paramValue = [param valueForKey:@"value"];
-            [requestParameters setValue:paramValue forKey:key];
-        }
-                
-        [client postPath:@"param/value" parameters:requestParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            NSLog(@"post succeeded");
-            
-            SBJsonParser *jsonParser = [[SBJsonParser alloc] init];
-            NSData *responseData = (NSData *)responseObject;
-            NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
-            NSDictionary *responseJson = [jsonParser objectWithString:responseString];
-            if ([responseJson valueForKey:@"scope"]) {
-                NSString *label = [NSString stringWithFormat:@"%@/%@", [responseJson valueForKey:@"scope"], [responseJson valueForKey:@"year"]];
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"ShowScopeLabel" object:self
-                                                                  userInfo:@{@"scopeLabel": label}];
-            }
-            NSArray *params = [responseJson objectForKey:@"values"];
-            self.graphValues = params;
-            NSDecimalNumber *maxH = [NSDecimalNumber zero];
-            NSDecimalNumber *maxH2 = [NSDecimalNumber zero];
-            for (int i = 0, l = [params count]; i < l; i++) {
-                NSDictionary *jsonObject = [params objectAtIndex:i];
-                NSDecimalNumber *y = [NSDecimalNumber decimalNumberWithString:[jsonObject objectForKey:@"y"]];
-                NSComparisonResult compare = [maxH compare:y];
-                if (compare == NSOrderedAscending) maxH = y;
-                NSDecimalNumber *y2 = [NSDecimalNumber decimalNumberWithString:[jsonObject objectForKey:@"y2"]];
-                NSComparisonResult compare2 = [maxH2 compare:y2];
-                if (compare2 == NSOrderedAscending) maxH2 = y2;
-                NSLog(@"nach x : %@, y : %@", [jsonObject objectForKey:@"x"], y);
-            }
-            NSComparisonResult compare = [maxH compare:[NSDecimalNumber zero]];
-            if (compare != NSOrderedSame) {
-                self.maxHeight = maxH;
-            } else {
-                compare = [maxH2 compare:[NSDecimalNumber zero]];
-                if (compare != NSOrderedSame) {
-                    self.maxHeight = maxH2;
-                }
-            }
-
-            if (!self.maxHeight) {
-                self.maxHeight = [NSDecimalNumber decimalNumberWithString:@"1"];
-            }
-            [plot.graph reloadData];
-            self.isLoading = NO;
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"HideLoadingMask" object:self];
-            NSLog(@"success");
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            self.isLoading = NO;
-            self.graphValues = [NSArray array];
-            NSLog(@"failure");
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"HideLoadingMask" object:self];
-        }];
-    } else {
-        numberOfRecords = [self.graphValues count];
-    }
-    NSLog(@"number of records=%d", numberOfRecords);
-    return numberOfRecords;
-}
-
 #pragma mark <UITableViewDataSource> routine:
 
 - (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -226,6 +144,89 @@
 }
 
 #pragma mark <BarPlotDataSource> routine:
+
+- (NSUInteger) numberOfRecordsForPlot:(CPTPlot *)plot {
+    if ([@"flsCount" isEqualToString:self.paramId]) {
+        NSLog(@"flsCount numberOfRecords()");
+        return 4; // todo remove this stub
+    }
+    // Todo : invoked 4 times for some reason
+    NSUInteger numberOfRecords = 0;
+    numberOfRecords = [self.graphValues count];
+    if (!self.isLoading) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"ShowLoadingMask" object:self];
+        self.isLoading = YES; // very bad
+        AFHTTPClient *client = [BasicAuthModule httpClient];
+        
+        NSMutableDictionary *requestParameters = [[NSMutableDictionary alloc] init];
+        // necessary request param, unique identifier of requesting data
+        [requestParameters setValue:self.paramId forKey:@"type"];
+        
+        // other, param-dependent parameters
+        NSEnumerator *enumerator = [self.requestParams keyEnumerator];
+        id key;
+        while ((key = [enumerator nextObject])) {
+            NSDictionary *param = [self.requestParams valueForKey:key];
+            NSString *paramValue = [param valueForKey:@"value"];
+            [requestParameters setValue:paramValue forKey:key];
+        }
+        
+        [client postPath:@"param/value" parameters:requestParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSLog(@"post succeeded");
+            
+            SBJsonParser *jsonParser = [[SBJsonParser alloc] init];
+            NSData *responseData = (NSData *)responseObject;
+            NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+            NSDictionary *responseJson = [jsonParser objectWithString:responseString];
+            if ([responseJson valueForKey:@"scope"]) {
+                NSString *label = [NSString stringWithFormat:@"%@/%@", [responseJson valueForKey:@"scope"], [responseJson valueForKey:@"year"]];
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"ShowScopeLabel" object:self
+                                                                  userInfo:@{@"scopeLabel": label}];
+            }
+            NSArray *params = [responseJson objectForKey:@"values"];
+            self.graphValues = params;
+            NSDecimalNumber *maxH = [NSDecimalNumber zero];
+            NSDecimalNumber *maxH2 = [NSDecimalNumber zero];
+            for (int i = 0, l = [params count]; i < l; i++) {
+                NSDictionary *jsonObject = [params objectAtIndex:i];
+                NSDecimalNumber *y = [NSDecimalNumber decimalNumberWithString:[jsonObject objectForKey:@"y"]];
+                NSComparisonResult compare = [maxH compare:y];
+                if (compare == NSOrderedAscending) maxH = y;
+                NSDecimalNumber *y2 = [NSDecimalNumber decimalNumberWithString:[jsonObject objectForKey:@"y2"]];
+                NSComparisonResult compare2 = [maxH2 compare:y2];
+                if (compare2 == NSOrderedAscending) maxH2 = y2;
+                NSLog(@"nach x : %@, y : %@", [jsonObject objectForKey:@"x"], y);
+            }
+            NSComparisonResult compare = [maxH compare:[NSDecimalNumber zero]];
+            if (compare != NSOrderedSame) {
+                self.maxHeight = maxH;
+            } else {
+                compare = [maxH2 compare:[NSDecimalNumber zero]];
+                if (compare != NSOrderedSame) {
+                    self.maxHeight = maxH2;
+                }
+            }
+            
+            if (!self.maxHeight) {
+                self.maxHeight = [NSDecimalNumber decimalNumberWithString:@"1"];
+            }
+            [plot.graph reloadData];
+            self.isLoading = NO;
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"HideLoadingMask" object:self];
+            NSLog(@"success");
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            self.isLoading = NO;
+            self.graphValues = [NSArray array];
+            NSLog(@"failure");
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"HideLoadingMask" object:self];
+        }];
+    } else {
+        numberOfRecords = [self.graphValues count];
+    }
+    NSLog(@"number of records=%d", numberOfRecords);
+    return numberOfRecords;
+}
+
 
 - (CPTFill *) barFillForBarPlot:(CPTBarPlot *)barPlot recordIndex:(NSUInteger)idx {
     CPTGradient *gradient;

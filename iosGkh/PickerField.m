@@ -37,6 +37,7 @@
 }
 
 -(BOOL) becomeFirstResponder {
+    NSLog(@"becomeFirstResponder pickerField");
     [[NSNotificationCenter defaultCenter] postNotificationName:@"ParamInputFieldTapped" object:self
                                                       userInfo:[NSDictionary dictionaryWithObjectsAndKeys:self.inputId, @"inputId",
                                                                 self.pickerDescription, @"pickerDescription", nil]];
