@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface CustomView : UIView
+@interface CustomView : UIScrollView
 - (id) initWithFrame:(CGRect)frame
               inputs:(NSDictionary *)inputs;
 @end

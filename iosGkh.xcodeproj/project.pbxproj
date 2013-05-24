@@ -67,6 +67,7 @@
 		61F2C9101712BFF3009F0CF5 /* green_money48.png in Resources */ = {isa = PBXBuildFile; fileRef = 61F2C90F1712BFF3009F0CF5 /* green_money48.png */; };
 		61F45D6F16F1D46900598213 /* CustomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 61F45D6E16F1D46900598213 /* CustomViewController.m */; };
 		922D94F1174B791F005589AF /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 922D94F0174B791F005589AF /* Settings.bundle */; };
+		925CE587174F545100545D13 /* GkhReport.m in Sources */ = {isa = PBXBuildFile; fileRef = 925CE586174F545100545D13 /* GkhReport.m */; };
 		9278FB31174A673900EA0D0A /* money32.png in Resources */ = {isa = PBXBuildFile; fileRef = 9278FB30174A673900EA0D0A /* money32.png */; };
 		92F25FBD174A08F800BE5FF6 /* EpdTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 92F25FBC174A08F800BE5FF6 /* EpdTableViewController.m */; };
 		92F25FC0174A16B100BE5FF6 /* green_check.png in Resources */ = {isa = PBXBuildFile; fileRef = 92F25FBE174A16B100BE5FF6 /* green_check.png */; };
@@ -174,6 +175,8 @@
 		61F45D6E16F1D46900598213 /* CustomViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomViewController.m; sourceTree = "<group>"; };
 		7716AF1534D04DE2AFEC9746 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		922D94F0174B791F005589AF /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
+		925CE585174F545100545D13 /* GkhReport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GkhReport.h; sourceTree = "<group>"; };
+		925CE586174F545100545D13 /* GkhReport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GkhReport.m; sourceTree = "<group>"; };
 		9278FB30174A673900EA0D0A /* money32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = money32.png; sourceTree = "<group>"; };
 		92F25FBB174A08F800BE5FF6 /* EpdTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EpdTableViewController.h; sourceTree = "<group>"; };
 		92F25FBC174A08F800BE5FF6 /* EpdTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EpdTableViewController.m; sourceTree = "<group>"; };
@@ -216,6 +219,8 @@
 				6191BC5B169AD63500CE85BA /* HomeTableDataSource.m */,
 				6140D1A3169721960066F51C /* BarPlotSelectingArrow.h */,
 				6140D1A4169721960066F51C /* BarPlotSelectingArrow.m */,
+				925CE585174F545100545D13 /* GkhReport.h */,
+				925CE586174F545100545D13 /* GkhReport.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -591,6 +596,7 @@
 				614C9179174252B000F1A91A /* DateYearPicker.m in Sources */,
 				92F25FBD174A08F800BE5FF6 /* EpdTableViewController.m in Sources */,
 				92F25FC4174A1A1D00BE5FF6 /* EpdDetailTableViewController.m in Sources */,
+				925CE587174F545100545D13 /* GkhReport.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

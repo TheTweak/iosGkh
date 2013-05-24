@@ -56,6 +56,11 @@
 @property UIView *selectValuesView;
 // индекс строки таблицы на которую нажали
 @property NSNumber *selectedRow;
+
+
+
+
+
 @end
 
 @implementation HomeViewController
@@ -488,41 +493,6 @@ CGFloat const CPDBarInitialX = 0.25f;
                                                                                                                 action:@selector(refreshButtonHandler)];
                          
                      }];
-}
-
-// кнопка Назад на экране выбора параметров для графика
--(void) backButtonHandler {
-    self.navigationItem.leftBarButtonItem = nil;
-    self.navigationItem.rightBarButtonItem = nil;
-    [UIView animateWithDuration:0.5
-                     animations:^{
-                         CGFloat width = self.view.frame.size.width,
-                                 height = self.tableView.frame.size.height;
-                         self.selectValuesView.frame = CGRectMake(width, 0, width, height);
-                     } completion:^(BOOL finished) {
-                         [self.selectValuesView removeFromSuperview];
-                     }];
-}
-
-// Кнопка обновить на экране выбора параметров для графика
--(void)refreshButtonHandler {
-    NSLog(@"refresh button clicked");
-    NSEnumerator *enumerator = [self.selectedValues keyEnumerator];
-    id key;
-    BOOL reload = NO;
-    while ((key = [enumerator nextObject])) {
-        reload = YES;
-        NSDictionary *dictionary = @{@"updateKey": key,
-                                     @"newValue" : [self.selectedValues objectForKey:key],
-                                     @"rowIndex" : self.selectedRow};
-#warning Переделать без Notifications
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateTableData"
-                                                            object:self
-                                                          userInfo:dictionary];
-    }
-    if (reload) {
-        [self reloadDataForCurrentOnScreenPlot];
-    }
 }
 
 #pragma mark Core plot stuff
@@ -958,7 +928,20 @@ CGFloat const CPDBarInitialX = 0.25f;
     
     if (!paramId) return;
 #warning TODO : loading mask
-    NSDictionary *requestParams = [[NSDictionary alloc] initWithObjectsAndKeys:paramId, @"param", nil];
+    NSMutableDictionary *requestParams = [[NSMutableDictionary alloc] initWithObjectsAndKeys:paramId, @"param", nil];
+    if ([@"uk" isEqualToString:paramId]) {
+        NSString *selectedKladr = [self.selectedValues valueForKey:@"kladr"];
+        if (selectedKladr) {
+            [requestParams setValue:selectedKladr forKey:@"value"];
+            [requestParams setValue:@"kladr" forKey:@"prevParam"];
+        }
+    } else if ([@"serv" isEqualToString:paramId]) {
+        NSString *selectedUK = [self.selectedValues valueForKey:@"uk"];
+        if (selectedUK) {
+            [requestParams setValue:selectedUK forKey:@"value"];
+            [requestParams setValue:@"uk" forKey:@"prevParam"];            
+        }
+    }
     [client postPath:@"param/value/list" parameters:requestParams success:^(AFHTTPRequestOperation *operation,
                                                                             id responseObject) {
         NSLog(@"post succeeded");
@@ -980,10 +963,12 @@ CGFloat const CPDBarInitialX = 0.25f;
                                                        id selectedValue) {
                                                NSDictionary *selectedJson = [responseJson objectAtIndex:selectedIndex];
                                                UITextField *inputField = (UITextField *) notification.object;
-                                               inputField.text = [selectedJson valueForKey:@"name"];
+                                               NSString *value = [selectedJson valueForKey:@"name"];
+                                               inputField.text = value;
                                                [self.selectedValues setValue:[selectedJson valueForKey:@"id"]
                                                                       forKey:paramId];
                                                NSLog(@"selected: %@", selectedJson);
+                                               // Загрузить 
                                            }
                                          cancelBlock:^(ActionSheetStringPicker *picker) {
                                              NSLog(@"cancel");
@@ -1035,6 +1020,43 @@ CGFloat const CPDBarInitialX = 0.25f;
         NSLog(@"failure");
     }];
     return NO;
+}
+
+#pragma mark Обработчики кнопок на панели задания параметров графика
+
+// кнопка Назад на экране выбора параметров для графика
+-(void) backButtonHandler {
+    self.navigationItem.leftBarButtonItem = nil;
+    self.navigationItem.rightBarButtonItem = nil;
+    [UIView animateWithDuration:0.5
+                     animations:^{
+                         CGFloat width = self.view.frame.size.width,
+                         height = self.tableView.frame.size.height;
+                         self.selectValuesView.frame = CGRectMake(width, 0, width, height);
+                     } completion:^(BOOL finished) {
+                         [self.selectValuesView removeFromSuperview];
+                     }];
+}
+
+// Кнопка обновить на экране выбора параметров для графика
+-(void)refreshButtonHandler {
+    NSLog(@"refresh button clicked");
+    NSEnumerator *enumerator = [self.selectedValues keyEnumerator];
+    id key;
+    BOOL reload = NO;
+    while ((key = [enumerator nextObject])) {
+        reload = YES;
+        NSDictionary *dictionary = @{@"updateKey": key,
+                                     @"newValue" : [self.selectedValues objectForKey:key],
+                                     @"rowIndex" : self.selectedRow};
+#warning Переделать без Notifications
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateTableData"
+                                                            object:self
+                                                          userInfo:dictionary];
+    }
+    if (reload) {
+        [self reloadDataForCurrentOnScreenPlot];
+    }
 }
 
 @end
