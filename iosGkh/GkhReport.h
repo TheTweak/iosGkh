@@ -10,23 +10,6 @@
 
 #import <Foundation/Foundation.h>
 
-// Типы графиков
-typedef enum {
-    GkhPlotTypeBar // гистограмма
-    GkhPlotTypeXY
-    GkhPlotTypeCircle
-} GkhPlotType;
-
-@interface GkhReport : NSObject
-
-@property(readonly) NSString *id;
-@property(readonly) NSString *name;
-@property(readonly) NSString *description;
-@property(readonly) NSArray *additionalRepresentationArray;
-@property(readonly) GkhPlotType plotType;
-
-@end
-
 typedef enum {
     GkhRepresentationTypeTable
 } GkhRepresentationType;
@@ -37,7 +20,8 @@ typedef enum {
 
 @property(readonly) NSString *id;
 @property(readonly) GkhRepresentationType type;
-
++(id) representation:(NSString *) id ofType:(GkhRepresentationType) type;
++(GkhRepresentationType) representationTypeOf:(NSString *) type;
 @end
 
 // Тип контрола для параметра
@@ -48,9 +32,37 @@ typedef enum {
 // Типы входных параметров
 @interface GkhInputType : NSObject
 
-@property(readonly) NSString *id
+@property(readonly) NSString *id;
 @property(readonly) NSString *description;
 @property(readonly) GkhInputRepresentationType representationType;
 @property id value; // значение параметра, которое посылается на сервер
++(id) inputParam:(NSString *) id description:(NSString *) description
+  representation:(GkhRepresentationType) repType value:(id) value;
++(GkhInputRepresentationType) representationTypeOf:(NSString *) type;
+@end
 
+// Типы графиков
+typedef enum {
+    GkhPlotTypeBar, // гистограмма
+    GkhPlotTypeXY,
+    GkhPlotTypeCircle
+} GkhPlotType;
+
+@interface GkhReport : NSObject
+
+@property(readonly) NSString *id;
+@property(readonly) NSString *name;
+@property(readonly) NSString *description;
+@property(copy, readonly) NSArray *additionalRepresentationArray;
+@property(copy, readonly) NSArray *inputParamArray;
+@property(readonly) GkhPlotType plotType;
+
+-(GkhInputType *) getInputParam:(NSString *) id;
++(id)               report:(NSString *) id
+                  withName:(NSString *) name
+               description:(NSString *) description
+ additionalRepresentations:(NSArray *) additionalReps
+                    inputs:(NSArray *) inputs
+                  plotType:(GkhPlotType) plotType;
++(GkhPlotType) plotTypeOf:(NSString *) type;
 @end

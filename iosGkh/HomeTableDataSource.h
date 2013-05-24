@@ -7,17 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "GkhReport.h"
 
 @interface HomeTableDataSource : NSObject <UITableViewDataSource>
 
-// Get custom properties of a parameter (id, ... etc) from the home screen table
-- (NSDictionary *) customPropertiesAtRowIndex:(NSUInteger) index;
-
-// set custom info
-- (void) setCustomProperties:(NSDictionary *) props
-                     atIndex:(NSUInteger) index;
-
-// set custom Input info
-- (void) setCustomInputProperties:(NSDictionary *) props
-                          atIndex:(NSUInteger) index;
+// Получить отчет из таблицы по его индексу
+-(GkhReport *) gkhReportAt:(NSUInteger) index;
+// Установить значения входного параметра для отчета
+-(void) setValue:(id)value forInputParam:(NSString *) paramId atIndex:(NSUInteger) index;
 @end

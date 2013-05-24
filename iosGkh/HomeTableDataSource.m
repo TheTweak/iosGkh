@@ -12,31 +12,32 @@
 #import "Constants.h"
 
 @interface HomeTableDataSource ()
-@property (nonatomic, strong) NSMutableArray* paramsArray;
+// Массив отчетов которые грузятся в таблицу
+@property (nonatomic, strong) NSMutableArray* reportArray;
 @end
 
 @implementation HomeTableDataSource
 
-@synthesize paramsArray = _paramsArray;
+@synthesize reportArray = _reportArray;
 
-- (NSDictionary *) customPropertiesAtRowIndex:(NSUInteger)index {
-    NSDictionary *properties;
-    if (self.paramsArray) {
-        properties = [self.paramsArray objectAtIndex:index];
+- (GkhReport *) gkhReportAt:(NSUInteger)index {
+    GkhReport *report;
+    if (self.reportArray) {
+        report = [self.reportArray objectAtIndex:index];
     }
-    return properties;
+    return report;
 }
 
-- (void) setCustomProperties:(NSDictionary *)props atIndex:(NSUInteger)index {
-    [self.paramsArray replaceObjectAtIndex:index withObject:props];
+-(void)setValue:(id)value forInputParam:(NSString *)paramId atIndex:(NSUInteger)index {
+    GkhReport *report = [self.reportArray objectAtIndex:index];
+    GkhInputType *inputParam = [report getInputParam:paramId];
+    inputParam.value = [value copy];
 }
 
-- (void) setCustomInputProperties:(NSDictionary *)props atIndex:(NSUInteger)index {
-    NSDictionary *allProperties = [self.paramsArray objectAtIndex:index];
-    NSLog(@"");
-}
+#pragma mark UITableViewDataSource delegate
 
 - (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+#warning Reusable cell
     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle
                                                    reuseIdentifier:nil];
     cell.detailTextLabel.textColor = [UIColor darkGrayColor];
@@ -48,30 +49,27 @@
     [bgColorView setBackgroundColor:[UIColor colorWithRed:0.4023 green:0.71 blue:0 alpha:1]];
     cell.selectedBackgroundView = bgColorView;
     
-//    cell.selectionStyle = UITableViewCellSelectionStyleGray;
-    NSDictionary *paramJson = [self.paramsArray objectAtIndex:indexPath.row];
-    
-    NSString *graphType = [paramJson objectForKey:@"graph"];
+    GkhReport *report = [self.reportArray objectAtIndex:indexPath.row];
+    GkhPlotType plotType = report.plotType;
     NSString *pngFileName;
-    if ([BarPlot isEqualToString:graphType]) {
-        pngFileName = @"green_money48";
-    } else if ([PieChart isEqualToString:graphType]) {
-        pngFileName = @"fls48";
-    } else if ([XYPlot isEqualToString:graphType]) {
-        pngFileName = @"stocks48";
+    switch (plotType) {
+        case GkhPlotTypeBar:    pngFileName = @"green_money48"; break;
+        case GkhPlotTypeCircle: pngFileName = @"fls48"; break;
+        case GkhPlotTypeXY:     pngFileName = @"stocks48"; break;
+        default: break;
     }
     NSString *path = [[NSBundle mainBundle] pathForResource:pngFileName ofType:@"png"];
-    cell.textLabel.text = [paramJson objectForKey:@"name"];
-    cell.detailTextLabel.text = [paramJson objectForKey:@"description"];
+    cell.textLabel.text = report.name;
+    cell.detailTextLabel.text = report.description;
     cell.imageView.image = [UIImage imageWithContentsOfFile:path];
     return cell;
 }
 
 - (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     #warning Delete! only for dev purpose
-//    [BasicAuthModule authenticateWithLogin:@"glava" andPassword:@"1234"];
+    [BasicAuthModule authenticateWithLogin:@"glava" andPassword:@"1234"];
     #warning end
-    if (!self.paramsArray) {
+    if (!self.reportArray) {
         [[NSNotificationCenter defaultCenter] postNotificationName:@"ShowTableLoadingMask" object:self];
         AFHTTPClient *client = [BasicAuthModule httpClient];
         [client getPath:@"param/list" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -79,7 +77,41 @@
             NSData *responseData = (NSData *)responseObject;
             NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
             NSArray *params = [jsonParser objectWithString:responseString];
-            self.paramsArray = [params mutableCopy];
+            NSMutableArray *reportArray = [NSMutableArray array];
+            for (NSDictionary *param in params) {
+                NSString *reportId = [param objectForKey:@"id"];
+                NSString *reportName = [param objectForKey:@"name"];
+                NSString *reportDesc = [param objectForKey:@"description"];
+                NSString *stringPlotType = [param objectForKey:@"graph"];
+                // доп. представления
+                NSArray *additionalReps = [param objectForKey:@"additionalRep"];
+                NSMutableArray *addReps = [NSMutableArray array];
+                for (NSDictionary *rep in additionalReps) {
+                    NSString *stringType = [rep objectForKey:@"type"];
+                    GkhRepresentation *representation = [GkhRepresentation representation:[rep objectForKey:@"id"]
+                                                                                   ofType:[GkhRepresentation representationTypeOf:stringType]];
+                    [addReps addObject:representation];
+                }                
+                // вход. параметры
+                NSArray *inputParams = [param objectForKey:@"input"];
+                NSMutableArray *inputArr = [NSMutableArray array];
+                for (NSDictionary *input in inputParams) {
+                    NSString *stringRepType = [input objectForKey:@"representation"];
+                    GkhInputType *inputType = [GkhInputType inputParam:[input objectForKey:@"id"]
+                                                           description:[input objectForKey:@"description"]
+                                                        representation:[GkhInputType representationTypeOf:stringRepType]
+                                                                 value:[input objectForKey:@"value"]];
+                    [inputArr addObject:inputType];
+                }
+                GkhReport *report = [GkhReport report:reportId
+                                             withName:reportName
+                                          description:reportDesc
+                            additionalRepresentations:addReps
+                                               inputs:inputArr
+                                             plotType:[GkhReport plotTypeOf:stringPlotType]];
+                [reportArray addObject:report];
+            }
+            self.reportArray = [reportArray copy];
             [tableView reloadData];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"HideTableLoadingMask" object:self];
             NSLog(@"success");
@@ -89,7 +121,7 @@
         }];
     }
     
-    return [self.paramsArray count];
+    return [self.reportArray count];
 }
 
 @end

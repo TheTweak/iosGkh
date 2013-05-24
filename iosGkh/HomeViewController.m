@@ -392,7 +392,8 @@ CGFloat const CPDBarInitialX = 0.25f;
     
     // get selected param all custom properties
     // (meta-data, like : graph type, unique param id, input params.. etc)
-    NSDictionary *customProperties = [self.tableDataSource customPropertiesAtRowIndex:indexPath.row];
+#warning Refactor
+    NSDictionary *customProperties = /*[self.tableDataSource customPropertiesAtRowIndex:indexPath.row];*/ [NSDictionary dictionary];
     NSString *paramId = [customProperties valueForKey:@"id"];
     NSString *graphType = [customProperties valueForKey:@"graph"];
     #warning TODO : don't needed to create new ds each time!!! get from Dictionary instead!
@@ -468,7 +469,8 @@ CGFloat const CPDBarInitialX = 0.25f;
 - (void)tableView:(UITableView *)tableView
         accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
     self.selectedRow = [NSNumber numberWithInteger:indexPath.row];
-    NSDictionary *customProperties = [self.tableDataSource customPropertiesAtRowIndex:indexPath.row];
+#warning Refactor
+    NSDictionary *customProperties = /*[self.tableDataSource customPropertiesAtRowIndex:indexPath.row];*/ [NSDictionary dictionary];
     NSDictionary *inputs = [customProperties valueForKey:@"input"];
     CGFloat width = self.view.frame.size.width,
             height = self.tableView.frame.size.height;
@@ -808,7 +810,8 @@ CGFloat const CPDBarInitialX = 0.25f;
 
 - (NSDictionary *) selectedParameterMeta {
     NSIndexPath *path = [self.tableView indexPathForSelectedRow];
-    NSDictionary *meta = [self.tableDataSource customPropertiesAtRowIndex:path.item];
+#warning Refactor
+    NSDictionary *meta = /*[self.tableDataSource customPropertiesAtRowIndex:path.item];*/ [NSDictionary dictionary];
     return meta;
 }
 
@@ -876,7 +879,8 @@ CGFloat const CPDBarInitialX = 0.25f;
     id newValue = [notification.userInfo valueForKey:@"newValue"];
     NSNumber *rowIndex = [notification.userInfo valueForKey:@"rowIndex"];
     NSUInteger row = [rowIndex integerValue];
-    NSDictionary *properties = [self.tableDataSource customPropertiesAtRowIndex:row];
+#warning Refactor
+    NSDictionary *properties = /*[self.tableDataSource customPropertiesAtRowIndex:row]*/ [NSDictionary dictionary];
     NSDictionary *input = [properties valueForKey:@"input"];
     NSMutableDictionary *newInput = [NSMutableDictionary dictionaryWithDictionary:input];
     NSMutableDictionary *newParamInput = [newInput valueForKey:keyToUpdate];
@@ -887,12 +891,12 @@ CGFloat const CPDBarInitialX = 0.25f;
     [newProperties setValue:newInput forKey:@"input"];
     
     properties = [newProperties dictionaryWithValuesForKeys:[properties allKeys]];
-    [self.tableDataSource setCustomInputProperties:properties atIndex:row];
+//    [self.tableDataSource setCustomInputProperties:properties atIndex:row];
 }
 
 // updating the data for row in table
 - (void) updateRowAtIndex:(NSUInteger)row withData:(NSDictionary *)data {
-    [self.tableDataSource setCustomProperties:data atIndex:row];
+//    [self.tableDataSource setCustomProperties:data atIndex:row];
 }
 
 // update current page period text field

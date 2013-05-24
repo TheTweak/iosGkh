@@ -247,7 +247,7 @@
 - (NSNumber *) numberForPlot:(CPTPlot *)plot field:(NSUInteger)fieldEnum recordIndex:(NSUInteger)idx {
     // load meta-info once
     if (!self.metaInfo) {
-        self.metaInfo = [self.homeTableDS customPropertiesAtRowIndex:idx];
+//        self.metaInfo = [self.homeTableDS customPropertiesAtRowIndex:idx];
     }
     
     // todo remove this stub (Pie Chart)
