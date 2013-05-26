@@ -22,6 +22,8 @@
 #import "SBJsonParser.h"
 #import "Nach.h"
 #import "GkhReportPlotDataSource.h"
+#import "GkhReportParamTableViewController.h"
+#import "GkhReportParamTableDataSource.h"
 
 @interface HomeViewController ()
 @property (nonatomic, strong) HomeTableDataSource *tableDataSource;
@@ -54,7 +56,7 @@
 // выбранные значения для запроса графика
 @property(nonatomic, strong) NSMutableDictionary *selectedValues;
 // для выбора этих значений
-@property UIView *selectValuesView;
+@property UITableView *selectValuesView;
 // индекс строки таблицы на которую нажали
 @property NSNumber *selectedRow;
 // анимация при нажатии на строчку таблицы
@@ -357,19 +359,21 @@ CGFloat const CPDBarInitialX = 0.25f;
         accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
     self.selectedRow = [NSNumber numberWithInteger:indexPath.row];
 #warning Refactor
-    NSDictionary *customProperties = /*[self.tableDataSource customPropertiesAtRowIndex:indexPath.row];*/ [NSDictionary dictionary];
-    NSDictionary *inputs = [customProperties valueForKey:@"input"];
+    GkhReport *gkhReport = [self.tableDataSource gkhReportAt:indexPath.row];
     CGFloat width = self.view.frame.size.width,
             height = self.tableView.frame.size.height;
     if (!self.selectValuesView) {
-        CustomView *custom = [[CustomView alloc] initWithFrame:CGRectMake(width, 0, width, height)
-                                                        inputs:inputs];
-        UIColor *viewColor = [UIColor viewFlipsideBackgroundColor];
-        custom.backgroundColor = viewColor;
-        self.selectValuesView = custom;
+        UITableView *paramTable = [[UITableView alloc] initWithFrame:CGRectMake(width, 0, width, height)
+                                                               style:UITableViewStylePlain];
+        paramTable.backgroundColor = [UIColor viewFlipsideBackgroundColor];
+        paramTable.separatorColor = [UIColor darkGrayColor];
+        [paramTable registerNib:[UINib nibWithNibName:@"ParamTableCell" bundle:nil]
+         forCellReuseIdentifier:@"ParamTableCell"];
+        self.selectValuesView = paramTable;
     }
+    self.selectValuesView.dataSource = gkhReport.paramDataSource;
     [self.view addSubview:self.selectValuesView];
-    [UIView animateWithDuration:0.5
+    [UIView animateWithDuration:0.3
                      animations:^{
                          self.selectValuesView.frame = CGRectMake(0, 0, width, height);
                      } completion:^(BOOL finished) {

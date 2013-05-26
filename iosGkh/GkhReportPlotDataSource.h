@@ -11,4 +11,5 @@
 
 @interface GkhReportPlotDataSource : NSObject <CPTPlotDataSource>
 @property NSArray *values;
+-(NSDictionary *) getBusinessValues:(NSInteger) idx;
 @end

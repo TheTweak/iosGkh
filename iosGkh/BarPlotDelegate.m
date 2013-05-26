@@ -7,7 +7,7 @@
 //
 
 #import "BarPlotDelegate.h"
-#import "Nach.h"
+#import "GkhReportPlotDataSource.h"
 
 @interface BarPlotDelegate ()
 @property (nonatomic, strong) CPTAnnotation *periodAnnotation;
@@ -53,11 +53,9 @@ CGFloat const period_label_pos = 0.85;
     }
     CPTPlotArea *plotArea = plot.graph.plotAreaFrame.plotArea;
     // get business values for selected bar
-    Nach *nach = (Nach *) plot.dataSource;
+    GkhReportPlotDataSource *plotDataSource = (GkhReportPlotDataSource *) plot.dataSource;
         
-    NSDictionary *businessVals = [nach getBusinessValues:idx];
-    // get meta info
-    NSDictionary *metaInfo = [self.homeVC selectedParameterMeta];
+    NSDictionary *businessVals = [plotDataSource getBusinessValues:idx];
     
     NSDecimalNumber *nachVal = [NSDecimalNumber decimalNumberWithString:[businessVals valueForKey:@"y"]];
     NSString *nachis = [[CorePlotUtils thousandsSeparator] stringFromNumber:nachVal];

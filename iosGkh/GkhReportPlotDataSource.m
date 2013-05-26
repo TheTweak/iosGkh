@@ -17,6 +17,12 @@
 @synthesize values = _values;
 @synthesize maxHeight = _maxHeight;
 
+-(NSDictionary *)getBusinessValues:(NSInteger) idx {
+    return [self.values objectAtIndex:idx];
+}
+
+#pragma mark CPTPlotDataSource
+
 -(NSUInteger)numberOfRecordsForPlot:(CPTPlot *)plot {
     // вычисление максимальной высоты графика
     self.maxHeight = nil;

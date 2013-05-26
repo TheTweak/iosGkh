@@ -70,6 +70,9 @@
 		925CE587174F545100545D13 /* GkhReport.m in Sources */ = {isa = PBXBuildFile; fileRef = 925CE586174F545100545D13 /* GkhReport.m */; };
 		9278FB31174A673900EA0D0A /* money32.png in Resources */ = {isa = PBXBuildFile; fileRef = 9278FB30174A673900EA0D0A /* money32.png */; };
 		92DD92F0175200DE004426E6 /* GkhReportPlotDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 92DD92EF175200DE004426E6 /* GkhReportPlotDataSource.m */; };
+		92DD92F417521D26004426E6 /* GkhReportParamTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 92DD92F317521D26004426E6 /* GkhReportParamTableViewController.m */; };
+		92DD92F717521DC6004426E6 /* GkhReportParamTableDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 92DD92F617521DC6004426E6 /* GkhReportParamTableDataSource.m */; };
+		92DD92F91752674D004426E6 /* ParamTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 92DD92F81752674D004426E6 /* ParamTableCell.xib */; };
 		92F25FBD174A08F800BE5FF6 /* EpdTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 92F25FBC174A08F800BE5FF6 /* EpdTableViewController.m */; };
 		92F25FC0174A16B100BE5FF6 /* green_check.png in Resources */ = {isa = PBXBuildFile; fileRef = 92F25FBE174A16B100BE5FF6 /* green_check.png */; };
 		92F25FC1174A16B100BE5FF6 /* red_cross.png in Resources */ = {isa = PBXBuildFile; fileRef = 92F25FBF174A16B100BE5FF6 /* red_cross.png */; };
@@ -181,6 +184,11 @@
 		9278FB30174A673900EA0D0A /* money32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = money32.png; sourceTree = "<group>"; };
 		92DD92EE175200DE004426E6 /* GkhReportPlotDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GkhReportPlotDataSource.h; sourceTree = "<group>"; };
 		92DD92EF175200DE004426E6 /* GkhReportPlotDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GkhReportPlotDataSource.m; sourceTree = "<group>"; };
+		92DD92F217521D26004426E6 /* GkhReportParamTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GkhReportParamTableViewController.h; sourceTree = "<group>"; };
+		92DD92F317521D26004426E6 /* GkhReportParamTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GkhReportParamTableViewController.m; sourceTree = "<group>"; };
+		92DD92F517521DC6004426E6 /* GkhReportParamTableDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GkhReportParamTableDataSource.h; sourceTree = "<group>"; };
+		92DD92F617521DC6004426E6 /* GkhReportParamTableDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GkhReportParamTableDataSource.m; sourceTree = "<group>"; };
+		92DD92F81752674D004426E6 /* ParamTableCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ParamTableCell.xib; path = ../ParamTableCell.xib; sourceTree = "<group>"; };
 		92F25FBB174A08F800BE5FF6 /* EpdTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EpdTableViewController.h; sourceTree = "<group>"; };
 		92F25FBC174A08F800BE5FF6 /* EpdTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EpdTableViewController.m; sourceTree = "<group>"; };
 		92F25FBE174A16B100BE5FF6 /* green_check.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = green_check.png; sourceTree = "<group>"; };
@@ -224,6 +232,8 @@
 				6140D1A4169721960066F51C /* BarPlotSelectingArrow.m */,
 				925CE585174F545100545D13 /* GkhReport.h */,
 				925CE586174F545100545D13 /* GkhReport.m */,
+				92DD92F517521DC6004426E6 /* GkhReportParamTableDataSource.h */,
+				92DD92F617521DC6004426E6 /* GkhReportParamTableDataSource.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -275,6 +285,7 @@
 		61A3ABE3169038A5005D3311 /* iosGkh */ = {
 			isa = PBXGroup;
 			children = (
+				92DD92F81752674D004426E6 /* ParamTableCell.xib */,
 				922D94F0174B791F005589AF /* Settings.bundle */,
 				6178217116F8480900E4BED1 /* Delegates */,
 				61E81AF616EE052600819BDD /* Views */,
@@ -383,6 +394,8 @@
 				92F25FBC174A08F800BE5FF6 /* EpdTableViewController.m */,
 				92F25FC2174A1A1D00BE5FF6 /* EpdDetailTableViewController.h */,
 				92F25FC3174A1A1D00BE5FF6 /* EpdDetailTableViewController.m */,
+				92DD92F217521D26004426E6 /* GkhReportParamTableViewController.h */,
+				92DD92F317521D26004426E6 /* GkhReportParamTableViewController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -529,6 +542,7 @@
 				92F25FC1174A16B100BE5FF6 /* red_cross.png in Resources */,
 				9278FB31174A673900EA0D0A /* money32.png in Resources */,
 				922D94F1174B791F005589AF /* Settings.bundle in Resources */,
+				92DD92F91752674D004426E6 /* ParamTableCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -603,6 +617,8 @@
 				92F25FC4174A1A1D00BE5FF6 /* EpdDetailTableViewController.m in Sources */,
 				925CE587174F545100545D13 /* GkhReport.m in Sources */,
 				92DD92F0175200DE004426E6 /* GkhReportPlotDataSource.m in Sources */,
+				92DD92F417521D26004426E6 /* GkhReportParamTableViewController.m in Sources */,
+				92DD92F717521DC6004426E6 /* GkhReportParamTableDataSource.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

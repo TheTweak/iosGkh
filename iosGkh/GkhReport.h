@@ -3,7 +3,7 @@
 //  iosGkh
 //
 //  Отчет, то что загружается в таблицу на главном экране пользователя с ролью УК.
-//
+//  
 //  Created by Sorokin E on 24.05.13.
 //  Copyright (c) 2013 Prosoftlab. All rights reserved.
 //
@@ -60,6 +60,8 @@ typedef enum {
 @property(copy, readonly) NSArray *inputParamArray;
 @property(readonly) GkhPlotType plotType;
 @property id<CPTPlotDataSource> plotDataSource;
+// Дата сорс для таблицы с параметрами отчета
+@property id<UITableViewDataSource> paramDataSource;
 
 -(GkhInputType *) getInputParam:(NSString *) id;
 +(id)               report:(NSString *) id

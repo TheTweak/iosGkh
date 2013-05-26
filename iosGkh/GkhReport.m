@@ -8,6 +8,7 @@
 //
 
 #import "GkhReport.h"
+#import "GkhReportParamTableDataSource.h"
 
 @interface GkhReport ()
 @property NSString *id;
@@ -106,7 +107,9 @@ additionalRepresentations:(NSArray *)additionalReps
                          [paramIdxToId setValue:paramIndex forKey:input.id];
                      }
                      report.paramIndexToId = [paramIdxToId copy];
-                     
+                     GkhReportParamTableDataSource *paramDataSource = [[GkhReportParamTableDataSource alloc] init];
+                     paramDataSource.params = report.inputParamArray;
+                     report.paramDataSource = paramDataSource;
                      return report;
 }
 
