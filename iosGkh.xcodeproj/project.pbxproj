@@ -69,6 +69,7 @@
 		922D94F1174B791F005589AF /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 922D94F0174B791F005589AF /* Settings.bundle */; };
 		925CE587174F545100545D13 /* GkhReport.m in Sources */ = {isa = PBXBuildFile; fileRef = 925CE586174F545100545D13 /* GkhReport.m */; };
 		9278FB31174A673900EA0D0A /* money32.png in Resources */ = {isa = PBXBuildFile; fileRef = 9278FB30174A673900EA0D0A /* money32.png */; };
+		92DD92F0175200DE004426E6 /* GkhReportPlotDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 92DD92EF175200DE004426E6 /* GkhReportPlotDataSource.m */; };
 		92F25FBD174A08F800BE5FF6 /* EpdTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 92F25FBC174A08F800BE5FF6 /* EpdTableViewController.m */; };
 		92F25FC0174A16B100BE5FF6 /* green_check.png in Resources */ = {isa = PBXBuildFile; fileRef = 92F25FBE174A16B100BE5FF6 /* green_check.png */; };
 		92F25FC1174A16B100BE5FF6 /* red_cross.png in Resources */ = {isa = PBXBuildFile; fileRef = 92F25FBF174A16B100BE5FF6 /* red_cross.png */; };
@@ -178,6 +179,8 @@
 		925CE585174F545100545D13 /* GkhReport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GkhReport.h; sourceTree = "<group>"; };
 		925CE586174F545100545D13 /* GkhReport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GkhReport.m; sourceTree = "<group>"; };
 		9278FB30174A673900EA0D0A /* money32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = money32.png; sourceTree = "<group>"; };
+		92DD92EE175200DE004426E6 /* GkhReportPlotDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GkhReportPlotDataSource.h; sourceTree = "<group>"; };
+		92DD92EF175200DE004426E6 /* GkhReportPlotDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GkhReportPlotDataSource.m; sourceTree = "<group>"; };
 		92F25FBB174A08F800BE5FF6 /* EpdTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EpdTableViewController.h; sourceTree = "<group>"; };
 		92F25FBC174A08F800BE5FF6 /* EpdTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EpdTableViewController.m; sourceTree = "<group>"; };
 		92F25FBE174A16B100BE5FF6 /* green_check.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = green_check.png; sourceTree = "<group>"; };
@@ -400,6 +403,8 @@
 			children = (
 				61A3AC5E16904DB4005D3311 /* Nach.m */,
 				61A3AC5F16904DB5005D3311 /* Nach.h */,
+				92DD92EE175200DE004426E6 /* GkhReportPlotDataSource.h */,
+				92DD92EF175200DE004426E6 /* GkhReportPlotDataSource.m */,
 			);
 			name = "Core Plot DS";
 			sourceTree = "<group>";
@@ -597,6 +602,7 @@
 				92F25FBD174A08F800BE5FF6 /* EpdTableViewController.m in Sources */,
 				92F25FC4174A1A1D00BE5FF6 /* EpdDetailTableViewController.m in Sources */,
 				925CE587174F545100545D13 /* GkhReport.m in Sources */,
+				92DD92F0175200DE004426E6 /* GkhReportPlotDataSource.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

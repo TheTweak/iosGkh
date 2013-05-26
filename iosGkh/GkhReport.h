@@ -9,6 +9,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "CorePlot-CocoaTouch.h"
 
 typedef enum {
     GkhRepresentationTypeTable
@@ -20,6 +21,8 @@ typedef enum {
 
 @property(readonly) NSString *id;
 @property(readonly) GkhRepresentationType type;
+// источник данных для данного представления
+@property id dataSource;
 +(id) representation:(NSString *) id ofType:(GkhRepresentationType) type;
 +(GkhRepresentationType) representationTypeOf:(NSString *) type;
 @end
@@ -56,6 +59,7 @@ typedef enum {
 @property(copy, readonly) NSArray *additionalRepresentationArray;
 @property(copy, readonly) NSArray *inputParamArray;
 @property(readonly) GkhPlotType plotType;
+@property id<CPTPlotDataSource> plotDataSource;
 
 -(GkhInputType *) getInputParam:(NSString *) id;
 +(id)               report:(NSString *) id

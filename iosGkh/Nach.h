@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "CorePlot-CocoaTouch.h"
 #import "HomeTableDataSource.h"
+#import "GkhReport.h"
 
 @interface Nach : NSObject <CPTBarPlotDataSource, CPTAxisDelegate, CPTPieChartDataSource, CPTScatterPlotDataSource, UITableViewDataSource>
 - (NSDictionary *) getBusinessValues: (NSUInteger) idx;
@@ -20,4 +21,8 @@
 @property BOOL tableNeedsReloading;
 // период за который загружаются данные в табличках для отчета Платежи в проценте от начислений
 @property NSString *period;
+
+// отчет, к графику которого привязан данный дата сорс
+@property(weak) GkhReport *report;
+
 @end

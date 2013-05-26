@@ -21,6 +21,7 @@
 #import "ActionSheetStringPicker.h"
 #import "SBJsonParser.h"
 #import "Nach.h"
+#import "GkhReportPlotDataSource.h"
 
 @interface HomeViewController ()
 @property (nonatomic, strong) HomeTableDataSource *tableDataSource;
@@ -56,11 +57,8 @@
 @property UIView *selectValuesView;
 // индекс строки таблицы на которую нажали
 @property NSNumber *selectedRow;
-
-
-
-
-
+// анимация при нажатии на строчку таблицы
+@property (nonatomic)  CATransition *rowSelectAnimation;
 @end
 
 @implementation HomeViewController
@@ -81,98 +79,9 @@ CGFloat const CPDBarInitialX = 0.25f;
 @synthesize pageViewControllersArray =     _pageViewControllersArray;
 @synthesize graphToPagesDictionary =       _graphToPagesDictionary;
 @synthesize scopeLabel =                   _scopeLabel;
+@synthesize rowSelectAnimation =           _rowSelectAnimation;
 
-#pragma mark Init
-
-- (void) willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
-                                 duration:(NSTimeInterval)duration {
-    self.onScreenPageNumber = [self determineCurrentPageNumber:self.bottomView.contentOffset.x];
-    if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
-        if (![self.tableView isHidden]) {
-            // landscape
-            [self.tableView setHidden:YES];
-            [self.navigationController.navigationBar setHidden:YES];
-            CGRect rect = self.graphView.frame;
-            if (CGRectIsEmpty(self.portraitGraphViewRect)) {
-                self.portraitGraphViewRect = rect;
-            }
-            if (CGRectIsEmpty(self.portraitBottomViewRect)) {
-                self.portraitBottomViewRect = self.bottomView.frame;
-            }
-            if (CGRectIsEmpty(self.portraitPageIndicatorRect)) {
-                self.portraitPageIndicatorRect = self.pageControlView.frame;
-            }
-            self.pageControlView.frame = CGRectMake(self.view.window.frame.size.width / 4,
-                                                    self.view.window.frame.size.height / 2
-                                                    + self.portraitPageIndicatorRect.size.height - 8,
-                                                    self.portraitPageIndicatorRect.size.width,
-                                                    self.portraitPageIndicatorRect.size.height);
-            self.contentSize = self.bottomView.contentSize;
-            CGRect statusBarRect = [self statusBarFrameViewRect:self.view];
-            float height = self.view.frame.size.height
-                         + self.navigationController.navigationBar.frame.size.height
-                         + statusBarRect.size.height;
-            if (self.landscapePageSize == 0) {
-                self.landscapePageSize = height;
-            }
-            [self.graphView setFrame:CGRectMake(rect.origin.x, rect.origin.y, height, rect.size.height)];
-            self.bottomView.frame = self.graphView.frame;
-            if (self.landscapeScrollViewHeight == 0) {
-                self.landscapeScrollViewHeight = self.bottomView.frame.size.height;
-            }
-            for (int i = 0, l = [self.pageViewControllersArray count]; i < l; i++) {
-                UIViewController *controller = [self.pageViewControllersArray objectAtIndex:i];
-                UIView *view = controller.view;
-                CGRect frame = CGRectMake(height * (i + 1), 0, height, rect.size.height);
-                [view setFrame:frame];
-            }
-            self.bottomView.contentSize = CGSizeMake((1 + self.pageViewControllersArray.count) * height, 0);
-        }
-    } else {
-        // portrait
-        [self.tableView setHidden:NO];
-        [self.navigationController.navigationBar setHidden:NO];
-        [self.graphView setFrame:self.portraitGraphViewRect];
-        self.bottomView.contentSize = self.contentSize;
-        self.bottomView.frame = self.portraitBottomViewRect;
-        self.pageControlView.frame = self.portraitPageIndicatorRect;
-        for (int i = 0, l = [self.pageViewControllersArray count]; i < l; i++) {
-            UIViewController *controller = [self.pageViewControllersArray objectAtIndex:i];
-            UIView *view = controller.view;
-            CGRect rect = self.portraitGraphViewRect;
-            CGRect frame = CGRectMake(rect.size.width * (i + 1), 0, rect.size.width, self.portraitBottomViewRect.size.height);
-            [view setFrame:frame];
-        }
-    }
-}
-
-// get status bar size
-- (CGRect)statusBarFrameViewRect:(UIView*)view {
-    CGRect statusBarFrame = [[UIApplication sharedApplication] statusBarFrame];
-    CGRect statusBarWindowRect = [view.window convertRect:statusBarFrame fromWindow: nil];
-    CGRect statusBarViewRect = [view convertRect:statusBarWindowRect fromView: nil];
-    return statusBarViewRect;
-}
-
--(void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
-    // reload current table view
-    int pageNumber = self.onScreenPageNumber;
-    if (pageNumber - 1 != -1) {
-        UIViewController *controller = [self.pageViewControllersArray objectAtIndex:pageNumber - 1];
-        UIView *view = controller.view;
-        UITableView *tableView = (UITableView *) view;
-        Nach *ds = (Nach *) tableView.dataSource;
-        ds.tableNeedsReloading = YES;
-        [tableView reloadData];
-    }
-    CGPoint point;
-    if (UIInterfaceOrientationIsLandscape(fromInterfaceOrientation)) {
-        point = CGPointMake(self.portraitBottomViewRect.size.width * pageNumber, 0);
-    } else {
-        point = CGPointMake(self.landscapePageSize * pageNumber, 0);
-    }
-    [self.bottomView setContentOffset:point animated:YES];
-}
+#pragma mark UIView stuff
 
 - (void) viewDidLoad {
     [super viewDidLoad];
@@ -209,11 +118,17 @@ CGFloat const CPDBarInitialX = 0.25f;
     [self.bottomView addSubview:self.graphView];
 }
 
-#pragma mark Scroll view delegate methods
-
-- (void) addViewControllerToPageControl:(int) index {
-    
+- (void) viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    [self becomeFirstResponder];
 }
+
+- (void) viewWillDisappear:(BOOL)animated {
+    [self resignFirstResponder];
+    [super viewWillDisappear:animated];
+}
+
+#pragma mark UIScrollViewDelegate
 
 - (void) scrollViewDidEndDecelerating:(UIScrollView *) scrollView {
     if (scrollView != self.bottomView) {
@@ -233,74 +148,13 @@ CGFloat const CPDBarInitialX = 0.25f;
     NSLog(@"EndDecelerating:%i", pageNumber);
 }
 
-- (int) determineCurrentPageNumber:(float) offset {
-    return offset / self.view.frame.size.width;
-}
-
-- (void) scrollViewDidScroll:(UIScrollView *)scrollView {
-}
+#pragma mark UIViewController
 
 // enabling shake event!
 - (BOOL) canBecomeFirstResponder {
     return YES;
 }
 
-- (void) viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    [self becomeFirstResponder];
-}
-
-- (void) viewWillDisappear:(BOOL)animated {
-    [self resignFirstResponder];
-    [super viewWillDisappear:animated];
-}
-
-- (void) registerForNotifications {
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(showLoadingMask)
-                                                 name:@"ShowLoadingMask"
-                                               object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(showTableLoadingMask)
-                                                 name:@"ShowTableLoadingMask"
-                                               object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(hideLoadingMask)
-                                                 name:@"HideLoadingMask"
-                                               object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(hideTableLoadingMask)
-                                                 name:@"HideTableLoadingMask"
-                                               object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(reloadDataForCurrentOnScreenPlot)
-                                                 name:@"ReloadCurrentGraph"
-                                               object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(updateTableData:)
-                                                 name:@"UpdateTableData"
-                                               object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(addScopeLabel:)
-                                                 name:@"ShowScopeLabel"
-                                               object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(updateCurrentPeriodField:)
-                                                 name:@"UpdatePeriodField"
-                                               object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(paramInputFieldTapped:)
-                                                 name:@"ParamInputFieldTapped"
-                                               object:nil];
-}
 // shake motion handler
 - (void) motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event {
     if (motion == UIEventSubtypeMotionShake) {
@@ -309,6 +163,21 @@ CGFloat const CPDBarInitialX = 0.25f;
 }
 
 #pragma mark Accessors
+
+-(CATransition *)rowSelectAnimation {
+    if (!_rowSelectAnimation) {
+        CATransition *animation = [CATransition animation];
+        animation.delegate = self;
+        animation.duration = 0.5;
+        animation.timingFunction = UIViewAnimationCurveEaseInOut;
+        animation.type = @"oglFlip";
+        animation.subtype = @"fromLeft";
+        animation.delegate = self;
+        _rowSelectAnimation = animation;
+    }
+    return _rowSelectAnimation;
+}
+
 - (UILabel *) scopeLabel {
     if (!_scopeLabel) {
         CGRect frame = CGRectMake(5, 0,
@@ -375,95 +244,113 @@ CGFloat const CPDBarInitialX = 0.25f;
     return _selectedValues;
 }
 
-#pragma mark - Table view delegate
+#pragma mark UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView
         didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    
     [self resetLabels];
-    CATransition *animation = [CATransition animation];
-    animation.delegate = self;
-    animation.duration = 0.5;
-    animation.timingFunction = UIViewAnimationCurveEaseInOut;
-    animation.type = @"oglFlip";
-    animation.subtype = @"fromLeft";
-    animation.delegate = self;
     CALayer *layer = (CALayer *) self.graphView.layer;
-    [layer addAnimation:animation forKey:nil];
+    [layer addAnimation:self.rowSelectAnimation forKey:nil];
     
-    // get selected param all custom properties
-    // (meta-data, like : graph type, unique param id, input params.. etc)
-#warning Refactor
-    NSDictionary *customProperties = /*[self.tableDataSource customPropertiesAtRowIndex:indexPath.row];*/ [NSDictionary dictionary];
-    NSString *paramId = [customProperties valueForKey:@"id"];
-    NSString *graphType = [customProperties valueForKey:@"graph"];
-    #warning TODO : don't needed to create new ds each time!!! get from Dictionary instead!
-    // now create this param's plot data source
-    Nach *dataSource = [[Nach alloc] init];
-    dataSource.tableNeedsReloading = NO;
-    dataSource.paramId = paramId;
-    dataSource.homeTableDS = self.tableDataSource;
-    // put data source into map for having at least one strong reference
-    [self.paramToCPDataSource setValue:dataSource forKey:paramId];
+    // выбранный отчет
+    GkhReport *report = [self.tableDataSource gkhReportAt:indexPath.row];
     
-    dataSource.requestParams = [customProperties valueForKey:@"input"];
+    AFHTTPClient *client = [BasicAuthModule httpClient];
     
-    // draw graph
-    [self addPlot:paramId ofType:graphType dataSource:dataSource];
+    NSMutableDictionary *requestParameters = [[NSMutableDictionary alloc] init];
+    // necessary request param, unique identifier of requesting data
+    [requestParameters setValue:report.id forKey:@"type"];
     
-    // clear views
-    if (self.pageViewControllersArray) {
-        for (int i = 0, l = self.pageViewControllersArray.count; i < l; i++) {
-            UIViewController *controller = [self.pageViewControllersArray objectAtIndex:i];
-            UIView *view = controller.view;
-            [view removeFromSuperview];
-        }
+    // other, param-dependent parameters
+    for (GkhInputType *input in report.inputParamArray) {
+        [requestParameters setValue:input.value forKey:input.id];
     }
-    // create custom representation
-    NSArray *representations = [customProperties valueForKey:@"additionalRep"];
-    NSMutableArray *pageViewControllers = [NSMutableArray array];
-    for (int i = 0, l = representations.count; i < l; i++) {
-        NSDictionary *representation = [representations objectAtIndex:i];
-        NSString *type = [representation valueForKey:@"type"];
-        NSString *repId = [representation valueForKey:@"id"];
-        if ([@"TABLE" isEqualToString:type]) {
-            UITableViewController *tableViewController = [[UITableViewController alloc]
-                                                          initWithStyle:UITableViewStylePlain];
-            [pageViewControllers addObject:tableViewController];
-            UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(320 * (i + 1), 0, 320, 200)];
-            tableViewController.view = tableView;
-
-            Nach *dataSource = [[Nach alloc] init];
-            dataSource.tableNeedsReloading = NO;
-            dataSource.paramId = repId;
-            dataSource.homeTableDS = self.tableDataSource;
-            [self.paramToCPDataSource setValue:dataSource forKey:repId];
-            
-            tableView.dataSource = dataSource;
-            tableView.backgroundColor = [UIColor viewFlipsideBackgroundColor];
-            tableView.separatorColor = [UIColor darkGrayColor];
-            tableView.layer.cornerRadius = 8.0f;
-            [self.bottomView addSubview:tableView];
-            
-            UITextField *period = [[UITextField alloc] initWithFrame:CGRectMake(320 * (i + 1) + 5,
-                                                                                tableView.frame.size.height + 10,
-                                                                                310, 40)];
-            period.placeholder = @"Период";
-            period.textAlignment = NSTextAlignmentCenter;
-            period.delegate = self;
-            period.borderStyle = UITextBorderStyleRoundedRect;
-            period.font = [UIFont systemFontOfSize:15];
-            period.clearButtonMode = UITextFieldViewModeWhileEditing;
-            period.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-            period.backgroundColor = [UIColor underPageBackgroundColor];
-            period.textColor = [UIColor yellowColor];            
-            period.tag = 14 + i;
-            [self.bottomView addSubview:period];
+    [self showLoadingMask];
+    [client postPath:@"param/value" parameters:requestParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"post succeeded");
+        SBJsonParser *jsonParser = [[SBJsonParser alloc] init];
+        NSData *responseData = (NSData *)responseObject;
+        NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+        NSDictionary *responseJson = [jsonParser objectWithString:responseString];
+        if ([responseJson valueForKey:@"scope"]) {
+            NSString *label = [NSString stringWithFormat:@"%@/%@", [responseJson valueForKey:@"scope"], [responseJson valueForKey:@"year"]];
+            self.scopeLabel.text = label;
         }
-    }
-    self.pageControlView.numberOfPages = pageViewControllers.count + 1;
-    self.bottomView.contentSize = CGSizeMake((1 + pageViewControllers.count) * self.graphView.frame.size.width, 0);
-    [self.graphToPagesDictionary setValue:pageViewControllers forKey:paramId];
-    self.pageViewControllersArray = pageViewControllers;
+        NSArray *result = [responseJson objectForKey:@"values"];
+        // создаем дата сорс для графика этого отчета
+        GkhReportPlotDataSource *plotDataSource = [[GkhReportPlotDataSource alloc] init];
+        plotDataSource.values = result;
+        if (!report.plotDataSource) {
+            report.plotDataSource = plotDataSource;
+        }
+        // draw graph
+        [self addPlot:report.id ofType:report.plotType dataSource:report.plotDataSource];
+        /*
+         // clear views
+         if (self.pageViewControllersArray) {
+         for (int i = 0, l = self.pageViewControllersArray.count; i < l; i++) {
+         UIViewController *controller = [self.pageViewControllersArray objectAtIndex:i];
+         UIView *view = controller.view;
+         [view removeFromSuperview];
+         }
+         }
+         NSMutableArray *pageViewControllers = [NSMutableArray array];
+         for (GkhRepresentation *representation in report.additionalRepresentationArray) {
+         int i = 0;
+         switch (representation.type) {
+         case GkhRepresentationTypeTable: {
+         UITableViewController *tableViewController = [[UITableViewController alloc]
+         initWithStyle:UITableViewStylePlain];
+         [pageViewControllers addObject:tableViewController];
+         UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(320 * (i + 1), 0, 320, 200)];
+         tableViewController.view = tableView;
+         
+         Nach *dataSource = [[Nach alloc] init];
+         dataSource.tableNeedsReloading = NO;
+         dataSource.paramId = representation.id;
+         dataSource.homeTableDS = self.tableDataSource;
+         if (!representation.dataSource) {
+         representation.dataSource = dataSource;
+         }
+         
+         tableView.dataSource = dataSource;
+         tableView.backgroundColor = [UIColor viewFlipsideBackgroundColor];
+         tableView.separatorColor = [UIColor darkGrayColor];
+         tableView.layer.cornerRadius = 8.0f;
+         [self.bottomView addSubview:tableView];
+         
+         UITextField *period = [[UITextField alloc] initWithFrame:CGRectMake(320 * (i + 1) + 5,
+         tableView.frame.size.height + 10,
+         310, 40)];
+         period.placeholder = @"Период";
+         period.textAlignment = NSTextAlignmentCenter;
+         period.delegate = self;
+         period.borderStyle = UITextBorderStyleRoundedRect;
+         period.font = [UIFont systemFontOfSize:15];
+         period.clearButtonMode = UITextFieldViewModeWhileEditing;
+         period.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+         period.backgroundColor = [UIColor underPageBackgroundColor];
+         period.textColor = [UIColor yellowColor];
+         period.tag = 14 + i;
+         [self.bottomView addSubview:period];
+         break;
+         }
+         default:
+         break;
+         }
+         i++;
+         }
+         self.pageControlView.numberOfPages = pageViewControllers.count + 1;
+         self.bottomView.contentSize = CGSizeMake((1 + pageViewControllers.count) * self.graphView.frame.size.width, 0);
+         //    [self.graphToPagesDictionary setValue:pageViewControllers forKey:paramId];
+         self.pageViewControllersArray = pageViewControllers;
+         */
+        [self hideLoadingMask];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"failure");
+        [self hideLoadingMask];
+    }];
 }
 
 - (void)tableView:(UITableView *)tableView
@@ -722,14 +609,13 @@ CGFloat const CPDBarInitialX = 0.25f;
     [graph addPlot:pieChart];
 }
 
-- (void) configureGraph:(NSString *)title ofType:(NSString *)type
+- (void) configureGraph:(NSString *)title ofType:(GkhPlotType)type
              dataSource:(id<CPTPlotDataSource>)ds {
-    if ([BarPlot isEqualToString:type]) {
-        [self configureBarGraph:title dataSource:ds];
-    } else if([PieChart isEqualToString:type]) {
-        [self configurePieGraph:title dataSource:ds];
-    } else if([XYPlot isEqualToString:type]) {
-        [self configureXYGraph:title dataSource:ds];
+    switch (type) {
+        case GkhPlotTypeBar    : [self configureBarGraph:title dataSource:ds]; break;
+        case GkhPlotTypeCircle : [self configurePieGraph:title dataSource:ds]; break;
+        case GkhPlotTypeXY     : [self configureXYGraph:title dataSource:ds];  break;
+        default: break;
     }
 }
 
@@ -828,7 +714,7 @@ CGFloat const CPDBarInitialX = 0.25f;
     }
 }
 
-- (void) addPlot:(NSString *)title ofType:(NSString *)type dataSource:(id<CPTPlotDataSource>) ds {
+- (void) addPlot:(NSString *)title ofType:(GkhPlotType)type dataSource:(id<CPTPlotDataSource>) ds {
     [self configureGraph:title ofType:type dataSource:ds];
 }
 
@@ -841,6 +727,67 @@ CGFloat const CPDBarInitialX = 0.25f;
 
 - (void) addNewMetricByString:(NSString *)identifier {
     
+}
+
+- (int) determineCurrentPageNumber:(float) offset {
+    return offset / self.view.frame.size.width;
+}
+
+// get status bar size
+- (CGRect)statusBarFrameViewRect:(UIView*)view {
+    CGRect statusBarFrame = [[UIApplication sharedApplication] statusBarFrame];
+    CGRect statusBarWindowRect = [view.window convertRect:statusBarFrame fromWindow: nil];
+    CGRect statusBarViewRect = [view convertRect:statusBarWindowRect fromView: nil];
+    return statusBarViewRect;
+}
+
+#pragma mark Notifications
+
+- (void) registerForNotifications {
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(showLoadingMask)
+                                                 name:@"ShowLoadingMask"
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(showTableLoadingMask)
+                                                 name:@"ShowTableLoadingMask"
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(hideLoadingMask)
+                                                 name:@"HideLoadingMask"
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(hideTableLoadingMask)
+                                                 name:@"HideTableLoadingMask"
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(reloadDataForCurrentOnScreenPlot)
+                                                 name:@"ReloadCurrentGraph"
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(updateTableData:)
+                                                 name:@"UpdateTableData"
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(addScopeLabel:)
+                                                 name:@"ShowScopeLabel"
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(updateCurrentPeriodField:)
+                                                 name:@"UpdatePeriodField"
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(paramInputFieldTapped:)
+                                                 name:@"ParamInputFieldTapped"
+                                               object:nil];
 }
 
 #pragma mark Notification handlers
@@ -1061,6 +1008,90 @@ CGFloat const CPDBarInitialX = 0.25f;
     if (reload) {
         [self reloadDataForCurrentOnScreenPlot];
     }
+}
+
+#pragma mark Rotate handler
+
+- (void) willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+                                 duration:(NSTimeInterval)duration {
+    self.onScreenPageNumber = [self determineCurrentPageNumber:self.bottomView.contentOffset.x];
+    if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
+        if (![self.tableView isHidden]) {
+            // landscape
+            [self.tableView setHidden:YES];
+            [self.navigationController.navigationBar setHidden:YES];
+            CGRect rect = self.graphView.frame;
+            if (CGRectIsEmpty(self.portraitGraphViewRect)) {
+                self.portraitGraphViewRect = rect;
+            }
+            if (CGRectIsEmpty(self.portraitBottomViewRect)) {
+                self.portraitBottomViewRect = self.bottomView.frame;
+            }
+            if (CGRectIsEmpty(self.portraitPageIndicatorRect)) {
+                self.portraitPageIndicatorRect = self.pageControlView.frame;
+            }
+            self.pageControlView.frame = CGRectMake(self.view.window.frame.size.width / 4,
+                                                    self.view.window.frame.size.height / 2
+                                                    + self.portraitPageIndicatorRect.size.height - 8,
+                                                    self.portraitPageIndicatorRect.size.width,
+                                                    self.portraitPageIndicatorRect.size.height);
+            self.contentSize = self.bottomView.contentSize;
+            CGRect statusBarRect = [self statusBarFrameViewRect:self.view];
+            float height = self.view.frame.size.height
+            + self.navigationController.navigationBar.frame.size.height
+            + statusBarRect.size.height;
+            if (self.landscapePageSize == 0) {
+                self.landscapePageSize = height;
+            }
+            [self.graphView setFrame:CGRectMake(rect.origin.x, rect.origin.y, height, rect.size.height)];
+            self.bottomView.frame = self.graphView.frame;
+            if (self.landscapeScrollViewHeight == 0) {
+                self.landscapeScrollViewHeight = self.bottomView.frame.size.height;
+            }
+            for (int i = 0, l = [self.pageViewControllersArray count]; i < l; i++) {
+                UIViewController *controller = [self.pageViewControllersArray objectAtIndex:i];
+                UIView *view = controller.view;
+                CGRect frame = CGRectMake(height * (i + 1), 0, height, rect.size.height);
+                [view setFrame:frame];
+            }
+            self.bottomView.contentSize = CGSizeMake((1 + self.pageViewControllersArray.count) * height, 0);
+        }
+    } else {
+        // portrait
+        [self.tableView setHidden:NO];
+        [self.navigationController.navigationBar setHidden:NO];
+        [self.graphView setFrame:self.portraitGraphViewRect];
+        self.bottomView.contentSize = self.contentSize;
+        self.bottomView.frame = self.portraitBottomViewRect;
+        self.pageControlView.frame = self.portraitPageIndicatorRect;
+        for (int i = 0, l = [self.pageViewControllersArray count]; i < l; i++) {
+            UIViewController *controller = [self.pageViewControllersArray objectAtIndex:i];
+            UIView *view = controller.view;
+            CGRect rect = self.portraitGraphViewRect;
+            CGRect frame = CGRectMake(rect.size.width * (i + 1), 0, rect.size.width, self.portraitBottomViewRect.size.height);
+            [view setFrame:frame];
+        }
+    }
+}
+
+-(void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+    // reload current table view
+    int pageNumber = self.onScreenPageNumber;
+    if (pageNumber - 1 != -1) {
+        UIViewController *controller = [self.pageViewControllersArray objectAtIndex:pageNumber - 1];
+        UIView *view = controller.view;
+        UITableView *tableView = (UITableView *) view;
+        Nach *ds = (Nach *) tableView.dataSource;
+        ds.tableNeedsReloading = YES;
+        [tableView reloadData];
+    }
+    CGPoint point;
+    if (UIInterfaceOrientationIsLandscape(fromInterfaceOrientation)) {
+        point = CGPointMake(self.portraitBottomViewRect.size.width * pageNumber, 0);
+    } else {
+        point = CGPointMake(self.landscapePageSize * pageNumber, 0);
+    }
+    [self.bottomView setContentOffset:point animated:YES];
 }
 
 @end

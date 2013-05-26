@@ -27,6 +27,8 @@
 
 @implementation GkhRepresentation
 
+@synthesize dataSource = _dataSource;
+
 static NSDictionary* _typeByString;
 
 +(GkhRepresentationType)representationTypeOf:(NSString *)type {

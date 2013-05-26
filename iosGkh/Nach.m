@@ -227,7 +227,6 @@
     return numberOfRecords;
 }
 
-
 - (CPTFill *) barFillForBarPlot:(CPTBarPlot *)barPlot recordIndex:(NSUInteger)idx {
     CPTGradient *gradient;
     CPTColor *begin = [CPTColor colorWithComponentRed:0 green:.3943 blue:.91 alpha:1];
