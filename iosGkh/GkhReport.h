@@ -60,8 +60,8 @@ typedef enum {
 @property(copy, readonly) NSArray *inputParamArray;
 @property(readonly) GkhPlotType plotType;
 @property id<CPTPlotDataSource> plotDataSource;
-// Дата сорс для таблицы с параметрами отчета
-@property id<UITableViewDataSource> paramDataSource;
+// Дата сорс и делегат для таблицы с параметрами отчета
+@property id<UITableViewDataSource, UITableViewDelegate> paramDataSource;
 
 -(GkhInputType *) getInputParam:(NSString *) id;
 +(id)               report:(NSString *) id

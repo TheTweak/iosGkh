@@ -58,7 +58,7 @@
 // для выбора этих значений
 @property UITableView *selectValuesView;
 // индекс строки таблицы на которую нажали
-@property NSNumber *selectedRow;
+@property NSInteger *selectedRow;
 // анимация при нажатии на строчку таблицы
 @property (nonatomic)  CATransition *rowSelectAnimation;
 @end
@@ -250,7 +250,7 @@ CGFloat const CPDBarInitialX = 0.25f;
 
 - (void)tableView:(UITableView *)tableView
         didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+    self.selectedRow = indexPath.row;
     [self resetLabels];
     CALayer *layer = (CALayer *) self.graphView.layer;
     [layer addAnimation:self.rowSelectAnimation forKey:nil];
@@ -357,7 +357,7 @@ CGFloat const CPDBarInitialX = 0.25f;
 
 - (void)tableView:(UITableView *)tableView
         accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
-    self.selectedRow = [NSNumber numberWithInteger:indexPath.row];
+    self.selectedRow = indexPath.row;
 #warning Refactor
     GkhReport *gkhReport = [self.tableDataSource gkhReportAt:indexPath.row];
     CGFloat width = self.view.frame.size.width,
@@ -365,13 +365,16 @@ CGFloat const CPDBarInitialX = 0.25f;
     if (!self.selectValuesView) {
         UITableView *paramTable = [[UITableView alloc] initWithFrame:CGRectMake(width, 0, width, height)
                                                                style:UITableViewStylePlain];
+        
         paramTable.backgroundColor = [UIColor viewFlipsideBackgroundColor];
         paramTable.separatorColor = [UIColor darkGrayColor];
+        paramTable.editing = NO;
         [paramTable registerNib:[UINib nibWithNibName:@"ParamTableCell" bundle:nil]
          forCellReuseIdentifier:@"ParamTableCell"];
         self.selectValuesView = paramTable;
     }
     self.selectValuesView.dataSource = gkhReport.paramDataSource;
+    self.selectValuesView.delegate = gkhReport.paramDataSource;
     [self.view addSubview:self.selectValuesView];
     [UIView animateWithDuration:0.3
                      animations:^{
@@ -996,22 +999,45 @@ CGFloat const CPDBarInitialX = 0.25f;
 // Кнопка обновить на экране выбора параметров для графика
 -(void)refreshButtonHandler {
     NSLog(@"refresh button clicked");
-    NSEnumerator *enumerator = [self.selectedValues keyEnumerator];
-    id key;
-    BOOL reload = NO;
-    while ((key = [enumerator nextObject])) {
-        reload = YES;
-        NSDictionary *dictionary = @{@"updateKey": key,
-                                     @"newValue" : [self.selectedValues objectForKey:key],
-                                     @"rowIndex" : self.selectedRow};
-#warning Переделать без Notifications
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateTableData"
-                                                            object:self
-                                                          userInfo:dictionary];
+    
+    // выбранный отчет
+    GkhReport *report = [self.tableDataSource gkhReportAt:self.selectedRow];
+    
+    AFHTTPClient *client = [BasicAuthModule httpClient];
+    
+    NSMutableDictionary *requestParameters = [[NSMutableDictionary alloc] init];
+    // necessary request param, unique identifier of requesting data
+    [requestParameters setValue:report.id forKey:@"type"];
+    
+    // other, param-dependent parameters
+    for (GkhInputType *input in report.inputParamArray) {
+        [requestParameters setValue:input.value forKey:input.id];
     }
-    if (reload) {
+    [self showLoadingMask];
+    [client postPath:@"param/value" parameters:requestParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"Reloading report %@ succeeded", report.id);
+        SBJsonParser *jsonParser = [[SBJsonParser alloc] init];
+        NSData *responseData = (NSData *)responseObject;
+        NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+        NSDictionary *responseJson = [jsonParser objectWithString:responseString];
+        if ([responseJson valueForKey:@"scope"]) {
+            NSString *label = [NSString stringWithFormat:@"%@/%@", [responseJson valueForKey:@"scope"], [responseJson valueForKey:@"year"]];
+            self.scopeLabel.text = label;
+        }
+        NSArray *result = [responseJson objectForKey:@"values"];
+        // создаем дата сорс для графика этого отчета
+        if (!report.plotDataSource) {
+            GkhReportPlotDataSource *plotDataSource = [[GkhReportPlotDataSource alloc] init];
+            plotDataSource.values = result;
+            report.plotDataSource = plotDataSource;
+        }
+        ((GkhReportPlotDataSource *) report.plotDataSource).values = result;
         [self reloadDataForCurrentOnScreenPlot];
-    }
+        [self hideLoadingMask];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Reloading report %@ failed", report.id);
+        [self hideLoadingMask];
+    }];
 }
 
 #pragma mark Rotate handler
