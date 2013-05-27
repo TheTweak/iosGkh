@@ -68,6 +68,8 @@
 		61F45D6F16F1D46900598213 /* CustomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 61F45D6E16F1D46900598213 /* CustomViewController.m */; };
 		922D94F1174B791F005589AF /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 922D94F0174B791F005589AF /* Settings.bundle */; };
 		925CE587174F545100545D13 /* GkhReport.m in Sources */ = {isa = PBXBuildFile; fileRef = 925CE586174F545100545D13 /* GkhReport.m */; };
+		92775BD41753B8F800C70620 /* background_640x960.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 92775BD21753B8F800C70620 /* background_640x960.jpg */; };
+		92775BD51753B8F800C70620 /* background_640x1136.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 92775BD31753B8F800C70620 /* background_640x1136.jpg */; };
 		9278FB31174A673900EA0D0A /* money32.png in Resources */ = {isa = PBXBuildFile; fileRef = 9278FB30174A673900EA0D0A /* money32.png */; };
 		92DD92F0175200DE004426E6 /* GkhReportPlotDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 92DD92EF175200DE004426E6 /* GkhReportPlotDataSource.m */; };
 		92DD92F417521D26004426E6 /* GkhReportParamTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 92DD92F317521D26004426E6 /* GkhReportParamTableViewController.m */; };
@@ -181,6 +183,8 @@
 		922D94F0174B791F005589AF /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		925CE585174F545100545D13 /* GkhReport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GkhReport.h; sourceTree = "<group>"; };
 		925CE586174F545100545D13 /* GkhReport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GkhReport.m; sourceTree = "<group>"; };
+		92775BD21753B8F800C70620 /* background_640x960.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = background_640x960.jpg; sourceTree = "<group>"; };
+		92775BD31753B8F800C70620 /* background_640x1136.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = background_640x1136.jpg; sourceTree = "<group>"; };
 		9278FB30174A673900EA0D0A /* money32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = money32.png; sourceTree = "<group>"; };
 		92DD92EE175200DE004426E6 /* GkhReportPlotDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GkhReportPlotDataSource.h; sourceTree = "<group>"; };
 		92DD92EF175200DE004426E6 /* GkhReportPlotDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GkhReportPlotDataSource.m; sourceTree = "<group>"; };
@@ -344,6 +348,8 @@
 		61A3AC43169047E9005D3311 /* PNGS */ = {
 			isa = PBXGroup;
 			children = (
+				92775BD21753B8F800C70620 /* background_640x960.jpg */,
+				92775BD31753B8F800C70620 /* background_640x1136.jpg */,
 				9278FB30174A673900EA0D0A /* money32.png */,
 				92F25FBE174A16B100BE5FF6 /* green_check.png */,
 				92F25FBF174A16B100BE5FF6 /* red_cross.png */,
@@ -543,6 +549,8 @@
 				9278FB31174A673900EA0D0A /* money32.png in Resources */,
 				922D94F1174B791F005589AF /* Settings.bundle in Resources */,
 				92DD92F91752674D004426E6 /* ParamTableCell.xib in Resources */,
+				92775BD41753B8F800C70620 /* background_640x960.jpg in Resources */,
+				92775BD51753B8F800C70620 /* background_640x1136.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

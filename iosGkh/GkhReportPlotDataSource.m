@@ -7,9 +7,11 @@
 //
 
 #import "GkhReportPlotDataSource.h"
+#import "CorePlotUtils.h"
 
 @interface GkhReportPlotDataSource ()
 @property NSDecimalNumber *maxHeight;
+@property NSArray *animations;
 @end
 
 @implementation GkhReportPlotDataSource
@@ -23,7 +25,7 @@
 
 #pragma mark CPTPlotDataSource
 
--(NSUInteger)numberOfRecordsForPlot:(CPTPlot *)plot {
+-(NSUInteger)numberOfRecordsForPlot:(CPTPlot *)plot {    
     // вычисление максимальной высоты графика
     self.maxHeight = nil;
     NSDecimalNumber *maxH = [NSDecimalNumber zero];
@@ -121,6 +123,20 @@
     }
     gradient.angle = 90.0f;
     return [CPTFill fillWithGradient:gradient];
+}
+
+#pragma mark CPTPlotDelegate
+
+-(void)didFinishDrawing:(CPTPlot *)plot {
+    [CorePlotUtils setAnchorPoint:CGPointMake(0.0, 0.0) forPlot:plot];
+    CABasicAnimation *scaling = [CABasicAnimation
+                                 animationWithKeyPath:@"transform.scale.y"];
+    scaling.fromValue = [NSNumber numberWithFloat:1.0];
+    scaling.toValue = [NSNumber numberWithFloat:1.2];
+    scaling.duration = 1.0f; // Duration
+    scaling.removedOnCompletion = NO;
+    scaling.fillMode = kCAFillModeForwards;
+    [plot addAnimation:scaling forKey:@"scaling"];
 }
 
 @end

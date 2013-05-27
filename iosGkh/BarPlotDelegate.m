@@ -8,6 +8,7 @@
 
 #import "BarPlotDelegate.h"
 #import "GkhReportPlotDataSource.h"
+#import "CorePlotUtils.h"
 
 @interface BarPlotDelegate ()
 @property (nonatomic, strong) CPTAnnotation *periodAnnotation;
@@ -171,6 +172,18 @@ CGFloat const period_label_pos = 0.85;
     [animation setRemovedOnCompletion:NO];
     [self.arrow addAnimation:animation forKey:@"position"];
     [self.arrow setPosition:newStrelkaPosition];
+}
+
+-(void)didFinishDrawing:(CPTPlot *)plot {
+    [CorePlotUtils setAnchorPoint:CGPointMake(0.0, 0.0) forPlot:plot];
+    CABasicAnimation *scaling = [CABasicAnimation
+                                 animationWithKeyPath:@"transform.scale.y"];
+    scaling.fromValue = [NSNumber numberWithFloat:0.0];
+    scaling.toValue = [NSNumber numberWithFloat:1.0];
+    scaling.duration = 1.0f; // Duration
+    scaling.removedOnCompletion = NO;
+    scaling.fillMode = kCAFillModeForwards;
+    [plot addAnimation:scaling forKey:@"scaling"];
 }
 
 @end

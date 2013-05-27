@@ -580,9 +580,9 @@ CGFloat const CPDBarInitialX = 0.25f;
     plot.shadowRadius = 20.0;
     plot.shadowOffset = CGSizeMake(1.0, 1.0);
     plot.shadowColor = [[CPTColor blackColor] cgColor];
-    plot.title = title;
     plot.barCornerRadius = 5.0;
     plot.barWidth = CPTDecimalFromDouble(CPDBarWidth);
+    plot.identifier = title;
     [graph addPlot:plot];
     
     CPTBarPlot *plot2 = [[CPTBarPlot alloc] initWithFrame:graph.frame];
@@ -592,6 +592,7 @@ CGFloat const CPDBarInitialX = 0.25f;
     plot2.title = @"sec";
     plot2.barWidth = CPTDecimalFromDouble(CPDBarWidth);
     plot2.barCornerRadius = 5.0;
+    plot2.identifier = [title stringByAppendingString:@"2"];
     [graph addPlot:plot2];
 }
 
@@ -1000,6 +1001,17 @@ CGFloat const CPDBarInitialX = 0.25f;
 -(void)refreshButtonHandler {
     NSLog(@"refresh button clicked");
     
+    CPTBarPlot *barPlot = [self.graphView.hostedGraph.allPlots objectAtIndex:0];    
+    [CorePlotUtils setAnchorPoint:CGPointMake(0.0, 0.0) forPlot:barPlot];
+    CABasicAnimation *scaling = [CABasicAnimation
+                                 animationWithKeyPath:@"transform.scale.y"];
+    scaling.fromValue = [NSNumber numberWithFloat:1.0];
+    scaling.toValue = [NSNumber numberWithFloat:1.2];
+    scaling.duration = 1.0f; // Duration
+    scaling.removedOnCompletion = NO;
+    scaling.fillMode = kCAFillModeForwards;
+    [barPlot addAnimation:scaling forKey:@"scaling"];
+    /*
     // выбранный отчет
     GkhReport *report = [self.tableDataSource gkhReportAt:self.selectedRow];
     
@@ -1037,7 +1049,7 @@ CGFloat const CPDBarInitialX = 0.25f;
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Reloading report %@ failed", report.id);
         [self hideLoadingMask];
-    }];
+    }];*/
 }
 
 #pragma mark Rotate handler

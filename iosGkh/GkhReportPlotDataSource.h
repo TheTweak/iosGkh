@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "CorePlot-CocoaTouch.h"
 
-@interface GkhReportPlotDataSource : NSObject <CPTPlotDataSource>
+@interface GkhReportPlotDataSource : NSObject <CPTPlotDataSource, CPTPlotDelegate>
 @property NSArray *values;
 -(NSDictionary *) getBusinessValues:(NSInteger) idx;
 @end

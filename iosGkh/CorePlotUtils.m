@@ -17,6 +17,25 @@ static CGColorRef _blueColor;
 static NSNumberFormatter *_thousandsSeparator;
 static NSArray *_monthsArray;
 
++(void)setAnchorPoint:(CGPoint)anchorPoint forPlot:(CALayer *)plot {
+    CGPoint newPoint = CGPointMake(plot.bounds.size.width * anchorPoint.x, plot.bounds.size.height * anchorPoint.y);
+    CGPoint oldPoint = CGPointMake(plot.bounds.size.width * plot.anchorPoint.x, plot.bounds.size.height * plot.anchorPoint.y);
+    
+    newPoint = CGPointApplyAffineTransform(newPoint, plot.affineTransform);
+    oldPoint = CGPointApplyAffineTransform(oldPoint, plot.affineTransform);
+    
+    CGPoint position = plot.position;
+    
+    position.x -= oldPoint.x;
+    position.x += newPoint.x;
+    
+    position.y -= oldPoint.y;
+    position.y += newPoint.y;
+    
+    plot.position = position;
+    plot.anchorPoint = anchorPoint;
+}
+
 + (CGColorRef) blueColor {
     if (!_blueColor) {
         _blueColor = [[CPTColor colorWithComponentRed:0 green:.3943 blue:.91 alpha:1] cgColor];

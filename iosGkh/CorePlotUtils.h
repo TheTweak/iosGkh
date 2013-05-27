@@ -17,5 +17,6 @@
 + (CGColorRef) blueColor;
 + (NSNumberFormatter *) thousandsSeparator;
 + (NSArray *) monthsArray;
++ (void) setAnchorPoint:(CGPoint) point forPlot:(CALayer *) plot;
 
 @end
