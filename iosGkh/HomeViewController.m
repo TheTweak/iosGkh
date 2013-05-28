@@ -116,9 +116,9 @@ CGFloat const CPDBarInitialX = 0.25f;
     self.bottomView.pagingEnabled = YES;
     self.bottomView.delegate = self;
     self.bottomView.backgroundColor = [UIColor viewFlipsideBackgroundColor];
-    self.bottomView.layer.borderColor = [CorePlotUtils blueColor];
-    self.bottomView.layer.borderWidth = 2.0f;
-    self.bottomView.layer.cornerRadius = 8.0f;
+//    self.bottomView.layer.borderColor = [CorePlotUtils blueColor];
+//    self.bottomView.layer.borderWidth = 2.0f;
+//    self.bottomView.layer.cornerRadius = 8.0f;
     [self.bottomView addSubview:self.graphView];
 }
 
