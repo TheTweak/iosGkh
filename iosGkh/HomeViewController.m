@@ -58,7 +58,9 @@
 // для выбора этих значений
 @property UITableView *selectValuesView;
 // индекс строки таблицы на которую нажали
-@property NSInteger *selectedRow;
+@property NSInteger selectedRow;
+// id отчета на который нажимали последний раз
+@property NSString *selectedReportId;
 // анимация при нажатии на строчку таблицы
 @property (nonatomic)  CATransition *rowSelectAnimation;
 @end
@@ -255,12 +257,15 @@ CGFloat const CPDBarInitialX = 0.25f;
 - (void)tableView:(UITableView *)tableView
         didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     self.selectedRow = indexPath.row;
+    // выбранный отчет
+    GkhReport *report = [self.tableDataSource gkhReportAt:indexPath.row];
+    if (self.selectedReportId && [self.selectedReportId isEqualToString:report.id]) {
+        return;
+    }
+    self.selectedReportId = report.id;
     [self resetLabels];
     CALayer *layer = (CALayer *) self.graphView.layer;
     [layer addAnimation:self.rowSelectAnimation forKey:nil];
-    
-    // выбранный отчет
-    GkhReport *report = [self.tableDataSource gkhReportAt:indexPath.row];
     
     AFHTTPClient *client = [BasicAuthModule httpClient];
     
