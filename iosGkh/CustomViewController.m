@@ -27,6 +27,10 @@
 @synthesize tableRowIndex = _tableRowIndex;
 @synthesize selectedValues = _selectedValues;
 
+-(void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 #pragma mark Acessors
 
 - (NSMutableDictionary *) selectedValues {

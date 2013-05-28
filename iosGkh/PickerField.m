@@ -16,6 +16,10 @@
 @synthesize inputId = _inputId;
 @synthesize pickerDescription = _pickerDescription;
 
+-(void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];

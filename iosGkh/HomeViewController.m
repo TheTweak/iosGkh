@@ -130,6 +130,10 @@ CGFloat const CPDBarInitialX = 0.25f;
     [super viewWillDisappear:animated];
 }
 
+-(void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 #pragma mark UIScrollViewDelegate
 
 - (void) scrollViewDidEndDecelerating:(UIScrollView *) scrollView {

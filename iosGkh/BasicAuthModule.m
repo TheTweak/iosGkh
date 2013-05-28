@@ -16,6 +16,10 @@ static AFHTTPClient *client;
 static AFHTTPClient *dwellerClient;
 static NSString *role;
 
+-(void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 + (AFHTTPClient *) httpClient
 {
     return client;

@@ -20,6 +20,10 @@
 
 @synthesize reportArray = _reportArray;
 
+-(void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (GkhReport *) gkhReportAt:(NSUInteger)index {
     GkhReport *report;
     if (self.reportArray) {
