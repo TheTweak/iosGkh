@@ -63,6 +63,8 @@
 @property NSString *selectedReportId;
 // анимация при нажатии на строчку таблицы
 @property (nonatomic)  CATransition *rowSelectAnimation;
+@property (nonatomic)  UIColor *backgroundColor;
+@property (nonatomic) UIColor *mainTextColor;
 @end
 
 @implementation HomeViewController
@@ -84,6 +86,21 @@ CGFloat const CPDBarInitialX = 0.25f;
 @synthesize graphToPagesDictionary =       _graphToPagesDictionary;
 @synthesize scopeLabel =                   _scopeLabel;
 @synthesize rowSelectAnimation =           _rowSelectAnimation;
+@synthesize backgroundColor = _backgroundColor;
+
+-(UIColor *)backgroundColor {
+    if (!_backgroundColor) {
+        _backgroundColor = [UIColor colorWithRed:192.0/255.0 green:192.0/255.0 blue:192.0/255.0 alpha:1.0];
+    }
+    return _backgroundColor;
+}
+
+-(UIColor *)mainTextColor {
+    if (!_mainTextColor) {
+        _mainTextColor = [UIColor darkTextColor];
+    }
+    return _mainTextColor;
+}
 
 #pragma mark UIView stuff
 
@@ -92,7 +109,7 @@ CGFloat const CPDBarInitialX = 0.25f;
     [self.view setAutoresizesSubviews:NO];
     [self registerForNotifications];    
     UITableView *tableView = self.tableView;
-    tableView.backgroundColor = [UIColor viewFlipsideBackgroundColor];
+    tableView.backgroundColor = self.backgroundColor;
     tableView.separatorColor = [UIColor darkGrayColor];
     tableView.dataSource = self.tableDataSource;
     tableView.delegate = self;
@@ -100,7 +117,8 @@ CGFloat const CPDBarInitialX = 0.25f;
     tableView.layer.borderWidth = 2.0f;
     tableView.layer.cornerRadius = 8.0f;*/
     UINavigationBar *navBar = [[self navigationController] navigationBar];
-    [navBar setTintColor:[UIColor colorWithRed:0 green:.3943 blue:.91 alpha:1]];
+//    [navBar setTintColor:[UIColor colorWithRed:0 green:.3943 blue:.91 alpha:1]];
+    [navBar setTintColor:[UIColor colorWithRed:32.0/255.0 green:107.0/255.0 blue:164.0/255.0 alpha:1.0]];
 #warning todo remove explicit height calculation
     float graphViewWidth = self.view.bounds.size.width
          ,graphViewHeight = self.view.frame.size.height - 160 - 28;
@@ -115,7 +133,7 @@ CGFloat const CPDBarInitialX = 0.25f;
     self.bottomView.showsVerticalScrollIndicator = NO;
     self.bottomView.pagingEnabled = YES;
     self.bottomView.delegate = self;
-    self.bottomView.backgroundColor = [UIColor viewFlipsideBackgroundColor];
+    self.bottomView.backgroundColor = self.backgroundColor;
 //    self.bottomView.layer.borderColor = [CorePlotUtils blueColor];
 //    self.bottomView.layer.borderWidth = 2.0f;
 //    self.bottomView.layer.cornerRadius = 8.0f;
@@ -191,10 +209,10 @@ CGFloat const CPDBarInitialX = 0.25f;
         CGRect frame = CGRectMake(5, 0,
                                   self.bottomView.frame.size.width, 32);
         UILabel *label = [[UILabel alloc] initWithFrame:frame];
-        label.backgroundColor = [UIColor viewFlipsideBackgroundColor];
-        label.font = [UIFont fontWithName:@"Helvetica-Bold" size:16.0];
-        label.textColor = [UIColor whiteColor];
-        label.layer.shadowColor = [UIColor blackColor].CGColor;
+        label.backgroundColor = self.backgroundColor;
+        label.font = [UIFont fontWithName:@"Helvetica-Regular" size:16.0];
+        label.textColor = self.mainTextColor;
+        label.shadowColor = [UIColor lightGrayColor];
         label.textAlignment = NSTextAlignmentCenter;
         _scopeLabel = label;
         
@@ -375,7 +393,7 @@ CGFloat const CPDBarInitialX = 0.25f;
         UITableView *paramTable = [[UITableView alloc] initWithFrame:CGRectMake(width, 0, width, height)
                                                                style:UITableViewStylePlain];
         
-        paramTable.backgroundColor = [UIColor viewFlipsideBackgroundColor];
+        paramTable.backgroundColor = self.backgroundColor;
         paramTable.separatorColor = [UIColor darkGrayColor];
         paramTable.editing = NO;
         [paramTable registerNib:[UINib nibWithNibName:@"ParamTableCell" bundle:nil]
@@ -413,7 +431,7 @@ CGFloat const CPDBarInitialX = 0.25f;
     [graph.plotAreaFrame setPaddingRight:10.0f];
     [graph.plotAreaFrame setPaddingTop:65.0f];
     [graph.plotAreaFrame setPaddingBottom:25.0f];
-    CGColorRef underPage = [UIColor viewFlipsideBackgroundColor].CGColor;
+    CGColorRef underPage = self.backgroundColor.CGColor;
     graph.plotAreaFrame.backgroundColor = underPage;
     
     //---- strelka
@@ -471,7 +489,7 @@ CGFloat const CPDBarInitialX = 0.25f;
     [graph.plotAreaFrame setPaddingRight:0.0f];
     [graph.plotAreaFrame setPaddingTop:0.0f];
     [graph.plotAreaFrame setPaddingBottom:0.0f];
-    CGColorRef underPage = [UIColor viewFlipsideBackgroundColor].CGColor;
+    CGColorRef underPage = self.backgroundColor.CGColor;
     graph.plotAreaFrame.backgroundColor = underPage;
     graph.paddingBottom = 25.0f;
     // instantiating delegate
@@ -503,7 +521,7 @@ CGFloat const CPDBarInitialX = 0.25f;
 - (void) configureXYGraph:(NSString *)title dataSource:(id<CPTPlotDataSource>)ds {
     CPTGraph *graph = [[CPTXYGraph alloc] initWithFrame:self.graphView.frame];
     self.graphView.hostedGraph = graph;
-    CGColorRef underPage = [UIColor viewFlipsideBackgroundColor].CGColor;
+    CGColorRef underPage = self.backgroundColor.CGColor;
     graph.plotAreaFrame.backgroundColor = underPage;
     graph.paddingLeft = graph.paddingRight = graph.paddingTop = 5.0f;
     graph.paddingBottom = 25.0f;
@@ -644,8 +662,8 @@ CGFloat const CPDBarInitialX = 0.25f;
     CPTXYAxisSet *xyAxisSet = (CPTXYAxisSet *) graph.axisSet;
     
     CPTMutableTextStyle *axisTitleStyle = [CPTMutableTextStyle textStyle];
-    axisTitleStyle.color = [[CPTColor darkGrayColor] colorWithAlphaComponent:0.8f];
-    axisTitleStyle.fontName = @"Helvetica-Bold";
+    axisTitleStyle.color = [CPTColor colorWithCGColor:self.mainTextColor.CGColor];
+    axisTitleStyle.fontName = @"Helvetica";
     axisTitleStyle.fontSize = 13.0f;
     
     xyAxisSet.xAxis.titleTextStyle = axisTitleStyle;
@@ -1010,7 +1028,7 @@ CGFloat const CPDBarInitialX = 0.25f;
 -(void)refreshButtonHandler {
     NSLog(@"refresh button clicked");
     
-    CPTBarPlot *barPlot = [self.graphView.hostedGraph.allPlots objectAtIndex:0];    
+    /*CPTBarPlot *barPlot = [self.graphView.hostedGraph.allPlots objectAtIndex:0];
     [CorePlotUtils setAnchorPoint:CGPointMake(0.0, 0.0) forPlot:barPlot];
     CABasicAnimation *scaling = [CABasicAnimation
                                  animationWithKeyPath:@"transform.scale.y"];
@@ -1019,8 +1037,8 @@ CGFloat const CPDBarInitialX = 0.25f;
     scaling.duration = 1.0f; // Duration
     scaling.removedOnCompletion = NO;
     scaling.fillMode = kCAFillModeForwards;
-    [barPlot addAnimation:scaling forKey:@"scaling"];
-    /*
+    [barPlot addAnimation:scaling forKey:@"scaling"];*/
+    
     // выбранный отчет
     GkhReport *report = [self.tableDataSource gkhReportAt:self.selectedRow];
     
@@ -1058,7 +1076,7 @@ CGFloat const CPDBarInitialX = 0.25f;
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Reloading report %@ failed", report.id);
         [self hideLoadingMask];
-    }];*/
+    }];
 }
 
 #pragma mark Rotate handler

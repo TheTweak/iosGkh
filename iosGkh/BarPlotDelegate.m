@@ -28,7 +28,7 @@ CGFloat const pay_label_height = 1.1;
 CGFloat const pay_label_pos = 0.2;
 
 CGFloat const period_label_height = -0.1;
-CGFloat const period_label_pos = 0.85;
+CGFloat const period_label_pos = 0.825;
 
 @synthesize periodAnnotation = _periodAnnotation;
 @synthesize nachAnnotation = _nachAnnotation;
@@ -41,7 +41,7 @@ CGFloat const period_label_pos = 0.85;
 - (CPTShadow *) shadow {
     if (!_shadow) {
         CPTMutableShadow *shadow = [CPTMutableShadow shadow];
-        shadow.shadowColor = [CPTColor grayColor];
+        shadow.shadowColor = [CPTColor lightGrayColor];
         shadow.shadowOffset = CGSizeMake(1.0, 1.0);
         _shadow = shadow;
     }

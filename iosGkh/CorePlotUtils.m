@@ -46,9 +46,9 @@ static NSArray *_monthsArray;
 + (CPTMutableTextStyle *)orangeHelvetica {
     if (!_orangeHelvetica) {
         _orangeHelvetica = [CPTMutableTextStyle textStyle];
-        _orangeHelvetica.color= [CPTColor colorWithComponentRed:0 green:.3943 blue:.91 alpha:1];
+        _orangeHelvetica.color= [CPTColor colorWithCGColor:[UIColor darkTextColor].CGColor];
         _orangeHelvetica.fontSize = 17.0f;
-        _orangeHelvetica.fontName = @"Helvetica-Bold";
+        _orangeHelvetica.fontName = @"Helvetica";
     }
     return _orangeHelvetica;
 }
@@ -56,9 +56,9 @@ static NSArray *_monthsArray;
 + (CPTMutableTextStyle *)whiteHelvetica {
     if (!_whiteHelvetica) {
         _whiteHelvetica = [CPTMutableTextStyle textStyle];
-        _whiteHelvetica.color= [CPTColor whiteColor];
+        _whiteHelvetica.color = [CPTColor colorWithCGColor:[UIColor darkTextColor].CGColor];
         _whiteHelvetica.fontSize = 15.0f;
-        _whiteHelvetica.fontName = @"Helvetica-Bold";
+        _whiteHelvetica.fontName = @"Helvetica";
     }
     return _whiteHelvetica;
 }
@@ -66,9 +66,9 @@ static NSArray *_monthsArray;
 + (CPTMutableTextStyle *)greenHelvetica {
     if (!_greenHelvetica) {
         _greenHelvetica = [CPTMutableTextStyle textStyle];
-        _greenHelvetica.color= [CPTColor colorWithComponentRed:0.6793 green:1.0 blue:0.26 alpha:1];
+        _greenHelvetica.color= [CPTColor colorWithComponentRed:32.0/255.0 green:107.0/255.0 blue:164.0/255.0 alpha:1];
         _greenHelvetica.fontSize = 17.0f;
-        _greenHelvetica.fontName = @"Helvetica-Bold";
+        _greenHelvetica.fontName = @"Helvetica";
     }
     return _greenHelvetica;
 }

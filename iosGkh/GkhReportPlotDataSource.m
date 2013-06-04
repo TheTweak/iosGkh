@@ -111,11 +111,11 @@
 
 - (CPTFill *) barFillForBarPlot:(CPTBarPlot *)barPlot recordIndex:(NSUInteger)idx {
     CPTGradient *gradient;
-    CPTColor *begin = [CPTColor colorWithComponentRed:0 green:.3943 blue:.91 alpha:1];
-    CPTColor *end = [CPTColor colorWithComponentRed:0 green:.3943 blue:.91 alpha:.34];
+    CPTColor *begin = [CPTColor colorWithComponentRed:124.0/255.0 green:124.0/255.0 blue:124.0/255.0 alpha:1];
+    CPTColor *end = [CPTColor colorWithComponentRed:124.0/255.0 green:124.0/255.0 blue:124.0/255.0 alpha:.5];
     if ([@"sec" isEqualToString:barPlot.title]) {
-        CPTColor *begin = [CPTColor colorWithComponentRed:0.4023 green:0.71 blue:0 alpha:1];
-        CPTColor *end = [CPTColor colorWithComponentRed:0.6793 green:1.0 blue:0.26 alpha:1];
+        CPTColor *begin = [CPTColor colorWithComponentRed:187.0/255.0 green:217.0/255.0 blue:238.0/255.0 alpha:1];
+        CPTColor *end = [CPTColor colorWithComponentRed:187.0/255.0 green:217.0/255.0 blue:238.0/255.0 alpha:.5];
         gradient = [CPTGradient gradientWithBeginningColor:begin
                                                endingColor:end];
     } else {
