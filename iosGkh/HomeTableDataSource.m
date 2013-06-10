@@ -43,16 +43,6 @@
 
 - (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 #warning Reusable cell
-    /*UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle
-                                                   reuseIdentifier:nil];
-    cell.detailTextLabel.textColor = [UIColor darkGrayColor];
-    cell.textLabel.textColor = [UIColor whiteColor];
-    cell.textLabel.shadowColor = [UIColor darkGrayColor];
-    cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
-    
-    UIView *bgColorView = [[UIView alloc] init];
-    [bgColorView setBackgroundColor:[UIColor colorWithRed:0.4023 green:0.71 blue:0 alpha:1]];
-    cell.selectedBackgroundView = bgColorView;*/
     static NSString *CellIdentifier = @"ReportCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     GkhReport *report = [self.reportArray objectAtIndex:indexPath.row];

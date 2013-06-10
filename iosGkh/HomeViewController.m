@@ -65,6 +65,7 @@
 @property (nonatomic)  CATransition *rowSelectAnimation;
 @property (nonatomic)  UIColor *backgroundColor;
 @property (nonatomic) UIColor *mainTextColor;
+@property UIScrollView *bottomView;
 @end
 
 @implementation HomeViewController
@@ -72,8 +73,6 @@
 CGFloat const CPDBarWidth    = 0.2f;
 CGFloat const CPDBarInitialX = 0.25f;
 
-@synthesize navigationBar =                _navigationBar;
-@synthesize toolbar =                      _toolbar;
 @synthesize tableDataSource =              _tableDataSource;
 @synthesize graphDictionary =              _graphDictionary;
 @synthesize loadingMask =                  _loadingMask;
@@ -87,6 +86,7 @@ CGFloat const CPDBarInitialX = 0.25f;
 @synthesize scopeLabel =                   _scopeLabel;
 @synthesize rowSelectAnimation =           _rowSelectAnimation;
 @synthesize backgroundColor = _backgroundColor;
+@synthesize bottomView = _bottomView;
 
 -(UIColor *)backgroundColor {
     if (!_backgroundColor) {
@@ -106,37 +106,37 @@ CGFloat const CPDBarInitialX = 0.25f;
 
 - (void) viewDidLoad {
     [super viewDidLoad];
-    [self.view setAutoresizesSubviews:NO];
-    [self registerForNotifications];    
+    [self registerForNotifications];
+    self.title = @"Отчеты";
     UITableView *tableView = self.tableView;
     tableView.backgroundColor = self.backgroundColor;
     tableView.separatorColor = [UIColor darkGrayColor];
     tableView.dataSource = self.tableDataSource;
     tableView.delegate = self;
-    /*tableView.layer.borderColor = [CorePlotUtils blueColor];
-    tableView.layer.borderWidth = 2.0f;
-    tableView.layer.cornerRadius = 8.0f;*/
+    //self.pageControlView.numberOfPages = 0;
+}
+
+-(void)viewWillAppear:(BOOL)animated {
+    CGRect tableRect = CGRectMake(0, 0, self.tableView.frame.size.width, self.tableView.rowHeight * 3);
+    self.tableView.frame = tableRect;
+    CGRect scrollViewRect = CGRectMake(0, tableRect.size.height,
+                                       self.view.frame.size.width, self.view.frame.size.height - tableRect.size.height);
+    UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:scrollViewRect];
+    self.bottomView = scrollView;
+    scrollView.backgroundColor = self.backgroundColor;
+    scrollView.showsHorizontalScrollIndicator = NO;
+    scrollView.showsVerticalScrollIndicator = NO;
+    scrollView.pagingEnabled = YES;
+    scrollView.delegate = self;
+    [self.view addSubview:scrollView];
     UINavigationBar *navBar = [[self navigationController] navigationBar];
-//    [navBar setTintColor:[UIColor colorWithRed:0 green:.3943 blue:.91 alpha:1]];
     [navBar setTintColor:[UIColor colorWithRed:32.0/255.0 green:107.0/255.0 blue:164.0/255.0 alpha:1.0]];
-#warning todo remove explicit height calculation
-    float graphViewWidth = self.view.bounds.size.width
-         ,graphViewHeight = self.view.frame.size.height - 160 - 28;
-        
+    float graphViewWidth = self.bottomView.frame.size.width
+        ,graphViewHeight = self.bottomView.frame.size.height;
     self.graphView = [[CPTGraphHostingView alloc] initWithFrame:CGRectMake(0, 0,
                                                                            graphViewWidth,
                                                                            graphViewHeight)];
-    self.pageControlView.numberOfPages = 0;
-    // scroll view settings    
-    self.bottomView.contentSize = CGSizeMake(graphViewWidth * 2, 0);
-    self.bottomView.showsHorizontalScrollIndicator = NO;
-    self.bottomView.showsVerticalScrollIndicator = NO;
-    self.bottomView.pagingEnabled = YES;
-    self.bottomView.delegate = self;
-    self.bottomView.backgroundColor = self.backgroundColor;
-//    self.bottomView.layer.borderColor = [CorePlotUtils blueColor];
-//    self.bottomView.layer.borderWidth = 2.0f;
-//    self.bottomView.layer.cornerRadius = 8.0f;
+    self.bottomView.contentSize = CGSizeMake(graphViewWidth * 1, 0);
     [self.bottomView addSubview:self.graphView];
 }
 

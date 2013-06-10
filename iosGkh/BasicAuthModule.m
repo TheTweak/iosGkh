@@ -37,6 +37,9 @@ static NSString *role;
 + (void) authenticateWithLogin:(NSString *)login
                    andPassword:(NSString *)password {
     NSString *serverAddress = [[NSUserDefaults standardUserDefaults] valueForKey:@"server_address"];
+    if (!serverAddress) {
+        serverAddress = @"http://192.168.1.6";
+    }
     [self authenticateWithLogin:login andPassword:password byURL:[serverAddress stringByAppendingString:@":8081/jersey"]];
 }
 

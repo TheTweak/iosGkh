@@ -15,9 +15,6 @@
                                                 UIScrollViewDelegate, UITextFieldDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
-@property (weak, nonatomic) IBOutlet UIScrollView *bottomView;
-@property (weak, nonatomic) IBOutlet UINavigationBar *navigationBar;
-@property (weak, nonatomic) IBOutlet UIToolbar *toolbar;
 @property (weak, nonatomic) IBOutlet UIPageControl *pageControlView;
 - (void) hideLoadingMask;
 - (void) showLoadingMask;
