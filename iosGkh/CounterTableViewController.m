@@ -72,7 +72,6 @@
             NSLog(@"Failed to load counters table: %@", error);
         }];
     }
-#warning Potentially incomplete method implementation.
     // Return the number of sections.
     return self.devices.count;
 }

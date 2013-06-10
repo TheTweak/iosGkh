@@ -8,7 +8,6 @@
 
 #import "HomeViewController.h"
 #import "MetricSelectionViewController.h"
-#import "Nach.h"
 #import "BarPlotSelectingArrow.h"
 #import "HomeTableDataSource.h"
 #import "CustomView.h"
@@ -20,7 +19,6 @@
 #import "BasicAuthModule.h"
 #import "ActionSheetStringPicker.h"
 #import "SBJsonParser.h"
-#import "Nach.h"
 #import "GkhReportPlotDataSource.h"
 #import "GkhReportParamTableViewController.h"
 #import "GkhReportParamTableDataSource.h"
@@ -167,27 +165,12 @@ CGFloat const CPDBarInitialX = 0.25f;
         NSArray *pages = [self.graphToPagesDictionary valueForKey:[current title]];
         UIViewController *viewController = (UIViewController *) [pages objectAtIndex:pageNumber - 1];
         UITableView *tableView = (UITableView *) viewController.view;
-        Nach *ds = (Nach *) tableView.dataSource;
-        ds.tableNeedsReloading = YES;
         [tableView reloadData];
     }
     NSLog(@"EndDecelerating:%i", pageNumber);
 }
 
 #pragma mark UIViewController
-
-// enabling shake event!
-- (BOOL) canBecomeFirstResponder {
-    return YES;
-}
-
-// shake motion handler
-- (void) motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event {
-    if (motion == UIEventSubtypeMotionShake) {
-        NSLog(@"SHAKEEE");        
-    }
-}
-
 #pragma mark Accessors
 
 -(CATransition *)rowSelectAnimation {
@@ -385,7 +368,6 @@ CGFloat const CPDBarInitialX = 0.25f;
 - (void)tableView:(UITableView *)tableView
         accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
     self.selectedRow = indexPath.row;
-#warning Refactor
     GkhReport *gkhReport = [self.tableDataSource gkhReportAt:indexPath.row];
     CGFloat width = self.view.frame.size.width,
             height = self.tableView.frame.size.height;
@@ -729,13 +711,6 @@ CGFloat const CPDBarInitialX = 0.25f;
     self.scopeLabel.text = text;
 }
 
-- (NSDictionary *) selectedParameterMeta {
-    NSIndexPath *path = [self.tableView indexPathForSelectedRow];
-#warning Refactor
-    NSDictionary *meta = /*[self.tableDataSource customPropertiesAtRowIndex:path.item];*/ [NSDictionary dictionary];
-    return meta;
-}
-
 - (void) pan:(UIPanGestureRecognizer *)recognizer {
     if ((recognizer.state == UIGestureRecognizerStateChanged) ||
         (recognizer.state == UIGestureRecognizerStateEnded)) {
@@ -854,33 +829,6 @@ CGFloat const CPDBarInitialX = 0.25f;
     [self.graphView.hostedGraph reloadData];
 }
 
-// updating the param input.
-// updating the input param value 
-- (void) updateTableData:(NSNotification *) notification {
-    NSString *keyToUpdate = [notification.userInfo valueForKey:@"updateKey"];
-    id newValue = [notification.userInfo valueForKey:@"newValue"];
-    NSNumber *rowIndex = [notification.userInfo valueForKey:@"rowIndex"];
-    NSUInteger row = [rowIndex integerValue];
-#warning Refactor
-    NSDictionary *properties = /*[self.tableDataSource customPropertiesAtRowIndex:row]*/ [NSDictionary dictionary];
-    NSDictionary *input = [properties valueForKey:@"input"];
-    NSMutableDictionary *newInput = [NSMutableDictionary dictionaryWithDictionary:input];
-    NSMutableDictionary *newParamInput = [newInput valueForKey:keyToUpdate];
-    [newParamInput setValue:newValue forKey:@"value"];
-    [newInput setValue:newParamInput forKey:keyToUpdate];
-    
-    NSMutableDictionary *newProperties = [NSMutableDictionary dictionaryWithDictionary:properties];
-    [newProperties setValue:newInput forKey:@"input"];
-    
-    properties = [newProperties dictionaryWithValuesForKeys:[properties allKeys]];
-//    [self.tableDataSource setCustomInputProperties:properties atIndex:row];
-}
-
-// updating the data for row in table
-- (void) updateRowAtIndex:(NSUInteger)row withData:(NSDictionary *)data {
-//    [self.tableDataSource setCustomProperties:data atIndex:row];
-}
-
 // update current page period text field
 -(void) updateCurrentPeriodField:(NSNotification *) notification {
     NSDictionary *userInfo = [notification userInfo];
@@ -890,17 +838,6 @@ CGFloat const CPDBarInitialX = 0.25f;
 
 -(void) _updateCurrentPeriodField:(NSString *) period
                       reloadTable:(BOOL) reload{
-    NSInteger currentPage = [self determineCurrentPageNumber:self.bottomView.contentOffset.x];
-    UITableViewController *pageTableViewController = [self.pageViewControllersArray objectAtIndex:currentPage - 1];
-    UITableView *tableView = pageTableViewController.tableView;
-    Nach *dataSource = (Nach *) tableView.dataSource;
-    dataSource.tableNeedsReloading = reload;
-    dataSource.period = period;
-    UITextField *periodField = (UITextField *) [self.bottomView viewWithTag:14 + (currentPage - 1)];
-    periodField.text = period;
-    if (reload) {
-        [tableView reloadData];
-    }
 }
 
 // обработчик нажатия на поле выбора параметра графика
@@ -1053,6 +990,7 @@ CGFloat const CPDBarInitialX = 0.25f;
         [requestParameters setValue:input.value forKey:input.id];
     }
     [self showLoadingMask];
+    [self resetLabels];
     [client postPath:@"param/value" parameters:requestParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"Reloading report %@ succeeded", report.id);
         SBJsonParser *jsonParser = [[SBJsonParser alloc] init];
@@ -1150,8 +1088,6 @@ CGFloat const CPDBarInitialX = 0.25f;
         UIViewController *controller = [self.pageViewControllersArray objectAtIndex:pageNumber - 1];
         UIView *view = controller.view;
         UITableView *tableView = (UITableView *) view;
-        Nach *ds = (Nach *) tableView.dataSource;
-        ds.tableNeedsReloading = YES;
         [tableView reloadData];
     }
     CGPoint point;

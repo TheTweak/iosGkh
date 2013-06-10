@@ -42,7 +42,6 @@
 #pragma mark UITableViewDataSource delegate
 
 - (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-#warning Reusable cell
     static NSString *CellIdentifier = @"ReportCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     GkhReport *report = [self.reportArray objectAtIndex:indexPath.row];

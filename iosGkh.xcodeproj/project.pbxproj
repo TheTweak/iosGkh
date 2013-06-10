@@ -60,7 +60,6 @@
 		61A3AC5116904863005D3311 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 61A3AC4A16904862005D3311 /* SettingsViewController.m */; };
 		61A3AC5316904863005D3311 /* LoginScreenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 61A3AC4E16904863005D3311 /* LoginScreenViewController.m */; };
 		61A3AC5916904909005D3311 /* BasicAuthModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 61A3AC5516904909005D3311 /* BasicAuthModule.m */; };
-		61A3AC6116904DB5005D3311 /* Nach.m in Sources */ = {isa = PBXBuildFile; fileRef = 61A3AC5E16904DB4005D3311 /* Nach.m */; };
 		61A6B30D16F07E3E00C6D1A6 /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 61A6B30C16F07E3E00C6D1A6 /* Constants.m */; };
 		61A6B31716F0C54000C6D1A6 /* PickerField.m in Sources */ = {isa = PBXBuildFile; fileRef = 61A6B31616F0C54000C6D1A6 /* PickerField.m */; };
 		61E81AF916EE054B00819BDD /* CustomView.m in Sources */ = {isa = PBXBuildFile; fileRef = 61E81AF816EE054B00819BDD /* CustomView.m */; };
@@ -169,8 +168,6 @@
 		61A3AC4E16904863005D3311 /* LoginScreenViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginScreenViewController.m; sourceTree = "<group>"; };
 		61A3AC5516904909005D3311 /* BasicAuthModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BasicAuthModule.m; sourceTree = "<group>"; };
 		61A3AC5716904909005D3311 /* BasicAuthModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BasicAuthModule.h; sourceTree = "<group>"; };
-		61A3AC5E16904DB4005D3311 /* Nach.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Nach.m; sourceTree = "<group>"; };
-		61A3AC5F16904DB5005D3311 /* Nach.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Nach.h; sourceTree = "<group>"; };
 		61A6B30B16F07E3E00C6D1A6 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		61A6B30C16F07E3E00C6D1A6 /* Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
 		61A6B31516F0C54000C6D1A6 /* PickerField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickerField.h; sourceTree = "<group>"; };
@@ -423,8 +420,6 @@
 		61A3AC6216904DB9005D3311 /* Core Plot DS */ = {
 			isa = PBXGroup;
 			children = (
-				61A3AC5E16904DB4005D3311 /* Nach.m */,
-				61A3AC5F16904DB5005D3311 /* Nach.h */,
 				92DD92EE175200DE004426E6 /* GkhReportPlotDataSource.h */,
 				92DD92EF175200DE004426E6 /* GkhReportPlotDataSource.m */,
 			);
@@ -610,7 +605,6 @@
 				61A3AC5116904863005D3311 /* SettingsViewController.m in Sources */,
 				61A3AC5316904863005D3311 /* LoginScreenViewController.m in Sources */,
 				61A3AC5916904909005D3311 /* BasicAuthModule.m in Sources */,
-				61A3AC6116904DB5005D3311 /* Nach.m in Sources */,
 				6140D1A5169721960066F51C /* BarPlotSelectingArrow.m in Sources */,
 				6191BC5C169AD63500CE85BA /* HomeTableDataSource.m in Sources */,
 				61E81AF916EE054B00819BDD /* CustomView.m in Sources */,

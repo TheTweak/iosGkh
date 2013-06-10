@@ -18,7 +18,4 @@
 @property (weak, nonatomic) IBOutlet UIPageControl *pageControlView;
 - (void) hideLoadingMask;
 - (void) showLoadingMask;
-- (void) updateRowAtIndex:(NSUInteger)row withData:(NSDictionary *)data;
-// get meta-info about current selected parameter (table row)
-- (NSDictionary *) selectedParameterMeta;
 @end
