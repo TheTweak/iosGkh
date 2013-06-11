@@ -18,8 +18,6 @@
 @property UITextField *password;
 @property UITextField *login;
 @property UITextField *fls;
-@property (nonatomic)  UIActivityIndicatorView *loadingIndicator;
-@property (nonatomic)  UIView *loadingMask;
 @end
 
 @implementation LoginScreenViewController
@@ -29,33 +27,8 @@
 @synthesize password = _password;
 @synthesize login = _login;
 @synthesize fls = _fls;
-@synthesize loadingMask = _loadingMask;
-@synthesize loadingIndicator = _loadingIndicator;
 
 #pragma mark Accessors
-
--(UIActivityIndicatorView *)loadingIndicator {
-    if (!_loadingIndicator) {
-        _loadingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-        _loadingIndicator.hidesWhenStopped = YES;
-    }
-    return _loadingIndicator;
-}
-
-- (UIView *)loadingMask {
-    if (!_loadingMask) {
-        _loadingMask = [[UIView alloc] initWithFrame:CGRectMake(0, 0,
-                                                                self.view.frame.size.width, self.view.frame.size.height)];
-        _loadingMask.opaque = NO;
-        _loadingMask.backgroundColor = [UIColor blackColor];
-        _loadingMask.alpha = 0.5f;
-        UIActivityIndicatorView *activityIndicator = self.loadingIndicator;
-        [activityIndicator startAnimating];
-        activityIndicator.center = _loadingMask.center;
-        [_loadingMask addSubview:activityIndicator];
-    }
-    return _loadingMask;
-}
 
 - (void) viewDidLoad {
     [super viewDidLoad];
@@ -151,6 +124,7 @@
 #pragma mark Login button handlers
 
 - (IBAction) authenticatePressed {
+    [self clearErrorText];
     switch (self.segment) {
         case 0: { // auth uk
             NSString *userName = self.login.text;
@@ -169,32 +143,7 @@
 - (void) authenticateDweller {
     [self showLoadingMask];
     NSString *flsNomer = self.fls.text;
-    [[BasicAuthModule class] authenticateAsDweller:@"user"
-                                          password:@"1234"
-                                          flsNomer:flsNomer
-                                           success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                                               [self hideLoadingMask];
-                                               NSData *responseData = (NSData *)responseObject;
-                                               NSString *responseString = [[NSString alloc] initWithData:responseData
-                                                                                                encoding:NSUTF8StringEncoding];
-                                               if (responseData) {
-                                                   // fls id obtained, segue to counter table view
-                                                   [[Dweller class] setFls:responseString];
-                                                   [self performSegueWithIdentifier:@"authDweller" sender:self];
-                                               } else {
-                                                   UIAlertView *alert = [[UIAlertView alloc]
-                                                                         initWithTitle:@"Не найден ФЛС"
-                                                                         message:@"Введенный номер не существует"
-                                                                         delegate:nil
-                                                                         cancelButtonTitle:@"OK"
-                                                                         otherButtonTitles:nil];
-                                                   [alert show];
-                                               }
-                                           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                                               [self hideLoadingMask];
-                                               self.errorLabel.text = [error localizedDescription];
-                                               NSLog(@"Failure");
-                                           }];
+    [[BasicAuthModule class] authenticateAsDweller:@"user" password:@"1234" flsNomer:flsNomer];
 }
 
 #pragma mark Segment control handlers
@@ -223,9 +172,23 @@
                                              selector:@selector(hideLoadingMask)
                                                  name:@"HideLoginLoadingMask"
                                                object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(showAlertView)
+                                                 name:@"ShowAlert"
+                                               object:nil];
 }
 
 #pragma mark Notifications
+
+- (void) showAlertView {
+    UIAlertView *alert = [[UIAlertView alloc]
+                          initWithTitle:@"Не найден ФЛС"
+                          message:@"Введенный номер не существует"
+                          delegate:nil
+                          cancelButtonTitle:@"OK"
+                          otherButtonTitles:nil];
+    [alert show];
+}
 
 - (void) authenticationErrorOccured:(NSNotification *)notification {
     NSString *errorText = [[notification userInfo]
@@ -245,12 +208,11 @@
 }
 
 -(void) showLoadingMask {
-    [self.view addSubview:self.loadingMask];
+    self.loadingView.hidden = NO;
 }
 
 -(void) hideLoadingMask {
-    [self.loadingIndicator stopAnimating];
-    [self.loadingMask removeFromSuperview];
+    self.loadingView.hidden = YES;
 }
 
 #pragma mark Other
@@ -259,5 +221,10 @@
     [theTextField resignFirstResponder];
     return YES;
 }
+
+- (void) clearErrorText {
+    self.errorLabel.text = @"";
+}
+
 
 @end

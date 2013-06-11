@@ -7,6 +7,7 @@
 //
 
 #import "BasicAuthModule.h"
+#import "Dweller.h"
 #import <AFNetworking.h>
 
 @implementation BasicAuthModule
@@ -15,6 +16,7 @@ static AFHTTPClient *client;
 // client with 'dweller' role
 static AFHTTPClient *dwellerClient;
 static NSString *role;
+static BOOL isLoading;
 
 -(void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -44,37 +46,62 @@ static NSString *role;
 }
 
 + (void) authenticateWithLogin:(NSString *)login andPassword:(NSString *)password byURL:(NSString *)url {
-    NSURL *nsUrl = [NSURL URLWithString:url];
-    client = [AFHTTPClient clientWithBaseURL:nsUrl];
-    [client setAuthorizationHeaderWithUsername:login password:password];
-    [client getPath:@"auth" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSData *responseData = (NSData *)responseObject;
-        NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
-        role = responseString;
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"AuthenticationSucceeded"
-                                                            object:self
-                                                            userInfo:[NSDictionary dictionaryWithObjectsAndKeys:role, @"Role", nil]];
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"HideLoginLoadingMask" object:self];
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSString *errorDescription = [error localizedDescription];
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"AuthenticationError"
-                                                            object:self
-                                                          userInfo:[NSDictionary dictionaryWithObjectsAndKeys: errorDescription, @"ErrorDescription", nil]];
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"HideLoginLoadingMask" object:self];
-    }];
+    if (!isLoading) {
+        isLoading = YES;
+        NSURL *nsUrl = [NSURL URLWithString:url];
+        client = [AFHTTPClient clientWithBaseURL:nsUrl];
+        [client setAuthorizationHeaderWithUsername:login password:password];
+        [client getPath:@"auth" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSData *responseData = (NSData *)responseObject;
+            NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+            role = responseString;
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"AuthenticationSucceeded"
+                                                                object:self
+                                                              userInfo:[NSDictionary dictionaryWithObjectsAndKeys:role, @"Role", nil]];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"HideLoginLoadingMask" object:self];
+            isLoading = NO;
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            NSString *errorDescription = [error localizedDescription];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"AuthenticationError"
+                                                                object:self
+                                                              userInfo:[NSDictionary dictionaryWithObjectsAndKeys: errorDescription, @"ErrorDescription", nil]];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"HideLoginLoadingMask" object:self];
+            isLoading = NO;
+        }];
+    }
 }
 
 // authorize as dweller and check FLS existence
 + (void) authenticateAsDweller:(NSString *)login
                       password:(NSString *)password
-                      flsNomer:(NSString *)flsNomer
-                       success:(void (^)(AFHTTPRequestOperation *, id))success
-                       failure:(void (^)(AFHTTPRequestOperation *, NSError *))failure {
-    NSURL *nsUrl = [NSURL URLWithString:@"http://localhost:8081/jersey/dweller"];
-    dwellerClient = [AFHTTPClient clientWithBaseURL:nsUrl];
-    [dwellerClient setAuthorizationHeaderWithUsername:login password:password];
-    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:flsNomer, @"flsNomer", nil];
-    [dwellerClient postPath:@"fls" parameters:params success:success failure:failure];
+                      flsNomer:(NSString *)flsNomer {
+    if (!isLoading) {
+        NSURL *nsUrl = [NSURL URLWithString:@"http://localhost:8081/jersey/dweller"];
+        dwellerClient = [AFHTTPClient clientWithBaseURL:nsUrl];
+        [dwellerClient setAuthorizationHeaderWithUsername:login password:password];
+        NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:flsNomer, @"flsNomer", nil];
+        [dwellerClient postPath:@"fls" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSData *responseData = (NSData *)responseObject;
+            NSString *responseString = [[NSString alloc] initWithData:responseData
+                                                             encoding:NSUTF8StringEncoding];
+            if (responseData) {
+                // fls id obtained, segue to counter table view
+                [[Dweller class] setFls:responseString];
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"AuthenticationSucceeded"
+                                                                    object:self
+                                                                  userInfo:@{@"Role": @"dweller"}];
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"HideLoginLoadingMask" object:self];
+            } else {
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"ShowAlert" object:self];
+            }
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            NSString *errorDescription = [error localizedDescription];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"AuthenticationError"
+                                                                object:self
+                                                              userInfo:@{@"ErrorDescription": errorDescription}];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"HideLoginLoadingMask" object:self];
+        }];
+    }
 }
 
 @end
