@@ -18,7 +18,8 @@
 @property UITextField *password;
 @property UITextField *login;
 @property UITextField *fls;
-@property (nonatomic)  UIActivityIndicatorView *loadingMask;
+@property (nonatomic)  UIActivityIndicatorView *loadingIndicator;
+@property (nonatomic)  UIView *loadingMask;
 @end
 
 @implementation LoginScreenViewController
@@ -29,15 +30,29 @@
 @synthesize login = _login;
 @synthesize fls = _fls;
 @synthesize loadingMask = _loadingMask;
+@synthesize loadingIndicator = _loadingIndicator;
 
 #pragma mark Accessors
 
--(UIActivityIndicatorView *)loadingMask {
+-(UIActivityIndicatorView *)loadingIndicator {
+    if (!_loadingIndicator) {
+        _loadingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+        _loadingIndicator.hidesWhenStopped = YES;
+    }
+    return _loadingIndicator;
+}
+
+- (UIView *)loadingMask {
     if (!_loadingMask) {
-        _loadingMask = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-        _loadingMask.hidesWhenStopped = YES;
-        _loadingMask.center = self.view.center;
-        [self.view addSubview:_loadingMask];
+        _loadingMask = [[UIView alloc] initWithFrame:CGRectMake(0, 0,
+                                                                self.view.frame.size.width, self.view.frame.size.height)];
+        _loadingMask.opaque = NO;
+        _loadingMask.backgroundColor = [UIColor blackColor];
+        _loadingMask.alpha = 0.5f;
+        UIActivityIndicatorView *activityIndicator = self.loadingIndicator;
+        [activityIndicator startAnimating];
+        activityIndicator.center = _loadingMask.center;
+        [_loadingMask addSubview:activityIndicator];
     }
     return _loadingMask;
 }
@@ -230,11 +245,12 @@
 }
 
 -(void) showLoadingMask {
-    [self.loadingMask startAnimating];
+    [self.view addSubview:self.loadingMask];
 }
 
 -(void) hideLoadingMask {
-    [self.loadingMask stopAnimating];
+    [self.loadingIndicator stopAnimating];
+    [self.loadingMask removeFromSuperview];
 }
 
 #pragma mark Other
