@@ -14,12 +14,10 @@
 @interface HomeTableDataSource ()
 // Массив отчетов которые грузятся в таблицу
 @property (nonatomic, strong) NSMutableArray* reportArray;
-@property(weak) UITableView *tableView;
+@property (weak, nonatomic) UITableView *tableView;
 @end
 
 @implementation HomeTableDataSource
-
-@synthesize reportArray = _reportArray;
 
 -(void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -45,39 +43,11 @@
     static NSString *CellIdentifier = @"ReportCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     GkhReport *report = [self.reportArray objectAtIndex:indexPath.row];
-    /*GkhPlotType plotType = report.plotType;
-    NSString *pngFileName;
-    switch (plotType) {
-        case GkhPlotTypeBar:    pngFileName = @"green_money48"; break;
-        case GkhPlotTypeCircle: pngFileName = @"fls48"; break;
-        case GkhPlotTypeXY:     pngFileName = @"stocks48"; break;
-        default: break;
-    }
-    NSString *path = [[NSBundle mainBundle] pathForResource:pngFileName ofType:@"png"];*/
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    UIImage *image = [UIImage imageNamed:@"20-gear2.png"];
-    CGRect frame = CGRectMake(0.0, 0.0, image.size.width, image.size.height);
-    button.frame = frame;
-    [button setBackgroundImage:image forState:UIControlStateNormal];
-    [button addTarget:self action:@selector(checkButtonTapped:event:)  forControlEvents:UIControlEventTouchUpInside];
-    button.backgroundColor = [UIColor clearColor];
-    cell.accessoryView = button;
     UILabel *reportName = (UILabel *)[cell viewWithTag:14];
     reportName.text = report.name;
     UILabel *reportDesc = (UILabel *) [cell viewWithTag:15];
     reportDesc.text = report.description;
     return cell;
-}
-
-- (void)checkButtonTapped:(id)sender event:(id)event
-{
-    NSSet *touches = [event allTouches];
-    UITouch *touch = [touches anyObject];
-    CGPoint currentTouchPosition = [touch locationInView:self.tableView];
-    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint: currentTouchPosition];
-    if (indexPath != nil) {
-        [self.tableView.delegate tableView: self.tableView accessoryButtonTappedForRowWithIndexPath: indexPath];
-    }
 }
 
 - (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
