@@ -196,15 +196,20 @@
     [self.errorLabel setText:errorText];
 }
 
+#define HOME_VIEW_CONTROLLER_ID @"ReportTableViewController"
+
 - (void) authenticationSucceeded:(NSNotification *)notification {
     NSString *role = [[notification userInfo] objectForKey:@"Role"];
     NSString *segueId;
+    UIViewController *controller;
     if ([@"dweller" isEqualToString:role]) {
         segueId = @"authDweller";
     } else if ([@"glava" isEqualToString:role]) {
         segueId = @"authGlava";
+        controller = [[self.navigationController storyboard] instantiateViewControllerWithIdentifier:HOME_VIEW_CONTROLLER_ID];
     }
-    [self performSegueWithIdentifier: segueId sender: self];
+    [self.navigationController pushViewController:controller animated:YES];
+//    [self performSegueWithIdentifier: segueId sender: self];
 }
 
 -(void) showLoadingMask {

@@ -393,7 +393,7 @@ CGFloat const CPDBarInitialX = 0.25f;
                                                                                                   style:UIBarButtonItemStylePlain
                                                                                                  target:self
                                                                                                  action:@selector(backButtonHandler)];
-                         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
+                         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
                                                                                                                 target:self
                                                                                                                 action:@selector(refreshButtonHandler)];
                          
