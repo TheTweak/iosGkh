@@ -7,8 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "GkhReport.h"
 
 @interface ReportViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
-@property (nonatomic, strong) NSArray *reportParams;
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
+@property (weak, nonatomic) GkhReport *report;
 @end

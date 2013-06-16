@@ -105,8 +105,7 @@
 {
     ReportViewController *reportViewController = [self.storyboard instantiateViewControllerWithIdentifier:REPORT_VIEW_CONTROLLER_ID];
     GkhReport *report = self.reportArray[indexPath.row];
-    reportViewController.title = report.name;
-    reportViewController.reportParams = report.inputParamArray;
+    reportViewController.report = report;
     [self.navigationController pushViewController:reportViewController animated:YES];
 }
 
