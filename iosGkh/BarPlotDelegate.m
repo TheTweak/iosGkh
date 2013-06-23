@@ -7,7 +7,7 @@
 //
 
 #import "BarPlotDelegate.h"
-#import "GkhReportPlotDataSource.h"
+#import "ReportPlotDataSource.h"
 #import "CorePlotUtils.h"
 
 @interface BarPlotDelegate ()
@@ -54,7 +54,7 @@ CGFloat const period_label_pos = 0.825;
     }
     CPTPlotArea *plotArea = plot.graph.plotAreaFrame.plotArea;
     // get business values for selected bar
-    GkhReportPlotDataSource *plotDataSource = (GkhReportPlotDataSource *) plot.dataSource;
+    id<ReportPlotDataSource> plotDataSource = (id<ReportPlotDataSource>) plot.dataSource;
         
     NSDictionary *businessVals = [plotDataSource getBusinessValues:idx];
     

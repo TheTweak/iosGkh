@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "GkhReport.h"
+#import "ReportPlotDataSource.h"
 
-@interface ReportViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
+@interface ReportViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, CPTPlotDataSource, CPTPlotDelegate, ReportPlotDataSource>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) GkhReport *report;

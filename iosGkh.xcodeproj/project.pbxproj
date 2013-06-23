@@ -184,6 +184,7 @@
 		9207F19C176DC70700E88E1C /* ReportTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReportTableViewController.m; sourceTree = "<group>"; };
 		9207F19E176DCD0400E88E1C /* ReportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReportViewController.h; sourceTree = "<group>"; };
 		9207F19F176DCD0400E88E1C /* ReportViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReportViewController.m; sourceTree = "<group>"; };
+		922B3BD017772F11009868D9 /* ReportPlotDataSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ReportPlotDataSource.h; sourceTree = "<group>"; };
 		922D94F0174B791F005589AF /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		925CE585174F545100545D13 /* GkhReport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GkhReport.h; sourceTree = "<group>"; };
 		925CE586174F545100545D13 /* GkhReport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GkhReport.m; sourceTree = "<group>"; };
@@ -313,6 +314,7 @@
 				61A6B30C16F07E3E00C6D1A6 /* Constants.m */,
 				6178216D16F8433D00E4BED1 /* CorePlotUtils.h */,
 				6178216E16F8433D00E4BED1 /* CorePlotUtils.m */,
+				922B3BD017772F11009868D9 /* ReportPlotDataSource.h */,
 			);
 			path = iosGkh;
 			sourceTree = "<group>";

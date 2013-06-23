@@ -14,5 +14,4 @@
 @interface BarPlotDelegate : NSObject <CPTBarPlotDelegate>
 // arrow, pointing on clicked bar
 @property (nonatomic, strong) CALayer *arrow;
-@property (nonatomic, weak) HomeViewController *homeVC;
 @end
