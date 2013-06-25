@@ -40,10 +40,10 @@ CGFloat const period_label_pos = 0.825;
 
 - (CPTShadow *) shadow {
     if (!_shadow) {
-        CPTMutableShadow *shadow = [CPTMutableShadow shadow];
+        /*CPTMutableShadow *shadow = [CPTMutableShadow shadow];
         shadow.shadowColor = [CPTColor lightGrayColor];
         shadow.shadowOffset = CGSizeMake(1.0, 1.0);
-        _shadow = shadow;
+        _shadow = shadow;*/
     }
     return _shadow;
 }

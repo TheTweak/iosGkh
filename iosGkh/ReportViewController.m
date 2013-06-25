@@ -12,6 +12,7 @@
 #import "SBJsonParser.h"
 #import "GkhReportPlotDataSource.h"
 #import "BarPlotDelegate.h"
+#import "ActionSheetStringPicker.h"
 
 @interface ReportViewController ()
 @property (nonatomic, strong) CPTGraphHostingView *graphHostingView;
@@ -96,6 +97,44 @@
     UILabel *paramDesc = (UILabel *) [cell viewWithTag:15];
     paramDesc.text = param.description;
     return cell;
+}
+
+#pragma mark Table view delegate
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    GkhInputType *param = self.report.inputParamArray[indexPath.row];
+    AFHTTPClient *client = [BasicAuthModule httpClient];
+    
+#warning TODO : loading mask
+    [client postPath:@"param/value/list" parameters:@{@"param": param.id} success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        SBJsonParser *jsonParser = [[SBJsonParser alloc] init];
+        NSData *responseData = (NSData *)responseObject;
+        NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+        NSArray *responseJson = [jsonParser objectWithString:responseString];
+        NSMutableArray *comboDataArray = [NSMutableArray array];
+        for(int i = 0, l = [responseJson count]; i < l; i++) {
+            NSDictionary *jsonObject = responseJson[i];
+            NSString *name = [jsonObject valueForKey:@"name"];
+            [comboDataArray insertObject:name atIndex:i];
+        }
+        [ActionSheetStringPicker showPickerWithTitle:param.description
+                                                rows:comboDataArray
+                                    initialSelection:0
+                                           doneBlock:^(ActionSheetStringPicker *picker, NSInteger selectedIndex, id selectedValue) {
+                                               NSDictionary *selectedJson = [responseJson objectAtIndex:selectedIndex];
+                                               NSString *value = selectedJson[@"name"];
+                                               param.value = value;
+                                               [tableView reloadData];
+                                           }
+                                         cancelBlock:^(ActionSheetStringPicker *picker) {
+                                             
+                                         }
+                                              origin:tableView.superview];
+        NSLog(@"Gettin %@ param's value list succeeded", param.id);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Gettin %@ param's value list failed", param.id);
+    }];
 }
 
 #pragma mark Plot data source
