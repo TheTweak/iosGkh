@@ -42,6 +42,10 @@
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.title = self.report.name;
+    UIBarButtonItem *refreshButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
+                                                                                   target:self
+                                                                                   action:@selector(refreshButtonHandler)];
+    self.navigationItem.rightBarButtonItem = refreshButton;
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -58,11 +62,7 @@
 
 -(void)viewDidAppear:(BOOL)animated
 {
-    NSMutableDictionary *requestParameters = [[NSMutableDictionary alloc] init];
-    requestParameters[REPORT_REQUEST_TYPE_KEY] = self.report.id;
-    for (GkhInputType *input in self.report.inputParamArray) {
-        requestParameters[input.id] = input.value;
-    }
+    NSDictionary *requestParameters = [self getRequestParameters];
 //    [self showLoadingMask];
     AFHTTPClient *client = [BasicAuthModule httpClient];
     [client postPath:REPORT_VALUES_REQUEST_PATH parameters:requestParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -464,6 +464,44 @@
     
     xyAxisSet.yAxis.labelingPolicy = CPTAxisLabelingPolicyNone;
     xyAxisSet.xAxis.labelingPolicy = CPTAxisLabelingPolicyNone;
+}
+
+#pragma mark Other
+
+-(void) refreshButtonHandler
+{
+    [self resetGraphLabels];
+    NSDictionary *requestParameters = [self getRequestParameters];
+    //    [self showLoadingMask];
+    AFHTTPClient *client = [BasicAuthModule httpClient];
+    [client postPath:REPORT_VALUES_REQUEST_PATH parameters:requestParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"Getting report plot data succeeded!");
+        SBJsonParser *jsonParser = [[SBJsonParser alloc] init];
+        NSData *responseData = (NSData *)responseObject;
+        NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+        NSDictionary *responseJson = [jsonParser objectWithString:responseString];
+        self.plotValues = responseJson[REPORT_RESPONSE_PLOT_VALUES_KEY];
+        [self.graphHostingView.hostedGraph reloadData];
+        //        [self hideLoadingMask];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Getting report plot data failed!");
+        //        [self hideLoadingMask];
+    }];
+}
+
+-(NSDictionary *) getRequestParameters
+{
+    NSMutableDictionary *requestParameters = [[NSMutableDictionary alloc] init];
+    requestParameters[REPORT_REQUEST_TYPE_KEY] = self.report.id;
+    for (GkhInputType *input in self.report.inputParamArray) {
+        requestParameters[input.id] = input.value;
+    }
+    return [NSDictionary dictionaryWithDictionary:requestParameters];
+}
+
+-(void) resetGraphLabels
+{
+    [self.graphHostingView.hostedGraph.plotAreaFrame.plotArea removeAllAnnotations];
 }
 
 @end

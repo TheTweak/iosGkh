@@ -21,11 +21,14 @@
 @implementation ReportTableViewController
 
 #define TITLE @"Отчеты"
+#define TITLE_FONT_SIZE 16.0
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     self.title = TITLE;
+    UIFont *font = [UIFont fontWithName:@"Helvetica" size:TITLE_FONT_SIZE];
+    [self.navigationController.navigationBar setTitleTextAttributes:@{UITextAttributeFont: font}];
 }
 
 #pragma mark - Table view data source
