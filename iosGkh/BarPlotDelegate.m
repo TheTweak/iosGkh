@@ -9,6 +9,7 @@
 #import "BarPlotDelegate.h"
 #import "ReportPlotDataSource.h"
 #import "CorePlotUtils.h"
+#import "QBPopupMenu.h"
 
 @interface BarPlotDelegate ()
 @property (nonatomic, strong) CPTAnnotation *periodAnnotation;
@@ -49,6 +50,7 @@ CGFloat const period_label_pos = 0.825;
 }
 
 - (void) barPlot:(CPTBarPlot *)plot barWasSelectedAtRecordIndex:(NSUInteger)idx {
+    // if plot == second bar plot, return!
     if (plot.isHidden) {
         return;
     }
@@ -126,9 +128,8 @@ CGFloat const period_label_pos = 0.825;
     plotPoint[CPTCoordinateY] = barHeight.decimalValue;
     // plot view area coords
     CPTPlotAreaFrame *plotAreaFrame = plot.graph.plotAreaFrame;
+    // plot point in the plotAreaView
     CGPoint cgPlotPoint = [plot.plotSpace plotAreaViewPointForPlotPoint:plotPoint];
-    CGPoint dataPoint = [plotAreaFrame convertPoint:cgPlotPoint
-                                          fromLayer:plotAreaFrame.plotArea];
     
     // percent label
     NSNumber *percent = [businessVals valueForKey:@"percent"];
@@ -146,6 +147,16 @@ CGFloat const period_label_pos = 0.825;
             self.percentAnnotation = nil;
         }
     }
+    
+    // Pop-up view
+    QBPopupMenu *popupMenu = [[QBPopupMenu alloc] init];
+    // rotate 180 degrees along x axis
+    popupMenu.layer.transform = CATransform3DMakeRotation(M_PI, 1.0, 0.0, 0.0);
+    QBPopupMenuItem *item = [QBPopupMenuItem itemWithTitle:percentLabel target:self action:nil];
+    popupMenu.items = [NSArray arrayWithObjects:item, nil];
+    cgPlotPoint = [plot.graph convertPoint:cgPlotPoint fromLayer:plotAreaFrame.plotArea];
+    [popupMenu showInView:plot.graph.hostingView atPoint:cgPlotPoint];
+    
     NSArray *anchorPoint = [NSArray arrayWithObjects:barPosition, [NSNumber numberWithFloat:0.1], nil];
     self.percentAnnotation = [[CPTPlotSpaceAnnotation alloc]
                               initWithPlotSpace:plot.plotSpace
@@ -163,15 +174,6 @@ CGFloat const period_label_pos = 0.825;
     fadeInAnimation.fillMode = kCAFillModeForwards;
     fadeInAnimation.toValue = [NSNumber numberWithFloat:1.0];
     [percentText addAnimation:fadeInAnimation forKey:@"animateOpacity"];
-    
-    // animation for arrow
-    CABasicAnimation *animation = [CABasicAnimation animation];
-    CGPoint newStrelkaPosition = CGPointMake(dataPoint.x, self.arrow.position.y);
-    animation.toValue = [NSValue valueWithCGPoint:newStrelkaPosition];
-    [animation setFillMode:kCAFillModeForwards];
-    [animation setRemovedOnCompletion:NO];
-    [self.arrow addAnimation:animation forKey:@"position"];
-    [self.arrow setPosition:newStrelkaPosition];
 }
 
 -(void)didFinishDrawing:(CPTPlot *)plot {

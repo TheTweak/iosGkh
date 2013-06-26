@@ -305,8 +305,8 @@
 
 #pragma mark Bar plot 
 
-#define PLOT_AREA_FRAME_PADDING_LEFT 10.0f
-#define PLOT_AREA_FRAME_PADDING_RIGHT 10.0f
+#define PLOT_AREA_FRAME_PADDING_LEFT 20.0f
+#define PLOT_AREA_FRAME_PADDING_RIGHT 20.0f
 #define PLOT_AREA_FRAME_PADDING_TOP 30.0f
 #define PLOT_AREA_FRAME_PADDING_BOTTOM 100.0f
 
@@ -328,14 +328,7 @@
     [plotAreaFrame setPaddingTop:PLOT_AREA_FRAME_PADDING_TOP];
     [plotAreaFrame setPaddingBottom:PLOT_AREA_FRAME_PADDING_BOTTOM];
     
-    CGRect arrowRect = CGRectMake(plotAreaFrame.bounds.origin.x + ARROW_OFFSET_X,
-                                  plotAreaFrame.bounds.origin.y + ARROW_OFFSET_Y,
-                                  ARROW_WIDTH,
-                                  ARROW_HEIGHT);
-    CALayer *arrow = [self createMovingArrow:arrowRect];
-    [plotAreaFrame addSublayer:arrow];
     BarPlotDelegate *barPlotDelegate = [[BarPlotDelegate alloc] init];
-    barPlotDelegate.arrow = arrow;
     self.plotDelegate = barPlotDelegate;
             
     CPTXYPlotSpace *plotSpace = (CPTXYPlotSpace *) graph.defaultPlotSpace;

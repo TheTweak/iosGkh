@@ -81,6 +81,9 @@
 		92F25FC0174A16B100BE5FF6 /* green_check.png in Resources */ = {isa = PBXBuildFile; fileRef = 92F25FBE174A16B100BE5FF6 /* green_check.png */; };
 		92F25FC1174A16B100BE5FF6 /* red_cross.png in Resources */ = {isa = PBXBuildFile; fileRef = 92F25FBF174A16B100BE5FF6 /* red_cross.png */; };
 		92F25FC4174A1A1D00BE5FF6 /* EpdDetailTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 92F25FC3174A1A1D00BE5FF6 /* EpdDetailTableViewController.m */; };
+		92F7643C177B5B8D002F542B /* QBPopupMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 92F76437177B5B8D002F542B /* QBPopupMenu.m */; };
+		92F7643D177B5B8D002F542B /* QBPopupMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 92F76439177B5B8D002F542B /* QBPopupMenuItem.m */; };
+		92F7643E177B5B8D002F542B /* QBPopupMenuOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 92F7643B177B5B8D002F542B /* QBPopupMenuOverlayView.m */; };
 		D83773B297B749B6AFE8FF1C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7716AF1534D04DE2AFEC9746 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -205,6 +208,12 @@
 		92F25FBF174A16B100BE5FF6 /* red_cross.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = red_cross.png; sourceTree = "<group>"; };
 		92F25FC2174A1A1D00BE5FF6 /* EpdDetailTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EpdDetailTableViewController.h; sourceTree = "<group>"; };
 		92F25FC3174A1A1D00BE5FF6 /* EpdDetailTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EpdDetailTableViewController.m; sourceTree = "<group>"; };
+		92F76436177B5B8D002F542B /* QBPopupMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBPopupMenu.h; sourceTree = "<group>"; };
+		92F76437177B5B8D002F542B /* QBPopupMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBPopupMenu.m; sourceTree = "<group>"; };
+		92F76438177B5B8D002F542B /* QBPopupMenuItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBPopupMenuItem.h; sourceTree = "<group>"; };
+		92F76439177B5B8D002F542B /* QBPopupMenuItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBPopupMenuItem.m; sourceTree = "<group>"; };
+		92F7643A177B5B8D002F542B /* QBPopupMenuOverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBPopupMenuOverlayView.h; sourceTree = "<group>"; };
+		92F7643B177B5B8D002F542B /* QBPopupMenuOverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBPopupMenuOverlayView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -295,6 +304,7 @@
 		61A3ABE3169038A5005D3311 /* iosGkh */ = {
 			isa = PBXGroup;
 			children = (
+				92F76435177B5B72002F542B /* QBPopUpMenu */,
 				9207F199176DC6D500E88E1C /* Reports */,
 				92DD92F81752674D004426E6 /* ParamTableCell.xib */,
 				922D94F0174B791F005589AF /* Settings.bundle */,
@@ -467,6 +477,19 @@
 				9207F19F176DCD0400E88E1C /* ReportViewController.m */,
 			);
 			name = C;
+			sourceTree = "<group>";
+		};
+		92F76435177B5B72002F542B /* QBPopUpMenu */ = {
+			isa = PBXGroup;
+			children = (
+				92F76436177B5B8D002F542B /* QBPopupMenu.h */,
+				92F76437177B5B8D002F542B /* QBPopupMenu.m */,
+				92F76438177B5B8D002F542B /* QBPopupMenuItem.h */,
+				92F76439177B5B8D002F542B /* QBPopupMenuItem.m */,
+				92F7643A177B5B8D002F542B /* QBPopupMenuOverlayView.h */,
+				92F7643B177B5B8D002F542B /* QBPopupMenuOverlayView.m */,
+			);
+			name = QBPopUpMenu;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -655,6 +678,9 @@
 				92DD92F717521DC6004426E6 /* GkhReportParamTableDataSource.m in Sources */,
 				9207F19D176DC70700E88E1C /* ReportTableViewController.m in Sources */,
 				9207F1A0176DCD0400E88E1C /* ReportViewController.m in Sources */,
+				92F7643C177B5B8D002F542B /* QBPopupMenu.m in Sources */,
+				92F7643D177B5B8D002F542B /* QBPopupMenuItem.m in Sources */,
+				92F7643E177B5B8D002F542B /* QBPopupMenuOverlayView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
