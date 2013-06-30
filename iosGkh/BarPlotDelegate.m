@@ -16,7 +16,6 @@
 @property (nonatomic, strong) CPTAnnotation *nachAnnotation;
 @property (nonatomic, strong) CPTAnnotation *payAnnotation;
 @property (nonatomic, strong) CPTAnnotation *rightSideBottomAnnotation;
-@property (nonatomic, strong) CPTAnnotation *percentAnnotation;
 @property (nonatomic, strong) CPTShadow *shadow;
 @end
 
@@ -35,7 +34,6 @@ CGFloat const period_label_pos = 0.825;
 @synthesize nachAnnotation = _nachAnnotation;
 @synthesize rightSideBottomAnnotation = _rightSideBottomAnnotation;
 @synthesize payAnnotation = _payAnnotation;
-@synthesize percentAnnotation = _percentAnnotation;
 @synthesize shadow = _shadow;
 @synthesize arrow = _arrow;
 
@@ -126,27 +124,10 @@ CGFloat const period_label_pos = 0.825;
                                                recordIndex:idx];
     plotPoint[CPTCoordinateX] = barPosition.decimalValue;
     plotPoint[CPTCoordinateY] = barHeight.decimalValue;
-    // plot view area coords
-    CPTPlotAreaFrame *plotAreaFrame = plot.graph.plotAreaFrame;
-    // plot point in the plotAreaView
-    CGPoint cgPlotPoint = [plot.plotSpace plotAreaViewPointForPlotPoint:plotPoint];
     
     // percent label
     NSNumber *percent = [businessVals valueForKey:@"percent"];
     NSString *percentLabel = [[percent description] stringByAppendingString:@"%"];
-    if (self.percentAnnotation) {
-        BOOL deleted = NO;
-        for (int i = 0, l = [plotArea.annotations count]; i < l; i++) {
-            CPTAnnotation *annotation = [plotArea.annotations objectAtIndex:i];
-            if (annotation == self.percentAnnotation) {
-                [plotArea removeAnnotation:self.percentAnnotation];
-                deleted = YES;
-            }
-        }
-        if (!deleted) {
-            self.percentAnnotation = nil;
-        }
-    }
     
     // Pop-up view
     QBPopupMenu *popupMenu = [[QBPopupMenu alloc] init];
@@ -154,26 +135,16 @@ CGFloat const period_label_pos = 0.825;
     popupMenu.layer.transform = CATransform3DMakeRotation(M_PI, 1.0, 0.0, 0.0);
     QBPopupMenuItem *item = [QBPopupMenuItem itemWithTitle:percentLabel target:self action:nil];
     popupMenu.items = [NSArray arrayWithObjects:item, nil];
+    // plot view area coords
+    CPTPlotAreaFrame *plotAreaFrame = plot.graph.plotAreaFrame;
+    // plot point in the plotAreaView
+    CGPoint cgPlotPoint = [plot.plotSpace plotAreaViewPointForPlotPoint:plotPoint];
     cgPlotPoint = [plot.graph convertPoint:cgPlotPoint fromLayer:plotAreaFrame.plotArea];
+    float bottomPopMenuBorder = 200.0; // if lower, draw at this point
+    if (cgPlotPoint.y < bottomPopMenuBorder) {
+        cgPlotPoint.y = bottomPopMenuBorder;
+    }
     [popupMenu showInView:plot.graph.hostingView atPoint:cgPlotPoint];
-    
-    NSArray *anchorPoint = [NSArray arrayWithObjects:barPosition, [NSNumber numberWithFloat:0.1], nil];
-    self.percentAnnotation = [[CPTPlotSpaceAnnotation alloc]
-                              initWithPlotSpace:plot.plotSpace
-                              anchorPlotPoint:anchorPoint];
-    CPTTextLayer *percentText = [[CPTTextLayer alloc] initWithText:percentLabel
-                                                             style:[CorePlotUtils whiteHelvetica]];
-    percentText.opacity = 0;
-    percentText.shadow = self.shadow;
-    self.percentAnnotation.contentLayer = percentText;
-    [plotArea addAnnotation:self.percentAnnotation];
-    
-    CABasicAnimation *fadeInAnimation = [CABasicAnimation animationWithKeyPath:@"opacity"];
-    fadeInAnimation.duration = 0.5f;
-    fadeInAnimation.removedOnCompletion = NO;
-    fadeInAnimation.fillMode = kCAFillModeForwards;
-    fadeInAnimation.toValue = [NSNumber numberWithFloat:1.0];
-    [percentText addAnimation:fadeInAnimation forKey:@"animateOpacity"];
 }
 
 -(void)didFinishDrawing:(CPTPlot *)plot {
