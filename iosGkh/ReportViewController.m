@@ -20,6 +20,7 @@
 @property (nonatomic, strong) NSDecimalNumber *barPlotMaxHeight;
 @property (nonatomic, strong) UIColor *mainTextColor;
 @property (nonatomic, strong) id<CPTPlotDelegate> plotDelegate;
+@property BOOL isLoaded;
 @end
 
 @implementation ReportViewController
@@ -50,10 +51,12 @@
 
 -(void)viewWillAppear:(BOOL)animated
 {
-    CGRect graphHostingViewRect = CGRectMake(0, 0, self.scrollView.frame.size.width, self.scrollView.frame.size.height);
-    self.scrollView.contentSize = CGSizeMake(graphHostingViewRect.size.width, 0);
-    self.graphHostingView = [[CPTGraphHostingView alloc] initWithFrame:graphHostingViewRect];
-    [self.scrollView addSubview:self.graphHostingView];
+    if (!self.graphHostingView) {
+        CGRect graphHostingViewRect = CGRectMake(0, 0, self.scrollView.frame.size.width, self.scrollView.frame.size.height);
+        self.scrollView.contentSize = CGSizeMake(graphHostingViewRect.size.width, 0);
+        self.graphHostingView = [[CPTGraphHostingView alloc] initWithFrame:graphHostingViewRect];
+        [self.scrollView addSubview:self.graphHostingView];
+    }
 }
 
 #define REPORT_REQUEST_TYPE_KEY @"type"
@@ -62,22 +65,25 @@
 
 -(void)viewDidAppear:(BOOL)animated
 {
-    NSDictionary *requestParameters = [self getRequestParameters];
-//    [self showLoadingMask];
-    AFHTTPClient *client = [BasicAuthModule httpClient];
-    [client postPath:REPORT_VALUES_REQUEST_PATH parameters:requestParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"Getting report plot data succeeded!");
-        SBJsonParser *jsonParser = [[SBJsonParser alloc] init];
-        NSData *responseData = (NSData *)responseObject;
-        NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
-        NSDictionary *responseJson = [jsonParser objectWithString:responseString];
-        self.plotValues = responseJson[REPORT_RESPONSE_PLOT_VALUES_KEY];
-        [self addPlotWithTitle:self.report.id ofType:self.report.plotType];
-//        [self hideLoadingMask];
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"Getting report plot data failed!");
-//        [self hideLoadingMask];
-    }];
+    if (!self.isLoaded) {
+        NSDictionary *requestParameters = [self getRequestParameters];
+        //    [self showLoadingMask];
+        AFHTTPClient *client = [BasicAuthModule httpClient];
+        [client postPath:REPORT_VALUES_REQUEST_PATH parameters:requestParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSLog(@"Getting report plot data succeeded!");
+            SBJsonParser *jsonParser = [[SBJsonParser alloc] init];
+            NSData *responseData = (NSData *)responseObject;
+            NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+            NSDictionary *responseJson = [jsonParser objectWithString:responseString];
+            self.plotValues = responseJson[REPORT_RESPONSE_PLOT_VALUES_KEY];
+            [self addPlotWithTitle:self.report.id ofType:self.report.plotType];
+            self.isLoaded = YES;
+            //        [self hideLoadingMask];
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            NSLog(@"Getting report plot data failed!");
+            //        [self hideLoadingMask];
+        }];
+    }
 }
 
 #pragma mark Table view data source
