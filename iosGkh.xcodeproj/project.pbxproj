@@ -77,7 +77,7 @@
 		92DD92F0175200DE004426E6 /* GkhReportPlotDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 92DD92EF175200DE004426E6 /* GkhReportPlotDataSource.m */; };
 		92DD92F417521D26004426E6 /* GkhReportParamTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 92DD92F317521D26004426E6 /* GkhReportParamTableViewController.m */; };
 		92DD92F717521DC6004426E6 /* GkhReportParamTableDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 92DD92F617521DC6004426E6 /* GkhReportParamTableDataSource.m */; };
-		92DD92F91752674D004426E6 /* ParamTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 92DD92F81752674D004426E6 /* ParamTableCell.xib */; };
+		92DD92F91752674D004426E6 /* AdditionalRepresentationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 92DD92F81752674D004426E6 /* AdditionalRepresentationCell.xib */; };
 		92F25FBD174A08F800BE5FF6 /* EpdTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 92F25FBC174A08F800BE5FF6 /* EpdTableViewController.m */; };
 		92F25FC0174A16B100BE5FF6 /* green_check.png in Resources */ = {isa = PBXBuildFile; fileRef = 92F25FBE174A16B100BE5FF6 /* green_check.png */; };
 		92F25FC1174A16B100BE5FF6 /* red_cross.png in Resources */ = {isa = PBXBuildFile; fileRef = 92F25FBF174A16B100BE5FF6 /* red_cross.png */; };
@@ -204,7 +204,7 @@
 		92DD92F317521D26004426E6 /* GkhReportParamTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GkhReportParamTableViewController.m; sourceTree = "<group>"; };
 		92DD92F517521DC6004426E6 /* GkhReportParamTableDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GkhReportParamTableDataSource.h; sourceTree = "<group>"; };
 		92DD92F617521DC6004426E6 /* GkhReportParamTableDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GkhReportParamTableDataSource.m; sourceTree = "<group>"; };
-		92DD92F81752674D004426E6 /* ParamTableCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ParamTableCell.xib; path = ../ParamTableCell.xib; sourceTree = "<group>"; };
+		92DD92F81752674D004426E6 /* AdditionalRepresentationCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = AdditionalRepresentationCell.xib; path = ../AdditionalRepresentationCell.xib; sourceTree = "<group>"; };
 		92F25FBB174A08F800BE5FF6 /* EpdTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EpdTableViewController.h; sourceTree = "<group>"; };
 		92F25FBC174A08F800BE5FF6 /* EpdTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EpdTableViewController.m; sourceTree = "<group>"; };
 		92F25FBE174A16B100BE5FF6 /* green_check.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = green_check.png; sourceTree = "<group>"; };
@@ -309,7 +309,7 @@
 			children = (
 				92F76435177B5B72002F542B /* QBPopUpMenu */,
 				9207F199176DC6D500E88E1C /* Reports */,
-				92DD92F81752674D004426E6 /* ParamTableCell.xib */,
+				92DD92F81752674D004426E6 /* AdditionalRepresentationCell.xib */,
 				922D94F0174B791F005589AF /* Settings.bundle */,
 				6178217116F8480900E4BED1 /* Delegates */,
 				61E81AF616EE052600819BDD /* Views */,
@@ -602,7 +602,7 @@
 				92F25FC1174A16B100BE5FF6 /* red_cross.png in Resources */,
 				9278FB31174A673900EA0D0A /* money32.png in Resources */,
 				922D94F1174B791F005589AF /* Settings.bundle in Resources */,
-				92DD92F91752674D004426E6 /* ParamTableCell.xib in Resources */,
+				92DD92F91752674D004426E6 /* AdditionalRepresentationCell.xib in Resources */,
 				92775BD41753B8F800C70620 /* background_640x960.jpg in Resources */,
 				92775BD51753B8F800C70620 /* background_640x1136.jpg in Resources */,
 				92B7DA411754F73C003F7596 /* 20-gear2.png in Resources */,

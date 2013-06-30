@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "GkhReport.h"
 
-@interface PeriodDetailsViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
+@interface PeriodDetailsViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate>
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UIPageControl *pageControl;
 
