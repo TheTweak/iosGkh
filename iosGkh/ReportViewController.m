@@ -328,9 +328,12 @@
     [plotAreaFrame setPaddingTop:PLOT_AREA_FRAME_PADDING_TOP];
     [plotAreaFrame setPaddingBottom:PLOT_AREA_FRAME_PADDING_BOTTOM];
     
-    BarPlotDelegate *barPlotDelegate = [[BarPlotDelegate alloc] init];
-    self.plotDelegate = barPlotDelegate;
-            
+    if (!self.plotDelegate) {
+        BarPlotDelegate *barPlotDelegate = [[BarPlotDelegate alloc] init];
+        barPlotDelegate.reportViewController = self;
+        self.plotDelegate = barPlotDelegate;
+    }
+    
     CPTXYPlotSpace *plotSpace = (CPTXYPlotSpace *) graph.defaultPlotSpace;
     plotSpace.xRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(PLOT_SPACE_X_MIN)
                                                     length:CPTDecimalFromFloat(PLOT_SPACE_X_MAX)];

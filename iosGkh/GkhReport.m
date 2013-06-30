@@ -32,6 +32,11 @@
 
 static NSDictionary* _typeByString;
 
+-(NSString *)description
+{
+    return [NSString stringWithFormat:@"Type: %u, id: %@", self.type, self.id];
+}
+
 +(GkhRepresentationType)representationTypeOf:(NSString *)type {
     if (!_typeByString) {
         _typeByString = @{@"table": [NSNumber numberWithInt:GkhRepresentationTypeTable]};

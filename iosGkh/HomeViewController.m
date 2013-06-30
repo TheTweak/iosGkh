@@ -433,7 +433,6 @@ CGFloat const CPDBarInitialX = 0.25f;
     [plotAreaFrame addSublayer:layer];
 
     BarPlotDelegate *barPlotDelegate = [[BarPlotDelegate alloc] init];
-    barPlotDelegate.arrow = layer;
     self.plotDelegate = barPlotDelegate;
         
     CGFloat xMin = 0.0f;

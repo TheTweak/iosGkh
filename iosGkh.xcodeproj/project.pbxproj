@@ -72,6 +72,7 @@
 		92775BD41753B8F800C70620 /* background_640x960.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 92775BD21753B8F800C70620 /* background_640x960.jpg */; };
 		92775BD51753B8F800C70620 /* background_640x1136.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 92775BD31753B8F800C70620 /* background_640x1136.jpg */; };
 		9278FB31174A673900EA0D0A /* money32.png in Resources */ = {isa = PBXBuildFile; fileRef = 9278FB30174A673900EA0D0A /* money32.png */; };
+		928F6A7117803E00002B60F0 /* PeriodDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 928F6A7017803E00002B60F0 /* PeriodDetailsViewController.m */; };
 		92B7DA411754F73C003F7596 /* 20-gear2.png in Resources */ = {isa = PBXBuildFile; fileRef = 92B7DA401754F73C003F7596 /* 20-gear2.png */; };
 		92DD92F0175200DE004426E6 /* GkhReportPlotDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 92DD92EF175200DE004426E6 /* GkhReportPlotDataSource.m */; };
 		92DD92F417521D26004426E6 /* GkhReportParamTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 92DD92F317521D26004426E6 /* GkhReportParamTableViewController.m */; };
@@ -194,6 +195,8 @@
 		92775BD21753B8F800C70620 /* background_640x960.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = background_640x960.jpg; sourceTree = "<group>"; };
 		92775BD31753B8F800C70620 /* background_640x1136.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = background_640x1136.jpg; sourceTree = "<group>"; };
 		9278FB30174A673900EA0D0A /* money32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = money32.png; sourceTree = "<group>"; };
+		928F6A6F17803DFF002B60F0 /* PeriodDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PeriodDetailsViewController.h; sourceTree = "<group>"; };
+		928F6A7017803E00002B60F0 /* PeriodDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PeriodDetailsViewController.m; sourceTree = "<group>"; };
 		92B7DA401754F73C003F7596 /* 20-gear2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "20-gear2.png"; sourceTree = "<group>"; };
 		92DD92EE175200DE004426E6 /* GkhReportPlotDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GkhReportPlotDataSource.h; sourceTree = "<group>"; };
 		92DD92EF175200DE004426E6 /* GkhReportPlotDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GkhReportPlotDataSource.m; sourceTree = "<group>"; };
@@ -475,6 +478,8 @@
 				9207F19C176DC70700E88E1C /* ReportTableViewController.m */,
 				9207F19E176DCD0400E88E1C /* ReportViewController.h */,
 				9207F19F176DCD0400E88E1C /* ReportViewController.m */,
+				928F6A6F17803DFF002B60F0 /* PeriodDetailsViewController.h */,
+				928F6A7017803E00002B60F0 /* PeriodDetailsViewController.m */,
 			);
 			name = C;
 			sourceTree = "<group>";
@@ -681,6 +686,7 @@
 				92F7643C177B5B8D002F542B /* QBPopupMenu.m in Sources */,
 				92F7643D177B5B8D002F542B /* QBPopupMenuItem.m in Sources */,
 				92F7643E177B5B8D002F542B /* QBPopupMenuOverlayView.m in Sources */,
+				928F6A7117803E00002B60F0 /* PeriodDetailsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
