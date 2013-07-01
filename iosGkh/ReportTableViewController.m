@@ -48,9 +48,10 @@
 - (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (!self.reportArray) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"ShowTableLoadingMask" object:self];
+        [self.activityIndicator startAnimating];
         AFHTTPClient *client = [BasicAuthModule httpClient];
         [client getPath:@"param/list" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            [self.activityIndicator stopAnimating];
             SBJsonParser *jsonParser = [[SBJsonParser alloc] init];
             NSData *responseData = (NSData *)responseObject;
             NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
@@ -93,6 +94,7 @@
             [tableView reloadData];
             NSLog(@"success");
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            [self.activityIndicator stopAnimating];
             NSLog(@"failure");
         }];
     }
