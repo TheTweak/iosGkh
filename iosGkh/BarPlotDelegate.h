@@ -13,4 +13,5 @@
 
 @interface BarPlotDelegate : NSObject <CPTBarPlotDelegate>
 @property (nonatomic, weak) ReportViewController *reportViewController;
+-(void) dismissPopupMenu;
 @end

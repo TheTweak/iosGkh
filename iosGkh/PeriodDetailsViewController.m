@@ -41,9 +41,6 @@
     [super viewDidLoad];
     self.title = self.period;
     self.scrollView.delegate = self;
-    for (GkhRepresentation *representation in self.report.additionalRepresentationArray) {
-        NSLog(@"representation: %@", representation);
-    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -75,7 +72,17 @@
     // if array length equal to index, that means the representation of index is not loaded
     // for example array length = 2 ([0, 1]), index = 2 ([0, 1, 2]), so index 2 is not yet loaded
     if (arrayLength == index) {
+        CGFloat scrollViewWidth = self.scrollView.frame.size.width;
+        CGFloat scrollViewHeight = self.scrollView.frame.size.height;
+        CGFloat x = index * scrollViewWidth;
+        CGSize indicatorSize = self.activityIndicator.frame.size;
+        self.activityIndicator.frame = CGRectMake(x + scrollViewWidth / 2 - indicatorSize.width / 2,
+                                                  scrollViewHeight / 2 - indicatorSize.height / 2,
+                                                  indicatorSize.width, indicatorSize.height);
+        [self.activityIndicator startAnimating];
+        CGRect tableViewRect = CGRectMake(x, 0, scrollViewWidth, self.scrollView.frame.size.height);
         [client postPath:TABLE_DATA_PATH parameters:requestParams success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            [self.activityIndicator stopAnimating];
             SBJsonParser *jsonParser = [[SBJsonParser alloc] init];
             NSData *responseData = (NSData *)responseObject;
             NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
@@ -83,9 +90,6 @@
             NSArray *values = valuesAndPeriod[RESPONSE_VALUES_KEY];
             self.valuesArrayByPageIndex[index] = values;
             
-            CGFloat scrollViewWidth = self.scrollView.frame.size.width;
-            CGFloat x = index * scrollViewWidth;
-            CGRect tableViewRect = CGRectMake(x, 0, scrollViewWidth, self.scrollView.frame.size.height);
             UITableView *tableView = [[UITableView alloc] initWithFrame:tableViewRect style:UITableViewStylePlain];
             UINib *cell = [UINib nibWithNibName:TABLE_CELL_NIB_NAME bundle:nil];
             [tableView registerNib:cell forCellReuseIdentifier:TABLE_CELL_IDENTIFIER];
@@ -93,7 +97,7 @@
             
             [self.scrollView addSubview:tableView];
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            
+            [self.activityIndicator stopAnimating];
         }];
     }
 }

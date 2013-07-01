@@ -47,6 +47,7 @@
                                                                                    target:self
                                                                                    action:@selector(refreshButtonHandler)];
     self.navigationItem.rightBarButtonItem = refreshButton;
+    self.loadMask.layer.cornerRadius = 5.0;
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -56,6 +57,7 @@
         self.scrollView.contentSize = CGSizeMake(graphHostingViewRect.size.width, 0);
         self.graphHostingView = [[CPTGraphHostingView alloc] initWithFrame:graphHostingViewRect];
         [self.scrollView addSubview:self.graphHostingView];
+        [self.scrollView insertSubview:self.loadMask aboveSubview:self.graphHostingView];
     }
 }
 
@@ -67,7 +69,7 @@
 {
     if (!self.isLoaded) {
         NSDictionary *requestParameters = [self getRequestParameters];
-        //    [self showLoadingMask];
+        [self showLoadingMask];
         AFHTTPClient *client = [BasicAuthModule httpClient];
         [client postPath:REPORT_VALUES_REQUEST_PATH parameters:requestParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
             NSLog(@"Getting report plot data succeeded!");
@@ -78,10 +80,10 @@
             self.plotValues = responseJson[REPORT_RESPONSE_PLOT_VALUES_KEY];
             [self addPlotWithTitle:self.report.id ofType:self.report.plotType];
             self.isLoaded = YES;
-            //        [self hideLoadingMask];
+            [self hideLoadingMask];
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             NSLog(@"Getting report plot data failed!");
-            //        [self hideLoadingMask];
+            [self hideLoadingMask];
         }];
     }
 }
@@ -467,11 +469,20 @@
 
 #pragma mark Other
 
--(void) refreshButtonHandler
+-(void) showLoadingMask
 {
-    [self resetGraphLabels];
+    self.loadMask.hidden = false;
+}
+
+-(void) hideLoadingMask
+{
+    self.loadMask.hidden = true;
+}
+
+-(void) reloadGraphData
+{
     NSDictionary *requestParameters = [self getRequestParameters];
-    //    [self showLoadingMask];
+    [self showLoadingMask];
     AFHTTPClient *client = [BasicAuthModule httpClient];
     [client postPath:REPORT_VALUES_REQUEST_PATH parameters:requestParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"Getting report plot data succeeded!");
@@ -481,11 +492,17 @@
         NSDictionary *responseJson = [jsonParser objectWithString:responseString];
         self.plotValues = responseJson[REPORT_RESPONSE_PLOT_VALUES_KEY];
         [self.graphHostingView.hostedGraph reloadData];
-        //        [self hideLoadingMask];
+        [self hideLoadingMask];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Getting report plot data failed!");
-        //        [self hideLoadingMask];
+        [self hideLoadingMask];
     }];
+}
+
+-(void) refreshButtonHandler
+{
+    [self resetGraphLabels];
+    [self reloadGraphData];
 }
 
 -(NSDictionary *) getRequestParameters
@@ -501,6 +518,10 @@
 -(void) resetGraphLabels
 {
     [self.graphHostingView.hostedGraph.plotAreaFrame.plotArea removeAllAnnotations];
+    BarPlotDelegate *barPlotDelegate = (BarPlotDelegate *) self.plotDelegate;
+    [barPlotDelegate dismissPopupMenu];
 }
+
+
 
 @end

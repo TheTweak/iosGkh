@@ -19,6 +19,7 @@
 @property (nonatomic, strong) CPTAnnotation *rightSideBottomAnnotation;
 @property (nonatomic, strong) CPTShadow *shadow;
 @property (nonatomic, strong) NSString *period;
+@property (nonatomic, strong) QBPopupMenu *popUpMenu;
 @end
 
 @implementation BarPlotDelegate
@@ -37,6 +38,14 @@ CGFloat const period_label_pos = 0.825;
 @synthesize rightSideBottomAnnotation = _rightSideBottomAnnotation;
 @synthesize payAnnotation = _payAnnotation;
 @synthesize shadow = _shadow;
+
+-(QBPopupMenu *)popUpMenu
+{
+    if (!_popUpMenu) {
+        _popUpMenu = [[QBPopupMenu alloc] init];
+    }
+    return _popUpMenu;
+}
 
 - (CPTShadow *) shadow {
     if (!_shadow) {
@@ -131,7 +140,8 @@ CGFloat const period_label_pos = 0.825;
     NSString *percentLabel = [[percent description] stringByAppendingString:@"%"];
     
     // Pop-up view
-    QBPopupMenu *popupMenu = [[QBPopupMenu alloc] init];
+    QBPopupMenu *popupMenu = self.popUpMenu;
+    
     // rotate 180 degrees along x axis
     popupMenu.layer.transform = CATransform3DMakeRotation(M_PI, 1.0, 0.0, 0.0);
     QBPopupMenuItem *item = [QBPopupMenuItem itemWithTitle:percentLabel target:self action:@selector(popUpMenuClickHandler)];
@@ -169,6 +179,11 @@ CGFloat const period_label_pos = 0.825;
     periodDetails.period = self.period;
     periodDetails.report = self.reportViewController.report;
     [self.reportViewController.navigationController pushViewController:periodDetails animated:YES];
+}
+
+-(void)dismissPopupMenu
+{
+    [self.popUpMenu dismiss];
 }
 
 @end

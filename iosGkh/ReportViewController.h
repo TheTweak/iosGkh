@@ -14,4 +14,5 @@
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) GkhReport *report;
+@property (weak, nonatomic) IBOutlet UIView *loadMask;
 @end
