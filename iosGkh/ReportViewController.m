@@ -166,14 +166,11 @@
             maxH2 = y2;
         }
     }
-    NSComparisonResult compare = [maxH compare:[NSDecimalNumber zero]];
-    if (compare != NSOrderedSame) {
+    NSComparisonResult compare = [maxH compare:maxH2];
+    if (compare == NSOrderedDescending) {
         self.barPlotMaxHeight = maxH;
     } else {
-        compare = [maxH2 compare:[NSDecimalNumber zero]];
-        if (compare != NSOrderedSame) {
-            self.barPlotMaxHeight = maxH2;
-        }
+        self.barPlotMaxHeight = maxH2;
     }
 
     if (!self.barPlotMaxHeight) {
