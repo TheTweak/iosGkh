@@ -197,18 +197,20 @@
 }
 
 #define HOME_VIEW_CONTROLLER_ID @"ReportTableViewController"
+#define DWELLER_HOME_VIEW_CONTROLLER_ID @"DwellerTabBarController"
 
 - (void) authenticationSucceeded:(NSNotification *)notification {
     NSString *role = [[notification userInfo] objectForKey:@"Role"];
-    NSString *segueId;
-    UIViewController *controller;
+    NSString *controllerId;
     if ([@"dweller" isEqualToString:role]) {
-        segueId = @"authDweller";
+        controllerId = DWELLER_HOME_VIEW_CONTROLLER_ID;
     } else if ([@"glava" isEqualToString:role]) {
-        segueId = @"authGlava";
-        controller = [[self.navigationController storyboard] instantiateViewControllerWithIdentifier:HOME_VIEW_CONTROLLER_ID];
+        controllerId = HOME_VIEW_CONTROLLER_ID;
     }
-    [self.navigationController pushViewController:controller animated:YES];
+    UIViewController *controller = [[self.navigationController storyboard] instantiateViewControllerWithIdentifier:controllerId];
+    if (controller) {
+        [self.navigationController pushViewController:controller animated:YES];
+    }
 //    [self performSegueWithIdentifier: segueId sender: self];
 }
 
