@@ -63,11 +63,22 @@
 #define TABLE_CELL_NIB_NAME @"AdditionalRepresentationCell"
 #define TABLE_CELL_IDENTIFIER @"AdditionRepCell"
 
+-(NSMutableDictionary *) getRequestParameters
+{
+    NSMutableDictionary *requestParameters = [[NSMutableDictionary alloc] init];
+    for (GkhInputType *input in self.report.inputParamArray) {
+        requestParameters[input.id] = input.value;
+    }
+    return requestParameters;
+}
+
 - (void)loadDataForRepresentation:(int) index
 {
     GkhRepresentation *representation = self.report.additionalRepresentationArray[index];
     AFHTTPClient *client = [BasicAuthModule httpClient];
-    NSDictionary *requestParams = @{REQUEST_REPRESENTATION_TYPE_KEY: representation.id, REQUEST_PERIOD_KEY: self.period};
+    NSMutableDictionary *requestParams = [self getRequestParameters];
+    requestParams[REQUEST_REPRESENTATION_TYPE_KEY] = representation.id;
+    requestParams[REQUEST_PERIOD_KEY] = self.period;
     int arrayLength = self.valuesArrayByPageIndex.count;
     // if array length equal to index, that means the representation of index is not loaded
     // for example array length = 2 ([0, 1]), index = 2 ([0, 1, 2]), so index 2 is not yet loaded
