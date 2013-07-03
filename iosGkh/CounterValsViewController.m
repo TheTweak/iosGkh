@@ -59,8 +59,8 @@
                                                     cancelButtonTitle:@"Отмена"
                                                destructiveButtonTitle:nil
                                                     otherButtonTitles:@"Добавить", @"Удалить последнее", nil];
-    self.addCounterValActionSheet = actionSheet;    
-    [actionSheet showFromTabBar:self.tabBarController.tabBar];
+    self.addCounterValActionSheet = actionSheet;
+    [actionSheet showInView:self.view];
 }
 
 -(BOOL)textFieldShouldReturn:(UITextField *)textField {
@@ -169,7 +169,7 @@
                                                                       cancelButtonTitle:@"Отмена"
                                                                  destructiveButtonTitle:nil
                                                                       otherButtonTitles:@"ОК", nil];
-                [confirmationSheet showFromTabBar:self.tabBarController.tabBar];
+                [confirmationSheet showInView:self.view];
                 self.deleteConfirmationActionSheet = confirmationSheet;
             }
             break;
