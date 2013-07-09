@@ -467,7 +467,7 @@
                             <outlet property="delegate" destination="FOJ-H3-JAu" id="fwc-Tf-f5o"/>
                         </connections>
                     </tableView>
-                    <tabBarItem key="tabBarItem" title="ЕПД" image="money32.png" id="cIa-Ht-x0t"/>
+                    <tabBarItem key="tabBarItem" title="ЕПД" image="epd.png" id="cIa-Ht-x0t"/>
                     <navigationItem key="navigationItem" title="Список ЕПД" id="2Q3-uV-mc0"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="a3D-aY-eG1" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -565,11 +565,61 @@
         </scene>
     </scenes>
     <resources>
-        <image name="List.png" width="30" height="30"/>
+        <image name="List.png" width="16" height="16"/>
+        <image name="epd.png" width="32" height="32"/>
         <image name="green_check.png" width="16" height="16"/>
-        <image name="money32.png" width="24" height="24"/>
         <image name="red_cross.png" width="16" height="16"/>
     </resources>
+    <classes>
+        <class className="CounterTableViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/CounterTableViewController.h"/>
+        </class>
+        <class className="EpdDetailTableViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/EpdDetailTableViewController.h"/>
+        </class>
+        <class className="EpdTableViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/EpdTableViewController.h"/>
+        </class>
+        <class className="HomeViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/HomeViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="pageControlView" candidateClass="UIPageControl"/>
+                <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
+            </relationships>
+        </class>
+        <class className="LoginScreenViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/LoginScreenViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="authenticatePressed"/>
+                <relationship kind="action" name="segmentChanged:forEvent:" candidateClass="UISegmentedControl"/>
+                <relationship kind="outlet" name="errorLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="loadingView" candidateClass="UIView"/>
+                <relationship kind="outlet" name="loginTable" candidateClass="UITableView"/>
+            </relationships>
+        </class>
+        <class className="PeriodDetailsViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/PeriodDetailsViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="activityIndicator" candidateClass="UIActivityIndicatorView"/>
+                <relationship kind="outlet" name="pageControl" candidateClass="UIPageControl"/>
+                <relationship kind="outlet" name="scrollView" candidateClass="UIScrollView"/>
+            </relationships>
+        </class>
+        <class className="ReportTableViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ReportTableViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="activityIndicator" candidateClass="UIActivityIndicatorView"/>
+            </relationships>
+        </class>
+        <class className="ReportViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ReportViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="loadMask" candidateClass="UIView"/>
+                <relationship kind="outlet" name="scrollView" candidateClass="UIScrollView"/>
+                <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
+            </relationships>
+        </class>
+    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

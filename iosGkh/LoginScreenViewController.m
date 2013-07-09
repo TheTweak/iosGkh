@@ -9,6 +9,8 @@
 #import "BasicAuthModule.h"
 #import "Dweller.h"
 #import <AFNetworking.h>
+#import "Reachability.h"
+#import <SystemConfiguration/SystemConfiguration.h>
 
 @interface LoginScreenViewController ()
 - (void) registerForNotifications;
@@ -123,7 +125,23 @@
 
 #pragma mark Login button handlers
 
+- (BOOL)connected
+{
+    Reachability *reachability = [Reachability reachabilityForInternetConnection];
+    NetworkStatus networkStatus = [reachability currentReachabilityStatus];
+    return !(networkStatus == NotReachable);
+}
+
 - (IBAction) authenticatePressed {
+    if (![self connected]) {
+        UIAlertView *alert = [[UIAlertView alloc]
+                              initWithTitle:nil
+                              message:@"Отсутствует подключение к интернету"
+                              delegate:nil
+                              cancelButtonTitle:@"OK"
+                              otherButtonTitles:nil];
+        [alert show];
+    }
     [self clearErrorText];
     switch (self.segment) {
         case 0: { // auth uk
@@ -211,7 +229,6 @@
     if (controller) {
         [self.navigationController pushViewController:controller animated:YES];
     }
-//    [self performSegueWithIdentifier: segueId sender: self];
 }
 
 -(void) showLoadingMask {
