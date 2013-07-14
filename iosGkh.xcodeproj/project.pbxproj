@@ -57,6 +57,7 @@
 		925F8582178C611B009E021A /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 925F8581178C611B009E021A /* Default-568h@2x.png */; };
 		928F6A7117803E00002B60F0 /* PeriodDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 928F6A7017803E00002B60F0 /* PeriodDetailsViewController.m */; };
 		92C53A81178F09AC008FDFBA /* 114x144.png in Resources */ = {isa = PBXBuildFile; fileRef = 92C53A80178F09AC008FDFBA /* 114x144.png */; };
+		92D5DA4D1792DFDB00198A40 /* GradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = 92D5DA4C1792DFDB00198A40 /* GradientView.m */; };
 		92DD92F0175200DE004426E6 /* GkhReportPlotDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 92DD92EF175200DE004426E6 /* GkhReportPlotDataSource.m */; };
 		92DD92F417521D26004426E6 /* GkhReportParamTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 92DD92F317521D26004426E6 /* GkhReportParamTableViewController.m */; };
 		92DD92F717521DC6004426E6 /* GkhReportParamTableDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 92DD92F617521DC6004426E6 /* GkhReportParamTableDataSource.m */; };
@@ -169,6 +170,8 @@
 		928F6A6F17803DFF002B60F0 /* PeriodDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PeriodDetailsViewController.h; sourceTree = "<group>"; };
 		928F6A7017803E00002B60F0 /* PeriodDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PeriodDetailsViewController.m; sourceTree = "<group>"; };
 		92C53A80178F09AC008FDFBA /* 114x144.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 114x144.png; sourceTree = "<group>"; };
+		92D5DA4B1792DFDB00198A40 /* GradientView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GradientView.h; sourceTree = "<group>"; };
+		92D5DA4C1792DFDB00198A40 /* GradientView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GradientView.m; sourceTree = "<group>"; };
 		92DD92EE175200DE004426E6 /* GkhReportPlotDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GkhReportPlotDataSource.h; sourceTree = "<group>"; };
 		92DD92EF175200DE004426E6 /* GkhReportPlotDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GkhReportPlotDataSource.m; sourceTree = "<group>"; };
 		92DD92F217521D26004426E6 /* GkhReportParamTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GkhReportParamTableViewController.h; sourceTree = "<group>"; };
@@ -371,6 +374,8 @@
 				61A3AC4A16904862005D3311 /* SettingsViewController.m */,
 				61A3AC4D16904863005D3311 /* LoginScreenViewController.h */,
 				61A3AC4E16904863005D3311 /* LoginScreenViewController.m */,
+				92D5DA4B1792DFDB00198A40 /* GradientView.h */,
+				92D5DA4C1792DFDB00198A40 /* GradientView.m */,
 				61F45D6D16F1D46900598213 /* CustomViewController.h */,
 				61F45D6E16F1D46900598213 /* CustomViewController.m */,
 				61234977173A664C00EBBCF1 /* CounterTableViewController.h */,
@@ -629,6 +634,7 @@
 				92F7643D177B5B8D002F542B /* QBPopupMenuItem.m in Sources */,
 				92F7643E177B5B8D002F542B /* QBPopupMenuOverlayView.m in Sources */,
 				928F6A7117803E00002B60F0 /* PeriodDetailsViewController.m in Sources */,
+				92D5DA4D1792DFDB00198A40 /* GradientView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

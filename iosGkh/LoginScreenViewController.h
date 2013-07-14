@@ -12,6 +12,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *errorLabel;
 @property (weak, nonatomic) IBOutlet UITableView *loginTable;
 - (IBAction)authenticatePressed;
+@property (weak, nonatomic) IBOutlet UIButton *enterButton;
 - (IBAction)segmentChanged:(UISegmentedControl *)sender forEvent:(UIEvent *)event;
 @property (weak, nonatomic) IBOutlet UIView *loadingView;
 

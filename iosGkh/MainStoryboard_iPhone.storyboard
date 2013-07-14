@@ -4,21 +4,21 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="2083"/>
     </dependencies>
     <scenes>
-        <!--Login Screen View Controller-->
+        <!--Login Screen View Controller - АСУ ЖКХ-->
         <scene sceneID="5">
             <objects>
                 <viewController id="2" customClass="LoginScreenViewController" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="3">
+                    <view key="view" contentMode="scaleToFill" id="3" customClass="GradientView">
                         <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="wordWrap" id="QAw-r6-oD4">
                                 <rect key="frame" x="8" y="333" width="304" height="39"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.40000000596046448" green="0.80000001192092896" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="18"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="17"/>
                                 <state key="normal" title="Войти">
-                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
@@ -68,9 +68,10 @@
                         </subviews>
                         <color key="backgroundColor" red="0.98431378599999997" green="0.97647064920000004" blue="0.9450981021" alpha="1" colorSpace="deviceRGB"/>
                     </view>
-                    <navigationItem key="navigationItem" id="unY-dn-Bi0"/>
+                    <navigationItem key="navigationItem" title="АСУ ЖКХ" id="unY-dn-Bi0"/>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
                     <connections>
+                        <outlet property="enterButton" destination="QAw-r6-oD4" id="6zM-qF-b58"/>
                         <outlet property="errorLabel" destination="l8c-UO-KL5" id="bZc-1q-U1t"/>
                         <outlet property="loadingView" destination="fwR-Vo-o7J" id="ynA-qB-uQ9"/>
                         <outlet property="loginTable" destination="2hO-Hc-bLC" id="CFu-ci-2Qz"/>
@@ -580,6 +581,9 @@
         <class className="EpdTableViewController" superclassName="UITableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/EpdTableViewController.h"/>
         </class>
+        <class className="GradientView" superclassName="UIView">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/GradientView.h"/>
+        </class>
         <class className="HomeViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/HomeViewController.h"/>
             <relationships>
@@ -592,6 +596,7 @@
             <relationships>
                 <relationship kind="action" name="authenticatePressed"/>
                 <relationship kind="action" name="segmentChanged:forEvent:" candidateClass="UISegmentedControl"/>
+                <relationship kind="outlet" name="enterButton" candidateClass="UIButton"/>
                 <relationship kind="outlet" name="errorLabel" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="loadingView" candidateClass="UIView"/>
                 <relationship kind="outlet" name="loginTable" candidateClass="UITableView"/>

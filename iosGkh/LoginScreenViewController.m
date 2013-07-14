@@ -11,6 +11,7 @@
 #import <AFNetworking.h>
 #import "Reachability.h"
 #import <SystemConfiguration/SystemConfiguration.h>
+#import <QuartzCore/QuartzCore.h>
 
 @interface LoginScreenViewController ()
 - (void) registerForNotifications;
@@ -38,6 +39,8 @@
     [self registerForNotifications];
     // set default values for app settings
     [self registerDefaultSettingsValues];
+    CALayer *layer = [self.enterButton layer];
+    layer.cornerRadius = 5.0;
 }
 
 -(void) registerDefaultSettingsValues {
