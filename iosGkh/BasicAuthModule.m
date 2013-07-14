@@ -42,7 +42,7 @@ static BOOL isLoading;
     if (!serverAddress) {
         serverAddress = @"http://192.168.1.6";
     }
-    [self authenticateWithLogin:login andPassword:password byURL:[serverAddress stringByAppendingString:@":8081/jersey"]];
+    [self authenticateWithLogin:login andPassword:password byURL:[serverAddress stringByAppendingString:@"/jersey"]];
 }
 
 + (void) authenticateWithLogin:(NSString *)login andPassword:(NSString *)password byURL:(NSString *)url {
@@ -76,7 +76,12 @@ static BOOL isLoading;
                       password:(NSString *)password
                       flsNomer:(NSString *)flsNomer {
     if (!isLoading) {
-        NSURL *nsUrl = [NSURL URLWithString:@"http://localhost:8081/jersey/dweller"];
+        NSString *serverAddress = [[NSUserDefaults standardUserDefaults] valueForKey:@"server_address"];
+        if (!serverAddress) {
+            serverAddress = @"http://192.168.1.6";
+        }
+        NSString *url = [serverAddress stringByAppendingString:@"/jersey/dweller"];
+        NSURL *nsUrl = [NSURL URLWithString:url];
         dwellerClient = [AFHTTPClient clientWithBaseURL:nsUrl];
         [dwellerClient setAuthorizationHeaderWithUsername:login password:password];
         NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:flsNomer, @"flsNomer", nil];

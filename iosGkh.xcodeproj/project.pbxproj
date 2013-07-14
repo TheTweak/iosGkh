@@ -52,16 +52,11 @@
 		925F8572178C6083009E021A /* 320x480.png in Resources */ = {isa = PBXBuildFile; fileRef = 925F856B178C6082009E021A /* 320x480.png */; };
 		925F8573178C6083009E021A /* 640x960.png in Resources */ = {isa = PBXBuildFile; fileRef = 925F856C178C6082009E021A /* 640x960.png */; };
 		925F8574178C6083009E021A /* 640x1136.png in Resources */ = {isa = PBXBuildFile; fileRef = 925F856D178C6082009E021A /* 640x1136.png */; };
-		925F8575178C6083009E021A /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 925F856E178C6082009E021A /* icon.png */; };
-		925F8576178C6083009E021A /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 925F856F178C6082009E021A /* icon@2x.png */; };
-		925F8577178C6083009E021A /* iTunes.png in Resources */ = {isa = PBXBuildFile; fileRef = 925F8570178C6083009E021A /* iTunes.png */; };
-		925F8578178C6083009E021A /* iTunes@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 925F8571178C6083009E021A /* iTunes@2x.png */; };
-		925F857A178C60D3009E021A /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 925F8579178C60D3009E021A /* icon.png */; };
-		925F857C178C60DC009E021A /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 925F857B178C60DC009E021A /* icon@2x.png */; };
 		925F857E178C6100009E021A /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 925F857D178C6100009E021A /* Default.png */; };
 		925F8580178C6114009E021A /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 925F857F178C6114009E021A /* Default@2x.png */; };
 		925F8582178C611B009E021A /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 925F8581178C611B009E021A /* Default-568h@2x.png */; };
 		928F6A7117803E00002B60F0 /* PeriodDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 928F6A7017803E00002B60F0 /* PeriodDetailsViewController.m */; };
+		92C53A81178F09AC008FDFBA /* 114x144.png in Resources */ = {isa = PBXBuildFile; fileRef = 92C53A80178F09AC008FDFBA /* 114x144.png */; };
 		92DD92F0175200DE004426E6 /* GkhReportPlotDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 92DD92EF175200DE004426E6 /* GkhReportPlotDataSource.m */; };
 		92DD92F417521D26004426E6 /* GkhReportParamTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 92DD92F317521D26004426E6 /* GkhReportParamTableViewController.m */; };
 		92DD92F717521DC6004426E6 /* GkhReportParamTableDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 92DD92F617521DC6004426E6 /* GkhReportParamTableDataSource.m */; };
@@ -168,12 +163,12 @@
 		925F8570178C6083009E021A /* iTunes.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iTunes.png; sourceTree = "<group>"; };
 		925F8571178C6083009E021A /* iTunes@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iTunes@2x.png"; sourceTree = "<group>"; };
 		925F8579178C60D3009E021A /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
-		925F857B178C60DC009E021A /* icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon@2x.png"; sourceTree = "<group>"; };
 		925F857D178C6100009E021A /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		925F857F178C6114009E021A /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		925F8581178C611B009E021A /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		928F6A6F17803DFF002B60F0 /* PeriodDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PeriodDetailsViewController.h; sourceTree = "<group>"; };
 		928F6A7017803E00002B60F0 /* PeriodDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PeriodDetailsViewController.m; sourceTree = "<group>"; };
+		92C53A80178F09AC008FDFBA /* 114x144.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 114x144.png; sourceTree = "<group>"; };
 		92DD92EE175200DE004426E6 /* GkhReportPlotDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GkhReportPlotDataSource.h; sourceTree = "<group>"; };
 		92DD92EF175200DE004426E6 /* GkhReportPlotDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GkhReportPlotDataSource.m; sourceTree = "<group>"; };
 		92DD92F217521D26004426E6 /* GkhReportParamTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GkhReportParamTableViewController.h; sourceTree = "<group>"; };
@@ -250,10 +245,10 @@
 		61A3ABCE169038A5005D3311 = {
 			isa = PBXGroup;
 			children = (
+				92C53A80178F09AC008FDFBA /* 114x144.png */,
 				925F8581178C611B009E021A /* Default-568h@2x.png */,
 				925F857F178C6114009E021A /* Default@2x.png */,
 				925F857D178C6100009E021A /* Default.png */,
-				925F857B178C60DC009E021A /* icon@2x.png */,
 				925F8579178C60D3009E021A /* icon.png */,
 				61A3ABE3169038A5005D3311 /* iosGkh */,
 				61A3AC0A169038A6005D3311 /* iosGkhTests */,
@@ -549,15 +544,10 @@
 				925F8572178C6083009E021A /* 320x480.png in Resources */,
 				925F8573178C6083009E021A /* 640x960.png in Resources */,
 				925F8574178C6083009E021A /* 640x1136.png in Resources */,
-				925F8575178C6083009E021A /* icon.png in Resources */,
-				925F8576178C6083009E021A /* icon@2x.png in Resources */,
-				925F8577178C6083009E021A /* iTunes.png in Resources */,
-				925F8578178C6083009E021A /* iTunes@2x.png in Resources */,
-				925F857A178C60D3009E021A /* icon.png in Resources */,
-				925F857C178C60DC009E021A /* icon@2x.png in Resources */,
 				925F857E178C6100009E021A /* Default.png in Resources */,
 				925F8580178C6114009E021A /* Default@2x.png in Resources */,
 				925F8582178C611B009E021A /* Default-568h@2x.png in Resources */,
+				92C53A81178F09AC008FDFBA /* 114x144.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
