@@ -12,7 +12,7 @@
 
 @interface ReportViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, CPTPlotDataSource, CPTPlotDelegate, ReportPlotDataSource>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
-@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
+@property (weak, nonatomic) IBOutlet CPTGraphHostingView *hostView;
 @property (weak, nonatomic) GkhReport *report;
 @property (weak, nonatomic) IBOutlet UIView *loadMask;
 @end

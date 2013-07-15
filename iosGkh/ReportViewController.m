@@ -15,7 +15,6 @@
 #import "ActionSheetStringPicker.h"
 
 @interface ReportViewController ()
-@property (nonatomic, strong) CPTGraphHostingView *graphHostingView;
 @property (nonatomic, strong) NSArray *plotValues;
 @property (nonatomic, strong) NSDecimalNumber *barPlotMaxHeight;
 @property (nonatomic, strong) UIColor *mainTextColor;
@@ -50,23 +49,13 @@
     self.loadMask.layer.cornerRadius = 5.0;
 }
 
--(void)viewWillAppear:(BOOL)animated
-{
-    if (!self.graphHostingView) {
-        CGRect graphHostingViewRect = CGRectMake(0, 0, self.scrollView.frame.size.width, self.scrollView.frame.size.height);
-        self.scrollView.contentSize = CGSizeMake(graphHostingViewRect.size.width, 0);
-        self.graphHostingView = [[CPTGraphHostingView alloc] initWithFrame:graphHostingViewRect];
-        [self.scrollView addSubview:self.graphHostingView];
-        [self.scrollView insertSubview:self.loadMask aboveSubview:self.graphHostingView];
-    }
-}
-
 #define REPORT_REQUEST_TYPE_KEY @"type"
 #define REPORT_RESPONSE_PLOT_VALUES_KEY @"values"
 #define REPORT_VALUES_REQUEST_PATH @"param/value"
 
 -(void)viewDidAppear:(BOOL)animated
 {
+    [super viewDidAppear:animated];
     if (!self.isLoaded) {
         NSDictionary *requestParameters = [self getRequestParameters];
         [self showLoadingMask];
@@ -313,7 +302,7 @@
 #define PLOT_AREA_FRAME_PADDING_LEFT 20.0f
 #define PLOT_AREA_FRAME_PADDING_RIGHT 20.0f
 #define PLOT_AREA_FRAME_PADDING_TOP 30.0f
-#define PLOT_AREA_FRAME_PADDING_BOTTOM 100.0f
+#define PLOT_AREA_FRAME_PADDING_BOTTOM 30.0f
 
 #define GRAPH_PADDING_RIGHT 5.0f
 #define GRAPH_PADDING_LEFT 5.0f
@@ -321,12 +310,12 @@
 #define GRAPH_PADDING_BOTTOM 20.0f
 
 #define PLOT_AREA_PADDING_LEFT 0.0f
-#define PLOT_AREA_PADDING_BOTTOM 100.0f
+#define PLOT_AREA_PADDING_BOTTOM 0.0f
 
 -(void) addBarGraphWithTitle:(NSString *) title
 {
-    CPTGraph *graph = [[CPTXYGraph alloc] initWithFrame:self.graphHostingView.frame];
-    self.graphHostingView.hostedGraph = graph;
+    CPTGraph *graph = [[CPTXYGraph alloc] initWithFrame:self.hostView.frame];
+    self.hostView.hostedGraph = graph;
     CPTPlotAreaFrame *plotAreaFrame = graph.plotAreaFrame;
     [plotAreaFrame setPaddingLeft:PLOT_AREA_FRAME_PADDING_LEFT];
     [plotAreaFrame setPaddingRight:PLOT_AREA_FRAME_PADDING_RIGHT];
@@ -491,7 +480,7 @@
         NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
         NSDictionary *responseJson = [jsonParser objectWithString:responseString];
         self.plotValues = responseJson[REPORT_RESPONSE_PLOT_VALUES_KEY];
-        [self.graphHostingView.hostedGraph reloadData];
+        [self.hostView.hostedGraph reloadData];
         [self hideLoadingMask];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Getting report plot data failed!");
@@ -517,7 +506,7 @@
 
 -(void) resetGraphLabels
 {
-    [self.graphHostingView.hostedGraph.plotAreaFrame.plotArea removeAllAnnotations];
+    [self.hostView.hostedGraph.plotAreaFrame.plotArea removeAllAnnotations];
     BarPlotDelegate *barPlotDelegate = (BarPlotDelegate *) self.plotDelegate;
     [barPlotDelegate dismissPopupMenu];
 }
