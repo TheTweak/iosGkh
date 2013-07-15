@@ -234,7 +234,7 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="XBI-Yg-qFP">
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="132" id="eVX-wh-wrO"/>
+                                    <constraint firstAttribute="height" constant="132" id="6O6-Nv-apg"/>
                                 </constraints>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ReportParamCell" id="1N0-HS-NVW">
@@ -291,25 +291,24 @@
                                     </view>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstItem="0Ec-UI-cH5" firstAttribute="centerX" secondItem="MzU-1P-1Hx" secondAttribute="centerX" type="default" id="G8X-pS-3FN"/>
-                                    <constraint firstAttribute="trailing" secondItem="0Ec-UI-cH5" secondAttribute="trailing" constant="130" id="WHL-GK-Hxw"/>
-                                    <constraint firstItem="0Ec-UI-cH5" firstAttribute="top" secondItem="MzU-1P-1Hx" secondAttribute="top" constant="157" id="iTY-G9-2Ip"/>
-                                    <constraint firstAttribute="bottom" secondItem="0Ec-UI-cH5" secondAttribute="bottom" constant="156" id="jHn-JM-0zs"/>
+                                    <constraint firstAttribute="centerX" secondItem="0Ec-UI-cH5" secondAttribute="centerX" type="user" id="5hl-zZ-eTH"/>
+                                    <constraint firstAttribute="centerY" secondItem="0Ec-UI-cH5" secondAttribute="centerY" type="user" id="GCm-RL-P8A"/>
                                 </constraints>
                             </scrollView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="MzU-1P-1Hx" firstAttribute="leading" secondItem="nr8-Zd-Nke" secondAttribute="leading" type="default" id="Dax-eb-4aR"/>
+                            <constraint firstItem="MzU-1P-1Hx" firstAttribute="leading" secondItem="nr8-Zd-Nke" secondAttribute="leading" type="user" id="Dax-eb-4aR"/>
                             <constraint firstItem="XBI-Yg-qFP" firstAttribute="trailing" secondItem="nr8-Zd-Nke" secondAttribute="trailing" type="default" id="Kc8-M8-EPs"/>
                             <constraint firstItem="XBI-Yg-qFP" firstAttribute="top" secondItem="nr8-Zd-Nke" secondAttribute="top" type="default" id="MqN-cg-IEQ"/>
-                            <constraint firstItem="MzU-1P-1Hx" firstAttribute="bottom" secondItem="nr8-Zd-Nke" secondAttribute="bottom" type="default" id="iki-0Q-VmU"/>
+                            <constraint firstItem="MzU-1P-1Hx" firstAttribute="bottom" secondItem="nr8-Zd-Nke" secondAttribute="bottom" type="user" id="iki-0Q-VmU"/>
                             <constraint firstItem="XBI-Yg-qFP" firstAttribute="leading" secondItem="nr8-Zd-Nke" secondAttribute="leading" type="default" id="mJd-Yl-gtn"/>
-                            <constraint firstItem="MzU-1P-1Hx" firstAttribute="trailing" secondItem="nr8-Zd-Nke" secondAttribute="trailing" type="default" id="oZ0-Y5-u0E"/>
-                            <constraint firstItem="MzU-1P-1Hx" firstAttribute="top" secondItem="nr8-Zd-Nke" secondAttribute="top" constant="131" id="qk5-su-enI"/>
+                            <constraint firstItem="MzU-1P-1Hx" firstAttribute="top" secondItem="XBI-Yg-qFP" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="o9u-mC-F5I"/>
+                            <constraint firstItem="MzU-1P-1Hx" firstAttribute="trailing" secondItem="nr8-Zd-Nke" secondAttribute="trailing" type="user" id="oZ0-Y5-u0E"/>
                         </constraints>
                     </view>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                     <connections>
                         <outlet property="loadMask" destination="0Ec-UI-cH5" id="IJQ-CH-DH1"/>
                         <outlet property="scrollView" destination="MzU-1P-1Hx" id="SLP-2p-hON"/>
