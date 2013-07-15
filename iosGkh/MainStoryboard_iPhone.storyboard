@@ -9,7 +9,7 @@
             <objects>
                 <viewController id="2" customClass="LoginScreenViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="3" customClass="GradientView">
-                        <rect key="frame" x="0.0" y="64" width="568" height="256"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="QAw-r6-oD4">
@@ -80,11 +80,10 @@
                             <constraint firstItem="2hO-Hc-bLC" firstAttribute="trailing" secondItem="3" secondAttribute="trailing" type="user" id="yab-tN-3te"/>
                             <constraint firstItem="fwR-Vo-o7J" firstAttribute="top" secondItem="QAw-r6-oD4" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="zmU-YK-BjB"/>
                         </constraints>
-                        <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     </view>
                     <navigationItem key="navigationItem" title="АСУ ЖКХ" id="unY-dn-Bi0"/>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
-                    <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
+                    <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                     <connections>
                         <outlet property="enterButton" destination="QAw-r6-oD4" id="6zM-qF-b58"/>
@@ -94,7 +93,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-676" y="-13"/>
+            <point key="canvasLocation" x="-621" y="-255"/>
         </scene>
         <!--Home View Controller-->
         <scene sceneID="UZD-YJ-PJV">
@@ -188,17 +187,11 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="14" contentMode="left" text="Отчет " lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7nf-4H-aBl">
-                                            <constraints>
-                                                <constraint firstAttribute="width" constant="302" id="QGu-Hp-Axk"/>
-                                            </constraints>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </label>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="15" contentMode="left" text="Описание" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M2E-hb-Ftv">
-                                            <constraints>
-                                                <constraint firstAttribute="height" constant="21" id="bzv-C7-QCA"/>
-                                            </constraints>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                             <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -207,11 +200,13 @@
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>
                                 <constraints>
-                                    <constraint firstItem="M2E-hb-Ftv" firstAttribute="top" secondItem="bqJ-4c-gHe" secondAttribute="top" constant="20" type="default" id="Gm8-fF-odI"/>
+                                    <constraint firstItem="M2E-hb-Ftv" firstAttribute="top" secondItem="bqJ-4c-gHe" secondAttribute="top" constant="20" type="user" id="Gm8-fF-odI"/>
                                     <constraint firstItem="7nf-4H-aBl" firstAttribute="top" secondItem="bqJ-4c-gHe" secondAttribute="top" constant="2" id="Nkr-2C-6Rf"/>
-                                    <constraint firstItem="7nf-4H-aBl" firstAttribute="leading" secondItem="M2E-hb-Ftv" secondAttribute="leading" type="default" id="eld-eR-gdf"/>
-                                    <constraint firstItem="M2E-hb-Ftv" firstAttribute="trailing" secondItem="7nf-4H-aBl" secondAttribute="trailing" type="default" id="n9Z-0s-5PS"/>
-                                    <constraint firstItem="7nf-4H-aBl" firstAttribute="centerX" secondItem="bqJ-4c-gHe" secondAttribute="centerX" type="default" id="vvq-X2-ywZ"/>
+                                    <constraint firstItem="M2E-hb-Ftv" firstAttribute="leading" secondItem="bqJ-4c-gHe" secondAttribute="leading" constant="9" type="user" id="O4d-Z1-ypb"/>
+                                    <constraint firstAttribute="bottom" secondItem="M2E-hb-Ftv" secondAttribute="bottom" constant="3" type="user" id="cCt-0J-rOa"/>
+                                    <constraint firstAttribute="trailing" secondItem="M2E-hb-Ftv" secondAttribute="trailing" constant="9" type="user" id="dvv-pV-aHP"/>
+                                    <constraint firstItem="7nf-4H-aBl" firstAttribute="leading" secondItem="bqJ-4c-gHe" secondAttribute="leading" constant="9" type="user" id="vsX-xO-Ttk"/>
+                                    <constraint firstAttribute="trailing" secondItem="7nf-4H-aBl" secondAttribute="trailing" constant="9" type="user" id="wme-1L-xby"/>
                                 </constraints>
                             </tableViewCell>
                         </prototypes>
