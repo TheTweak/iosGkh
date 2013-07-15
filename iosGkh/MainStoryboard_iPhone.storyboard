@@ -9,7 +9,7 @@
             <objects>
                 <viewController id="2" customClass="LoginScreenViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="3" customClass="GradientView">
-                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
+                        <rect key="frame" x="0.0" y="64" width="568" height="256"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="QAw-r6-oD4">
@@ -26,15 +26,6 @@
                                     <action selector="authenticatePressed" destination="2" eventType="touchUpInside" id="zY3-dc-NE4"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="257" translatesAutoresizingMaskIntoConstraints="NO" id="l8c-UO-KL5">
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="54" id="GIt-2z-PJF"/>
-                                    <constraint firstAttribute="width" constant="257" id="cqG-Bk-7Dr"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="N5B-ps-UYO">
                                 <segments>
                                     <segment title="УК"/>
@@ -47,55 +38,56 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" indicatorStyle="white" dataMode="prototypes" style="grouped" separatorStyle="singleLineEtched" allowsSelection="NO" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" translatesAutoresizingMaskIntoConstraints="NO" id="2hO-Hc-bLC">
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="174" id="Xzv-xV-q94"/>
+                                    <constraint firstAttribute="height" constant="120" type="user" id="m0s-0A-bVZ"/>
                                 </constraints>
                             </tableView>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fwR-Vo-o7J">
                                 <subviews>
-                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" animating="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="n0W-xI-Q46"/>
+                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="n0W-xI-Q46">
+                                        <color key="color" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    </activityIndicatorView>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Загрузка..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dPz-q1-pLf">
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="21" id="kIG-mu-5TW"/>
-                                            <constraint firstAttribute="width" constant="92" id="wEW-ou-DNt"/>
+                                            <constraint firstAttribute="width" constant="88" id="5g9-ip-1QB"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstItem="dPz-q1-pLf" firstAttribute="bottom" secondItem="n0W-xI-Q46" secondAttribute="bottom" type="default" id="iKm-Gu-RLu"/>
-                                    <constraint firstItem="n0W-xI-Q46" firstAttribute="leading" secondItem="fwR-Vo-o7J" secondAttribute="leading" constant="109" id="oQE-Fz-jYt"/>
-                                    <constraint firstItem="n0W-xI-Q46" firstAttribute="centerY" secondItem="fwR-Vo-o7J" secondAttribute="centerY" type="default" id="pdY-al-QGu"/>
-                                    <constraint firstItem="dPz-q1-pLf" firstAttribute="leading" secondItem="fwR-Vo-o7J" secondAttribute="leading" constant="126" id="vG0-HN-78Y"/>
+                                    <constraint firstItem="n0W-xI-Q46" firstAttribute="top" secondItem="fwR-Vo-o7J" secondAttribute="top" constant="2" id="0ur-lF-1uM"/>
+                                    <constraint firstItem="n0W-xI-Q46" firstAttribute="bottom" secondItem="fwR-Vo-o7J" secondAttribute="bottom" type="default" id="27n-Xf-sAI"/>
+                                    <constraint firstItem="dPz-q1-pLf" firstAttribute="centerX" secondItem="fwR-Vo-o7J" secondAttribute="centerX" type="default" id="7eu-0X-haZ"/>
+                                    <constraint firstItem="dPz-q1-pLf" firstAttribute="centerY" secondItem="fwR-Vo-o7J" secondAttribute="centerY" type="default" id="PUx-pc-0Kr"/>
+                                    <constraint firstItem="dPz-q1-pLf" firstAttribute="bottom" secondItem="fwR-Vo-o7J" secondAttribute="bottom" type="default" id="kVP-zp-Ctn"/>
+                                    <constraint firstItem="dPz-q1-pLf" firstAttribute="leading" secondItem="n0W-xI-Q46" secondAttribute="trailing" constant="8" symbolic="YES" type="default" id="nKn-tF-c1D"/>
                                 </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" red="0.98431378599999997" green="0.97647064920000004" blue="0.9450981021" alpha="1" colorSpace="deviceRGB"/>
                         <constraints>
-                            <constraint firstItem="fwR-Vo-o7J" firstAttribute="top" secondItem="QAw-r6-oD4" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="0fA-6P-E1R"/>
-                            <constraint firstItem="l8c-UO-KL5" firstAttribute="leading" secondItem="3" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="1ts-IN-6nr"/>
                             <constraint firstAttribute="trailing" secondItem="QAw-r6-oD4" secondAttribute="trailing" constant="20" symbolic="YES" type="user" id="3RI-Ef-ebQ"/>
-                            <constraint firstItem="fwR-Vo-o7J" firstAttribute="trailing" secondItem="3" secondAttribute="trailing" type="user" id="44V-Q7-5QA"/>
                             <constraint firstAttribute="trailing" secondItem="N5B-ps-UYO" secondAttribute="trailing" constant="20" symbolic="YES" type="user" id="4Qc-yQ-VEi"/>
-                            <constraint firstItem="l8c-UO-KL5" firstAttribute="bottom" secondItem="3" secondAttribute="bottom" type="default" id="AgM-DQ-ur6"/>
+                            <constraint firstItem="fwR-Vo-o7J" firstAttribute="leading" secondItem="3" secondAttribute="leading" type="default" id="IKt-XM-Jfe"/>
+                            <constraint firstItem="N5B-ps-UYO" firstAttribute="top" secondItem="3" secondAttribute="top" constant="20" symbolic="YES" type="user" id="QRp-fD-3B1"/>
                             <constraint firstItem="N5B-ps-UYO" firstAttribute="leading" secondItem="3" secondAttribute="leading" constant="20" symbolic="YES" type="user" id="ZBT-wx-FjE"/>
                             <constraint firstItem="2hO-Hc-bLC" firstAttribute="leading" secondItem="3" secondAttribute="leading" type="user" id="fGn-qF-EE5"/>
-                            <constraint firstItem="2hO-Hc-bLC" firstAttribute="centerY" secondItem="3" secondAttribute="centerY" type="default" id="h0S-2Z-9pd"/>
-                            <constraint firstItem="fwR-Vo-o7J" firstAttribute="leading" secondItem="3" secondAttribute="leading" type="user" id="i67-8U-byn"/>
-                            <constraint firstAttribute="bottom" secondItem="fwR-Vo-o7J" secondAttribute="bottom" constant="17" id="mCZ-29-Abd"/>
-                            <constraint firstItem="2hO-Hc-bLC" firstAttribute="top" secondItem="N5B-ps-UYO" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="pzn-oL-IQP"/>
+                            <constraint firstAttribute="bottom" secondItem="fwR-Vo-o7J" secondAttribute="bottom" constant="20" symbolic="YES" type="default" id="kjV-EK-Af0"/>
                             <constraint firstItem="QAw-r6-oD4" firstAttribute="leading" secondItem="3" secondAttribute="leading" constant="20" symbolic="YES" type="user" id="uBf-VO-T1w"/>
+                            <constraint firstItem="2hO-Hc-bLC" firstAttribute="top" secondItem="N5B-ps-UYO" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="uhO-7O-5RD"/>
+                            <constraint firstItem="fwR-Vo-o7J" firstAttribute="trailing" secondItem="3" secondAttribute="trailing" type="default" id="xWy-ta-UCd"/>
                             <constraint firstItem="2hO-Hc-bLC" firstAttribute="trailing" secondItem="3" secondAttribute="trailing" type="user" id="yab-tN-3te"/>
-                            <constraint firstItem="QAw-r6-oD4" firstAttribute="top" secondItem="2hO-Hc-bLC" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="zdW-tj-EvX"/>
+                            <constraint firstItem="fwR-Vo-o7J" firstAttribute="top" secondItem="QAw-r6-oD4" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="zmU-YK-BjB"/>
                         </constraints>
+                        <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     </view>
                     <navigationItem key="navigationItem" title="АСУ ЖКХ" id="unY-dn-Bi0"/>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
+                    <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                     <connections>
                         <outlet property="enterButton" destination="QAw-r6-oD4" id="6zM-qF-b58"/>
-                        <outlet property="errorLabel" destination="l8c-UO-KL5" id="bZc-1q-U1t"/>
                         <outlet property="loadingView" destination="fwR-Vo-o7J" id="ynA-qB-uQ9"/>
                         <outlet property="loginTable" destination="2hO-Hc-bLC" id="CFu-ci-2Qz"/>
                     </connections>
@@ -716,7 +708,6 @@
                 <relationship kind="action" name="authenticatePressed"/>
                 <relationship kind="action" name="segmentChanged:forEvent:" candidateClass="UISegmentedControl"/>
                 <relationship kind="outlet" name="enterButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="errorLabel" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="loadingView" candidateClass="UIView"/>
                 <relationship kind="outlet" name="loginTable" candidateClass="UITableView"/>
             </relationships>

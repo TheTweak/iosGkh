@@ -25,7 +25,6 @@
 
 @implementation LoginScreenViewController
 
-@synthesize errorLabel = _errorLabel;
 @synthesize segment = _segment;
 @synthesize password = _password;
 @synthesize login = _login;
@@ -145,7 +144,6 @@
                               otherButtonTitles:nil];
         [alert show];
     }
-    [self clearErrorText];
     switch (self.segment) {
         case 0: { // auth uk
             NSString *userName = self.login.text;
@@ -214,7 +212,7 @@
 - (void) authenticationErrorOccured:(NSNotification *)notification {
     NSString *errorText = [[notification userInfo]
                         objectForKey:@"ErrorDescription"];
-    [self.errorLabel setText:errorText];
+    NSLog(@"error: %@", errorText);
 }
 
 #define HOME_VIEW_CONTROLLER_ID @"ReportTableViewController"
@@ -248,10 +246,5 @@
     [theTextField resignFirstResponder];
     return YES;
 }
-
-- (void) clearErrorText {
-    self.errorLabel.text = @"";
-}
-
 
 @end
