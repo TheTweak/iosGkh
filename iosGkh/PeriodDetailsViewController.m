@@ -105,7 +105,7 @@
             UINib *cell = [UINib nibWithNibName:TABLE_CELL_NIB_NAME bundle:nil];
             [tableView registerNib:cell forCellReuseIdentifier:TABLE_CELL_IDENTIFIER];
             tableView.dataSource = self;
-            
+            [tableView setAutoresizingMask:UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight];
             [self.scrollView addSubview:tableView];
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             [self.activityIndicator stopAnimating];
@@ -179,5 +179,49 @@
     
     return cell;
 }
+
+#pragma mark Rotate handler
+
+/*- (void) willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+                                 duration:(NSTimeInterval)duration {
+    if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {        
+        self.scrollView.contentSize = CGSizeMake((1 + self.pageControl.numberOfPages) * height, 0);
+    } else {
+        for (int i = 0, l = [self.pageViewControllersArray count]; i < l; i++) {
+            UIViewController *controller = [self.pageViewControllersArray objectAtIndex:i];
+            UIView *view = controller.view;
+            CGRect rect = self.portraitGraphViewRect;
+            CGRect frame = CGRectMake(rect.size.width * (i + 1), 0, rect.size.width, self.portraitBottomViewRect.size.height);
+            [view setFrame:frame];
+        }
+    }
+}*/
+
+-(void) didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+    if (UIInterfaceOrientationIsPortrait(fromInterfaceOrientation)) {
+        self.scrollView.contentSize = CGSizeMake(self.pageControl.numberOfPages * self.scrollView.frame.size.width, 0);
+        CGPoint point = CGPointMake(self.scrollView.frame.size.width * self.pageControl.currentPage, 0);
+        [self.scrollView setContentOffset:point animated:YES];
+    }
+}
+
+/*-(void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+    // reload current table view
+    int pageNumber = self.onScreenPageNumber;
+    if (pageNumber - 1 != -1) {
+        UIViewController *controller = [self.pageViewControllersArray objectAtIndex:pageNumber - 1];
+        UIView *view = controller.view;
+        UITableView *tableView = (UITableView *) view;
+        [tableView reloadData];
+    }
+    CGPoint point;
+    if (UIInterfaceOrientationIsLandscape(fromInterfaceOrientation)) {
+        point = CGPointMake(self.portraitBottomViewRect.size.width * pageNumber, 0);
+    } else {
+        point = CGPointMake(self.landscapePageSize * pageNumber, 0);
+    }
+    [self.bottomView setContentOffset:point animated:YES];
+}*/
+
 
 @end
