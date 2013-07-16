@@ -167,16 +167,18 @@
     UILabel *scopeView = (UILabel *)[cell viewWithTag:SCOPE_VIEW_TAG];
     scopeView.text = value[SCOPE_VALUE_KEY];
     
+    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+    [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+    [formatter setLocale:[NSLocale currentLocale]];
+    
     UILabel *nachView = (UILabel *)[cell viewWithTag:NACH_VIEW_TAG];
     NSDecimalNumber *nachVal = [NSDecimalNumber decimalNumberWithString:value[NACH_VALUE_KEY]];
-    NSString *nach = [[CorePlotUtils thousandsSeparator] stringFromNumber:nachVal];
-    nach = [nach stringByAppendingString:@" р."];
+    NSString *nach = [formatter stringFromNumber:nachVal];
     nachView.text = nach;
     
     UILabel *payView = (UILabel *)[cell viewWithTag:PAY_VIEW_TAG];
     NSDecimalNumber *payVal = [NSDecimalNumber decimalNumberWithString:value[PAY_VALUE_KEY]];
-    NSString *pay = [[CorePlotUtils thousandsSeparator] stringFromNumber:payVal];
-    pay = [pay stringByAppendingString:@" р."];
+    NSString *pay = [formatter stringFromNumber:payVal];
     payView.text = pay;
     
     UILabel *percentView = (UILabel *)[cell viewWithTag:PERCENT_VIEW_TAG];

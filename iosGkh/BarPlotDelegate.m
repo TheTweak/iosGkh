@@ -24,13 +24,13 @@
 
 @implementation BarPlotDelegate
 
-CGFloat const nach_label_height = 1.1;
+CGFloat const nach_label_height = 1.05;
 CGFloat const nach_label_pos = 0.8;
 
-CGFloat const pay_label_height = 1.1;
+CGFloat const pay_label_height = 1.05;
 CGFloat const pay_label_pos = 0.2;
 
-CGFloat const period_label_height = -0.1;
+CGFloat const period_label_height = -0.07;
 CGFloat const period_label_pos = 0.825;
 
 @synthesize periodAnnotation = _periodAnnotation;
@@ -69,13 +69,15 @@ CGFloat const period_label_pos = 0.825;
     NSDictionary *businessVals = [plotDataSource getBusinessValues:idx];
     
     NSDecimalNumber *nachVal = [NSDecimalNumber decimalNumberWithString:[businessVals valueForKey:@"y"]];
-    NSString *nachis = [[CorePlotUtils thousandsSeparator] stringFromNumber:nachVal];
-    nachis = [nachis stringByAppendingString:@" р."];
     
+    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+    [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+    [formatter setLocale:[NSLocale currentLocale]];
+    NSString *nachis = [formatter stringFromNumber:nachVal];
+
     NSDecimalNumber *payVal = [NSDecimalNumber decimalNumberWithString:[businessVals valueForKey:@"y2"]];
-    NSString *pay = [[CorePlotUtils thousandsSeparator] stringFromNumber:payVal];
-    pay = [pay stringByAppendingString:@" р."];
-            
+    NSString *pay = [formatter stringFromNumber:payVal];
+    
     NSString *period = [businessVals valueForKey:@"period"];
     self.period = period;
     // left annotation - bar position "value"
