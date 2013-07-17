@@ -16,4 +16,5 @@
 @property (weak, nonatomic) GkhReport *report;
 @property (weak, nonatomic) IBOutlet UIView *loadMask;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *verticalSpaceBetweenTableViewAndHostingView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *graphHostingViewTopSpaceToSuper;
 @end

@@ -21,6 +21,7 @@
 @property (nonatomic, strong) id<CPTPlotDelegate> plotDelegate;
 @property BOOL isLoaded;
 @property (nonatomic, strong) NSLayoutConstraint *graphHostingViewHeightEqualToSuper;
+@property (nonatomic, strong) NSNumber *graphHostingViewSpaceToSuperIntPortrait;
 @end
 
 @implementation ReportViewController
@@ -536,34 +537,47 @@
 
 #pragma mark Orientation handle
 
--(void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+/*-(void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
     if (UIInterfaceOrientationIsPortrait(fromInterfaceOrientation)) {        
         [self layoutForLandscape];
     } else {
         [self layoutForPortrait];
     }
+}*/
+
+-(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {
+        [self layoutForPortrait];
+    } else {
+        [self layoutForLandscape];
+    }
 }
 
 -(void)layoutForLandscape
 {
-    self.tableView.hidden = YES;
     [self.view removeConstraint:self.verticalSpaceBetweenTableViewAndHostingView];
-    [self.view addConstraint:self.graphHostingViewHeightEqualToSuper];
+    self.tableView.hidden = YES;
+    if (!self.graphHostingViewSpaceToSuperIntPortrait) {
+        self.graphHostingViewSpaceToSuperIntPortrait = [NSNumber numberWithFloat:self.graphHostingViewTopSpaceToSuper.constant];
+    }
+    self.graphHostingViewTopSpaceToSuper.constant = 0;
+    [UIView animateWithDuration:1.0 animations:^{
+        [self.view layoutIfNeeded];
+    }];
 }
 
 -(void)layoutForPortrait
 {
     self.tableView.hidden = NO;
-    [self.view removeConstraint:self.graphHostingViewHeightEqualToSuper];
+    if (self.graphHostingViewSpaceToSuperIntPortrait) {
+        self.graphHostingViewTopSpaceToSuper.constant = [self.graphHostingViewSpaceToSuperIntPortrait floatValue];
+        [UIView animateWithDuration:1.0 animations:^{
+            [self.view layoutIfNeeded];
+        }];
+    }
     [self.view addConstraint:self.verticalSpaceBetweenTableViewAndHostingView];
 }
-
--(void) updateViewConstraints
-{
-    [super updateViewConstraints];
-    NSLog(@"updateViewConstraints:");
-}
-
 
 @end
