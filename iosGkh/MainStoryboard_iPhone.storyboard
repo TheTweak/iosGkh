@@ -234,7 +234,7 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="XBI-Yg-qFP">
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="132" id="6O6-Nv-apg"/>
+                                    <constraint firstAttribute="height" priority="999" constant="132" type="user" id="fCc-7F-usi"/>
                                 </constraints>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ReportParamCell" id="1N0-HS-NVW">
@@ -287,9 +287,9 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="hKg-Di-kLI" firstAttribute="trailing" secondItem="nr8-Zd-Nke" secondAttribute="trailing" type="default" id="9gj-tg-rki"/>
-                            <constraint firstItem="hKg-Di-kLI" firstAttribute="top" secondItem="XBI-Yg-qFP" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="I9R-SE-Mm2"/>
+                            <constraint firstItem="hKg-Di-kLI" firstAttribute="top" secondItem="XBI-Yg-qFP" secondAttribute="bottom" constant="8" symbolic="YES" type="user" id="I9R-SE-Mm2"/>
                             <constraint firstItem="XBI-Yg-qFP" firstAttribute="trailing" secondItem="nr8-Zd-Nke" secondAttribute="trailing" type="default" id="Kc8-M8-EPs"/>
-                            <constraint firstItem="XBI-Yg-qFP" firstAttribute="top" secondItem="nr8-Zd-Nke" secondAttribute="top" type="default" id="MqN-cg-IEQ"/>
+                            <constraint firstItem="XBI-Yg-qFP" firstAttribute="top" secondItem="nr8-Zd-Nke" secondAttribute="top" type="user" id="MqN-cg-IEQ"/>
                             <constraint firstItem="hKg-Di-kLI" firstAttribute="leading" secondItem="nr8-Zd-Nke" secondAttribute="leading" type="default" id="V2A-yK-tzF"/>
                             <constraint firstItem="hKg-Di-kLI" firstAttribute="bottom" secondItem="nr8-Zd-Nke" secondAttribute="bottom" type="default" id="W1I-ol-OXC"/>
                             <constraint firstItem="XBI-Yg-qFP" firstAttribute="leading" secondItem="nr8-Zd-Nke" secondAttribute="leading" type="default" id="mJd-Yl-gtn"/>
@@ -301,6 +301,7 @@
                         <outlet property="hostView" destination="hKg-Di-kLI" id="fGl-ln-6bL"/>
                         <outlet property="loadMask" destination="qt6-t1-F7O" id="sOD-ef-Yoh"/>
                         <outlet property="tableView" destination="XBI-Yg-qFP" id="RRr-lv-9kT"/>
+                        <outlet property="verticalSpaceBetweenTableViewAndHostingView" destination="I9R-SE-Mm2" id="hML-3E-MMh"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tsA-ms-EHe" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -719,6 +720,7 @@
                 <relationship kind="outlet" name="hostView" candidateClass="CPTGraphHostingView"/>
                 <relationship kind="outlet" name="loadMask" candidateClass="UIView"/>
                 <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
+                <relationship kind="outlet" name="verticalSpaceBetweenTableViewAndHostingView" candidateClass="NSLayoutConstraint"/>
             </relationships>
         </class>
     </classes>

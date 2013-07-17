@@ -20,9 +20,18 @@
 @property (nonatomic, strong) UIColor *mainTextColor;
 @property (nonatomic, strong) id<CPTPlotDelegate> plotDelegate;
 @property BOOL isLoaded;
+@property (nonatomic, strong) NSLayoutConstraint *graphHostingViewHeightEqualToSuper;
 @end
 
 @implementation ReportViewController
+
+-(NSLayoutConstraint *)graphHostingViewHeightEqualToSuper
+{
+    if (!_graphHostingViewHeightEqualToSuper) {
+        _graphHostingViewHeightEqualToSuper = [NSLayoutConstraint constraintWithItem:self.hostView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeHeight multiplier:1.0 constant:0.0];
+    }
+    return _graphHostingViewHeightEqualToSuper;
+}
 
 -(NSDictionary *)getBusinessValues:(NSInteger)idx
 {
@@ -41,6 +50,8 @@
     [super viewDidLoad];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
+    self.tableView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.hostView.translatesAutoresizingMaskIntoConstraints = NO;
     self.title = self.report.name;
     UIBarButtonItem *refreshButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
                                                                                    target:self
@@ -74,6 +85,18 @@
             NSLog(@"Getting report plot data failed!");
             [self hideLoadingMask];
         }];
+    }
+}
+
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
+    if (UIInterfaceOrientationIsPortrait(orientation)) {
+        [self layoutForPortrait];
+    } else {
+        [self layoutForLandscape];
     }
 }
 
@@ -511,6 +534,36 @@
     [barPlotDelegate dismissPopupMenu];
 }
 
+#pragma mark Orientation handle
+
+-(void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    if (UIInterfaceOrientationIsPortrait(fromInterfaceOrientation)) {        
+        [self layoutForLandscape];
+    } else {
+        [self layoutForPortrait];
+    }
+}
+
+-(void)layoutForLandscape
+{
+    self.tableView.hidden = YES;
+    [self.view removeConstraint:self.verticalSpaceBetweenTableViewAndHostingView];
+    [self.view addConstraint:self.graphHostingViewHeightEqualToSuper];
+}
+
+-(void)layoutForPortrait
+{
+    self.tableView.hidden = NO;
+    [self.view removeConstraint:self.graphHostingViewHeightEqualToSuper];
+    [self.view addConstraint:self.verticalSpaceBetweenTableViewAndHostingView];
+}
+
+-(void) updateViewConstraints
+{
+    [super updateViewConstraints];
+    NSLog(@"updateViewConstraints:");
+}
 
 
 @end
