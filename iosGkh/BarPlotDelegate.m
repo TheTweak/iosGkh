@@ -146,8 +146,12 @@ CGFloat const period_label_pos = 0.825;
     
     // rotate 180 degrees along x axis
     popupMenu.layer.transform = CATransform3DMakeRotation(M_PI, 1.0, 0.0, 0.0);
-    QBPopupMenuItem *item = [QBPopupMenuItem itemWithTitle:percentLabel target:self action:@selector(popUpMenuClickHandler)];
-    popupMenu.items = [NSArray arrayWithObjects:item, nil];
+    UIImage *rightArrow = [UIImage imageNamed:@"right-arrow.png"];
+    QBPopupMenuItem *percentItem = [QBPopupMenuItem itemWithTitle:percentLabel
+                                                            image:rightArrow
+                                                           target:self
+                                                           action:@selector(popUpMenuClickHandler)];
+    popupMenu.items = [NSArray arrayWithObjects:percentItem, nil];
     // plot view area coords
     CPTPlotAreaFrame *plotAreaFrame = plot.graph.plotAreaFrame;
     // plot point in the plotAreaView
