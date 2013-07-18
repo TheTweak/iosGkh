@@ -9,15 +9,12 @@
 /* Begin PBXBuildFile section */
 		61234979173A664C00EBBCF1 /* CounterTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 61234978173A664C00EBBCF1 /* CounterTableViewController.m */; };
 		6123497C173A734F00EBBCF1 /* Dweller.m in Sources */ = {isa = PBXBuildFile; fileRef = 6123497B173A734F00EBBCF1 /* Dweller.m */; };
-		6140D1A5169721960066F51C /* BarPlotSelectingArrow.m in Sources */ = {isa = PBXBuildFile; fileRef = 6140D1A4169721960066F51C /* BarPlotSelectingArrow.m */; };
 		614C91731741246800F1A91A /* CounterValsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 614C91721741246800F1A91A /* CounterValsViewController.m */; };
-		614C917617412D5E00F1A91A /* CounterValTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 614C917517412D5E00F1A91A /* CounterValTableCell.m */; };
 		614C9179174252B000F1A91A /* DateYearPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 614C9178174252B000F1A91A /* DateYearPicker.m */; };
 		61514BDC16A48A56003F4BED /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 61514BDB16A48A56003F4BED /* CoreImage.framework */; };
 		6178216F16F8433D00E4BED1 /* CorePlotUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 6178216E16F8433D00E4BED1 /* CorePlotUtils.m */; };
 		6178217416F8482000E4BED1 /* BarPlotDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6178217316F8482000E4BED1 /* BarPlotDelegate.m */; };
 		6178217716F85D1200E4BED1 /* PieChartDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6178217616F85D1200E4BED1 /* PieChartDelegate.m */; };
-		6191BC5C169AD63500CE85BA /* HomeTableDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 6191BC5B169AD63500CE85BA /* HomeTableDataSource.m */; };
 		61A3ABDE169038A5005D3311 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 61A3ABDD169038A5005D3311 /* UIKit.framework */; };
 		61A3ABE0169038A5005D3311 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 61A3ABDF169038A5005D3311 /* Foundation.framework */; };
 		61A3ABE2169038A5005D3311 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 61A3ABE1169038A5005D3311 /* CoreGraphics.framework */; };
@@ -34,15 +31,9 @@
 		61A3AC12169038A6005D3311 /* iosGkhTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 61A3AC11169038A6005D3311 /* iosGkhTests.m */; };
 		61A3AC2516904778005D3311 /* MainStoryboard_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 61A3AC2316904778005D3311 /* MainStoryboard_iPhone.storyboard */; };
 		61A3AC2616904778005D3311 /* MainStoryboard_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 61A3AC2416904778005D3311 /* MainStoryboard_iPad.storyboard */; };
-		61A3AC4F16904863005D3311 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 61A3AC4416904862005D3311 /* HomeViewController.m */; };
-		61A3AC5016904863005D3311 /* MetricSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 61A3AC4716904862005D3311 /* MetricSelectionViewController.m */; };
-		61A3AC5116904863005D3311 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 61A3AC4A16904862005D3311 /* SettingsViewController.m */; };
 		61A3AC5316904863005D3311 /* LoginScreenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 61A3AC4E16904863005D3311 /* LoginScreenViewController.m */; };
 		61A3AC5916904909005D3311 /* BasicAuthModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 61A3AC5516904909005D3311 /* BasicAuthModule.m */; };
 		61A6B30D16F07E3E00C6D1A6 /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 61A6B30C16F07E3E00C6D1A6 /* Constants.m */; };
-		61A6B31716F0C54000C6D1A6 /* PickerField.m in Sources */ = {isa = PBXBuildFile; fileRef = 61A6B31616F0C54000C6D1A6 /* PickerField.m */; };
-		61E81AF916EE054B00819BDD /* CustomView.m in Sources */ = {isa = PBXBuildFile; fileRef = 61E81AF816EE054B00819BDD /* CustomView.m */; };
-		61F45D6F16F1D46900598213 /* CustomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 61F45D6E16F1D46900598213 /* CustomViewController.m */; };
 		9207F19D176DC70700E88E1C /* ReportTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9207F19C176DC70700E88E1C /* ReportTableViewController.m */; };
 		9207F1A0176DCD0400E88E1C /* ReportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9207F19F176DCD0400E88E1C /* ReportViewController.m */; };
 		922D94F1174B791F005589AF /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 922D94F0174B791F005589AF /* Settings.bundle */; };
@@ -57,16 +48,14 @@
 		9283F4061797E0270041C681 /* counters@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9283F4021797E0260041C681 /* counters@2x.png */; };
 		9283F4071797E0270041C681 /* epd.png in Resources */ = {isa = PBXBuildFile; fileRef = 9283F4031797E0260041C681 /* epd.png */; };
 		9283F4081797E0270041C681 /* epd@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9283F4041797E0270041C681 /* epd@2x.png */; };
+		9283F40F17980E8C0041C681 /* CounterValTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9283F40E17980E8C0041C681 /* CounterValTableCell.m */; };
 		928F6A7117803E00002B60F0 /* PeriodDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 928F6A7017803E00002B60F0 /* PeriodDetailsViewController.m */; };
 		92C53A81178F09AC008FDFBA /* 114x144.png in Resources */ = {isa = PBXBuildFile; fileRef = 92C53A80178F09AC008FDFBA /* 114x144.png */; };
 		92D5DA4D1792DFDB00198A40 /* GradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = 92D5DA4C1792DFDB00198A40 /* GradientView.m */; };
 		92DD92F0175200DE004426E6 /* GkhReportPlotDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 92DD92EF175200DE004426E6 /* GkhReportPlotDataSource.m */; };
-		92DD92F417521D26004426E6 /* GkhReportParamTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 92DD92F317521D26004426E6 /* GkhReportParamTableViewController.m */; };
 		92DD92F717521DC6004426E6 /* GkhReportParamTableDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 92DD92F617521DC6004426E6 /* GkhReportParamTableDataSource.m */; };
 		92DD92F91752674D004426E6 /* AdditionalRepresentationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 92DD92F81752674D004426E6 /* AdditionalRepresentationCell.xib */; };
 		92F25FBD174A08F800BE5FF6 /* EpdTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 92F25FBC174A08F800BE5FF6 /* EpdTableViewController.m */; };
-		92F25FC0174A16B100BE5FF6 /* green_check.png in Resources */ = {isa = PBXBuildFile; fileRef = 92F25FBE174A16B100BE5FF6 /* green_check.png */; };
-		92F25FC1174A16B100BE5FF6 /* red_cross.png in Resources */ = {isa = PBXBuildFile; fileRef = 92F25FBF174A16B100BE5FF6 /* red_cross.png */; };
 		92F25FC4174A1A1D00BE5FF6 /* EpdDetailTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 92F25FC3174A1A1D00BE5FF6 /* EpdDetailTableViewController.m */; };
 		92F7643C177B5B8D002F542B /* QBPopupMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 92F76437177B5B8D002F542B /* QBPopupMenu.m */; };
 		92F7643D177B5B8D002F542B /* QBPopupMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 92F76439177B5B8D002F542B /* QBPopupMenuItem.m */; };
@@ -90,12 +79,8 @@
 		61234978173A664C00EBBCF1 /* CounterTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CounterTableViewController.m; sourceTree = "<group>"; };
 		6123497A173A734F00EBBCF1 /* Dweller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Dweller.h; sourceTree = "<group>"; };
 		6123497B173A734F00EBBCF1 /* Dweller.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Dweller.m; sourceTree = "<group>"; };
-		6140D1A3169721960066F51C /* BarPlotSelectingArrow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BarPlotSelectingArrow.h; path = ../BarPlotSelectingArrow.h; sourceTree = "<group>"; };
-		6140D1A4169721960066F51C /* BarPlotSelectingArrow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BarPlotSelectingArrow.m; path = ../BarPlotSelectingArrow.m; sourceTree = "<group>"; };
 		614C91711741246800F1A91A /* CounterValsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CounterValsViewController.h; sourceTree = "<group>"; };
 		614C91721741246800F1A91A /* CounterValsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CounterValsViewController.m; sourceTree = "<group>"; };
-		614C917417412D5E00F1A91A /* CounterValTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CounterValTableCell.h; sourceTree = "<group>"; };
-		614C917517412D5E00F1A91A /* CounterValTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CounterValTableCell.m; sourceTree = "<group>"; };
 		614C9177174252B000F1A91A /* DateYearPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DateYearPicker.h; sourceTree = "<group>"; };
 		614C9178174252B000F1A91A /* DateYearPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DateYearPicker.m; sourceTree = "<group>"; };
 		61514BDB16A48A56003F4BED /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
@@ -105,8 +90,6 @@
 		6178217316F8482000E4BED1 /* BarPlotDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BarPlotDelegate.m; sourceTree = "<group>"; };
 		6178217516F85D1200E4BED1 /* PieChartDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PieChartDelegate.h; sourceTree = "<group>"; };
 		6178217616F85D1200E4BED1 /* PieChartDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PieChartDelegate.m; sourceTree = "<group>"; };
-		6191BC5A169AD63500CE85BA /* HomeTableDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeTableDataSource.h; sourceTree = "<group>"; };
-		6191BC5B169AD63500CE85BA /* HomeTableDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeTableDataSource.m; sourceTree = "<group>"; };
 		61A3ABD9169038A5005D3311 /* iosGkh.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iosGkh.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		61A3ABDD169038A5005D3311 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		61A3ABDF169038A5005D3311 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -128,31 +111,17 @@
 		61A3AC11169038A6005D3311 /* iosGkhTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = iosGkhTests.m; sourceTree = "<group>"; };
 		61A3AC2316904778005D3311 /* MainStoryboard_iPhone.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MainStoryboard_iPhone.storyboard; sourceTree = "<group>"; };
 		61A3AC2416904778005D3311 /* MainStoryboard_iPad.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MainStoryboard_iPad.storyboard; sourceTree = "<group>"; };
-		61A3AC4416904862005D3311 /* HomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
-		61A3AC4516904862005D3311 /* HomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
-		61A3AC4616904862005D3311 /* MetricSelectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MetricSelectionViewController.h; sourceTree = "<group>"; };
-		61A3AC4716904862005D3311 /* MetricSelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MetricSelectionViewController.m; sourceTree = "<group>"; };
-		61A3AC4816904862005D3311 /* MetricConsumerProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MetricConsumerProtocol.h; sourceTree = "<group>"; };
-		61A3AC4916904862005D3311 /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
-		61A3AC4A16904862005D3311 /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
 		61A3AC4D16904863005D3311 /* LoginScreenViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginScreenViewController.h; sourceTree = "<group>"; };
 		61A3AC4E16904863005D3311 /* LoginScreenViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginScreenViewController.m; sourceTree = "<group>"; };
 		61A3AC5516904909005D3311 /* BasicAuthModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BasicAuthModule.m; sourceTree = "<group>"; };
 		61A3AC5716904909005D3311 /* BasicAuthModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BasicAuthModule.h; sourceTree = "<group>"; };
 		61A6B30B16F07E3E00C6D1A6 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		61A6B30C16F07E3E00C6D1A6 /* Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
-		61A6B31516F0C54000C6D1A6 /* PickerField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickerField.h; sourceTree = "<group>"; };
-		61A6B31616F0C54000C6D1A6 /* PickerField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickerField.m; sourceTree = "<group>"; };
-		61E81AF716EE054B00819BDD /* CustomView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomView.h; sourceTree = "<group>"; };
-		61E81AF816EE054B00819BDD /* CustomView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomView.m; sourceTree = "<group>"; };
-		61F45D6D16F1D46900598213 /* CustomViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomViewController.h; sourceTree = "<group>"; };
-		61F45D6E16F1D46900598213 /* CustomViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomViewController.m; sourceTree = "<group>"; };
 		7716AF1534D04DE2AFEC9746 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		9207F19B176DC70700E88E1C /* ReportTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReportTableViewController.h; sourceTree = "<group>"; };
 		9207F19C176DC70700E88E1C /* ReportTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReportTableViewController.m; sourceTree = "<group>"; };
 		9207F19E176DCD0400E88E1C /* ReportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReportViewController.h; sourceTree = "<group>"; };
 		9207F19F176DCD0400E88E1C /* ReportViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReportViewController.m; sourceTree = "<group>"; };
-		922B3BD017772F11009868D9 /* ReportPlotDataSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ReportPlotDataSource.h; sourceTree = "<group>"; };
 		922D94F0174B791F005589AF /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		925CE585174F545100545D13 /* GkhReport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GkhReport.h; sourceTree = "<group>"; };
 		925CE586174F545100545D13 /* GkhReport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GkhReport.m; sourceTree = "<group>"; };
@@ -167,6 +136,9 @@
 		9283F4021797E0260041C681 /* counters@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "counters@2x.png"; sourceTree = "<group>"; };
 		9283F4031797E0260041C681 /* epd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = epd.png; sourceTree = "<group>"; };
 		9283F4041797E0270041C681 /* epd@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "epd@2x.png"; sourceTree = "<group>"; };
+		9283F40D17980E8C0041C681 /* CounterValTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CounterValTableCell.h; sourceTree = "<group>"; };
+		9283F40E17980E8C0041C681 /* CounterValTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CounterValTableCell.m; sourceTree = "<group>"; };
+		9283F41017980EC70041C681 /* ReportPlotDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReportPlotDataSource.h; sourceTree = "<group>"; };
 		928F6A6F17803DFF002B60F0 /* PeriodDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PeriodDetailsViewController.h; sourceTree = "<group>"; };
 		928F6A7017803E00002B60F0 /* PeriodDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PeriodDetailsViewController.m; sourceTree = "<group>"; };
 		92C53A80178F09AC008FDFBA /* 114x144.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 114x144.png; sourceTree = "<group>"; };
@@ -174,15 +146,11 @@
 		92D5DA4C1792DFDB00198A40 /* GradientView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GradientView.m; sourceTree = "<group>"; };
 		92DD92EE175200DE004426E6 /* GkhReportPlotDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GkhReportPlotDataSource.h; sourceTree = "<group>"; };
 		92DD92EF175200DE004426E6 /* GkhReportPlotDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GkhReportPlotDataSource.m; sourceTree = "<group>"; };
-		92DD92F217521D26004426E6 /* GkhReportParamTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GkhReportParamTableViewController.h; sourceTree = "<group>"; };
-		92DD92F317521D26004426E6 /* GkhReportParamTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GkhReportParamTableViewController.m; sourceTree = "<group>"; };
 		92DD92F517521DC6004426E6 /* GkhReportParamTableDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GkhReportParamTableDataSource.h; sourceTree = "<group>"; };
 		92DD92F617521DC6004426E6 /* GkhReportParamTableDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GkhReportParamTableDataSource.m; sourceTree = "<group>"; };
 		92DD92F81752674D004426E6 /* AdditionalRepresentationCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = AdditionalRepresentationCell.xib; path = ../AdditionalRepresentationCell.xib; sourceTree = "<group>"; };
 		92F25FBB174A08F800BE5FF6 /* EpdTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EpdTableViewController.h; sourceTree = "<group>"; };
 		92F25FBC174A08F800BE5FF6 /* EpdTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EpdTableViewController.m; sourceTree = "<group>"; };
-		92F25FBE174A16B100BE5FF6 /* green_check.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = green_check.png; sourceTree = "<group>"; };
-		92F25FBF174A16B100BE5FF6 /* red_cross.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = red_cross.png; sourceTree = "<group>"; };
 		92F25FC2174A1A1D00BE5FF6 /* EpdDetailTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EpdDetailTableViewController.h; sourceTree = "<group>"; };
 		92F25FC3174A1A1D00BE5FF6 /* EpdDetailTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EpdDetailTableViewController.m; sourceTree = "<group>"; };
 		92F76436177B5B8D002F542B /* QBPopupMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBPopupMenu.h; sourceTree = "<group>"; };
@@ -222,10 +190,6 @@
 		6140D1A7169721B20066F51C /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				6191BC5A169AD63500CE85BA /* HomeTableDataSource.h */,
-				6191BC5B169AD63500CE85BA /* HomeTableDataSource.m */,
-				6140D1A3169721960066F51C /* BarPlotSelectingArrow.h */,
-				6140D1A4169721960066F51C /* BarPlotSelectingArrow.m */,
 				925CE585174F545100545D13 /* GkhReport.h */,
 				925CE586174F545100545D13 /* GkhReport.m */,
 				92DD92F517521DC6004426E6 /* GkhReportParamTableDataSource.h */,
@@ -286,27 +250,18 @@
 		61A3ABE3169038A5005D3311 /* iosGkh */ = {
 			isa = PBXGroup;
 			children = (
+				9283F40B17980E120041C681 /* Common */,
+				9283F40917980D880041C681 /* Dweller */,
 				92F76435177B5B72002F542B /* QBPopUpMenu */,
 				9207F199176DC6D500E88E1C /* Reports */,
 				92DD92F81752674D004426E6 /* AdditionalRepresentationCell.xib */,
 				922D94F0174B791F005589AF /* Settings.bundle */,
-				6178217116F8480900E4BED1 /* Delegates */,
-				61E81AF616EE052600819BDD /* Views */,
-				6140D1A7169721B20066F51C /* Models */,
-				61A3AC6216904DB9005D3311 /* Core Plot DS */,
-				61A3AC5B1690490E005D3311 /* Auth */,
-				61A3AC4816904862005D3311 /* MetricConsumerProtocol.h */,
-				61A3AC541690486E005D3311 /* Controllers */,
+				61A3AC541690486E005D3311 /* LoginScreen */,
 				61A3AC2316904778005D3311 /* MainStoryboard_iPhone.storyboard */,
 				61A3AC2416904778005D3311 /* MainStoryboard_iPad.storyboard */,
 				61A3ABEC169038A5005D3311 /* iGkhAppDelegate.h */,
 				61A3ABED169038A5005D3311 /* iGkhAppDelegate.m */,
 				61A3ABE4169038A5005D3311 /* Supporting Files */,
-				61A6B30B16F07E3E00C6D1A6 /* Constants.h */,
-				61A6B30C16F07E3E00C6D1A6 /* Constants.m */,
-				6178216D16F8433D00E4BED1 /* CorePlotUtils.h */,
-				6178216E16F8433D00E4BED1 /* CorePlotUtils.m */,
-				922B3BD017772F11009868D9 /* ReportPlotDataSource.h */,
 			);
 			path = iosGkh;
 			sourceTree = "<group>";
@@ -355,39 +310,17 @@
 				925F856B178C6082009E021A /* 320x480.png */,
 				925F856C178C6082009E021A /* 640x960.png */,
 				925F856D178C6082009E021A /* 640x1136.png */,
-				92F25FBE174A16B100BE5FF6 /* green_check.png */,
-				92F25FBF174A16B100BE5FF6 /* red_cross.png */,
 			);
 			name = PNGS;
 			sourceTree = "<group>";
 		};
-		61A3AC541690486E005D3311 /* Controllers */ = {
+		61A3AC541690486E005D3311 /* LoginScreen */ = {
 			isa = PBXGroup;
 			children = (
-				61A3AC4416904862005D3311 /* HomeViewController.m */,
-				61A3AC4516904862005D3311 /* HomeViewController.h */,
-				61A3AC4616904862005D3311 /* MetricSelectionViewController.h */,
-				61A3AC4716904862005D3311 /* MetricSelectionViewController.m */,
-				61A3AC4916904862005D3311 /* SettingsViewController.h */,
-				61A3AC4A16904862005D3311 /* SettingsViewController.m */,
 				61A3AC4D16904863005D3311 /* LoginScreenViewController.h */,
 				61A3AC4E16904863005D3311 /* LoginScreenViewController.m */,
-				92D5DA4B1792DFDB00198A40 /* GradientView.h */,
-				92D5DA4C1792DFDB00198A40 /* GradientView.m */,
-				61F45D6D16F1D46900598213 /* CustomViewController.h */,
-				61F45D6E16F1D46900598213 /* CustomViewController.m */,
-				61234977173A664C00EBBCF1 /* CounterTableViewController.h */,
-				61234978173A664C00EBBCF1 /* CounterTableViewController.m */,
-				614C91711741246800F1A91A /* CounterValsViewController.h */,
-				614C91721741246800F1A91A /* CounterValsViewController.m */,
-				92F25FBB174A08F800BE5FF6 /* EpdTableViewController.h */,
-				92F25FBC174A08F800BE5FF6 /* EpdTableViewController.m */,
-				92F25FC2174A1A1D00BE5FF6 /* EpdDetailTableViewController.h */,
-				92F25FC3174A1A1D00BE5FF6 /* EpdDetailTableViewController.m */,
-				92DD92F217521D26004426E6 /* GkhReportParamTableViewController.h */,
-				92DD92F317521D26004426E6 /* GkhReportParamTableViewController.m */,
 			);
-			name = Controllers;
+			name = LoginScreen;
 			sourceTree = "<group>";
 		};
 		61A3AC5B1690490E005D3311 /* Auth */ = {
@@ -413,12 +346,8 @@
 		61E81AF616EE052600819BDD /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				61E81AF716EE054B00819BDD /* CustomView.h */,
-				61E81AF816EE054B00819BDD /* CustomView.m */,
-				61A6B31516F0C54000C6D1A6 /* PickerField.h */,
-				61A6B31616F0C54000C6D1A6 /* PickerField.m */,
-				614C917417412D5E00F1A91A /* CounterValTableCell.h */,
-				614C917517412D5E00F1A91A /* CounterValTableCell.m */,
+				92D5DA4B1792DFDB00198A40 /* GradientView.h */,
+				92D5DA4C1792DFDB00198A40 /* GradientView.m */,
 				614C9177174252B000F1A91A /* DateYearPicker.h */,
 				614C9178174252B000F1A91A /* DateYearPicker.m */,
 			);
@@ -428,12 +357,16 @@
 		9207F199176DC6D500E88E1C /* Reports */ = {
 			isa = PBXGroup;
 			children = (
-				9207F19A176DC6E900E88E1C /* C */,
+				9283F41117980EDD0041C681 /* Protocols */,
+				6140D1A7169721B20066F51C /* Models */,
+				6178217116F8480900E4BED1 /* Delegates */,
+				61A3AC6216904DB9005D3311 /* Core Plot DS */,
+				9207F19A176DC6E900E88E1C /* Controllers */,
 			);
 			name = Reports;
 			sourceTree = "<group>";
 		};
-		9207F19A176DC6E900E88E1C /* C */ = {
+		9207F19A176DC6E900E88E1C /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
 				9207F19B176DC70700E88E1C /* ReportTableViewController.h */,
@@ -443,7 +376,61 @@
 				928F6A6F17803DFF002B60F0 /* PeriodDetailsViewController.h */,
 				928F6A7017803E00002B60F0 /* PeriodDetailsViewController.m */,
 			);
-			name = C;
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+		9283F40917980D880041C681 /* Dweller */ = {
+			isa = PBXGroup;
+			children = (
+				9283F40C17980E780041C681 /* Views */,
+				9283F40A17980D9A0041C681 /* Controllers */,
+			);
+			name = Dweller;
+			sourceTree = "<group>";
+		};
+		9283F40A17980D9A0041C681 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				61234977173A664C00EBBCF1 /* CounterTableViewController.h */,
+				61234978173A664C00EBBCF1 /* CounterTableViewController.m */,
+				614C91711741246800F1A91A /* CounterValsViewController.h */,
+				614C91721741246800F1A91A /* CounterValsViewController.m */,
+				92F25FBB174A08F800BE5FF6 /* EpdTableViewController.h */,
+				92F25FBC174A08F800BE5FF6 /* EpdTableViewController.m */,
+				92F25FC2174A1A1D00BE5FF6 /* EpdDetailTableViewController.h */,
+				92F25FC3174A1A1D00BE5FF6 /* EpdDetailTableViewController.m */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+		9283F40B17980E120041C681 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				61E81AF616EE052600819BDD /* Views */,
+				61A3AC5B1690490E005D3311 /* Auth */,
+				61A6B30B16F07E3E00C6D1A6 /* Constants.h */,
+				61A6B30C16F07E3E00C6D1A6 /* Constants.m */,
+				6178216D16F8433D00E4BED1 /* CorePlotUtils.h */,
+				6178216E16F8433D00E4BED1 /* CorePlotUtils.m */,
+			);
+			name = Common;
+			sourceTree = "<group>";
+		};
+		9283F40C17980E780041C681 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				9283F40D17980E8C0041C681 /* CounterValTableCell.h */,
+				9283F40E17980E8C0041C681 /* CounterValTableCell.m */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		9283F41117980EDD0041C681 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				9283F41017980EC70041C681 /* ReportPlotDataSource.h */,
+			);
+			name = Protocols;
 			sourceTree = "<group>";
 		};
 		92F76435177B5B72002F542B /* QBPopUpMenu */ = {
@@ -538,8 +525,6 @@
 				61A3ABF4169038A5005D3311 /* Default-568h@2x.png in Resources */,
 				61A3AC2516904778005D3311 /* MainStoryboard_iPhone.storyboard in Resources */,
 				61A3AC2616904778005D3311 /* MainStoryboard_iPad.storyboard in Resources */,
-				92F25FC0174A16B100BE5FF6 /* green_check.png in Resources */,
-				92F25FC1174A16B100BE5FF6 /* red_cross.png in Resources */,
 				922D94F1174B791F005589AF /* Settings.bundle in Resources */,
 				92DD92F91752674D004426E6 /* AdditionalRepresentationCell.xib in Resources */,
 				925F8572178C6083009E021A /* 320x480.png in Resources */,
@@ -603,30 +588,20 @@
 			files = (
 				61A3ABEA169038A5005D3311 /* main.m in Sources */,
 				61A3ABEE169038A5005D3311 /* iGkhAppDelegate.m in Sources */,
-				61A3AC4F16904863005D3311 /* HomeViewController.m in Sources */,
-				61A3AC5016904863005D3311 /* MetricSelectionViewController.m in Sources */,
-				61A3AC5116904863005D3311 /* SettingsViewController.m in Sources */,
 				61A3AC5316904863005D3311 /* LoginScreenViewController.m in Sources */,
 				61A3AC5916904909005D3311 /* BasicAuthModule.m in Sources */,
-				6140D1A5169721960066F51C /* BarPlotSelectingArrow.m in Sources */,
-				6191BC5C169AD63500CE85BA /* HomeTableDataSource.m in Sources */,
-				61E81AF916EE054B00819BDD /* CustomView.m in Sources */,
 				61A6B30D16F07E3E00C6D1A6 /* Constants.m in Sources */,
-				61A6B31716F0C54000C6D1A6 /* PickerField.m in Sources */,
-				61F45D6F16F1D46900598213 /* CustomViewController.m in Sources */,
 				6178216F16F8433D00E4BED1 /* CorePlotUtils.m in Sources */,
 				6178217416F8482000E4BED1 /* BarPlotDelegate.m in Sources */,
 				6178217716F85D1200E4BED1 /* PieChartDelegate.m in Sources */,
 				61234979173A664C00EBBCF1 /* CounterTableViewController.m in Sources */,
 				6123497C173A734F00EBBCF1 /* Dweller.m in Sources */,
 				614C91731741246800F1A91A /* CounterValsViewController.m in Sources */,
-				614C917617412D5E00F1A91A /* CounterValTableCell.m in Sources */,
 				614C9179174252B000F1A91A /* DateYearPicker.m in Sources */,
 				92F25FBD174A08F800BE5FF6 /* EpdTableViewController.m in Sources */,
 				92F25FC4174A1A1D00BE5FF6 /* EpdDetailTableViewController.m in Sources */,
 				925CE587174F545100545D13 /* GkhReport.m in Sources */,
 				92DD92F0175200DE004426E6 /* GkhReportPlotDataSource.m in Sources */,
-				92DD92F417521D26004426E6 /* GkhReportParamTableViewController.m in Sources */,
 				92DD92F717521DC6004426E6 /* GkhReportParamTableDataSource.m in Sources */,
 				9207F19D176DC70700E88E1C /* ReportTableViewController.m in Sources */,
 				9207F1A0176DCD0400E88E1C /* ReportViewController.m in Sources */,
@@ -635,6 +610,7 @@
 				92F7643E177B5B8D002F542B /* QBPopupMenuOverlayView.m in Sources */,
 				928F6A7117803E00002B60F0 /* PeriodDetailsViewController.m in Sources */,
 				92D5DA4D1792DFDB00198A40 /* GradientView.m in Sources */,
+				9283F40F17980E8C0041C681 /* CounterValTableCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

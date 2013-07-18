@@ -47,6 +47,7 @@
                                                                               style:UIBarButtonItemStylePlain
                                                                              target:self action:@selector(addButtonHandler)];
     UITableView *tableView = (UITableView *) self.view;
+    tableView.allowsSelection = NO;
     tableView.dataSource = self;
     [tableView registerClass:[CounterValTableCell class] forCellReuseIdentifier:@"CounterValCell"];
 }
