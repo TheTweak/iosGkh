@@ -104,7 +104,7 @@
             self.fls = [[UITextField alloc] initWithFrame:textFieldRect];
             self.fls.placeholder = @"Лицевой счет";
 #warning Remove text
-            self.fls.text = @"020101000050";
+            self.fls.text = @"5000050001.1";
             self.fls.delegate = self;
             self.fls.keyboardType = UIKeyboardTypeNumbersAndPunctuation;
             self.fls.returnKeyType = UIReturnKeyDone;

@@ -49,8 +49,8 @@
     tableView.delegate = self;
     BOOL showAllEpd = [[[NSUserDefaults standardUserDefaults] valueForKey:@"show_all_epd"] boolValue];
     self.showAllEpd = showAllEpd;
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Настройки" style:UIBarButtonItemStyleBordered
-                                                                             target:self action:@selector(naviRightButtonHandler)];
+    /*self.navigationController.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Настройки" style:UIBarButtonItemStyleBordered
+                                                                             target:self action:@selector(naviRightButtonHandler)];*/
 }
 
 - (void)didReceiveMemoryWarning
@@ -130,7 +130,7 @@
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
         
         UILabel *periodL = (UILabel *) [cell viewWithTag:14];
-        periodL.text = [epd objectForKey:@"period"];
+        periodL.text = epd[@"period"];
         
         UILabel *createdL = (UILabel *) [cell viewWithTag:15];
         createdL.text = [epd objectForKey:@"created"];
@@ -175,20 +175,6 @@
                     NSLog(@"fail to load counter vals");
                 }];
     }
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    if (tableView == self.tableView) {
-        CGRect headerRect = CGRectMake(0, 0, tableView.frame.size.width, 32.0);
-        UILabel *tableHeader = [[UILabel alloc] initWithFrame:headerRect];
-        tableHeader.backgroundColor = [UIColor colorWithRed:0.6162 green:0.6872 blue:0.78 alpha:1.0];
-        tableHeader.textColor = [UIColor whiteColor];
-        tableHeader.shadowColor = [UIColor grayColor];
-        tableHeader.text = @"    Период          Создано             Начислено      Оплачено";
-        tableHeader.font = [UIFont fontWithName:@"Helvetica" size:12.0];
-        return tableHeader;
-    }
-    return nil;
 }
 
 @end
