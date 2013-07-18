@@ -89,16 +89,17 @@ static BOOL isLoading;
             NSData *responseData = (NSData *)responseObject;
             NSString *responseString = [[NSString alloc] initWithData:responseData
                                                              encoding:NSUTF8StringEncoding];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"HideLoginLoadingMask" object:self];
             if (responseData) {
                 // fls id obtained, segue to counter table view
                 [[Dweller class] setFls:responseString];
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"AuthenticationSucceeded"
                                                                     object:self
                                                                   userInfo:@{@"Role": @"dweller"}];
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"HideLoginLoadingMask" object:self];
             } else {
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"ShowAlert" object:self];
             }
+            
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             NSString *errorDescription = [error localizedDescription];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"AuthenticationError"

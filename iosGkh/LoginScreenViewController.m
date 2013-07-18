@@ -212,6 +212,13 @@
 - (void) authenticationErrorOccured:(NSNotification *)notification {
     NSString *errorText = [[notification userInfo]
                         objectForKey:@"ErrorDescription"];
+    UIAlertView *alert = [[UIAlertView alloc]
+                          initWithTitle:nil
+                          message:@"Не удалось подключиться к серверу, повторите попытку позже"
+                          delegate:nil
+                          cancelButtonTitle:@"OK"
+                          otherButtonTitles:nil];
+    [alert show];
     NSLog(@"error: %@", errorText);
 }
 
