@@ -12,4 +12,5 @@
 @interface GkhReportPlotDataSource : NSObject <CPTPlotDataSource, CPTPlotDelegate>
 @property NSArray *values;
 -(NSDictionary *) getBusinessValues:(NSInteger) idx;
+-(void) setFill:(CPTFill *) fill forBarAtIndex:(NSInteger) idx;
 @end

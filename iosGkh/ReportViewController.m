@@ -22,6 +22,10 @@
 @property BOOL isLoaded;
 @property (nonatomic, strong) NSLayoutConstraint *graphHostingViewHeightEqualToSuper;
 @property (nonatomic, strong) NSNumber *graphHostingViewSpaceToSuperIntPortrait;
+/* Fill color for bar at given index for Nach plot*/
+@property(nonatomic, strong) NSMutableArray *nachPlotBarFillArray;
+/* Fill color for bar at given index for Payment plot*/
+@property(nonatomic, strong) NSMutableArray *payPlotBarFillArray;
 @end
 
 @implementation ReportViewController
@@ -34,9 +38,31 @@
     return _graphHostingViewHeightEqualToSuper;
 }
 
+-(NSMutableArray *)nachPlotBarFillArray
+{
+    if (!_nachPlotBarFillArray) {
+        _nachPlotBarFillArray = [NSMutableArray array];
+    }
+    return _nachPlotBarFillArray;
+}
+
+-(NSMutableArray *)payPlotBarFillArray
+{
+    if (!_payPlotBarFillArray) {
+        _payPlotBarFillArray = [NSMutableArray array];
+    }
+    return _payPlotBarFillArray;
+}
+
 -(NSDictionary *)getBusinessValues:(NSInteger)idx
 {
     return self.plotValues[idx];
+}
+
+-(void)setFill:(CPTFill *)fill forBarAtIndex:(NSInteger)idx
+{
+    self.payPlotBarFillArray[idx] = fill;
+    self.nachPlotBarFillArray[idx] = fill;
 }
 
 -(UIColor *)mainTextColor {
@@ -282,6 +308,26 @@
     }
     gradient.angle = GRADIENT_ANGLE;
     return [CPTFill fillWithGradient:gradient];
+}
+
+-(NSArray *) barFillsForBarPlot:(CPTBarPlot *)barPlot recordIndexRange:(NSRange)indexRange
+{
+    NSMutableArray *barFillArray;
+    if ([SECOND_PLOT_TITLE isEqualToString:barPlot.title]) {
+        barFillArray = self.nachPlotBarFillArray;
+    } else {
+        barFillArray = self.payPlotBarFillArray;
+    }
+    if (indexRange.length == 0) {
+        CPTFill *fill = [CPTFill fillWithColor:[CPTColor blueColor]];
+        barFillArray[indexRange.location] = fill;
+    } else {
+        for (int i = indexRange.location; i < indexRange.length; i++) {
+            CPTFill *fill = [self barFillForBarPlot:barPlot recordIndex:i];
+            barFillArray[i] = fill;
+        }
+    }
+    return barFillArray;
 }
 
 #pragma mark Plot creation methods
@@ -548,6 +594,7 @@
 
 -(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
+    [self resetGraphLabels];
     if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {
         [self layoutForPortrait];
     } else {

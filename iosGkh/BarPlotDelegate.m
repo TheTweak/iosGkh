@@ -8,6 +8,7 @@
 
 #import "BarPlotDelegate.h"
 #import "ReportPlotDataSource.h"
+#import "GkhReportPlotDataSource.h"
 #import "CorePlotUtils.h"
 #import "QBPopupMenu.h"
 #import "PeriodDetailsViewController.h"
@@ -157,11 +158,18 @@ CGFloat const period_label_pos = 0.825;
     // plot point in the plotAreaView
     CGPoint cgPlotPoint = [plot.plotSpace plotAreaViewPointForPlotPoint:plotPoint];
     cgPlotPoint = [plot.graph convertPoint:cgPlotPoint fromLayer:plotAreaFrame.plotArea];
-    float bottomPopMenuBorder = 200.0; // if lower, draw at this point
-    if (cgPlotPoint.y < bottomPopMenuBorder) {
-        cgPlotPoint.y = bottomPopMenuBorder;
+    float bottomPopMenuThreshold = 200.0; // if lower, draw at this point
+    if (cgPlotPoint.y < bottomPopMenuThreshold) {
+        cgPlotPoint.y = bottomPopMenuThreshold;
     }
     [popupMenu showInView:plot.graph.hostingView atPoint:cgPlotPoint];
+    
+    // change bar fill color
+#pragma mark Buggy feature
+    /*CPTFill *black = [CPTFill fillWithColor:[CPTColor brownColor]];
+    [plotDataSource setFill:black forBarAtIndex:idx];
+    NSRange barLocation = {idx, 0};
+    [plot reloadDataInIndexRange:barLocation];*/
 }
 
 -(void)didFinishDrawing:(CPTPlot *)plot {

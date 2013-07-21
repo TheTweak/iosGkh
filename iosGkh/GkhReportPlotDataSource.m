@@ -12,15 +12,27 @@
 @interface GkhReportPlotDataSource ()
 @property NSDecimalNumber *maxHeight;
 @property NSArray *animations;
+/* Fill color for bar at given index */
+@property(nonatomic, strong) NSMutableArray *barFillArray;
 @end
 
 @implementation GkhReportPlotDataSource
 
-@synthesize values = _values;
-@synthesize maxHeight = _maxHeight;
+-(NSMutableArray *)barFillArray
+{
+    if (!_barFillArray) {
+        _barFillArray = [NSMutableArray arrayWithCapacity:self.values.count];
+    }
+    return _barFillArray;
+}
 
 -(NSDictionary *)getBusinessValues:(NSInteger) idx {
     return [self.values objectAtIndex:idx];
+}
+
+-(void)setFill:(CPTFill *)fill forBarAtIndex:(NSInteger)idx
+{
+    self.barFillArray[idx] = fill;
 }
 
 #pragma mark CPTPlotDataSource
@@ -110,19 +122,23 @@
 }
 
 - (CPTFill *) barFillForBarPlot:(CPTBarPlot *)barPlot recordIndex:(NSUInteger)idx {
-    CPTGradient *gradient;
-    CPTColor *begin = [CPTColor colorWithComponentRed:124.0/255.0 green:124.0/255.0 blue:124.0/255.0 alpha:1];
-    CPTColor *end = [CPTColor colorWithComponentRed:124.0/255.0 green:124.0/255.0 blue:124.0/255.0 alpha:.5];
-    if ([@"sec" isEqualToString:barPlot.title]) {
-        CPTColor *begin = [CPTColor colorWithComponentRed:187.0/255.0 green:217.0/255.0 blue:238.0/255.0 alpha:1];
-        CPTColor *end = [CPTColor colorWithComponentRed:187.0/255.0 green:217.0/255.0 blue:238.0/255.0 alpha:.5];
-        gradient = [CPTGradient gradientWithBeginningColor:begin
-                                               endingColor:end];
-    } else {
-        gradient = [CPTGradient gradientWithBeginningColor:begin endingColor:end];
+    CPTFill *barFill = self.barFillArray[idx];
+    if (!barFill) {
+        CPTGradient *gradient;
+        CPTColor *begin = [CPTColor colorWithComponentRed:124.0/255.0 green:124.0/255.0 blue:124.0/255.0 alpha:1];
+        CPTColor *end = [CPTColor colorWithComponentRed:124.0/255.0 green:124.0/255.0 blue:124.0/255.0 alpha:.5];
+        if ([@"sec" isEqualToString:barPlot.title]) {
+            CPTColor *begin = [CPTColor colorWithComponentRed:187.0/255.0 green:217.0/255.0 blue:238.0/255.0 alpha:1];
+            CPTColor *end = [CPTColor colorWithComponentRed:187.0/255.0 green:217.0/255.0 blue:238.0/255.0 alpha:.5];
+            gradient = [CPTGradient gradientWithBeginningColor:begin
+                                                   endingColor:end];
+        } else {
+            gradient = [CPTGradient gradientWithBeginningColor:begin endingColor:end];
+        }
+        gradient.angle = 90.0f;
+        barFill = [CPTFill fillWithGradient:gradient];
     }
-    gradient.angle = 90.0f;
-    return [CPTFill fillWithGradient:gradient];
+    return barFill;
 }
 
 #pragma mark CPTPlotDelegate

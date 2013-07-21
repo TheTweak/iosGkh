@@ -10,4 +10,5 @@
 
 @protocol ReportPlotDataSource <NSObject>
 -(NSDictionary *)getBusinessValues:(NSInteger) idx;
+-(void) setFill:(CPTFill *) fill forBarAtIndex:(NSInteger) idx;
 @end
