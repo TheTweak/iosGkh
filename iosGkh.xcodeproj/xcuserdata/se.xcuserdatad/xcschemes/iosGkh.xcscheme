@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "61A3ABD8169038A5005D3311"
-               BuildableName = "iosGkh.app"
+               BuildableName = "AsuGkh.app"
                BlueprintName = "iosGkh"
                ReferencedContainer = "container:iosGkh.xcodeproj">
             </BuildableReference>
@@ -43,7 +43,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "61A3ABD8169038A5005D3311"
-            BuildableName = "iosGkh.app"
+            BuildableName = "AsuGkh.app"
             BlueprintName = "iosGkh"
             ReferencedContainer = "container:iosGkh.xcodeproj">
          </BuildableReference>
@@ -62,7 +62,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "61A3ABD8169038A5005D3311"
-            BuildableName = "iosGkh.app"
+            BuildableName = "AsuGkh.app"
             BlueprintName = "iosGkh"
             ReferencedContainer = "container:iosGkh.xcodeproj">
          </BuildableReference>
@@ -80,7 +80,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "61A3ABD8169038A5005D3311"
-            BuildableName = "iosGkh.app"
+            BuildableName = "AsuGkh.app"
             BlueprintName = "iosGkh"
             ReferencedContainer = "container:iosGkh.xcodeproj">
          </BuildableReference>

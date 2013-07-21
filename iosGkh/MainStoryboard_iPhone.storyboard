@@ -371,7 +371,7 @@
         <scene sceneID="1JT-bf-hVI">
             <objects>
                 <tableViewController title="ЕПД" id="FOJ-H3-JAu" customClass="EpdTableViewController" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" autoresizesSubviews="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="dvV-ze-Mwx">
+                    <tableView key="view" autoresizesSubviews="NO" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="dvV-ze-Mwx">
                         <rect key="frame" x="0.0" y="20" width="320" height="499"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -403,9 +403,9 @@
                             <color key="backgroundColor" red="0.61568627450980395" green="0.68627450980392157" blue="0.7803921568627451" alpha="1" colorSpace="calibratedRGB"/>
                             <constraints>
                                 <constraint firstAttribute="centerY" secondItem="IG2-s9-hLj" secondAttribute="centerY" type="user" id="9g4-b8-Jip"/>
+                                <constraint firstItem="bKH-MA-dKo" firstAttribute="leading" secondItem="L11-Fo-yfx" secondAttribute="leading" constant="251" id="PF5-93-z1t"/>
                                 <constraint firstItem="aIF-Ez-NGm" firstAttribute="leading" secondItem="IG2-s9-hLj" secondAttribute="trailing" constant="35" type="user" id="VdO-bA-Wju"/>
                                 <constraint firstItem="TvJ-aG-Zcj" firstAttribute="leading" secondItem="L11-Fo-yfx" secondAttribute="leading" constant="8" id="bfi-zo-qNn"/>
-                                <constraint firstAttribute="trailing" secondItem="bKH-MA-dKo" secondAttribute="trailing" constant="8" type="user" id="cXm-jo-sXg"/>
                                 <constraint firstAttribute="centerY" secondItem="bKH-MA-dKo" secondAttribute="centerY" type="user" id="j7c-aW-wRD"/>
                                 <constraint firstAttribute="centerY" secondItem="TvJ-aG-Zcj" secondAttribute="centerY" type="user" id="pjL-Sf-Cwl"/>
                                 <constraint firstItem="IG2-s9-hLj" firstAttribute="leading" secondItem="TvJ-aG-Zcj" secondAttribute="trailing" constant="28" type="user" id="xga-bN-9n2"/>
@@ -449,9 +449,9 @@
                                     <constraint firstAttribute="centerY" secondItem="RCk-YH-Vey" secondAttribute="centerY" type="user" id="ETn-LX-mAs"/>
                                     <constraint firstItem="RCk-YH-Vey" firstAttribute="leading" secondItem="6Je-Aa-7Yi" secondAttribute="trailing" constant="8" symbolic="YES" type="default" id="PSn-kc-mhF"/>
                                     <constraint firstAttribute="centerY" secondItem="VmU-7t-EXS" secondAttribute="centerY" type="user" id="SEk-Z5-UHo"/>
+                                    <constraint firstItem="l9P-1N-9wT" firstAttribute="leading" secondItem="z2g-7d-YLo" secondAttribute="leading" constant="278" id="fFK-dy-fUx"/>
                                     <constraint firstAttribute="centerY" secondItem="l9P-1N-9wT" secondAttribute="centerY" type="user" id="huB-48-k7D"/>
                                     <constraint firstItem="6Je-Aa-7Yi" firstAttribute="leading" secondItem="VmU-7t-EXS" secondAttribute="trailing" constant="8" symbolic="YES" type="default" id="i98-in-Rt1"/>
-                                    <constraint firstAttribute="trailing" secondItem="l9P-1N-9wT" secondAttribute="trailing" constant="20" type="default" id="iv3-oN-QFa"/>
                                 </constraints>
                             </tableViewCell>
                             <tableViewCell autoresizesSubviews="NO" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="EpdCellRed" id="lpc-Y8-P0g">
@@ -489,11 +489,11 @@
                                 </view>
                                 <constraints>
                                     <constraint firstItem="oPS-x5-wsj" firstAttribute="leading" secondItem="2fo-n3-ihl" secondAttribute="trailing" constant="8" symbolic="YES" type="default" id="6qb-fh-b9R"/>
+                                    <constraint firstAttribute="trailing" secondItem="KvR-GU-Lxf" secondAttribute="trailing" constant="20" type="default" id="BrR-i3-Txq"/>
                                     <constraint firstAttribute="centerY" secondItem="KvR-GU-Lxf" secondAttribute="centerY" type="user" id="HaJ-rW-ZC2"/>
                                     <constraint firstItem="2fo-n3-ihl" firstAttribute="leading" secondItem="nTu-f4-sse" secondAttribute="trailing" constant="8" symbolic="YES" type="default" id="aWp-a3-kpa"/>
                                     <constraint firstItem="nTu-f4-sse" firstAttribute="leading" secondItem="lpc-Y8-P0g" secondAttribute="leading" constant="8" type="user" id="abQ-LQ-1DU"/>
                                     <constraint firstAttribute="centerY" secondItem="oPS-x5-wsj" secondAttribute="centerY" type="user" id="blJ-aI-Bxh"/>
-                                    <constraint firstAttribute="trailing" secondItem="KvR-GU-Lxf" secondAttribute="trailing" constant="20" type="default" id="duS-lJ-vjn"/>
                                     <constraint firstAttribute="centerY" secondItem="2fo-n3-ihl" secondAttribute="centerY" type="user" id="mEA-4z-4Pi"/>
                                     <constraint firstAttribute="centerY" secondItem="nTu-f4-sse" secondAttribute="centerY" type="user" id="yDz-3D-ugX"/>
                                 </constraints>
