@@ -46,6 +46,7 @@
     [super viewDidLoad];
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
+    self.title = @"Епд";
     BOOL showAllEpd = [[[NSUserDefaults standardUserDefaults] valueForKey:@"show_all_epd"] boolValue];
     self.showAllEpd = showAllEpd;
     /*self.navigationController.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Настройки" style:UIBarButtonItemStyleBordered

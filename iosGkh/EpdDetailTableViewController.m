@@ -28,9 +28,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    UITableView *tableView = (UITableView *) self.view;
-    tableView.dataSource = self;
-    tableView.delegate = self;
+    self.tableView.dataSource = self;
+    self.tableView.delegate = self;
     self.title = @"Детали";
 }
 

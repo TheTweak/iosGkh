@@ -424,7 +424,7 @@
         <!--Epd Table View Controller - Епд-->
         <scene sceneID="eZg-RH-HNl">
             <objects>
-                <tableViewController id="k9W-aT-V6i" customClass="EpdTableViewController" sceneMemberID="viewController">
+                <tableViewController title="Епд" id="k9W-aT-V6i" customClass="EpdTableViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="60" sectionHeaderHeight="22" sectionFooterHeight="22" id="4EJ-WS-b9h">
                         <rect key="frame" x="0.0" y="20" width="320" height="499"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
