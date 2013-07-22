@@ -44,13 +44,17 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    UITableView *tableView = (UITableView *) self.view;
-    tableView.dataSource = self;
-    tableView.delegate = self;
+    self.tableView.dataSource = self;
+    self.tableView.delegate = self;
     BOOL showAllEpd = [[[NSUserDefaults standardUserDefaults] valueForKey:@"show_all_epd"] boolValue];
     self.showAllEpd = showAllEpd;
     /*self.navigationController.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Настройки" style:UIBarButtonItemStyleBordered
                                                                              target:self action:@selector(naviRightButtonHandler)];*/
+}
+
+-(void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -130,13 +134,16 @@
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
         
         UILabel *periodL = (UILabel *) [cell viewWithTag:14];
-        periodL.text = epd[@"period"];
+        NSString *period = [NSString stringWithFormat:@"Период: %@", epd[@"period"]];
+        periodL.text = period;
         
         UILabel *createdL = (UILabel *) [cell viewWithTag:15];
-        createdL.text = [epd objectForKey:@"created"];
+        NSString *created = [NSString stringWithFormat:@"Создано: %@", epd[@"created"]];
+        createdL.text = created;
         
         UILabel *nachL = (UILabel *) [cell viewWithTag:16];
-        nachL.text = [epd objectForKey:@"nach"];
+        NSString *nach = [NSString stringWithFormat:@"%@ руб.", epd[@"nach"]];
+        nachL.text = nach;
         
         return cell;
     } else if (tableView == self.settingsController.tableView) {

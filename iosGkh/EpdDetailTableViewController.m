@@ -62,7 +62,8 @@
     
     // Сумма
     UILabel *summ = (UILabel *) [cell viewWithTag:16];
-    summ.text = [epdDetail objectForKey:@"val"];
+    NSString *summa = [NSString stringWithFormat:@"%@ руб.", epdDetail[@"val"]];
+    summ.text = summa;
     
     return cell;
 }
