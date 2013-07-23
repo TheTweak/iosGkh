@@ -46,10 +46,9 @@
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Добавить..."
                                                                               style:UIBarButtonItemStylePlain
                                                                              target:self action:@selector(addButtonHandler)];
-    UITableView *tableView = (UITableView *) self.view;
-    tableView.allowsSelection = NO;
-    tableView.dataSource = self;
-    [tableView registerClass:[CounterValTableCell class] forCellReuseIdentifier:@"CounterValCell"];
+    self.tableView.allowsSelection = NO;
+    self.tableView.dataSource = self;
+//    [self.tableView registerClass:[CounterValTableCell class] forCellReuseIdentifier:@"CounterValCell"];
 }
 
 // Кнопка "Добавить..."
@@ -259,62 +258,21 @@
     static NSString *CellIdentifier = @"CounterValCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     NSDictionary *counterVal = [self.counterVals objectAtIndex:indexPath.item];
-
-    NSString *val = [counterVal objectForKey:@"val"];
-    NSString *sd = [counterVal objectForKey:@"sd"];
-    NSString *svd = [counterVal objectForKey:@"svd"];
-    CGRect contentRect = CGRectMake(0, 0, cell.frame.size.width, cell.frame.size.height);
-    UIView *contentView = [[UIView alloc] initWithFrame:contentRect];
-    CGFloat columnWidth = contentRect.size.width / 4;
-    [cell.contentView addSubview:contentView];
-    UILabel *sdLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, columnWidth, contentRect.size.height)];
+    
+    UILabel *valueLabel = (UILabel *) [cell viewWithTag:14];
+    valueLabel.text = counterVal[@"val"];
+    
+    UILabel *sdLabel = (UILabel *) [cell viewWithTag:15];
+    NSString *sd = [NSString stringWithFormat:@"Показание за: %@", counterVal[@"sd"]];
     sdLabel.text = sd;
-    sdLabel.textColor = [UIColor grayColor];
-    sdLabel.font = [UIFont fontWithName:@"Helvetica" size:14];
-    sdLabel.textAlignment = NSTextAlignmentCenter;
-    
-    UILabel *valLabel = [[UILabel alloc] initWithFrame:CGRectMake(sdLabel.frame.size.width, 0,
-                                                                  columnWidth + 20.0, contentRect.size.height)];
-    valLabel.text = val;
-    valLabel.font = [UIFont fontWithName:@"Helvetica" size:16];
-    valLabel.textAlignment = NSTextAlignmentRight;
-    
-    CGFloat svdWidth = contentRect.size.width - sdLabel.frame.size.width - valLabel.frame.size.width;
-    UILabel *svdLabel = [[UILabel alloc] initWithFrame:CGRectMake(valLabel.frame.size.width + sdLabel.frame.size.width, 0,
-                                                                  svdWidth, contentRect.size.height)];
+
+    UILabel *svdLabel = (UILabel *) [cell viewWithTag:16];
+    NSString *svd = [NSString stringWithFormat:@"Введено %@", counterVal[@"svd"]];
     svdLabel.text = svd;
-    svdLabel.textColor = [UIColor grayColor];
-    svdLabel.font = [UIFont fontWithName:@"Helvetica" size:12];
-    svdLabel.textAlignment = NSTextAlignmentCenter;
-    [contentView addSubview:sdLabel];
-    [contentView addSubview:valLabel];
-    [contentView addSubview:svdLabel];
-        
+            
     return cell;
 }
 
 #pragma mark - Table view delegate
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Navigation logic may go here. Create and push another view controller.
-    /*
-     <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-     // ...
-     // Pass the selected object to the new view controller.
-     [self.navigationController pushViewController:detailViewController animated:YES];
-     */
-}
-
--(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    CGRect headerRect = CGRectMake(0, 0, tableView.frame.size.width, 32.0);
-    UILabel *tableHeader = [[UILabel alloc] initWithFrame:headerRect];
-    tableHeader.backgroundColor = [UIColor colorWithRed:0.6162 green:0.6872 blue:0.78 alpha:1.0];
-    tableHeader.textColor = [UIColor whiteColor];
-    tableHeader.shadowColor = [UIColor grayColor];
-    tableHeader.text = @"    Дата            Показание          Дата ввода";
-    tableHeader.font = [UIFont fontWithName:@"Helvetica" size:15.0];
-    return tableHeader;
-}
 
 @end

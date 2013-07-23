@@ -113,6 +113,8 @@
 
 #pragma mark - Table view delegate
 
+#define COUNTER_VALS_TABLE_VIEW_CONTROLLER_STORYBOARD_ID @"CounterValsTableView"
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSArray *counters = [self.devices objectAtIndex:indexPath.section];
@@ -125,7 +127,7 @@
         AFHTTPClient *client = [BasicAuthModule dwellerHttpClient];
         [client postPath:@"counter" parameters:[NSDictionary dictionaryWithObjectsAndKeys:counterId, @"counter", nil]
                  success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                     CounterValsViewController *counterValsController = [[CounterValsViewController alloc] init];
+                     CounterValsViewController *counterValsController = (CounterValsViewController *) [[self.navigationController storyboard] instantiateViewControllerWithIdentifier:COUNTER_VALS_TABLE_VIEW_CONTROLLER_STORYBOARD_ID];
                      // set counter id
                      counterValsController.counterId = counterId;
                      SBJsonParser *jsonParser = [[SBJsonParser alloc] init];
