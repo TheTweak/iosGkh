@@ -7,7 +7,6 @@
 //
 
 #import "CounterValsViewController.h"
-#import "CounterValTableCell.h"
 #import "BasicAuthModule.h"
 #import "DateYearPicker.h"
 #import "SBJsonParser.h"

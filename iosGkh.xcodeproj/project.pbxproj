@@ -43,7 +43,6 @@
 		9283F4061797E0270041C681 /* counters@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9283F4021797E0260041C681 /* counters@2x.png */; };
 		9283F4071797E0270041C681 /* epd.png in Resources */ = {isa = PBXBuildFile; fileRef = 9283F4031797E0260041C681 /* epd.png */; };
 		9283F4081797E0270041C681 /* epd@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9283F4041797E0270041C681 /* epd@2x.png */; };
-		9283F40F17980E8C0041C681 /* CounterValTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9283F40E17980E8C0041C681 /* CounterValTableCell.m */; };
 		9283F4131798221F0041C681 /* right-arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 9283F4121798221F0041C681 /* right-arrow.png */; };
 		9283F417179828230041C681 /* right-arrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9283F416179828230041C681 /* right-arrow@2x.png */; };
 		928F6A7117803E00002B60F0 /* PeriodDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 928F6A7017803E00002B60F0 /* PeriodDetailsViewController.m */; };
@@ -127,8 +126,6 @@
 		9283F4021797E0260041C681 /* counters@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "counters@2x.png"; sourceTree = "<group>"; };
 		9283F4031797E0260041C681 /* epd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = epd.png; sourceTree = "<group>"; };
 		9283F4041797E0270041C681 /* epd@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "epd@2x.png"; sourceTree = "<group>"; };
-		9283F40D17980E8C0041C681 /* CounterValTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CounterValTableCell.h; sourceTree = "<group>"; };
-		9283F40E17980E8C0041C681 /* CounterValTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CounterValTableCell.m; sourceTree = "<group>"; };
 		9283F41017980EC70041C681 /* ReportPlotDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReportPlotDataSource.h; sourceTree = "<group>"; };
 		9283F4121798221F0041C681 /* right-arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "right-arrow.png"; sourceTree = "<group>"; };
 		9283F416179828230041C681 /* right-arrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "right-arrow@2x.png"; sourceTree = "<group>"; };
@@ -371,7 +368,6 @@
 		9283F40917980D880041C681 /* Dweller */ = {
 			isa = PBXGroup;
 			children = (
-				9283F40C17980E780041C681 /* Views */,
 				9283F40A17980D9A0041C681 /* Controllers */,
 			);
 			name = Dweller;
@@ -403,15 +399,6 @@
 				6178216E16F8433D00E4BED1 /* CorePlotUtils.m */,
 			);
 			name = Common;
-			sourceTree = "<group>";
-		};
-		9283F40C17980E780041C681 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				9283F40D17980E8C0041C681 /* CounterValTableCell.h */,
-				9283F40E17980E8C0041C681 /* CounterValTableCell.m */,
-			);
-			name = Views;
 			sourceTree = "<group>";
 		};
 		9283F41117980EDD0041C681 /* Protocols */ = {
@@ -596,7 +583,6 @@
 				92F7643E177B5B8D002F542B /* QBPopupMenuOverlayView.m in Sources */,
 				928F6A7117803E00002B60F0 /* PeriodDetailsViewController.m in Sources */,
 				92D5DA4D1792DFDB00198A40 /* GradientView.m in Sources */,
-				9283F40F17980E8C0041C681 /* CounterValTableCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
