@@ -42,9 +42,6 @@ static BOOL isLoading;
 + (void) authenticateWithLogin:(NSString *)login
                    andPassword:(NSString *)password {
     NSString *serverAddress = [[NSUserDefaults standardUserDefaults] valueForKey:@"server_address"];
-    if (!serverAddress) {
-        serverAddress = @"http://192.168.1.6";
-    }
     NSString *url = [serverAddress stringByAppendingFormat:@"/%@/%@", APPLICATION_NAME, WEB_SERVICE_PREFIX];
     [self authenticateWithLogin:login andPassword:password
                           byURL:url];

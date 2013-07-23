@@ -8,7 +8,7 @@
 			<key>Type</key>
 			<string>PSTextFieldSpecifier</string>
 			<key>DefaultValue</key>
-			<string>http://192.168.1.6</string>
+			<string>http://212.45.4.62:19566</string>
 			<key>Title</key>
 			<string>Адрес сервера</string>
 			<key>Key</key>
