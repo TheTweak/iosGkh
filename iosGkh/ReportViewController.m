@@ -153,7 +153,6 @@
     GkhInputType *param = self.report.inputParamArray[indexPath.row];
     AFHTTPClient *client = [BasicAuthModule httpClient];
     
-#warning TODO : loading mask
     [client postPath:@"param/value/list" parameters:@{@"param": param.id} success:^(AFHTTPRequestOperation *operation, id responseObject) {
         SBJsonParser *jsonParser = [[SBJsonParser alloc] init];
         NSData *responseData = (NSData *)responseObject;

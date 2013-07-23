@@ -81,11 +81,6 @@
     int i = 0;
     for (UIView *subView in window.subviews) {
         if ([subView isKindOfClass:[UIButton class]]) {
-            UIButton *button = (UIButton *) subView;
-            if (i == 0) {
-                // Otmena
-                //                button.backgroundColor = [UIColor redColor];
-            }
             subView.frame = CGRectMake(i * 169 + 15, 10, 120, 30);
             i++;
         }

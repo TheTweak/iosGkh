@@ -79,8 +79,6 @@
             if (!self.password) {
                 self.password = [[UITextField alloc] initWithFrame:textFieldRect];
                 self.password.secureTextEntry = YES;
-#warning Remove password
-                self.password.text = @"1234";
                 self.password.placeholder = @"Пароль";
                 self.password.delegate = self;
                 self.password.returnKeyType = UIReturnKeyDone;
@@ -91,8 +89,6 @@
             if (!self.login) {
                 self.login = [[UITextField alloc] initWithFrame:textFieldRect];
                 self.login.placeholder = @"Логин";
-#warning Remove login
-                self.login.text = @"glava";
                 self.login.returnKeyType = UIReturnKeyDone;
                 self.login.delegate = self;
                 self.login.autocorrectionType = UITextAutocorrectionTypeNo;
@@ -103,8 +99,6 @@
         if (!self.fls) {
             self.fls = [[UITextField alloc] initWithFrame:textFieldRect];
             self.fls.placeholder = @"Лицевой счет";
-#warning Remove text
-            self.fls.text = @"5000050001.1";
             self.fls.delegate = self;
             self.fls.keyboardType = UIKeyboardTypeNumbersAndPunctuation;
             self.fls.returnKeyType = UIReturnKeyDone;
