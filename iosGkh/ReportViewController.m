@@ -309,26 +309,6 @@
     return [CPTFill fillWithGradient:gradient];
 }
 
--(NSArray *) barFillsForBarPlot:(CPTBarPlot *)barPlot recordIndexRange:(NSRange)indexRange
-{
-    NSMutableArray *barFillArray;
-    if ([SECOND_PLOT_TITLE isEqualToString:barPlot.title]) {
-        barFillArray = self.nachPlotBarFillArray;
-    } else {
-        barFillArray = self.payPlotBarFillArray;
-    }
-    if (indexRange.length == 0) {
-        CPTFill *fill = [CPTFill fillWithColor:[CPTColor blueColor]];
-        barFillArray[indexRange.location] = fill;
-    } else {
-        for (int i = indexRange.location; i < indexRange.length; i++) {
-            CPTFill *fill = [self barFillForBarPlot:barPlot recordIndex:i];
-            barFillArray[i] = fill;
-        }
-    }
-    return barFillArray;
-}
-
 #pragma mark Plot creation methods
 
 -(void) addPlotWithTitle:(NSString *) title ofType:(GkhPlotType) type
