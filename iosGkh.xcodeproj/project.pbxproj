@@ -34,7 +34,6 @@
 		9207F19D176DC70700E88E1C /* ReportTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9207F19C176DC70700E88E1C /* ReportTableViewController.m */; };
 		9207F1A0176DCD0400E88E1C /* ReportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9207F19F176DCD0400E88E1C /* ReportViewController.m */; };
 		922D94F1174B791F005589AF /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 922D94F0174B791F005589AF /* Settings.bundle */; };
-		924C705117991FAF00796607 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 925F8579178C60D3009E021A /* Icon.png */; };
 		925CE587174F545100545D13 /* GkhReport.m in Sources */ = {isa = PBXBuildFile; fileRef = 925CE586174F545100545D13 /* GkhReport.m */; };
 		925F857E178C6100009E021A /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 925F857D178C6100009E021A /* Default.png */; };
 		925F8580178C6114009E021A /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 925F857F178C6114009E021A /* Default@2x.png */; };
@@ -46,7 +45,9 @@
 		9283F4131798221F0041C681 /* right-arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 9283F4121798221F0041C681 /* right-arrow.png */; };
 		9283F417179828230041C681 /* right-arrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9283F416179828230041C681 /* right-arrow@2x.png */; };
 		928F6A7117803E00002B60F0 /* PeriodDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 928F6A7017803E00002B60F0 /* PeriodDetailsViewController.m */; };
-		92C53A81178F09AC008FDFBA /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 92C53A80178F09AC008FDFBA /* Icon@2x.png */; };
+		9293EF8317A7FBF80089B6EC /* HomeTabBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9293EF8217A7FBF80089B6EC /* HomeTabBarViewController.m */; };
+		9293EF8517A801B30089B6EC /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 9293EF8417A801B30089B6EC /* icon.png */; };
+		9293EF8717A801C30089B6EC /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9293EF8617A801C30089B6EC /* icon@2x.png */; };
 		92D5DA4D1792DFDB00198A40 /* GradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = 92D5DA4C1792DFDB00198A40 /* GradientView.m */; };
 		92DD92F0175200DE004426E6 /* GkhReportPlotDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 92DD92EF175200DE004426E6 /* GkhReportPlotDataSource.m */; };
 		92DD92F717521DC6004426E6 /* GkhReportParamTableDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 92DD92F617521DC6004426E6 /* GkhReportParamTableDataSource.m */; };
@@ -118,7 +119,6 @@
 		922D94F0174B791F005589AF /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		925CE585174F545100545D13 /* GkhReport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GkhReport.h; sourceTree = "<group>"; };
 		925CE586174F545100545D13 /* GkhReport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GkhReport.m; sourceTree = "<group>"; };
-		925F8579178C60D3009E021A /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
 		925F857D178C6100009E021A /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		925F857F178C6114009E021A /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		925F8581178C611B009E021A /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
@@ -131,7 +131,10 @@
 		9283F416179828230041C681 /* right-arrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "right-arrow@2x.png"; sourceTree = "<group>"; };
 		928F6A6F17803DFF002B60F0 /* PeriodDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PeriodDetailsViewController.h; sourceTree = "<group>"; };
 		928F6A7017803E00002B60F0 /* PeriodDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PeriodDetailsViewController.m; sourceTree = "<group>"; };
-		92C53A80178F09AC008FDFBA /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
+		9293EF8117A7FBF80089B6EC /* HomeTabBarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeTabBarViewController.h; sourceTree = "<group>"; };
+		9293EF8217A7FBF80089B6EC /* HomeTabBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeTabBarViewController.m; sourceTree = "<group>"; };
+		9293EF8417A801B30089B6EC /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
+		9293EF8617A801C30089B6EC /* icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon@2x.png"; sourceTree = "<group>"; };
 		92D5DA4B1792DFDB00198A40 /* GradientView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GradientView.h; sourceTree = "<group>"; };
 		92D5DA4C1792DFDB00198A40 /* GradientView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GradientView.m; sourceTree = "<group>"; };
 		92DD92EE175200DE004426E6 /* GkhReportPlotDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GkhReportPlotDataSource.h; sourceTree = "<group>"; };
@@ -202,11 +205,11 @@
 		61A3ABCE169038A5005D3311 = {
 			isa = PBXGroup;
 			children = (
-				92C53A80178F09AC008FDFBA /* Icon@2x.png */,
+				9293EF8617A801C30089B6EC /* icon@2x.png */,
+				9293EF8417A801B30089B6EC /* icon.png */,
 				925F8581178C611B009E021A /* Default-568h@2x.png */,
 				925F857F178C6114009E021A /* Default@2x.png */,
 				925F857D178C6100009E021A /* Default.png */,
-				925F8579178C60D3009E021A /* Icon.png */,
 				61A3ABE3169038A5005D3311 /* iosGkh */,
 				61A3AC0A169038A6005D3311 /* iosGkhTests */,
 				61A3ABDC169038A5005D3311 /* Frameworks */,
@@ -384,6 +387,8 @@
 				92F25FBC174A08F800BE5FF6 /* EpdTableViewController.m */,
 				92F25FC2174A1A1D00BE5FF6 /* EpdDetailTableViewController.h */,
 				92F25FC3174A1A1D00BE5FF6 /* EpdDetailTableViewController.m */,
+				9293EF8117A7FBF80089B6EC /* HomeTabBarViewController.h */,
+				9293EF8217A7FBF80089B6EC /* HomeTabBarViewController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -503,14 +508,14 @@
 				925F857E178C6100009E021A /* Default.png in Resources */,
 				925F8580178C6114009E021A /* Default@2x.png in Resources */,
 				925F8582178C611B009E021A /* Default-568h@2x.png in Resources */,
-				92C53A81178F09AC008FDFBA /* Icon@2x.png in Resources */,
 				9283F4051797E0270041C681 /* counters.png in Resources */,
 				9283F4061797E0270041C681 /* counters@2x.png in Resources */,
 				9283F4071797E0270041C681 /* epd.png in Resources */,
 				9283F4081797E0270041C681 /* epd@2x.png in Resources */,
 				9283F4131798221F0041C681 /* right-arrow.png in Resources */,
 				9283F417179828230041C681 /* right-arrow@2x.png in Resources */,
-				924C705117991FAF00796607 /* Icon.png in Resources */,
+				9293EF8517A801B30089B6EC /* icon.png in Resources */,
+				9293EF8717A801C30089B6EC /* icon@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -583,6 +588,7 @@
 				92F7643E177B5B8D002F542B /* QBPopupMenuOverlayView.m in Sources */,
 				928F6A7117803E00002B60F0 /* PeriodDetailsViewController.m in Sources */,
 				92D5DA4D1792DFDB00198A40 /* GradientView.m in Sources */,
+				9293EF8317A7FBF80089B6EC /* HomeTabBarViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
