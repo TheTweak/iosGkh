@@ -38,8 +38,16 @@
     [self registerForNotifications];
     // set default values for app settings
     [self registerDefaultSettingsValues];
-    CALayer *layer = [self.enterButton layer];
-    layer.cornerRadius = 5.0;
+    [self.navigationController setNavigationBarHidden:YES animated:NO];
+    self.enterButton.hue = 1.0;
+    self.enterButton.saturation = 0.73;
+    self.enterButton.brightness = 0.44;
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
 }
 
 -(void) registerDefaultSettingsValues {
@@ -73,6 +81,7 @@
     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle
                                                    reuseIdentifier:nil];
     cell.textLabel.textColor = [UIColor lightGrayColor];
+    cell.backgroundColor = [UIColor colorWithRed:239.0/255.0 green:239.0/255.0 blue:241.0/255.0 alpha:1.0];
     CGRect textFieldRect = CGRectMake(5, (cell.frame.size.height - 26) / 2, cell.frame.size.width, cell.frame.size.height);
     if (self.segment == 0) {
         if (indexPath.item == 1) {
@@ -80,7 +89,7 @@
                 self.password = [[UITextField alloc] initWithFrame:textFieldRect];
                 self.password.secureTextEntry = YES;
                 self.password.placeholder = @"пароль";
-                self.password.delegate = self;
+                self.password.delegate = self;                
                 self.password.returnKeyType = UIReturnKeyDone;
                 self.password.autocorrectionType = UITextAutocorrectionTypeNo;
             }
@@ -246,6 +255,15 @@
 - (BOOL) textFieldShouldReturn:(UITextField *)theTextField {
     [theTextField resignFirstResponder];
     return YES;
+}
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+                                duration:(NSTimeInterval)duration {
+    if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
+        self.backgroundView.transform = CGAffineTransformMakeRotation(M_PI / 2);
+    } else {
+        self.backgroundView.transform = CGAffineTransformMakeRotation(0.0);
+    }
 }
 
 @end

@@ -31,6 +31,12 @@
     [self.navigationController.navigationBar setTitleTextAttributes:@{UITextAttributeFont: font}];
 }
 
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
+}
+
 #pragma mark - Table view data source
 
 - (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath

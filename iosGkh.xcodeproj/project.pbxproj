@@ -33,6 +33,10 @@
 		61A6B30D16F07E3E00C6D1A6 /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 61A6B30C16F07E3E00C6D1A6 /* Constants.m */; };
 		9207F19D176DC70700E88E1C /* ReportTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9207F19C176DC70700E88E1C /* ReportTableViewController.m */; };
 		9207F1A0176DCD0400E88E1C /* ReportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9207F19F176DCD0400E88E1C /* ReportViewController.m */; };
+		9213563C17AE967500A86A9E /* cardboard.png in Resources */ = {isa = PBXBuildFile; fileRef = 9213563A17AE967500A86A9E /* cardboard.png */; };
+		9213563D17AE967500A86A9E /* cardboard@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9213563B17AE967500A86A9E /* cardboard@2x.png */; };
+		9213564017AEBC1400A86A9E /* GradientButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 9213563F17AEBC1400A86A9E /* GradientButton.m */; };
+		9213564317AEBE9300A86A9E /* Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 9213564217AEBE9300A86A9E /* Utils.m */; };
 		922D94F1174B791F005589AF /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 922D94F0174B791F005589AF /* Settings.bundle */; };
 		925CE587174F545100545D13 /* GkhReport.m in Sources */ = {isa = PBXBuildFile; fileRef = 925CE586174F545100545D13 /* GkhReport.m */; };
 		925F857E178C6100009E021A /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 925F857D178C6100009E021A /* Default.png */; };
@@ -116,6 +120,12 @@
 		9207F19C176DC70700E88E1C /* ReportTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReportTableViewController.m; sourceTree = "<group>"; };
 		9207F19E176DCD0400E88E1C /* ReportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReportViewController.h; sourceTree = "<group>"; };
 		9207F19F176DCD0400E88E1C /* ReportViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReportViewController.m; sourceTree = "<group>"; };
+		9213563A17AE967500A86A9E /* cardboard.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cardboard.png; sourceTree = "<group>"; };
+		9213563B17AE967500A86A9E /* cardboard@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cardboard@2x.png"; sourceTree = "<group>"; };
+		9213563E17AEBC1400A86A9E /* GradientButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GradientButton.h; sourceTree = "<group>"; };
+		9213563F17AEBC1400A86A9E /* GradientButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GradientButton.m; sourceTree = "<group>"; };
+		9213564117AEBE9300A86A9E /* Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utils.h; sourceTree = "<group>"; };
+		9213564217AEBE9300A86A9E /* Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Utils.m; sourceTree = "<group>"; };
 		922D94F0174B791F005589AF /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		925CE585174F545100545D13 /* GkhReport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GkhReport.h; sourceTree = "<group>"; };
 		925CE586174F545100545D13 /* GkhReport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GkhReport.m; sourceTree = "<group>"; };
@@ -293,6 +303,8 @@
 		61A3AC43169047E9005D3311 /* PNGS */ = {
 			isa = PBXGroup;
 			children = (
+				9213563A17AE967500A86A9E /* cardboard.png */,
+				9213563B17AE967500A86A9E /* cardboard@2x.png */,
 				9283F416179828230041C681 /* right-arrow@2x.png */,
 				9283F4121798221F0041C681 /* right-arrow.png */,
 				9283F4011797E0260041C681 /* counters.png */,
@@ -339,6 +351,8 @@
 				92D5DA4C1792DFDB00198A40 /* GradientView.m */,
 				614C9177174252B000F1A91A /* DateYearPicker.h */,
 				614C9178174252B000F1A91A /* DateYearPicker.m */,
+				9213563E17AEBC1400A86A9E /* GradientButton.h */,
+				9213563F17AEBC1400A86A9E /* GradientButton.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -402,6 +416,8 @@
 				61A6B30C16F07E3E00C6D1A6 /* Constants.m */,
 				6178216D16F8433D00E4BED1 /* CorePlotUtils.h */,
 				6178216E16F8433D00E4BED1 /* CorePlotUtils.m */,
+				9213564117AEBE9300A86A9E /* Utils.h */,
+				9213564217AEBE9300A86A9E /* Utils.m */,
 			);
 			name = Common;
 			sourceTree = "<group>";
@@ -516,6 +532,8 @@
 				9283F417179828230041C681 /* right-arrow@2x.png in Resources */,
 				9293EF8517A801B30089B6EC /* icon.png in Resources */,
 				9293EF8717A801C30089B6EC /* icon@2x.png in Resources */,
+				9213563C17AE967500A86A9E /* cardboard.png in Resources */,
+				9213563D17AE967500A86A9E /* cardboard@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -589,6 +607,8 @@
 				928F6A7117803E00002B60F0 /* PeriodDetailsViewController.m in Sources */,
 				92D5DA4D1792DFDB00198A40 /* GradientView.m in Sources */,
 				9293EF8317A7FBF80089B6EC /* HomeTabBarViewController.m in Sources */,
+				9213564017AEBC1400A86A9E /* GradientButton.m in Sources */,
+				9213564317AEBE9300A86A9E /* Utils.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

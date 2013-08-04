@@ -4,23 +4,27 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="2083"/>
     </dependencies>
     <scenes>
-        <!--Login Screen View Controller - АСУ ЖКХ-->
+        <!--Login Screen View Controller - Выйти-->
         <scene sceneID="5">
             <objects>
                 <viewController id="2" customClass="LoginScreenViewController" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="3" customClass="GradientView">
-                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
+                    <view key="view" contentMode="scaleToFill" id="3">
+                        <rect key="frame" x="0.0" y="20" width="320" height="548"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="QAw-r6-oD4">
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="cardboard.png" translatesAutoresizingMaskIntoConstraints="NO" id="tdd-gE-39m"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="QAw-r6-oD4" customClass="GradientButton">
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="44" type="user" id="ays-hD-fbb"/>
+                                    <constraint firstAttribute="height" constant="44" id="RmH-Bu-IAt"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="17"/>
+                                <fontDescription key="fontDescription" type="boldSystem" size="button"/>
                                 <state key="normal" title="Войти">
-                                    <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
                                     <action selector="authenticatePressed" destination="2" eventType="touchUpInside" id="zY3-dc-NE4"/>
@@ -31,15 +35,30 @@
                                     <segment title="УК"/>
                                     <segment title="Житель"/>
                                 </segments>
+                                <color key="tintColor" red="0.50196081399917603" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <connections>
                                     <action selector="segmentChanged:forEvent:" destination="2" eventType="valueChanged" id="rCW-DU-hCe"/>
                                 </connections>
                             </segmentedControl>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" indicatorStyle="white" dataMode="prototypes" style="grouped" separatorStyle="singleLineEtched" allowsSelection="NO" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" translatesAutoresizingMaskIntoConstraints="NO" id="2hO-Hc-bLC">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" indicatorStyle="white" dataMode="prototypes" style="grouped" allowsSelection="NO" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" translatesAutoresizingMaskIntoConstraints="NO" id="2hO-Hc-bLC">
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="120" type="user" id="m0s-0A-bVZ"/>
                                 </constraints>
+                                <color key="separatorColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="CredentialCell" id="HWb-74-YDP">
+                                        <rect key="frame" x="0.0" y="46" width="320" height="45"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                            <rect key="frame" x="10" y="1" width="300" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </view>
+                                        <color key="backgroundColor" red="0.33725491166114807" green="0.090196080505847931" blue="0.10196079313755035" alpha="1" colorSpace="deviceRGB"/>
+                                    </tableViewCell>
+                                </prototypes>
+                                <sections/>
                             </tableView>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fwR-Vo-o7J">
                                 <subviews>
@@ -65,28 +84,50 @@
                                     <constraint firstItem="dPz-q1-pLf" firstAttribute="bottom" secondItem="fwR-Vo-o7J" secondAttribute="bottom" type="user" id="u5w-y1-0us"/>
                                 </constraints>
                             </view>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.50000000000000011" contentMode="left" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nce-jI-a3R">
+                                <attributedString key="attributedText">
+                                    <fragment content="асу жкх">
+                                        <attributes>
+                                            <color key="NSColor" red="0.098039217293262482" green="0.098039217293262482" blue="0.098039217293262482" alpha="1" colorSpace="calibratedRGB"/>
+                                            <font key="NSFont" size="60" name="GillSans"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                        </attributes>
+                                    </fragment>
+                                </attributedString>
+                                <nil key="highlightedColor"/>
+                                <color key="shadowColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <size key="shadowOffset" width="-1" height="-1"/>
+                            </label>
                         </subviews>
-                        <color key="backgroundColor" red="0.98431378599999997" green="0.97647064920000004" blue="0.9450981021" alpha="1" colorSpace="deviceRGB"/>
+                        <color key="backgroundColor" red="0.76078438758850098" green="0.76078438758850098" blue="0.76078438758850098" alpha="1" colorSpace="deviceRGB"/>
                         <constraints>
                             <constraint firstItem="fwR-Vo-o7J" firstAttribute="leading" secondItem="3" secondAttribute="leading" type="default" id="14D-Is-MeY"/>
                             <constraint firstItem="QAw-r6-oD4" firstAttribute="leading" secondItem="3" secondAttribute="leading" constant="10" type="user" id="2vO-f2-c8U"/>
+                            <constraint firstItem="nce-jI-a3R" firstAttribute="top" secondItem="3" secondAttribute="top" constant="10" type="user" id="3Yv-qi-KWo"/>
                             <constraint firstAttribute="trailing" secondItem="N5B-ps-UYO" secondAttribute="trailing" constant="10" type="user" id="4Qc-yQ-VEi"/>
+                            <constraint firstItem="tdd-gE-39m" firstAttribute="top" secondItem="3" secondAttribute="top" type="default" id="GBV-1K-JZb"/>
+                            <constraint firstItem="nce-jI-a3R" firstAttribute="centerX" secondItem="N5B-ps-UYO" secondAttribute="centerX" type="default" id="IKb-gi-D3y"/>
                             <constraint firstAttribute="trailing" secondItem="QAw-r6-oD4" secondAttribute="trailing" constant="10" type="user" id="JFS-fi-lnW"/>
                             <constraint firstItem="fwR-Vo-o7J" firstAttribute="trailing" secondItem="3" secondAttribute="trailing" type="default" id="OLa-wE-Q0I"/>
-                            <constraint firstItem="N5B-ps-UYO" firstAttribute="top" secondItem="3" secondAttribute="top" constant="20" symbolic="YES" type="user" id="QRp-fD-3B1"/>
                             <constraint firstItem="N5B-ps-UYO" firstAttribute="leading" secondItem="3" secondAttribute="leading" constant="10" type="user" id="ZBT-wx-FjE"/>
+                            <constraint firstItem="N5B-ps-UYO" firstAttribute="top" secondItem="nce-jI-a3R" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="cfo-TX-waj"/>
                             <constraint firstItem="2hO-Hc-bLC" firstAttribute="leading" secondItem="3" secondAttribute="leading" type="user" id="fGn-qF-EE5"/>
+                            <constraint firstItem="tdd-gE-39m" firstAttribute="leading" secondItem="3" secondAttribute="leading" type="default" id="ioD-O1-AxZ"/>
+                            <constraint firstItem="tdd-gE-39m" firstAttribute="trailing" secondItem="3" secondAttribute="trailing" type="default" id="itM-sh-rP2"/>
                             <constraint firstAttribute="bottom" secondItem="fwR-Vo-o7J" secondAttribute="bottom" constant="20" symbolic="YES" type="user" id="jy3-O0-Lva"/>
+                            <constraint firstItem="tdd-gE-39m" firstAttribute="bottom" secondItem="3" secondAttribute="bottom" type="default" id="rS2-jX-VsX"/>
                             <constraint firstItem="2hO-Hc-bLC" firstAttribute="top" secondItem="N5B-ps-UYO" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="uhO-7O-5RD"/>
-                            <constraint firstItem="QAw-r6-oD4" firstAttribute="top" secondItem="2hO-Hc-bLC" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="yWo-mz-YxF"/>
+                            <constraint firstItem="QAw-r6-oD4" firstAttribute="top" secondItem="2hO-Hc-bLC" secondAttribute="bottom" type="user" id="yWo-mz-YxF"/>
                             <constraint firstItem="2hO-Hc-bLC" firstAttribute="trailing" secondItem="3" secondAttribute="trailing" type="user" id="yab-tN-3te"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="АСУ ЖКХ" id="unY-dn-Bi0"/>
+                    <navigationItem key="navigationItem" title="Выйти" id="unY-dn-Bi0"/>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
+                    <nil key="simulatedTopBarMetrics"/>
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                     <connections>
+                        <outlet property="backgroundView" destination="tdd-gE-39m" id="s0H-yO-71c"/>
                         <outlet property="enterButton" destination="QAw-r6-oD4" id="6zM-qF-b58"/>
                         <outlet property="loadingView" destination="fwR-Vo-o7J" id="ynA-qB-uQ9"/>
                         <outlet property="loginTable" destination="2hO-Hc-bLC" id="CFu-ci-2Qz"/>
@@ -641,76 +682,10 @@
         </scene>
     </scenes>
     <resources>
+        <image name="cardboard.png" width="640" height="960"/>
         <image name="counters.png" width="30" height="30"/>
         <image name="epd.png" width="30" height="30"/>
     </resources>
-    <classes>
-        <class className="CPTGraphHostingView" superclassName="UIView">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/CPTGraphHostingView.h"/>
-        </class>
-        <class className="CounterTableViewController" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/CounterTableViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="activityIndicator" candidateClass="UIActivityIndicatorView"/>
-            </relationships>
-        </class>
-        <class className="CounterValsViewController" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/CounterValsViewController.h"/>
-        </class>
-        <class className="EpdDetailTableViewController" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/EpdDetailTableViewController.h"/>
-        </class>
-        <class className="EpdTableViewController" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/EpdTableViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="loadIndicator" candidateClass="UIActivityIndicatorView"/>
-            </relationships>
-        </class>
-        <class className="GradientView" superclassName="UIView">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/GradientView.h"/>
-        </class>
-        <class className="HomeTabBarViewController" superclassName="UITabBarController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/HomeTabBarViewController.h"/>
-        </class>
-        <class className="LoginScreenViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/LoginScreenViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="authenticatePressed"/>
-                <relationship kind="action" name="segmentChanged:forEvent:" candidateClass="UISegmentedControl"/>
-                <relationship kind="outlet" name="enterButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="loadingView" candidateClass="UIView"/>
-                <relationship kind="outlet" name="loginTable" candidateClass="UITableView"/>
-            </relationships>
-        </class>
-        <class className="NSLayoutConstraint" superclassName="NSObject">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/NSLayoutConstraint.h"/>
-        </class>
-        <class className="PeriodDetailsViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/PeriodDetailsViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="activityIndicator" candidateClass="UIActivityIndicatorView"/>
-                <relationship kind="outlet" name="pageControl" candidateClass="UIPageControl"/>
-                <relationship kind="outlet" name="scrollView" candidateClass="UIScrollView"/>
-            </relationships>
-        </class>
-        <class className="ReportTableViewController" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/ReportTableViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="activityIndicator" candidateClass="UIActivityIndicatorView"/>
-            </relationships>
-        </class>
-        <class className="ReportViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/ReportViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="graphHostingViewTopSpaceToSuper" candidateClass="NSLayoutConstraint"/>
-                <relationship kind="outlet" name="hostView" candidateClass="CPTGraphHostingView"/>
-                <relationship kind="outlet" name="loadMask" candidateClass="UIView"/>
-                <relationship kind="outlet" name="loadMaskView" candidateClass="UIView"/>
-                <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
-                <relationship kind="outlet" name="verticalSpaceBetweenTableViewAndHostingView" candidateClass="NSLayoutConstraint"/>
-            </relationships>
-        </class>
-    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
