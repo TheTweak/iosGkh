@@ -79,7 +79,7 @@
             if (!self.password) {
                 self.password = [[UITextField alloc] initWithFrame:textFieldRect];
                 self.password.secureTextEntry = YES;
-                self.password.placeholder = @"Пароль";
+                self.password.placeholder = @"пароль";
                 self.password.delegate = self;
                 self.password.returnKeyType = UIReturnKeyDone;
                 self.password.autocorrectionType = UITextAutocorrectionTypeNo;
@@ -88,7 +88,7 @@
         } else if (indexPath.item == 0) {
             if (!self.login) {
                 self.login = [[UITextField alloc] initWithFrame:textFieldRect];
-                self.login.placeholder = @"Логин";
+                self.login.placeholder = @"логин";
                 self.login.returnKeyType = UIReturnKeyDone;
                 self.login.delegate = self;
                 self.login.autocorrectionType = UITextAutocorrectionTypeNo;
@@ -98,7 +98,7 @@
     } else if (self.segment == 1) {
         if (!self.fls) {
             self.fls = [[UITextField alloc] initWithFrame:textFieldRect];
-            self.fls.placeholder = @"Лицевой счет";
+            self.fls.placeholder = @"лицевой счет";
             self.fls.delegate = self;
             self.fls.keyboardType = UIKeyboardTypeNumbersAndPunctuation;
             self.fls.returnKeyType = UIReturnKeyDone;

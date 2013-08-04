@@ -19,7 +19,7 @@
                                 </constraints>
                                 <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="17"/>
                                 <state key="normal" title="Войти">
-                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
@@ -46,7 +46,7 @@
                                     <activityIndicatorView opaque="NO" contentMode="scaleToFill" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="n0W-xI-Q46">
                                         <color key="color" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                     </activityIndicatorView>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Загрузка..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dPz-q1-pLf">
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Загрузка..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dPz-q1-pLf" userLabel="LoadingLabel">
                                         <constraints>
                                             <constraint firstAttribute="width" constant="88" id="5g9-ip-1QB"/>
                                         </constraints>
@@ -56,29 +56,30 @@
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstItem="n0W-xI-Q46" firstAttribute="top" secondItem="fwR-Vo-o7J" secondAttribute="top" constant="2" id="0ur-lF-1uM"/>
                                     <constraint firstItem="n0W-xI-Q46" firstAttribute="bottom" secondItem="fwR-Vo-o7J" secondAttribute="bottom" type="default" id="27n-Xf-sAI"/>
+                                    <constraint firstAttribute="height" constant="22" type="user" id="59Y-Zo-c97"/>
                                     <constraint firstItem="dPz-q1-pLf" firstAttribute="centerX" secondItem="fwR-Vo-o7J" secondAttribute="centerX" type="default" id="7eu-0X-haZ"/>
-                                    <constraint firstItem="dPz-q1-pLf" firstAttribute="centerY" secondItem="fwR-Vo-o7J" secondAttribute="centerY" type="default" id="PUx-pc-0Kr"/>
-                                    <constraint firstItem="dPz-q1-pLf" firstAttribute="bottom" secondItem="fwR-Vo-o7J" secondAttribute="bottom" type="default" id="kVP-zp-Ctn"/>
+                                    <constraint firstItem="dPz-q1-pLf" firstAttribute="top" secondItem="fwR-Vo-o7J" secondAttribute="top" type="default" id="Nu7-k4-7MS"/>
+                                    <constraint firstItem="dPz-q1-pLf" firstAttribute="bottom" secondItem="fwR-Vo-o7J" secondAttribute="bottom" type="user" id="kVP-zp-Ctn"/>
                                     <constraint firstItem="dPz-q1-pLf" firstAttribute="leading" secondItem="n0W-xI-Q46" secondAttribute="trailing" constant="8" symbolic="YES" type="default" id="nKn-tF-c1D"/>
+                                    <constraint firstItem="dPz-q1-pLf" firstAttribute="bottom" secondItem="fwR-Vo-o7J" secondAttribute="bottom" type="user" id="u5w-y1-0us"/>
                                 </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" red="0.98431378599999997" green="0.97647064920000004" blue="0.9450981021" alpha="1" colorSpace="deviceRGB"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="QAw-r6-oD4" secondAttribute="trailing" constant="20" symbolic="YES" type="user" id="3RI-Ef-ebQ"/>
-                            <constraint firstAttribute="trailing" secondItem="N5B-ps-UYO" secondAttribute="trailing" constant="20" symbolic="YES" type="user" id="4Qc-yQ-VEi"/>
-                            <constraint firstItem="fwR-Vo-o7J" firstAttribute="leading" secondItem="3" secondAttribute="leading" type="default" id="IKt-XM-Jfe"/>
+                            <constraint firstItem="fwR-Vo-o7J" firstAttribute="leading" secondItem="3" secondAttribute="leading" type="default" id="14D-Is-MeY"/>
+                            <constraint firstItem="QAw-r6-oD4" firstAttribute="leading" secondItem="3" secondAttribute="leading" constant="10" type="user" id="2vO-f2-c8U"/>
+                            <constraint firstAttribute="trailing" secondItem="N5B-ps-UYO" secondAttribute="trailing" constant="10" type="user" id="4Qc-yQ-VEi"/>
+                            <constraint firstAttribute="trailing" secondItem="QAw-r6-oD4" secondAttribute="trailing" constant="10" type="user" id="JFS-fi-lnW"/>
+                            <constraint firstItem="fwR-Vo-o7J" firstAttribute="trailing" secondItem="3" secondAttribute="trailing" type="default" id="OLa-wE-Q0I"/>
                             <constraint firstItem="N5B-ps-UYO" firstAttribute="top" secondItem="3" secondAttribute="top" constant="20" symbolic="YES" type="user" id="QRp-fD-3B1"/>
-                            <constraint firstItem="N5B-ps-UYO" firstAttribute="leading" secondItem="3" secondAttribute="leading" constant="20" symbolic="YES" type="user" id="ZBT-wx-FjE"/>
+                            <constraint firstItem="N5B-ps-UYO" firstAttribute="leading" secondItem="3" secondAttribute="leading" constant="10" type="user" id="ZBT-wx-FjE"/>
                             <constraint firstItem="2hO-Hc-bLC" firstAttribute="leading" secondItem="3" secondAttribute="leading" type="user" id="fGn-qF-EE5"/>
-                            <constraint firstAttribute="bottom" secondItem="fwR-Vo-o7J" secondAttribute="bottom" constant="20" symbolic="YES" type="default" id="kjV-EK-Af0"/>
-                            <constraint firstItem="QAw-r6-oD4" firstAttribute="leading" secondItem="3" secondAttribute="leading" constant="20" symbolic="YES" type="user" id="uBf-VO-T1w"/>
+                            <constraint firstAttribute="bottom" secondItem="fwR-Vo-o7J" secondAttribute="bottom" constant="20" symbolic="YES" type="user" id="jy3-O0-Lva"/>
                             <constraint firstItem="2hO-Hc-bLC" firstAttribute="top" secondItem="N5B-ps-UYO" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="uhO-7O-5RD"/>
-                            <constraint firstItem="fwR-Vo-o7J" firstAttribute="trailing" secondItem="3" secondAttribute="trailing" type="default" id="xWy-ta-UCd"/>
+                            <constraint firstItem="QAw-r6-oD4" firstAttribute="top" secondItem="2hO-Hc-bLC" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="yWo-mz-YxF"/>
                             <constraint firstItem="2hO-Hc-bLC" firstAttribute="trailing" secondItem="3" secondAttribute="trailing" type="user" id="yab-tN-3te"/>
-                            <constraint firstItem="fwR-Vo-o7J" firstAttribute="top" secondItem="QAw-r6-oD4" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="zmU-YK-BjB"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="АСУ ЖКХ" id="unY-dn-Bi0"/>
