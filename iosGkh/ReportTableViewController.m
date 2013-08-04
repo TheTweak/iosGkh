@@ -12,6 +12,7 @@
 #import "Constants.h"
 #import "GkhReport.h"
 #import "ReportViewController.h"
+#import "Utils.h"
 
 @interface ReportTableViewController ()
 // Массив отчетов которые грузятся в таблицу

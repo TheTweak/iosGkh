@@ -12,6 +12,7 @@
 #import "Reachability.h"
 #import <SystemConfiguration/SystemConfiguration.h>
 #import <QuartzCore/QuartzCore.h>
+#import "Utils.h"
 
 @interface LoginScreenViewController ()
 - (void) registerForNotifications;
@@ -39,9 +40,10 @@
     // set default values for app settings
     [self registerDefaultSettingsValues];
     [self.navigationController setNavigationBarHidden:YES animated:NO];
-    self.enterButton.hue = 1.0;
-    self.enterButton.saturation = 0.73;
-    self.enterButton.brightness = 0.44;
+    self.enterButton.hue = THEME_HUE;
+    self.enterButton.saturation = THEME_SATURATION;
+    self.enterButton.brightness = THEME_BRIGHTNESS;
+    [self.navigationController.navigationBar setTintColor:[Utils themeColor]];
 }
 
 -(void)viewWillAppear:(BOOL)animated

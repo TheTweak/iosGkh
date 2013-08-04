@@ -10,6 +10,18 @@
 
 @implementation Utils
 
++(UIColor *)themeColor
+{
+    static UIColor *themeColor;
+    if (!themeColor) {
+        themeColor = [UIColor colorWithHue:THEME_HUE
+                                saturation:THEME_SATURATION
+                                brightness:THEME_BRIGHTNESS
+                                     alpha:1.0];
+    }
+    return themeColor;
+}
+
 CGMutablePathRef createRoundedRectForRect(CGRect rect, CGFloat radius)
 {
     CGMutablePathRef path = CGPathCreateMutable();

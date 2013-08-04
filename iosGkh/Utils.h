@@ -8,7 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
+#define THEME_HUE 1.0
+#define THEME_SATURATION 0.73
+#define THEME_BRIGHTNESS 0.44
+
 @interface Utils : NSObject
 CGMutablePathRef createRoundedRectForRect(CGRect rect, CGFloat radius);
 void drawGlossAndGradient(CGContextRef context, CGRect rect, CGColorRef startColor, CGColorRef endColor);
++(UIColor *) themeColor;
 @end
