@@ -509,12 +509,12 @@
 
 -(void) showLoadingMask
 {
-    self.loadMask.hidden = false;
+    self.loadMaskView.hidden = false;
 }
 
 -(void) hideLoadingMask
 {
-    self.loadMask.hidden = true;
+    self.loadMaskView.hidden = true;
 }
 
 -(void) reloadGraphData
@@ -562,16 +562,7 @@
 
 #pragma mark Orientation handle
 
-/*-(void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
-{
-    if (UIInterfaceOrientationIsPortrait(fromInterfaceOrientation)) {        
-        [self layoutForLandscape];
-    } else {
-        [self layoutForPortrait];
-    }
-}*/
-
--(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+-(void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
     [self resetGraphLabels];
     if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {
@@ -589,9 +580,6 @@
         self.graphHostingViewSpaceToSuperIntPortrait = [NSNumber numberWithFloat:self.graphHostingViewTopSpaceToSuper.constant];
     }
     self.graphHostingViewTopSpaceToSuper.constant = 0;
-    [UIView animateWithDuration:1.0 animations:^{
-        [self.view layoutIfNeeded];
-    }];
 }
 
 -(void)layoutForPortrait
@@ -599,9 +587,6 @@
     self.tableView.hidden = NO;
     if (self.graphHostingViewSpaceToSuperIntPortrait) {
         self.graphHostingViewTopSpaceToSuper.constant = [self.graphHostingViewSpaceToSuperIntPortrait floatValue];
-        [UIView animateWithDuration:1.0 animations:^{
-            [self.view layoutIfNeeded];
-        }];
     }
     [self.view addConstraint:self.verticalSpaceBetweenTableViewAndHostingView];
 }

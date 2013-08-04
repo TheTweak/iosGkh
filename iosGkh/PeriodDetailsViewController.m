@@ -188,8 +188,8 @@
 }
 
 #pragma mark Rotate handler
-
--(void) didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+-(void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
     UIScrollView *scrollView = self.scrollView;
     CGRect scrollFrame = scrollView.frame;
     float scrollViewHeight = scrollFrame.size.height;
@@ -199,7 +199,14 @@
     for (int i = 0; i < pages; i++) {
         int tableViewTag = TABLEVIEW_TAG_BASE + i;
         UIView *tableView = [self.scrollView viewWithTag:tableViewTag];
-        tableView.frame = CGRectMake(i * scrollViewWidth, 0, scrollViewWidth, scrollViewHeight);
+        CGRect tableFrameRect = CGRectMake(i * scrollViewWidth, 0, scrollViewWidth, scrollViewHeight);
+        if (i == self.currentPage) {
+            [UIView animateWithDuration:duration animations:^{
+                tableView.frame = tableFrameRect;
+            }];
+        } else {
+            tableView.frame = tableFrameRect;
+        }
     }
     CGPoint point = CGPointMake(self.scrollView.frame.size.width * self.currentPage, 0);
     [self.scrollView setContentOffset:point animated:YES];

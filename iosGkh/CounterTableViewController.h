@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface CounterTableViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate>
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
 @end

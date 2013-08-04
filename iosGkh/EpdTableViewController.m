@@ -97,6 +97,7 @@
         return 1;
     } else {
         if (!self.isLoading) {
+            self.loadIndicator.hidden = NO;
             self.isLoading = YES;
             // dweller client
             AFHTTPClient *client = [BasicAuthModule dwellerHttpClient];
@@ -109,9 +110,11 @@
                 self.epdArray = [jsonParser objectWithString:responseString];
                 [tableView reloadData];
                 self.isLoading = NO;
+                self.loadIndicator.hidden = YES;
             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                 self.isLoading = NO;
                 NSLog(@"Failed to load counters table: %@", error);
+                self.loadIndicator.hidden = YES;
             }];
         }
         return self.epdArray.count;
@@ -165,6 +168,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (tableView == self.tableView) {
+        self.loadIndicator.hidden = NO;
         NSDictionary *epd = [self.epdArray objectAtIndex:indexPath.row];
         NSString *epdId = [epd objectForKey:@"id"];
         NSString *flsId = [[Dweller class] fls];
@@ -179,8 +183,10 @@
                                                                           instantiateViewControllerWithIdentifier:@"EpdDetailVC"];
                     detailViewController.detailsArray = epdDetails;
                     [self.navigationController pushViewController:detailViewController animated:YES];
+                    self.loadIndicator.hidden = YES;
                 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                     NSLog(@"fail to load counter vals");
+                    self.loadIndicator.hidden = YES;
                 }];
     }
 }

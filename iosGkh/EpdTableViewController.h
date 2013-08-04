@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface EpdTableViewController : UITableViewController
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *loadIndicator;
 
 @end

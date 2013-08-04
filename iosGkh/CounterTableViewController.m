@@ -44,6 +44,12 @@
     self.viewControllerByCounter = [[NSMutableDictionary alloc] init];
 }
 
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    self.activityIndicator.hidden = YES;
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -55,6 +61,7 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     if (!self.isLoading) {
+        self.activityIndicator.hidden = NO;
         self.isLoading = YES;
         // dweller client
         AFHTTPClient *client = [BasicAuthModule dwellerHttpClient];
@@ -67,9 +74,11 @@
             self.devices = [jsonParser objectWithString:responseString];
             [tableView reloadData];
             self.isLoading = NO;
+            self.activityIndicator.hidden = YES;
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             self.isLoading = NO;
             NSLog(@"Failed to load counters table: %@", error);
+            self.activityIndicator.hidden = YES;
         }];
     }
     // Return the number of sections.
@@ -124,9 +133,11 @@
     if (counterViewController) {
         [self.navigationController pushViewController:counterViewController animated:YES];
     } else {
+        self.activityIndicator.hidden = NO;
         AFHTTPClient *client = [BasicAuthModule dwellerHttpClient];
         [client postPath:@"counter" parameters:[NSDictionary dictionaryWithObjectsAndKeys:counterId, @"counter", nil]
                  success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                     self.activityIndicator.hidden = YES;
                      CounterValsViewController *counterValsController = (CounterValsViewController *) [[self.navigationController storyboard] instantiateViewControllerWithIdentifier:COUNTER_VALS_TABLE_VIEW_CONTROLLER_STORYBOARD_ID];
                      // set counter id
                      counterValsController.counterId = counterId;
@@ -138,6 +149,7 @@
                      [self.navigationController pushViewController:counterValsController animated:YES];
                  } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                      NSLog(@"fail to load counter vals");
+                     self.activityIndicator.hidden = YES;
                  }];
     }
 }
