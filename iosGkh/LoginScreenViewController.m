@@ -52,6 +52,29 @@
     [self.navigationController setNavigationBarHidden:YES animated:YES];
 }
 
+- (void)registerForKeyboardNotifications
+
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWasShown:)
+                                                 name:UIKeyboardDidShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillBeHidden:)
+                                                 name:UIKeyboardWillHideNotification object:nil];
+}
+
+#pragma mark Keyboard show/hide handling
+
+-(void) keyboardWasShown: (NSNotification*)aNotification
+{
+    
+}
+
+-(void) keyboardWillBeHidden: (NSNotification*)aNotification
+{
+    
+}
+
 -(void) registerDefaultSettingsValues {
     NSString *settingsBundle = [[NSBundle mainBundle] pathForResource:@"Settings" ofType:@"bundle"];
     if(!settingsBundle) {

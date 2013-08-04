@@ -8,7 +8,7 @@
 #import <UIKit/UIKit.h>
 #import "GradientButton.h"
 
-@interface LoginScreenViewController : UIViewController <UITextFieldDelegate, UITableViewDataSource>
+@interface LoginScreenViewController : UIViewController <UITextFieldDelegate, UITableViewDataSource, UIScrollViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *loginTable;
 - (IBAction)authenticatePressed;
